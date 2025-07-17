@@ -1,0 +1,241 @@
+/* 
+   Localizable.strings (Turkish)
+   Denklem - Mediation Calculator
+   
+   Created by ozkan on 16.07.2025.
+*/
+
+// MARK: - App Information
+"app.name" = "DENKLEM";
+"app.tagline" = "Arabuluculuk Ücreti Hesaplama";
+"app.description" = "Arabuluculuk ücretlerini hızlı ve doğru hesaplayın";
+
+// MARK: - General Terms
+"general.calculate" = "Hesapla";
+"general.cancel" = "İptal";
+"general.ok" = "Tamam";
+"general.save" = "Kaydet";
+"general.share" = "Paylaş";
+"general.export" = "Dışa Aktar";
+"general.close" = "Kapat";
+"general.back" = "Geri";
+"general.next" = "İleri";
+"general.done" = "Bitti";
+"general.error" = "Hata";
+"general.warning" = "Uyarı";
+"general.info" = "Bilgi";
+"general.success" = "Başarılı";
+
+// MARK: - Dispute Types
+"dispute_type.worker_employer" = "İşçi-İşveren";
+"dispute_type.commercial" = "Ticari";
+"dispute_type.consumer" = "Tüketici";
+"dispute_type.rent" = "Kira";
+"dispute_type.neighbor" = "Komşu Hukuku";
+"dispute_type.condominium" = "Kat Mülkiyeti";
+"dispute_type.family" = "Aile";
+"dispute_type.partnership_dissolution" = "Ortaklığın Giderilmesi";
+"dispute_type.other" = "Diğer";
+
+// MARK: - Dispute Type Descriptions
+"dispute_type.worker_employer.description" = "İş Hukukundan Kaynaklanan Uyuşmazlıklar";
+"dispute_type.commercial.description" = "Ticari İşlemlerden Kaynaklanan Uyuşmazlıklar";
+"dispute_type.consumer.description" = "Tüketici Haklarından Kaynaklanan Uyuşmazlıklar";
+"dispute_type.rent.description" = "Kira İlişkisinden Kaynaklanan Uyuşmazlıklar";
+"dispute_type.neighbor.description" = "Komşu Hukukundan Kaynaklanan Uyuşmazlıklar";
+"dispute_type.condominium.description" = "Kat Mülkiyeti Kanunundan Kaynaklanan Uyuşmazlıklar";
+"dispute_type.family.description" = "Aile Hukukundan Kaynaklanan Uyuşmazlıklar";
+"dispute_type.partnership_dissolution.description" = "Ortaklığın Giderilmesine İlişkin Uyuşmazlıklar";
+"dispute_type.other.description" = "Diğer Uyuşmazlık Türleri";
+
+// MARK: - Agreement Status
+"agreement_status.agreed" = "Anlaşma";
+"agreement_status.not_agreed" = "Anlaşmama";
+
+// MARK: - Agreement Status Descriptions
+"agreement_status.agreed.description" = "Taraflar anlaşmaya vardı.";
+"agreement_status.not_agreed.description" = "Taraflar anlaşamadı.";
+
+// MARK: - Calculation Types
+"calculation_type.monetary" = "Parasal Uyuşmazlık";
+"calculation_type.non_monetary" = "Parasal Olmayan Uyuşmazlık";
+"calculation_type.time_calculation" = "Süre Hesaplama";
+"calculation_type.smm_calculation" = "SMM Hesaplama";
+
+// MARK: - Calculation Type Descriptions
+"calculation_type.monetary.description" = "Parasal Uyuşmazlıklar İçin Ücret Hesaplama";
+"calculation_type.non_monetary.description" = "Parasal Olmayan Uyuşmazlıklar İçin Ücret Hesaplama";
+"calculation_type.time_calculation.description" = "Arabuluculuk Süreçlerinin Zaman Planlaması";
+"calculation_type.smm_calculation.description" = "Serbest Meslek Makbuzu Hesaplama";
+
+// MARK: - SMM Calculation Types
+"smm_calculation_type.vat_included_withholding_excluded" = "KDV Dahil, Stopaj Hariç";
+"smm_calculation_type.vat_excluded_withholding_included" = "KDV Hariç, Stopaj Dahil";
+"smm_calculation_type.vat_included_withholding_included" = "KDV Dahil, Stopaj Dahil";
+"smm_calculation_type.vat_excluded_withholding_excluded" = "KDV Hariç, Stopaj Hariç";
+
+// MARK: - SMM Calculation Type Descriptions
+"smm_calculation_type.vat_included_withholding_excluded.description" = "KDV dahil, gelir vergisi stopajı hariç hesaplama";
+"smm_calculation_type.vat_excluded_withholding_included.description" = "KDV hariç, gelir vergisi stopajı dahil hesaplama";
+"smm_calculation_type.vat_included_withholding_included.description" = "KDV dahil, gelir vergisi stopajı dahil hesaplama";
+"smm_calculation_type.vat_excluded_withholding_excluded.description" = "KDV hariç, gelir vergisi stopajı hariç hesaplama";
+
+// MARK: - SMM Result Table Labels
+"smm_result.mediation_fee" = "Brüt Ücret (KDV Hariç)";
+"smm_result.income_tax_withholding" = "Gelir Vergisi Stopajı (%20)";
+"smm_result.net_fee" = "Net Ücret";
+"smm_result.vat" = "KDV (%20)";
+"smm_result.collected_fee" = "Tahsil Edilecek Ücret";
+"smm_result.legal_person" = "Tüzel Kişi";
+"smm_result.real_person" = "Gerçek Kişi";
+
+// MARK: - Validation Messages
+"validation.amount.min" = "Minimum tutar 0,01 ₺ olmalıdır";
+"validation.amount.max" = "Maksimum tutar 999.999.999,00 ₺ olmalıdır";
+"validation.party_count.min" = "Minimum taraf sayısı 2 olmalıdır";
+"validation.party_count.max" = "Maksimum taraf sayısı 1000 olmalıdır";
+"validation.required_field" = "Bu alan zorunludur";
+"validation.invalid_amount" = "Geçersiz tutar";
+"validation.invalid_party_count" = "Geçersiz taraf sayısı";
+
+// MARK: - Screen Titles
+"screen.title.home" = "Ana Sayfa";
+"screen.title.dispute_category" = "Uyuşmazlık Kategorisi";
+"screen.title.agreement_status" = "Anlaşma Durumu";
+"screen.title.dispute_type" = "Uyuşmazlık Türü";
+"screen.title.input" = "Bilgi Girişi";
+"screen.title.result" = "Sonuç";
+"screen.title.time_calculation" = "Süre Hesaplama";
+"screen.title.smm_calculation" = "SMM Hesaplama";
+"screen.title.about" = "Hakkımızda";
+"screen.title.legislation" = "Mevzuat";
+
+// MARK: - Input Fields
+"input.agreement_amount" = "Anlaşma Tutarı";
+"input.party_count" = "Taraf Sayısı";
+"input.mediation_fee" = "Arabuluculuk Ücreti";
+"input.start_date" = "Başlangıç Tarihi";
+
+// MARK: - Input Placeholders
+"input.placeholder.amount" = "Anlaşma Tutarı";
+"input.placeholder.party_count" = "Taraf Sayısı";
+"input.placeholder.mediation_fee" = "Hesaplanacak Ücreti Girin";
+
+// MARK: - Input Hints
+"input.hint.amount" = "Uyuşmazlığın parasal değeri";
+"input.hint.party_count" = "Arabuluculuk sürecine katılan taraf sayısı";
+"input.hint.mediation_fee" = "Hesaplanacak arabuluculuk ücreti";
+
+// MARK: - Result Labels
+"result.mediation_fee" = "Arabuluculuk Ücreti";
+"result.dispute_type" = "Uyuşmazlık Türü";
+"result.amount" = "Tutar";
+"result.party_count" = "Taraf Sayısı";
+"result.calculation_date" = "Hesaplama Tarihi";
+"result.tariff_year" = "Tarife Yılı";
+
+// MARK: - Time Calculation Labels
+"time_calculation.dispute_types" = "Uyuşmazlık Türleri";
+"time_calculation.labor_law" = "İş Hukuku Uyuşmazlıkları";
+"time_calculation.commercial_law" = "Ticaret Hukuku Uyuşmazlıkları";
+"time_calculation.consumer_law" = "Tüketici Hukuku Uyuşmazlıkları";
+"time_calculation.rental_disputes" = "Kira İlişkisinden Kaynaklanan Uyuşmazlıklar";
+"time_calculation.partnership_dissolution" = "Ortaklığın Giderilmesine İlişkin Uyuşmazlıklar";
+"time_calculation.condominium_law" = "Kat Mülkiyeti Kanunundan Kaynaklanan Uyuşmazlıklar";
+"time_calculation.neighbor_law" = "Komşu Hukukundan Kaynaklanan Uyuşmazlıklar";
+"time_calculation.agricultural_production" = "Tarımsal Üretim Sözleşmesinden Kaynaklanan Uyuşmazlıklar";
+
+// MARK: - Time Calculation Results
+"time_calculation.week" = "Hafta";
+"time_calculation.weeks" = "Hafta";
+"time_calculation.deadline" = "Son Tarih";
+"time_calculation.extended_deadline" = "Uzatılmış Son Tarih";
+
+// MARK: - Home Screen
+"home.welcome" = "Hoş Geldiniz";
+"home.select_year" = "Yıl Seçiniz";
+"home.year_warning" = "Yukarı kaydırınız ve yıl seçiniz";
+"home.dispute_categories" = "Uyuşmazlık Kategorileri";
+"home.monetary_disputes" = "Konusu Para Olan Uyuşmazlıklar";
+"home.non_monetary_disputes" = "Konusu Para Olmayan Uyuşmazlıklar";
+"home.other_calculations" = "Diğer Hesaplamalar";
+"home.time_calculation" = "Süre Hesaplama";
+"home.smm_calculation" = "SMM Hesaplama";
+
+// MARK: - Start Screen
+"start.enter_button" = "Giriş";
+"start.year_2025" = "2025";
+"start.year_2026" = "2026";
+"start.select_year_hint" = "Tarife Yılını Seçin";
+"start.scroll_to_select" = "Kaydırarak Seçin";
+
+// MARK: - About Screen
+"about.app_info" = "Uygulama Bilgileri";
+"about.version" = "Versiyon";
+"about.developer" = "Geliştirici";
+"about.contact" = "İletişim";
+"about.legal_info" = "Yasal Bilgiler";
+"about.disclaimer" = "Bu uygulama, Adalet Bakanlığı tarafından yayınlanan %d yılı Arabuluculuk Ücret Tarifesi'ne göre hesaplama yapmaktadır. Resmi kaynakları kontrol etmeniz önerilir.";
+"about.copyright" = "Tüm hakları saklıdır.";
+
+// MARK: - Legislation Screen
+"legislation.title" = "Arabuluculuk Ücret Tarifesi";
+"legislation.year" = "Yıl";
+"legislation.source" = "Kaynak";
+"legislation.view_document" = "Belgeyi Görüntüle";
+
+// MARK: - Error Messages
+"error.calculation_failed" = "Hesaplama işlemi başarısız";
+"error.invalid_input" = "Geçersiz giriş";
+"error.network_error" = "Ağ hatası";
+"error.file_error" = "Dosya hatası";
+"error.unknown_error" = "Bilinmeyen hata";
+"error.try_again" = "Tekrar deneyin";
+
+// MARK: - Success Messages
+"success.calculation_completed" = "Hesaplama başarıyla tamamlandı";
+"success.data_saved" = "Veriler kaydedildi";
+"success.data_exported" = "Veriler dışa aktarıldı";
+"success.shared" = "Paylaşıldı";
+
+// MARK: - Loading Messages
+"loading.calculating" = "Hesaplanıyor...";
+"loading.loading" = "Yükleniyor...";
+"loading.please_wait" = "Lütfen bekleyin...";
+
+// MARK: - Tab Bar
+"tab.home" = "Ana Sayfa";
+"tab.legislation" = "Mevzuat";
+"tab.about" = "Hakkında";
+"tab.language" = "TR";
+
+// MARK: - Language Settings
+"language.title" = "Dil Ayarları";
+"language.current" = "Mevcut Dil";
+"language.select" = "Dil Seçin";
+"language.turkish" = "Türkçe";
+"language.english" = "English";
+"language.change_success" = "Dil başarıyla değiştirildi";
+"language.restart_required" = "Değişiklikler için uygulamayı yeniden başlatın";
+
+// MARK: - Contact & Support
+"contact.email" = "E-posta";
+"contact.website" = "Web Sitesi";
+"contact.share_app" = "Uygulamayı Paylaş";
+"contact.rate_app" = "Uygulamayı Değerlendir";
+"contact.send_feedback" = "Geri Bildirim Gönder";
+
+// MARK: - Legal & About
+"legal.disclaimer" = "Yasal Uyarı";
+"about.who_we_are" = "Biz Kimiz";
+"about.app_description_long" = "Arabuluculuk Ücreti Hesaplama Uygulaması";
+"about.smm_receipt" = "Serbest Meslek Makbuzu";
+
+// MARK: - Time Calculation Headers
+"time_calculation.dispute_type_duration" = "Uyuşmazlık Türüne Göre Süreler";
+"calculation.type_header" = "Hesaplama Türü";
+
+// MARK: - Currency
+"currency.symbol" = "₺";
+"currency.code" = "TRY";
+"currency.format" = "%@ ₺";
