@@ -22,7 +22,7 @@ struct TariffConstants {
     
     // MARK: - Party Count Limits
     static let minimumPartyCount = 2
-    static let maximumPartyCount = 100
+    static let maximumPartyCount = 1000  // Synced with validation messages
     static let defaultPartyCount = 2
     
     // MARK: - SMM Calculation Constants

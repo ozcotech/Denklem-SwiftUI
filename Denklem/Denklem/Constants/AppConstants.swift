@@ -72,10 +72,10 @@ struct AppConstants {
     }
 
     // MARK: - Calculation Limits
-    static let maxCalculationAmount: Double = 10_000_000.0
-    static let minCalculationAmount: Double = 1.0
-    static let maxPartyCount = 1000
-    static let minPartyCount = 2
+    static let maxCalculationAmount: Double = 999_999_999.0  
+    static let minCalculationAmount: Double = 0.01           
+    static let maxPartyCount = 1000                          
+    static let minPartyCount = 2                             
     
     // MARK: - Notification Names
     struct NotificationNames {
@@ -127,16 +127,16 @@ extension AppConstants {
     }
     
     /// Returns the copyright string
-    static var copyrightString: String {
+    static var copyrightText: String {
         let currentYear = Calendar.current.component(.year, from: Date())
-        return "© \(currentYear) \(companyName). " + NSLocalizedString("all_rights_reserved", comment: "All rights reserved")
+        return "© \(currentYear) \(AppConstants.developerName). " + NSLocalizedString("about.copyright", comment: "Copyright text")
     }
     
     /// Returns the legal disclaimer
-    static var legalDisclaimer: String {
+    static func legalDisclaimer(for year: Int) -> String {
         return String(
-            format: NSLocalizedString("legal_disclaimer", comment: "Legal disclaimer"),
-            currentYear
+            format: NSLocalizedString("about.disclaimer", comment: "Legal disclaimer"),
+            year
         )
     }
     

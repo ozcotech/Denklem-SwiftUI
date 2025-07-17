@@ -1,15 +1,6 @@
 /* 
    Localizable.strings (English)
-  // MARK: - Dispute Type Descriptions
-"dispute_type.worker_employer.description" = "Disputes arising from labor law";
-"dispute_type.commercial.description" = "Disputes arising from commercial transactions";
-"dispute_type.consumer.description" = "Disputes arising from consumer rights";
-"dispute_type.rent.description" = "Disputes arising from rental relationships";
-"dispute_type.neighbor.description" = "Disputes arising from neighbor law";
-"dispute_type.condominium.description" = "Disputes arising from condominium law";
-"dispute_type.family.description" = "Disputes arising from family law";
-"dispute_type.partnership_dissolution.description" = "Disputes related to partnership dissolution";
-"dispute_type.other.description" = "Other types of disputes"; - Mediation Calculator
+   Denklem - Mediation Calculator
    
    Created by ozkan on 16.07.2025.
 */
@@ -51,6 +42,8 @@
 "dispute_type.commercial.description" = "Disputes Arising From Commercial Transactions";
 "dispute_type.consumer.description" = "Disputes Arising From Consumer Rights";
 "dispute_type.rent.description" = "Disputes Arising From Rental Relationships";
+"dispute_type.neighbor.description" = "Disputes Arising From Neighbor Law";
+"dispute_type.condominium.description" = "Disputes Arising From Condominium Law";
 "dispute_type.family.description" = "Disputes Arising From Family Law";
 "dispute_type.partnership_dissolution.description" = "Disputes Related To Partnership Dissolution";
 "dispute_type.other.description" = "Other Types Of Disputes";
