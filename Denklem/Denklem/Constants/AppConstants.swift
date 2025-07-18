@@ -126,21 +126,43 @@ extension AppConstants {
         return "\(appDisplayName) v\(appVersion)"
     }
     
-    /// Returns the copyright string
+    /// Returns the copyright string using LocalizationKeys
     static var copyrightText: String {
         let currentYear = Calendar.current.component(.year, from: Date())
-        return "© \(currentYear) \(AppConstants.developerName). " + NSLocalizedString("about.copyright", comment: "Copyright text")
+        return "© \(currentYear) \(AppConstants.developerName). " + NSLocalizedString(LocalizationKeys.About.copyright, comment: "Copyright text")
     }
     
-    /// Returns the legal disclaimer
+    /// Returns the legal disclaimer using LocalizationKeys
     static func legalDisclaimer(for year: Int) -> String {
         return String(
-            format: NSLocalizedString("about.disclaimer", comment: "Legal disclaimer"),
+            format: NSLocalizedString(LocalizationKeys.About.disclaimer, comment: "Legal disclaimer"),
             year
         )
     }
     
-    /// Returns the contact information
+    /// Returns localized app name using LocalizationKeys
+    static var localizedAppName: String {
+        return NSLocalizedString(LocalizationKeys.AppInfo.name, comment: "App name")
+    }
+    
+    /// Returns localized app tagline using LocalizationKeys
+    static var localizedAppTagline: String {
+        return NSLocalizedString(LocalizationKeys.AppInfo.tagline, comment: "App tagline")
+    }
+    
+    /// Returns localized app description using LocalizationKeys
+    static var localizedAppDescription: String {
+        return NSLocalizedString(LocalizationKeys.AppInfo.description, comment: "App description")
+    }
+    
+    /// Returns localized contact info using LocalizationKeys
+    static var localizedContactInfo: String {
+        let emailLabel = NSLocalizedString(LocalizationKeys.Contact.email, comment: "")
+        let websiteLabel = NSLocalizedString(LocalizationKeys.Contact.website, comment: "")
+        return "\(emailLabel): \(developerEmail)\n\(websiteLabel): \(companyWebsite)"
+    }
+    
+    /// Returns the contact information (legacy support)
     static var contactInfo: String {
         return "İletişim: \(developerEmail)\nWeb: \(companyWebsite)"
     }
@@ -153,8 +175,20 @@ enum SupportedLanguage: String, CaseIterable {
     
     var displayName: String {
         switch self {
-        case .turkish: return "Türkçe"
-        case .english: return "English"
+        case .turkish: 
+            return NSLocalizedString(LocalizationKeys.Language.turkish, comment: "Turkish language")
+        case .english: 
+            return NSLocalizedString(LocalizationKeys.Language.english, comment: "English language")
         }
+    }
+    
+    /// Returns the language code
+    var code: String {
+        return self.rawValue
+    }
+    
+    /// Returns localized language name
+    var localizedName: String {
+        return displayName
     }
 }

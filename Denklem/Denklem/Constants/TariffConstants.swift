@@ -213,19 +213,19 @@ extension TariffConstants {
         return availableYears.map { String($0) }
     }
     
-    /// Returns formatted currency symbol with code
+    /// Returns formatted currency symbol with code using LocalizationHelper
     static var currencyDisplay: String {
-        return "\(currencySymbol) (\(currencyCode))"
+        return LocalizationHelper.localizedCurrencySymbol
     }
     
-    /// Returns maximum amount formatted as currency
+    /// Returns maximum amount formatted using LocalizationHelper
     static var formattedMaxAmount: String {
-        return String(format: "%.0f %@", maximumAmount, currencySymbol)
+        return LocalizationHelper.formatCurrency(maximumAmount)
     }
     
-    /// Returns minimum amount formatted as currency
+    /// Returns minimum amount formatted using LocalizationHelper
     static var formattedMinAmount: String {
-        return String(format: "%.2f %@", minimumAmount, currencySymbol)
+        return LocalizationHelper.formatCurrency(minimumAmount)
     }
     
     /// Validates if amount is within allowed range
@@ -243,29 +243,48 @@ extension TariffConstants {
         return availableYears.contains(year)
     }
     
-    /// Returns error message for invalid amount
+    /// Returns error message for invalid amount using LocalizationKeys
     static func getAmountValidationError(for amount: Double) -> String {
         if amount < minimumAmount {
-            return NSLocalizedString("validation.amount.min", comment: "Minimum amount error")
+            return NSLocalizedString(LocalizationKeys.Validation.Amount.min, comment: "Minimum amount error")
         } else if amount > maximumAmount {
-            return NSLocalizedString("validation.amount.max", comment: "Maximum amount error")
+            return NSLocalizedString(LocalizationKeys.Validation.Amount.max, comment: "Maximum amount error")
         }
         return ""
     }
     
-    /// Returns error message for invalid party count
+    /// Returns error message for invalid party count using LocalizationKeys
     static func getPartyCountValidationError(for count: Int) -> String {
         if count < minimumPartyCount {
-            return NSLocalizedString("validation.party_count.min", comment: "Minimum party count error")
+            return NSLocalizedString(LocalizationKeys.Validation.PartyCount.min, comment: "Minimum party count error")
         } else if count > maximumPartyCount {
-            return NSLocalizedString("validation.party_count.max", comment: "Maximum party count error")
+            return NSLocalizedString(LocalizationKeys.Validation.PartyCount.max, comment: "Maximum party count error")
         }
         return ""
     }
     
-    /// Maps dispute type key to localized display name
+    /// Maps dispute type key to localized display name using LocalizationKeys
     static func getLocalizedDisputeTypeName(for key: String) -> String {
-        return NSLocalizedString("dispute_type.\(key)", comment: "Dispute type name")
+        switch key {
+        case "worker_employer":
+            return NSLocalizedString(LocalizationKeys.DisputeType.workerEmployer, comment: "")
+        case "commercial":
+            return NSLocalizedString(LocalizationKeys.DisputeType.commercial, comment: "")
+        case "consumer":
+            return NSLocalizedString(LocalizationKeys.DisputeType.consumer, comment: "")
+        case "rent":
+            return NSLocalizedString(LocalizationKeys.DisputeType.rent, comment: "")
+        case "neighbor":
+            return NSLocalizedString(LocalizationKeys.DisputeType.neighbor, comment: "")
+        case "condominium":
+            return NSLocalizedString(LocalizationKeys.DisputeType.condominium, comment: "")
+        case "family":
+            return NSLocalizedString(LocalizationKeys.DisputeType.family, comment: "")
+        case "partnership_dissolution":
+            return NSLocalizedString(LocalizationKeys.DisputeType.partnershipDissolution, comment: "")
+        default:
+            return NSLocalizedString(LocalizationKeys.DisputeType.other, comment: "")
+        }
     }
     
     /// Maps dispute type to tariff key
@@ -298,11 +317,49 @@ enum DisputeCategory: String, CaseIterable {
     case other = "other"
     
     var displayName: String {
-        return NSLocalizedString("dispute_type.\(self.rawValue)", comment: "Dispute category name")
+        switch self {
+        case .workerEmployer:
+            return NSLocalizedString(LocalizationKeys.DisputeType.workerEmployer, comment: "")
+        case .commercial:
+            return NSLocalizedString(LocalizationKeys.DisputeType.commercial, comment: "")
+        case .consumer:
+            return NSLocalizedString(LocalizationKeys.DisputeType.consumer, comment: "")
+        case .rent:
+            return NSLocalizedString(LocalizationKeys.DisputeType.rent, comment: "")
+        case .neighbor:
+            return NSLocalizedString(LocalizationKeys.DisputeType.neighbor, comment: "")
+        case .condominium:
+            return NSLocalizedString(LocalizationKeys.DisputeType.condominium, comment: "")
+        case .family:
+            return NSLocalizedString(LocalizationKeys.DisputeType.family, comment: "")
+        case .partnershipDissolution:
+            return NSLocalizedString(LocalizationKeys.DisputeType.partnershipDissolution, comment: "")
+        case .other:
+            return NSLocalizedString(LocalizationKeys.DisputeType.other, comment: "")
+        }
     }
     
     var description: String {
-        return NSLocalizedString("dispute_type.\(self.rawValue).description", comment: "Dispute category description")
+        switch self {
+        case .workerEmployer:
+            return NSLocalizedString(LocalizationKeys.DisputeType.Description.workerEmployer, comment: "")
+        case .commercial:
+            return NSLocalizedString(LocalizationKeys.DisputeType.Description.commercial, comment: "")
+        case .consumer:
+            return NSLocalizedString(LocalizationKeys.DisputeType.Description.consumer, comment: "")
+        case .rent:
+            return NSLocalizedString(LocalizationKeys.DisputeType.Description.rent, comment: "")
+        case .neighbor:
+            return NSLocalizedString(LocalizationKeys.DisputeType.Description.neighbor, comment: "")
+        case .condominium:
+            return NSLocalizedString(LocalizationKeys.DisputeType.Description.condominium, comment: "")
+        case .family:
+            return NSLocalizedString(LocalizationKeys.DisputeType.Description.family, comment: "")
+        case .partnershipDissolution:
+            return NSLocalizedString(LocalizationKeys.DisputeType.Description.partnershipDissolution, comment: "")
+        case .other:
+            return NSLocalizedString(LocalizationKeys.DisputeType.Description.other, comment: "")
+        }
     }
 }
 
@@ -312,11 +369,21 @@ enum AgreementStatus: String, CaseIterable {
     case notAgreed = "not_agreed"
     
     var displayName: String {
-        return NSLocalizedString("agreement_status.\(self.rawValue)", comment: "Agreement status name")
+        switch self {
+        case .agreed:
+            return NSLocalizedString(LocalizationKeys.AgreementStatus.agreed, comment: "")
+        case .notAgreed:
+            return NSLocalizedString(LocalizationKeys.AgreementStatus.notAgreed, comment: "")
+        }
     }
     
     var description: String {
-        return NSLocalizedString("agreement_status.\(self.rawValue).description", comment: "Agreement status description")
+        switch self {
+        case .agreed:
+            return NSLocalizedString(LocalizationKeys.AgreementStatus.Description.agreed, comment: "")
+        case .notAgreed:
+            return NSLocalizedString(LocalizationKeys.AgreementStatus.Description.notAgreed, comment: "")
+        }
     }
 }
 
@@ -328,11 +395,29 @@ enum SMMCalculationType: String, CaseIterable {
     case vatExcludedWithholdingExcluded = "vat_excluded_withholding_excluded"
     
     var displayName: String {
-        return NSLocalizedString("smm_calculation_type.\(self.rawValue)", comment: "SMM calculation type name")
+        switch self {
+        case .vatIncludedWithholdingExcluded:
+            return NSLocalizedString(LocalizationKeys.SMMCalculationType.vatIncludedWithholdingExcluded, comment: "")
+        case .vatExcludedWithholdingIncluded:
+            return NSLocalizedString(LocalizationKeys.SMMCalculationType.vatExcludedWithholdingIncluded, comment: "")
+        case .vatIncludedWithholdingIncluded:
+            return NSLocalizedString(LocalizationKeys.SMMCalculationType.vatIncludedWithholdingIncluded, comment: "")
+        case .vatExcludedWithholdingExcluded:
+            return NSLocalizedString(LocalizationKeys.SMMCalculationType.vatExcludedWithholdingExcluded, comment: "")
+        }
     }
     
     var description: String {
-        return NSLocalizedString("smm_calculation_type.\(self.rawValue).description", comment: "SMM calculation type description")
+        switch self {
+        case .vatIncludedWithholdingExcluded:
+            return NSLocalizedString(LocalizationKeys.SMMCalculationType.Description.vatIncludedWithholdingExcluded, comment: "")
+        case .vatExcludedWithholdingIncluded:
+            return NSLocalizedString(LocalizationKeys.SMMCalculationType.Description.vatExcludedWithholdingIncluded, comment: "")
+        case .vatIncludedWithholdingIncluded:
+            return NSLocalizedString(LocalizationKeys.SMMCalculationType.Description.vatIncludedWithholdingIncluded, comment: "")
+        case .vatExcludedWithholdingExcluded:
+            return NSLocalizedString(LocalizationKeys.SMMCalculationType.Description.vatExcludedWithholdingExcluded, comment: "")
+        }
     }
     
     // Legacy support - maps old Turkish keys to new English keys
@@ -360,23 +445,41 @@ enum CalculationType: String, CaseIterable {
     case smmCalculation = "smm_calculation"
     
     var displayName: String {
-        return NSLocalizedString("calculation_type.\(self.rawValue)", comment: "Calculation type name")
+        switch self {
+        case .monetary:
+            return NSLocalizedString(LocalizationKeys.CalculationType.monetary, comment: "")
+        case .nonMonetary:
+            return NSLocalizedString(LocalizationKeys.CalculationType.nonMonetary, comment: "")
+        case .timeCalculation:
+            return NSLocalizedString(LocalizationKeys.CalculationType.timeCalculation, comment: "")
+        case .smmCalculation:
+            return NSLocalizedString(LocalizationKeys.CalculationType.smmCalculation, comment: "")
+        }
     }
     
     var description: String {
-        return NSLocalizedString("calculation_type.\(self.rawValue).description", comment: "Calculation type description")
+        switch self {
+        case .monetary:
+            return NSLocalizedString(LocalizationKeys.CalculationType.Description.monetary, comment: "")
+        case .nonMonetary:
+            return NSLocalizedString(LocalizationKeys.CalculationType.Description.nonMonetary, comment: "")
+        case .timeCalculation:
+            return NSLocalizedString(LocalizationKeys.CalculationType.Description.timeCalculation, comment: "")
+        case .smmCalculation:
+            return NSLocalizedString(LocalizationKeys.CalculationType.Description.smmCalculation, comment: "")
+        }
     }
 }
 
 // MARK: - SMM Result Table Labels (Localized)
 struct SMMResultTableLabels {
-    static let mediationFee = NSLocalizedString("smm_result.mediation_fee", comment: "Mediation fee label")
-    static let gelirVergisiStopaji = NSLocalizedString("smm_result.income_tax_withholding", comment: "Income tax withholding label")
-    static let netUcret = NSLocalizedString("smm_result.net_fee", comment: "Net fee label")
-    static let kdv = NSLocalizedString("smm_result.vat", comment: "VAT label")
-    static let tahsilEdilecek = NSLocalizedString("smm_result.collected_fee", comment: "Collected fee label")
-    static let tuzelKisi = NSLocalizedString("smm_result.legal_person", comment: "Legal person label")
-    static let gercekKisi = NSLocalizedString("smm_result.real_person", comment: "Real person label")
+    static let mediationFee = NSLocalizedString(LocalizationKeys.SMMResult.mediationFee, comment: "")
+    static let gelirVergisiStopaji = NSLocalizedString(LocalizationKeys.SMMResult.incomeTaxWithholding, comment: "")
+    static let netUcret = NSLocalizedString(LocalizationKeys.SMMResult.netFee, comment: "")
+    static let kdv = NSLocalizedString(LocalizationKeys.SMMResult.vat, comment: "")
+    static let tahsilEdilecek = NSLocalizedString(LocalizationKeys.SMMResult.collectedFee, comment: "")
+    static let tuzelKisi = NSLocalizedString(LocalizationKeys.SMMResult.legalPerson, comment: "")
+    static let gercekKisi = NSLocalizedString(LocalizationKeys.SMMResult.realPerson, comment: "")
 }
 
 // MARK: - SMM Result Models
