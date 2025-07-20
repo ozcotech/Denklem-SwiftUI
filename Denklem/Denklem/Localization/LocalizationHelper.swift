@@ -20,17 +20,29 @@ struct LocalizationHelper {
     
     /// Current language code (e.g., "tr", "en")
     static var currentLanguageCode: String {
-        return currentLocale.languageCode ?? "tr"
+        if #available(iOS 16.0, *) {
+            return currentLocale.language.languageCode?.identifier ?? "tr"
+        } else {
+            return currentLocale.languageCode ?? "tr"
+        }
     }
     
     /// Current region code (e.g., "TR", "US")
     static var currentRegionCode: String {
-        return currentLocale.regionCode ?? "TR"
+        if #available(iOS 16.0, *) {
+            return currentLocale.region?.identifier ?? "TR"
+        } else {
+            return currentLocale.regionCode ?? "TR"
+        }
     }
     
     /// Is current language right-to-left
     static var isRTLLanguage: Bool {
-        return Locale.characterDirection(forLanguage: currentLanguageCode) == .rightToLeft
+        if #available(iOS 16.0, *) {
+            return Locale.Language(identifier: currentLanguageCode).characterDirection == .rightToLeft
+        } else {
+            return Locale.characterDirection(forLanguage: currentLanguageCode) == .rightToLeft
+        }
     }
     
     /// Preferred languages array
