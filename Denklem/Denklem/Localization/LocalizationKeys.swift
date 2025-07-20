@@ -129,6 +129,20 @@ struct LocalizationKeys {
         static let requiredField = "validation.required_field"
         static let invalidAmount = "validation.invalid_amount"
         static let invalidPartyCount = "validation.invalid_party_count"
+        static let estimatedTariff = "validation.estimated_tariff"
+        static let invalidDisputeType = "validation.invalid_dispute_type"
+    }
+    
+    // MARK: - Error Messages
+    struct Error {
+        static let calculationFailed = "error.calculation_failed"
+        static let invalidInput = "error.invalid_input"
+        static let networkError = "error.network_error"
+        static let fileError = "error.file_error"
+        static let unknownError = "error.unknown_error"
+        static let tryAgain = "error.try_again"
+        static let unsupportedYear = "error.unsupported_year"
+        static let tariffCreationFailed = "error.tariff_creation_failed"
     }
     
     // MARK: - Screen Titles

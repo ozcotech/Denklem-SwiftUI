@@ -97,6 +97,18 @@
 "validation.required_field" = "Bu alan zorunludur";
 "validation.invalid_amount" = "Geçersiz tutar";
 "validation.invalid_party_count" = "Geçersiz taraf sayısı";
+"validation.estimated_tariff" = "Bu tarife tahmini veridir, resmi değildir";
+"validation.invalid_dispute_type" = "Geçersiz uyuşmazlık türü";
+
+// MARK: - Error Messages
+"error.calculation_failed" = "Hesaplama işlemi başarısız";
+"error.invalid_input" = "Geçersiz giriş";
+"error.network_error" = "Ağ hatası";
+"error.file_error" = "Dosya hatası";
+"error.unknown_error" = "Bilinmeyen hata";
+"error.try_again" = "Tekrar deneyin";
+"error.unsupported_year" = "Desteklenmeyen yıl";
+"error.tariff_creation_failed" = "Tarife oluşturulamadı";
 
 // MARK: - Screen Titles
 "screen.title.home" = "Ana Sayfa";

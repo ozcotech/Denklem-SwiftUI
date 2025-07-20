@@ -97,6 +97,18 @@
 "validation.required_field" = "This field is required";
 "validation.invalid_amount" = "Invalid amount";
 "validation.invalid_party_count" = "Invalid party count";
+"validation.estimated_tariff" = "This tariff is estimated, not official";
+"validation.invalid_dispute_type" = "Invalid dispute type";
+
+// MARK: - Error Messages
+"error.calculation_failed" = "Calculation failed";
+"error.invalid_input" = "Invalid input";
+"error.network_error" = "Network error";
+"error.file_error" = "File error";
+"error.unknown_error" = "Unknown error";
+"error.try_again" = "Try again";
+"error.unsupported_year" = "Unsupported year";
+"error.tariff_creation_failed" = "Tariff creation failed";
 
 // MARK: - Screen Titles
 "screen.title.home" = "Home";
