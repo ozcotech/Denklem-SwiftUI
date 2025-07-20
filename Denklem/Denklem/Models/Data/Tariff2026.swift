@@ -249,6 +249,85 @@ extension Tariff2026 {
 // MARK: - Tariff 2026 Validation Protocol Implementation
 extension Tariff2026: TariffValidationProtocol {
     
+    func validateTariffData() -> ValidationResult {
+        // Validate all components
+        let hourlyValidation = validateHourlyRates()
+        if !hourlyValidation.isValid { return hourlyValidation }
+        
+        let fixedValidation = validateFixedFees()
+        if !fixedValidation.isValid { return fixedValidation }
+        
+        let minimumValidation = validateMinimumFees()
+        if !minimumValidation.isValid { return minimumValidation }
+        
+        let bracketsValidation = validateBrackets()
+        if !bracketsValidation.isValid { return bracketsValidation }
+        
+        return .success
+    }
+    
+    func validateHourlyRates() -> ValidationResult {
+        // Check if all rates are positive
+        for (disputeType, rate) in hourlyRates {
+            guard rate > 0 else {
+                return .failure(
+                    code: ValidationConstants.Amount.invalidInputErrorCode,
+                    message: "Invalid hourly rate for \(disputeType): \(rate)"
+                )
+            }
+        }
+        return .success
+    }
+    
+    func validateFixedFees() -> ValidationResult {
+        // Check if all fixed fees are positive
+        for (disputeType, fees) in fixedFees {
+            for (index, fee) in fees.enumerated() {
+                guard fee > 0 else {
+                    return .failure(
+                        code: ValidationConstants.Amount.invalidInputErrorCode,
+                        message: "Invalid fixed fee for \(disputeType) at index \(index): \(fee)"
+                    )
+                }
+            }
+        }
+        return .success
+    }
+    
+    func validateMinimumFees() -> ValidationResult {
+        // Check if minimum fees are positive
+        for (category, fee) in minimumFees {
+            guard fee > 0 else {
+                return .failure(
+                    code: ValidationConstants.Amount.invalidInputErrorCode,
+                    message: "Invalid minimum fee for \(category): \(fee)"
+                )
+            }
+        }
+        return .success
+    }
+    
+    func validateBrackets() -> ValidationResult {
+        // Check if brackets are properly ordered
+        var previousLimit: Double = 0.0
+        for bracket in brackets {
+            if bracket.limit <= previousLimit && bracket.limit != Double.infinity {
+                return .failure(
+                    code: ValidationConstants.Amount.validationErrorCode,
+                    message: "Invalid bracket order: \(bracket.limit) <= \(previousLimit)"
+                )
+            }
+            guard bracket.rate > 0 else {
+                return .failure(
+                    code: ValidationConstants.Amount.invalidInputErrorCode,
+                    message: "Invalid bracket rate: \(bracket.rate)"
+                )
+            }
+            previousLimit = bracket.limit
+        }
+        return .success
+    }
+    
     func validateCalculationInput(disputeType: String, amount: Double?, partyCount: Int) -> ValidationResult {
         // Validate dispute type
         guard supportsDisputeType(disputeType) else {
@@ -284,49 +363,6 @@ extension Tariff2026: TariffValidationProtocol {
         }
         return .success
     }
-    
-    func validateRates() -> ValidationResult {
-        // Check if all rates are positive
-        for (disputeType, rate) in hourlyRates {
-            guard rate > 0 else {
-                return .failure(
-                    code: ValidationConstants.Amount.invalidInputErrorCode,
-                    message: "Invalid hourly rate for \(disputeType): \(rate)"
-                )
-            }
-        }
-        
-        // Check if all fixed fees are positive
-        for (disputeType, fees) in fixedFees {
-            for (index, fee) in fees.enumerated() {
-                guard fee > 0 else {
-                    return .failure(
-                        code: ValidationConstants.Amount.invalidInputErrorCode,
-                        message: "Invalid fixed fee for \(disputeType) at index \(index): \(fee)"
-                    )
-                }
-            }
-        }
-        
-        return .success
-    }
-    
-    func validateTariffData() -> ValidationResult {
-        // Additional validation for estimated data
-        if !isFinalized {
-            // This is OK for 2026 - it's expected to be estimated
-            // But we should warn users
-        }
-        
-        // Standard validations
-        let yearValidation = validateYear()
-        if !yearValidation.isValid { return yearValidation }
-        
-        let ratesValidation = validateRates()
-        if !ratesValidation.isValid { return ratesValidation }
-        
-        return .success
-    }
 }
 
 // MARK: - Tariff 2026 Comparison Protocol Implementation
@@ -339,6 +375,21 @@ extension Tariff2026: TariffComparisonProtocol {
             comparisonDate: Date()
         )
         return comparison
+    }
+    
+    func calculatePercentageChange(from other: TariffProtocol) -> [String: Double] {
+        var changes: [String: Double] = [:]
+        
+        for disputeType in getSupportedDisputeTypes() {
+            let ourRate = getHourlyRate(for: disputeType)
+            let otherRate = other.getHourlyRate(for: disputeType)
+            
+            if otherRate > 0 {
+                changes[disputeType] = ((ourRate - otherRate) / otherRate) * 100.0
+            }
+        }
+        
+        return changes
     }
     
     func calculateDifference(from other: TariffProtocol, disputeType: String, amount: Double?, partyCount: Int) -> Double {

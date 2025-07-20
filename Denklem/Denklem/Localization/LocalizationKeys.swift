@@ -134,7 +134,7 @@ struct LocalizationKeys {
     }
     
     // MARK: - Error Messages
-    struct Error {
+    struct ErrorMessage {
         static let calculationFailed = "error.calculation_failed"
         static let invalidInput = "error.invalid_input"
         static let networkError = "error.network_error"

@@ -268,14 +268,14 @@ protocol TariffValidationProtocol {
 protocol TariffComparisonProtocol {
     
     /// Compares this tariff with another tariff
-    /// - Parameter otherTariff: Another tariff to compare with
+    /// - Parameter other: Another tariff to compare with
     /// - Returns: TariffComparison result with differences
-    func compare(with otherTariff: TariffProtocol) -> TariffComparison
+    func compareTo(_ other: TariffProtocol) -> TariffComparison
     
     /// Calculates percentage change from another tariff
-    /// - Parameter otherTariff: Base tariff for comparison
+    /// - Parameter other: Base tariff for comparison
     /// - Returns: Dictionary of dispute types with percentage changes
-    func calculatePercentageChange(from otherTariff: TariffProtocol) -> [String: Double]
+    func calculatePercentageChange(from other: TariffProtocol) -> [String: Double]
 }
 
 // MARK: - Tariff Comparison Model
@@ -287,6 +287,53 @@ struct TariffComparison {
     let fixedFeeChanges: [String: (old: [Double], new: [Double], avgChange: Double)]
     let minimumFeeChanges: [String: (old: Double, new: Double, change: Double)]
     let overallAverageChange: Double
+    let comparisonDate: Date
+    
+    /// Convenience initializer
+    init(baseTariff: TariffProtocol, comparedTariff: TariffProtocol, comparisonDate: Date = Date()) {
+        self.baseTariffYear = baseTariff.year
+        self.comparedTariffYear = comparedTariff.year
+        self.comparisonDate = comparisonDate
+        
+        // Calculate hourly rate changes
+        var hourlyChanges: [String: (old: Double, new: Double, change: Double)] = [:]
+        for disputeType in baseTariff.getSupportedDisputeTypes() {
+            let oldRate = baseTariff.getHourlyRate(for: disputeType)
+            let newRate = comparedTariff.getHourlyRate(for: disputeType)
+            let change = newRate - oldRate
+            hourlyChanges[disputeType] = (old: oldRate, new: newRate, change: change)
+        }
+        self.hourlyRateChanges = hourlyChanges
+        
+        // Calculate fixed fee changes
+        var fixedChanges: [String: (old: [Double], new: [Double], avgChange: Double)] = [:]
+        for disputeType in baseTariff.getSupportedDisputeTypes() {
+            if let oldFees = baseTariff.fixedFees[disputeType],
+               let newFees = comparedTariff.fixedFees[disputeType] {
+                let avgOld = oldFees.reduce(0, +) / Double(oldFees.count)
+                let avgNew = newFees.reduce(0, +) / Double(newFees.count)
+                let avgChange = avgNew - avgOld
+                fixedChanges[disputeType] = (old: oldFees, new: newFees, avgChange: avgChange)
+            }
+        }
+        self.fixedFeeChanges = fixedChanges
+        
+        // Calculate minimum fee changes
+        var minimumChanges: [String: (old: Double, new: Double, change: Double)] = [:]
+        for disputeType in baseTariff.getSupportedDisputeTypes() {
+            let oldMin = baseTariff.getMinimumFee(for: disputeType)
+            let newMin = comparedTariff.getMinimumFee(for: disputeType)
+            let change = newMin - oldMin
+            minimumChanges[disputeType] = (old: oldMin, new: newMin, change: change)
+        }
+        self.minimumFeeChanges = minimumChanges
+        
+        // Calculate overall average change
+        let allChanges = hourlyChanges.values.map { $0.change } + 
+                        fixedChanges.values.map { $0.avgChange } +
+                        minimumChanges.values.map { $0.change }
+        self.overallAverageChange = allChanges.isEmpty ? 0.0 : allChanges.reduce(0, +) / Double(allChanges.count)
+    }
 }
 
 // MARK: - Tariff Factory Protocol
@@ -382,9 +429,9 @@ enum TariffFactoryError: Error, LocalizedError {
     var errorDescription: String? {
         switch self {
         case .unsupportedYear(let year):
-            return NSLocalizedString(LocalizationKeys.Error.unsupportedYear, comment: "Unsupported year error") + ": \(year)"
+            return NSLocalizedString(LocalizationKeys.ErrorMessage.unsupportedYear, comment: "Unsupported year error") + ": \(year)"
         case .creationFailed(let year):
-            return NSLocalizedString(LocalizationKeys.Error.tariffCreationFailed, comment: "Tariff creation failed") + ": \(year)"
+            return NSLocalizedString(LocalizationKeys.ErrorMessage.tariffCreationFailed, comment: "Tariff creation failed") + ": \(year)"
         }
     }
 }

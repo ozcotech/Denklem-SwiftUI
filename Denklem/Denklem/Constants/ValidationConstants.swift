@@ -129,42 +129,44 @@ struct ValidationConstants {
         static let maximumSMMAmount: Double = 999_999_999.0
         
         // Valid SMM calculation types (from TariffConstants enum)
-        static let validCalculationTypes = [
-            "vat_included_withholding_excluded",
-            "vat_excluded_withholding_included", 
-            "vat_included_withholding_included",
-            "vat_excluded_withholding_excluded"
+        static let validCalculationTypes: [String] = [
+            DisputeConstants.SMMCalculationTypeKeys.vatIncludedWithholdingExcluded,
+            DisputeConstants.SMMCalculationTypeKeys.vatExcludedWithholdingIncluded,
+            DisputeConstants.SMMCalculationTypeKeys.vatIncludedWithholdingIncluded,
+            DisputeConstants.SMMCalculationTypeKeys.vatExcludedWithholdingExcluded
         ]
     }
     
     // MARK: - Dispute Type Validation
     struct DisputeType {
         // Valid dispute types from TariffConstants enum
-        static let validDisputeTypes = [
-            "worker_employer",
-            "commercial",
-            "consumer", 
-            "rent",
-            "neighbor",
-            "condominium",
-            "family",
-            "partnership_dissolution",
-            "other"
+        static let validDisputeTypes: [String] = [
+            DisputeConstants.DisputeTypeKeys.workerEmployer,
+            DisputeConstants.DisputeTypeKeys.commercial,
+            DisputeConstants.DisputeTypeKeys.consumer,
+            DisputeConstants.DisputeTypeKeys.rent,
+            DisputeConstants.DisputeTypeKeys.neighbor,
+            DisputeConstants.DisputeTypeKeys.condominium,
+            DisputeConstants.DisputeTypeKeys.family,
+            DisputeConstants.DisputeTypeKeys.partnershipDissolution,
+            DisputeConstants.DisputeTypeKeys.other
         ]
         
         // Valid agreement statuses
         static let validAgreementStatuses = ["agreed", "not_agreed"]
         
         // Valid calculation types
-        static let validCalculationTypes = [
-            "monetary",
-            "non_monetary",
-            "time_calculation",
-            "smm_calculation"
+        static let validCalculationTypes: [String] = [
+            DisputeConstants.CalculationTypeKeys.monetary,
+            DisputeConstants.CalculationTypeKeys.nonMonetary,
+            DisputeConstants.CalculationTypeKeys.timeCalculation,
+            DisputeConstants.CalculationTypeKeys.smmCalculation
         ]
-    }
-    
-    // MARK: - Time Calculation Validation
+        
+        // Error codes
+        static let invalidTypeErrorCode = 1006
+        static let validationErrorCode = 1005
+    }    // MARK: - Time Calculation Validation
     struct TimeCalculation {
         // Valid time calculation dispute types from TariffConstants
         static let validTimeDisputeTypes = [
@@ -209,6 +211,10 @@ struct ValidationConstants {
         static let minimumYear = 2025
         static let maximumYear = 2030
         static let yearPattern = "^20[2-3][0-9]$"  // 2020-2039
+        
+        // Error codes
+        static let invalidYearErrorCode = 1007
+        static let validationErrorCode = 1005
     }
 }
 
