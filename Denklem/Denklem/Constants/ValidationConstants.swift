@@ -432,7 +432,7 @@ extension ValidationConstants {
 }
 
 // MARK: - Validation Result
-enum ValidationResult {
+enum ValidationResult: Error {
     case success
     case failure(code: Int, message: String)
     
@@ -461,6 +461,10 @@ enum ValidationResult {
         case .failure(let code, _):
             return code
         }
+    }
+    
+    var localizedDescription: String {
+        return errorMessage ?? "Unknown validation error"
     }
 }
 
