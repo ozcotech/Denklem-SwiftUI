@@ -239,12 +239,33 @@ struct LocalizationKeys {
         static let version = "about.version"
         static let developer = "about.developer"
         static let contact = "about.contact"
+        static let company = "about.company"
         static let legalInfo = "about.legal_info"
         static let disclaimer = "about.disclaimer"
         static let copyright = "about.copyright"
         static let whoWeAre = "about.who_we_are"
         static let appDescriptionLong = "about.app_description_long"
         static let smmReceipt = "about.smm_receipt"
+        
+        // Feature Information
+        static let features = "about.features"
+        static let supportedYears = "about.supported_years"
+        static let disputeTypes = "about.dispute_types"
+        static let languages = "about.languages"
+        static let calculationTypes = "about.calculation_types"
+        static let tariffYears = "about.tariff_years"
+        
+        // Legal & Data
+        static let legal = "about.legal"
+        static let dataSource = "about.data_source"
+        static let officialData = "about.official_data"
+        static let finalizedData = "about.finalized_data"
+        static let estimatedData = "about.estimated_data"
+        
+        // Technical Information
+        static let bundleId = "about.bundle_id"
+        static let minIOSVersion = "about.min_ios_version"
+        static let buildConfig = "about.build_config"
     }
     
     // MARK: - Legislation Screen
@@ -311,6 +332,11 @@ struct LocalizationKeys {
     // MARK: - Legal
     struct Legal {
         static let disclaimer = "legal.disclaimer"
+        static let source = "legal.source"
+        static let privacyPolicy = "legal.privacy_policy"
+        static let termsOfUse = "legal.terms_of_use"
+        static let dataProtection = "legal.data_protection"
+        static let officialSource = "legal.official_source"
     }
     
     // MARK: - Currency

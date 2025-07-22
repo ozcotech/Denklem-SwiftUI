@@ -186,9 +186,33 @@
 "about.version" = "Versiyon";
 "about.developer" = "Geliştirici";
 "about.contact" = "İletişim";
+"about.company" = "Şirket";
 "about.legal_info" = "Yasal Bilgiler";
 "about.disclaimer" = "Bu uygulama, Adalet Bakanlığı tarafından yayınlanan %d yılı Arabuluculuk Ücret Tarifesi'ne göre hesaplama yapmaktadır. Resmi kaynakları kontrol etmeniz önerilir.";
 "about.copyright" = "Tüm hakları saklıdır.";
+"about.who_we_are" = "Biz Kimiz";
+"about.app_description_long" = "Arabuluculuk Ücreti Hesaplama Uygulaması";
+"about.smm_receipt" = "Serbest Meslek Makbuzu";
+
+// MARK: - About Screen - Features
+"about.features" = "Özellikler";
+"about.supported_years" = "Desteklenen Yıllar";
+"about.dispute_types" = "Uyuşmazlık Türleri";
+"about.languages" = "Diller";
+"about.calculation_types" = "Hesaplama Türleri";
+"about.tariff_years" = "Tarife Yılları";
+
+// MARK: - About Screen - Legal & Data
+"about.legal" = "Yasal";
+"about.data_source" = "Veri Kaynağı";
+"about.official_data" = "Resmi Veri";
+"about.finalized_data" = "Kesinleşmiş Veri";
+"about.estimated_data" = "Tahmini Veri";
+
+// MARK: - About Screen - Technical
+"about.bundle_id" = "Paket Kimliği";
+"about.min_ios_version" = "Minimum iOS Sürümü";
+"about.build_config" = "Derleme Yapılandırması";
 
 // MARK: - Legislation Screen
 "legislation.title" = "Arabuluculuk Ücret Tarifesi";
@@ -239,6 +263,11 @@
 
 // MARK: - Legal & About
 "legal.disclaimer" = "Yasal Uyarı";
+"legal.source" = "Kaynak";
+"legal.privacy_policy" = "Gizlilik Politikası";
+"legal.terms_of_use" = "Kullanım Şartları";
+"legal.data_protection" = "Veri Korunması";
+"legal.official_source" = "Resmi Kaynak";
 "about.who_we_are" = "Biz Kimiz";
 "about.app_description_long" = "Arabuluculuk Ücreti Hesaplama Uygulaması";
 "about.smm_receipt" = "Serbest Meslek Makbuzu";
