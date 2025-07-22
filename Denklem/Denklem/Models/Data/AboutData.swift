@@ -295,7 +295,7 @@ struct AboutData {
                 type: .dataSource
             ),
             Credit(
-                name: "OZCO Studio",
+                name: "Özkan Cömert",
                 description: "App development and design",
                 type: .development
             )
