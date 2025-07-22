@@ -48,6 +48,25 @@
 "dispute_type.partnership_dissolution.description" = "Disputes Related To Partnership Dissolution";
 "dispute_type.other.description" = "Other Types Of Disputes";
 
+// MARK: - Dispute Categories
+"dispute_category.employment" = "Employment Law";
+"dispute_category.business" = "Business Law";
+"dispute_category.consumer" = "Consumer Law";
+"dispute_category.immovable" = "Immovable Property Law";
+"dispute_category.family" = "Family Law";
+"dispute_category.general" = "General";
+
+// MARK: - Tariff Years
+"tariff_year.2025" = "2025 Tariff";
+"tariff_year.2026" = "2026 Tariff";
+"tariff_year.2025.description" = "2025 official mediation tariffs";
+"tariff_year.2026.description" = "2026 estimated mediation tariffs";
+"tariff_year.warning.estimated" = "⚠️ This tariff contains estimated values, not official";
+"tariff_year.status.estimated" = "Estimated";
+"tariff_year.status.current" = "Current";
+"tariff_year.status.future" = "Future";
+"tariff_year.status.past" = "Past";
+
 // MARK: - Agreement Status
 "agreement_status.agreed" = "Agreement";
 "agreement_status.not_agreed" = "No Agreement";

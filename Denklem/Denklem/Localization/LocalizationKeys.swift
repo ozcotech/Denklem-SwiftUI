@@ -62,6 +62,16 @@ struct LocalizationKeys {
         }
     }
     
+    // MARK: - Dispute Categories
+    struct DisputeCategory {
+        static let employment = "dispute_category.employment"
+        static let business = "dispute_category.business"
+        static let consumer = "dispute_category.consumer"
+        static let immovable = "dispute_category.immovable"
+        static let family = "dispute_category.family"
+        static let general = "dispute_category.general"
+    }
+    
     // MARK: - Agreement Status
     struct AgreementStatus {
         static let agreed = "agreement_status.agreed"

@@ -48,6 +48,25 @@
 "dispute_type.partnership_dissolution.description" = "Ortaklığın Giderilmesine İlişkin Uyuşmazlıklar";
 "dispute_type.other.description" = "Diğer Uyuşmazlık Türleri";
 
+// MARK: - Dispute Categories
+"dispute_category.employment" = "İstihdam Hukuku";
+"dispute_category.business" = "İş Hukuku";
+"dispute_category.consumer" = "Tüketici Hukuku";
+"dispute_category.immovable" = "Taşınmaz Hukuku";
+"dispute_category.family" = "Aile Hukuku";
+"dispute_category.general" = "Genel";
+
+// MARK: - Tariff Years
+"tariff_year.2025" = "2025 Tarifesi";
+"tariff_year.2026" = "2026 Tarifesi";
+"tariff_year.2025.description" = "2025 yılı resmi arabuluculuk tarifeleri";
+"tariff_year.2026.description" = "2026 yılı tahmini arabuluculuk tarifeleri";
+"tariff_year.warning.estimated" = "⚠️ Bu tarife tahmini değerlerdir, resmi değildir";
+"tariff_year.status.estimated" = "Tahmini";
+"tariff_year.status.current" = "Geçerli";
+"tariff_year.status.future" = "Gelecek";
+"tariff_year.status.past" = "Geçmiş";
+
 // MARK: - Agreement Status
 "agreement_status.agreed" = "Anlaşma";
 "agreement_status.not_agreed" = "Anlaşmama";
