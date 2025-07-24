@@ -145,7 +145,7 @@ struct TariffConstants {
         "partnership_dissolution": [3, 4],
         "condominium_law": [3, 4],
         "neighbor_law": [3, 4],
-        "agricultural_production": [2, 3, 4]
+        "agricultural_production": [2, 3]
     ]
     
     // MARK: - Currency Settings
