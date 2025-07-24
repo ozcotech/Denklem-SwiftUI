@@ -32,11 +32,12 @@ struct TariffConstants {
     
     // MARK: - Time Calculation Constants
     static let timeCalculationEnabled = true
-    static let minimumHoursMultiplier = 2 // Non-agreement cases require minimum 2 hours
     
     // MARK: - 2025 Tariff Constants
     struct Tariff2025 {
         
+        // MARK: - Minimum Hours Multiplier (for fee calculation)
+        static let minimumHoursMultiplier = 2 // Non-agreement cases require minimum 2 hours
         // MARK: - Hourly Rates
         static let hourlyRates: [String: Double] = [
             "worker_employer": 785,
@@ -87,6 +88,8 @@ struct TariffConstants {
     
     // MARK: - 2026 Tariff Constants (Placeholder - Will be updated in January 2026)
     struct Tariff2026 {
+        // MARK: - Minimum Hours Multiplier (for fee calculation)
+        static let minimumHoursMultiplier = 2 // Non-agreement cases require minimum 2 hours
         // TODO: These values are estimates with 15% increase
         // IMPORTANT: Update these values when official 2026 tariff is published in January 2026
         
