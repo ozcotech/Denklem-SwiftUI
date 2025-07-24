@@ -36,7 +36,7 @@ struct Tariff2026: TariffProtocol {
     // MARK: - Fixed Fees (Estimated - 2025 × 1.15)
     
     /// Fixed fees by dispute type and party count ranges (ESTIMATED VALUES)
-    /// Array indices: [0: 2-4 parties, 1: 5-9 parties, 2: 10-999 parties, 3: 1000+ parties]
+    /// Array indices: [0: 2 parties, 1: 3-5 parties, 2: 6-10 parties, 3: 11+ parties]
     let fixedFees: [String: [Double]] = [
         DisputeConstants.DisputeTypeKeys.workerEmployer: [1805.5, 1897.5, 2012.5, 2127.5],    // [1570, 1650, 1750, 1850] × 1.15
         DisputeConstants.DisputeTypeKeys.commercial: [2645.0, 2702.5, 2817.5, 2932.5],        // [2300, 2350, 2450, 2550] × 1.15
@@ -155,12 +155,10 @@ struct Tariff2026: TariffProtocol {
         // Calculate hourly fee (minimum 2 hours as per TariffConstants)
         let hourlyRate = getHourlyRate(for: disputeType)
         let minimumHoursFee = hourlyRate * Double(TariffConstants.minimumHoursMultiplier)
-        
-        // Calculate fixed fee based on party count
+        // Calculate fixed fee based on party count (already selected by party count)
         let fixedFee = getFixedFee(for: disputeType, partyCount: partyCount)
-        
-        // Return the higher of the two
-        return max(minimumHoursFee, fixedFee)
+        // Return the higher of the two (each is for all parties)
+        return max(minimumHoursFee, fixedFee * Double(TariffConstants.minimumHoursMultiplier))
     }
     
     func calculateAgreementFee(disputeType: String, amount: Double, partyCount: Int) -> Double {
@@ -175,8 +173,9 @@ struct Tariff2026: TariffProtocol {
     }
     
     func calculateNonMonetaryFee(disputeType: String, partyCount: Int) -> Double {
-        // For non-monetary disputes, use fixed fee based on party count
-        return getFixedFee(for: disputeType, partyCount: partyCount)
+        // For non-monetary disputes, use fixed fee based on party count (already selected by party count)
+        let fixedFee = getFixedFee(for: disputeType, partyCount: partyCount)
+        return fixedFee * Double(TariffConstants.minimumHoursMultiplier)
     }
 }
 

@@ -35,7 +35,7 @@ struct Tariff2025: TariffProtocol {
     // MARK: - Fixed Fees (from TariffConstants.Tariff2025)
     
     /// Fixed fees by dispute type and party count ranges
-    /// Array indices: [0: 2-4 parties, 1: 5-9 parties, 2: 10-999 parties, 3: 1000+ parties]
+    /// Array indices: [0: 2 parties, 1: 3-5 parties, 2: 6-10 parties, 3: 11+ parties]
     let fixedFees: [String: [Double]] = [
         DisputeConstants.DisputeTypeKeys.workerEmployer: [1570.0, 1650.0, 1750.0, 1850.0],
         DisputeConstants.DisputeTypeKeys.commercial: [2300.0, 2350.0, 2450.0, 2550.0],
@@ -154,12 +154,10 @@ struct Tariff2025: TariffProtocol {
         // Calculate hourly fee (minimum 2 hours as per TariffConstants)
         let hourlyRate = getHourlyRate(for: disputeType)
         let minimumHoursFee = hourlyRate * Double(TariffConstants.minimumHoursMultiplier)
-        
-        // Calculate fixed fee based on party count
+        // Calculate fixed fee based on party count (already selected by party count)
         let fixedFee = getFixedFee(for: disputeType, partyCount: partyCount)
-        
-        // Return the higher of the two
-        return max(minimumHoursFee, fixedFee)
+        // Return the higher of the two (each is for all parties)
+        return max(minimumHoursFee, fixedFee * Double(TariffConstants.minimumHoursMultiplier))
     }
     
     func calculateAgreementFee(disputeType: String, amount: Double, partyCount: Int) -> Double {
@@ -174,8 +172,9 @@ struct Tariff2025: TariffProtocol {
     }
     
     func calculateNonMonetaryFee(disputeType: String, partyCount: Int) -> Double {
-        // For non-monetary disputes, use fixed fee based on party count
-        return getFixedFee(for: disputeType, partyCount: partyCount)
+        // For non-monetary disputes, use fixed fee based on party count (already selected by party count)
+        let fixedFee = getFixedFee(for: disputeType, partyCount: partyCount)
+        return fixedFee * Double(TariffConstants.minimumHoursMultiplier)
     }
 }
 
