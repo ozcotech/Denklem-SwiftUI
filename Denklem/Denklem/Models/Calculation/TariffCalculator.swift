@@ -50,33 +50,30 @@ struct TariffCalculator {
         switch calculationType {
         case .monetary:
             if agreementStatus == .agreed {
-                // Agreement: Bracket calculation or minimum fee
+                // Agreement: Bracket calculation with minimum fee check
                 guard let amount = disputeAmount else {
                     return CalculationResult.failure(input: input, error: NSLocalizedString(LocalizationKeys.Validation.requiredField, comment: ""))
                 }
-                let bracketFee = tariff.calculateAgreementFee(disputeType: disputeTypeKey, amount: amount, partyCount: partyCount)
-                let minFee = tariff.getMinimumFee(for: disputeTypeKey)
-                fee = max(bracketFee, minFee)
-                usedMinimumFee = fee == minFee
-                usedBracketCalculation = fee == bracketFee
-                baseFee = bracketFee
-                breakdownSteps.append("Agreement case: Bracket fee = \(bracketFee), Min fee = \(minFee), Used = \(fee)")
+                fee = tariff.calculateAgreementFee(disputeType: disputeTypeKey, amount: amount, partyCount: partyCount)
+                // calculateAgreementFee already handles bracket vs minimum fee comparison
+                usedMinimumFee = false // TODO: Get this info from tariff if needed
+                usedBracketCalculation = false // TODO: Get this info from tariff if needed
+                baseFee = fee
+                breakdownSteps.append("Agreement case: Fee = \(fee)")
             } else {
-                // No agreement: Hourly or fixed fee, whichever is higher
-                let nonAgreementFee = tariff.calculateNonAgreementFee(disputeType: disputeTypeKey, partyCount: partyCount)
-                fee = nonAgreementFee
+                // No agreement: Fixed fee calculation
+                fee = tariff.calculateNonAgreementFee(disputeType: disputeTypeKey, partyCount: partyCount)
                 usedMinimumFee = false
                 usedBracketCalculation = false
-                baseFee = nonAgreementFee
+                baseFee = fee
                 breakdownSteps.append("No agreement case: Fee = \(fee)")
             }
         case .nonMonetary:
-            // Fixed fee for non-monetary disputes
-            let nonMonetaryFee = tariff.calculateNonMonetaryFee(disputeType: disputeTypeKey, partyCount: partyCount)
-            fee = nonMonetaryFee
+            // Non-monetary: Fixed fee calculation
+            fee = tariff.calculateNonMonetaryFee(disputeType: disputeTypeKey, partyCount: partyCount)
             usedMinimumFee = false
             usedBracketCalculation = false
-            baseFee = nonMonetaryFee
+            baseFee = fee
             breakdownSteps.append("Non-monetary case: Fee = \(fee)")
         case .timeCalculation:
             // Not implemented in this version

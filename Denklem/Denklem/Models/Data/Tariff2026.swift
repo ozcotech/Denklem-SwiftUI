@@ -19,6 +19,10 @@ struct Tariff2026: TariffProtocol {
     
     let isFinalized: Bool = false  // ⚠️ IMPORTANT: These are estimated values!
     
+    // MARK: - Minimum Hours Multiplier
+    
+    let minimumHoursMultiplier: Int = 2
+    
     // MARK: - Hourly Rates (Estimated - 2025 × 1.15)
     
     let hourlyRates: [String: Double] = [
@@ -152,13 +156,9 @@ struct Tariff2026: TariffProtocol {
     // MARK: - Main Calculation Methods
     
     func calculateNonAgreementFee(disputeType: String, partyCount: Int) -> Double {
-        // Calculate hourly fee (minimum 2 hours as per TariffConstants)
-        let hourlyRate = getHourlyRate(for: disputeType)
-        let minimumHoursFee = hourlyRate * Double(TariffConstants.minimumHoursMultiplier)
-        // Calculate fixed fee based on party count (already selected by party count)
+        // Non-agreement: Use fixed fee multiplied by minimum hours
         let fixedFee = getFixedFee(for: disputeType, partyCount: partyCount)
-        // Return the higher of the two (each is for all parties)
-        return max(minimumHoursFee, fixedFee * Double(TariffConstants.minimumHoursMultiplier))
+        return fixedFee * Double(minimumHoursMultiplier)
     }
     
     func calculateAgreementFee(disputeType: String, amount: Double, partyCount: Int) -> Double {
@@ -175,7 +175,7 @@ struct Tariff2026: TariffProtocol {
     func calculateNonMonetaryFee(disputeType: String, partyCount: Int) -> Double {
         // For non-monetary disputes, use fixed fee based on party count (already selected by party count)
         let fixedFee = getFixedFee(for: disputeType, partyCount: partyCount)
-        return fixedFee * Double(TariffConstants.minimumHoursMultiplier)
+        return fixedFee * Double(minimumHoursMultiplier)
     }
 }
 

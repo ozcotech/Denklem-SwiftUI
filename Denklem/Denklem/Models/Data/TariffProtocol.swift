@@ -26,6 +26,11 @@ protocol TariffProtocol {
     /// Whether this tariff data is finalized (not placeholder)
     var isFinalized: Bool { get }
     
+    // MARK: - Minimum Hours Multiplier
+    
+    /// Minimum hours multiplier for non-agreement cases (year-specific)
+    var minimumHoursMultiplier: Int { get }
+    
     // MARK: - Hourly Rates
     
     /// Hourly rates for different dispute types
@@ -215,14 +220,9 @@ extension TariffProtocol {
     // MARK: - Main Calculation Methods
     
     func calculateNonAgreementFee(disputeType: String, partyCount: Int) -> Double {
-        let hourlyRate = getHourlyRate(for: disputeType)
-        let minimumHours = Double(TariffConstants.minimumHoursMultiplier) // 2 hours
-        let hourlyBasedFee = hourlyRate * minimumHours
-        
+        // Non-agreement: Use fixed fee multiplied by minimum hours
         let fixedFee = getFixedFee(for: disputeType, partyCount: partyCount)
-        
-        // Return the higher of the two
-        return max(hourlyBasedFee, fixedFee)
+        return fixedFee * Double(minimumHoursMultiplier)
     }
     
     func calculateAgreementFee(disputeType: String, amount: Double, partyCount: Int) -> Double {
@@ -234,7 +234,9 @@ extension TariffProtocol {
     }
     
     func calculateNonMonetaryFee(disputeType: String, partyCount: Int) -> Double {
-        return getFixedFee(for: disputeType, partyCount: partyCount)
+        // Non-monetary: Use fixed fee multiplied by minimum hours
+        let fixedFee = getFixedFee(for: disputeType, partyCount: partyCount)
+        return fixedFee * Double(minimumHoursMultiplier)
     }
 }
 
