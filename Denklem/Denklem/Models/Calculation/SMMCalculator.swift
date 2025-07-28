@@ -7,6 +7,15 @@
 
 import Foundation
 
+// MARK: - Double Extension for Precision
+extension Double {
+    /// Truncates the double to a specific number of decimal places.
+    func truncate(toPlaces places: Int) -> Double {
+        let divisor = pow(10.0, Double(places))
+        return (self * divisor).truncatingRemainder(dividingBy: Double(Int.max)) / divisor
+    }
+}
+
 // MARK: - SMM Calculator
 /// Calculator for freelance receipt (SMM) calculations
 /// Handles different VAT and withholding tax scenarios for real and legal persons
@@ -66,58 +75,57 @@ struct SMMCalculator {
         baseAmount: Double,
         calculationType: SMMCalculationType
     ) -> (result: SMMPersonResult, breakdown: SMMPersonBreakdown) {
-        
-        var brutFee: Double = 0.0
-        var kdv: Double = 0.0
-        var stopaj: Double = 0.0
-        var netFee: Double = 0.0
-        var tahsilEdilecekTutar: Double = 0.0
-        
+        var brutFee: Double = 0
+        var kdv: Double = 0
+        var stopaj: Double = 0
+        var netFee: Double = 0
+        var tahsilEdilecekTutar: Double = 0
         var steps: [String] = []
-        
+
         switch calculationType {
         case .vatIncludedWithholdingExcluded:
-            // KDV Dahil, Stopaj Hariç
-            // Base amount already includes VAT
-            tahsilEdilecekTutar = baseAmount
-            brutFee = baseAmount / (1 + kdvRate) // Remove VAT to get gross fee
-            kdv = baseAmount - brutFee
-            
+            // 1️⃣ KDV dahil, stopaj hariç
+            if personType == .realPerson {
+                let B = baseAmount / (1 + kdvRate)
+                brutFee = B
+                kdv = B * kdvRate
+                stopaj = 0
+                netFee = B
+                tahsilEdilecekTutar = baseAmount
+                steps.append("Base amount (VAT included): \(LocalizationHelper.formatCurrency(baseAmount))")
+                steps.append("Gross fee (VAT excluded): \(LocalizationHelper.formatCurrency(brutFee))")
+                steps.append("VAT (20%): \(LocalizationHelper.formatCurrency(kdv))")
+                steps.append("Net fee: \(LocalizationHelper.formatCurrency(netFee))")
+                steps.append("Total collected: \(LocalizationHelper.formatCurrency(tahsilEdilecekTutar))")
+            } else {
+                let B = baseAmount
+                brutFee = B
+                kdv = B * kdvRate
+                stopaj = B * stopajRate
+                netFee = B - stopaj
+                tahsilEdilecekTutar = B
+                steps.append("Base amount (VAT included): \(LocalizationHelper.formatCurrency(baseAmount))")
+                steps.append("Gross fee (VAT excluded): \(LocalizationHelper.formatCurrency(brutFee))")
+                steps.append("VAT (20%): \(LocalizationHelper.formatCurrency(kdv))")
+                steps.append("Withholding tax (20%): \(LocalizationHelper.formatCurrency(stopaj))")
+                steps.append("Net fee: \(LocalizationHelper.formatCurrency(netFee))")
+                steps.append("Total collected: \(LocalizationHelper.formatCurrency(tahsilEdilecekTutar))")
+            }
+
+        case .vatExcludedWithholdingIncluded:
+            // 2️⃣ KDV hariç, stopaj dahil
+            brutFee = baseAmount
             if personType == .legalPerson {
                 stopaj = brutFee * stopajRate
                 netFee = brutFee - stopaj
+                kdv = brutFee * kdvRate
+                tahsilEdilecekTutar = brutFee
             } else {
-                stopaj = 0.0 // Real persons don't have withholding tax
+                stopaj = 0
                 netFee = brutFee
+                kdv = brutFee * kdvRate
+                tahsilEdilecekTutar = brutFee + kdv
             }
-            
-            steps.append("Base amount (VAT included): \(LocalizationHelper.formatCurrency(baseAmount))")
-            steps.append("Gross fee (VAT excluded): \(LocalizationHelper.formatCurrency(brutFee))")
-            steps.append("VAT (20%): \(LocalizationHelper.formatCurrency(kdv))")
-            if personType == .legalPerson {
-                steps.append("Withholding tax (20%): \(LocalizationHelper.formatCurrency(stopaj))")
-            }
-            steps.append("Net fee: \(LocalizationHelper.formatCurrency(netFee))")
-            steps.append("Total collected: \(LocalizationHelper.formatCurrency(tahsilEdilecekTutar))")
-            
-        case .vatExcludedWithholdingIncluded:
-            // KDV Hariç, Stopaj Dahil
-            // Base amount excludes VAT but includes withholding effect
-            if personType == .legalPerson {
-                // Net amount is given, need to calculate gross
-                netFee = baseAmount
-                brutFee = netFee / (1 - stopajRate) // Reverse calculate gross from net
-                stopaj = brutFee - netFee
-            } else {
-                // No withholding for real persons
-                brutFee = baseAmount
-                stopaj = 0.0
-                netFee = brutFee
-            }
-            
-            kdv = brutFee * kdvRate
-            tahsilEdilecekTutar = brutFee + kdv
-            
             steps.append("Base amount: \(LocalizationHelper.formatCurrency(baseAmount))")
             steps.append("Gross fee (VAT excluded): \(LocalizationHelper.formatCurrency(brutFee))")
             if personType == .legalPerson {
@@ -126,29 +134,24 @@ struct SMMCalculator {
             steps.append("Net fee: \(LocalizationHelper.formatCurrency(netFee))")
             steps.append("VAT (20%): \(LocalizationHelper.formatCurrency(kdv))")
             steps.append("Total collected: \(LocalizationHelper.formatCurrency(tahsilEdilecekTutar))")
-            
+
         case .vatIncludedWithholdingIncluded:
-            // KDV Dahil, Stopaj Dahil
-            // Base amount includes both VAT and withholding effect
-            tahsilEdilecekTutar = baseAmount
-            
+            // 3️⃣ KDV dahil, stopaj dahil
             if personType == .legalPerson {
-                // Work backwards from total collected amount
-                // Total = (Gross - Stopaj) + VAT
-                // Total = Gross - (Gross * stopajRate) + (Gross * kdvRate)
-                // Total = Gross * (1 - stopajRate + kdvRate)
-                brutFee = baseAmount / (1 - stopajRate + kdvRate)
-                stopaj = brutFee * stopajRate
-                netFee = brutFee - stopaj
+                let B = baseAmount / ((1 + kdvRate) * (1 - stopajRate))
+                brutFee = B
+                stopaj = B * stopajRate
+                netFee = B - stopaj
+                kdv = B * kdvRate
+                tahsilEdilecekTutar = brutFee
             } else {
-                // No withholding for real persons
-                brutFee = baseAmount / (1 + kdvRate)
-                stopaj = 0.0
-                netFee = brutFee
+                let B = baseAmount / (1 + kdvRate)
+                brutFee = B
+                stopaj = 0
+                netFee = B
+                kdv = B * kdvRate
+                tahsilEdilecekTutar = baseAmount
             }
-            
-            kdv = brutFee * kdvRate
-            
             steps.append("Base amount (VAT+withholding included): \(LocalizationHelper.formatCurrency(baseAmount))")
             steps.append("Gross fee (VAT excluded): \(LocalizationHelper.formatCurrency(brutFee))")
             if personType == .legalPerson {
@@ -157,33 +160,37 @@ struct SMMCalculator {
             steps.append("Net fee: \(LocalizationHelper.formatCurrency(netFee))")
             steps.append("VAT (20%): \(LocalizationHelper.formatCurrency(kdv))")
             steps.append("Total collected: \(LocalizationHelper.formatCurrency(tahsilEdilecekTutar))")
-            
+
         case .vatExcludedWithholdingExcluded:
-            // KDV Hariç, Stopaj Hariç
-            // Base amount is pure gross fee
-            brutFee = baseAmount
-            kdv = brutFee * kdvRate
-            
-            if personType == .legalPerson {
-                stopaj = brutFee * stopajRate
-                netFee = brutFee - stopaj
+            // 4️⃣ KDV hariç, stopaj hariç
+            if personType == .realPerson {
+                let B = baseAmount
+                brutFee = B
+                stopaj = 0
+                netFee = B
+                kdv = B * kdvRate
+                tahsilEdilecekTutar = B + kdv
+                steps.append("Base amount: \(LocalizationHelper.formatCurrency(baseAmount))")
+                steps.append("Gross fee (VAT excluded): \(LocalizationHelper.formatCurrency(brutFee))")
+                steps.append("Net fee: \(LocalizationHelper.formatCurrency(netFee))")
+                steps.append("VAT (20%): \(LocalizationHelper.formatCurrency(kdv))")
+                steps.append("Total collected: \(LocalizationHelper.formatCurrency(tahsilEdilecekTutar))")
             } else {
-                stopaj = 0.0
-                netFee = brutFee
-            }
-            
-            tahsilEdilecekTutar = brutFee + kdv
-            
-            steps.append("Base amount (gross fee): \(LocalizationHelper.formatCurrency(baseAmount))")
-            steps.append("Gross fee (VAT excluded): \(LocalizationHelper.formatCurrency(brutFee))")
-            if personType == .legalPerson {
+                let B = baseAmount / (1 - stopajRate)
+                brutFee = B
+                stopaj = B * stopajRate
+                netFee = baseAmount
+                kdv = B * kdvRate
+                tahsilEdilecekTutar = B
+                steps.append("Base amount (net after withholding): \(LocalizationHelper.formatCurrency(baseAmount))")
+                steps.append("Gross fee (VAT excluded): \(LocalizationHelper.formatCurrency(brutFee))")
                 steps.append("Withholding tax (20%): \(LocalizationHelper.formatCurrency(stopaj))")
+                steps.append("Net fee: \(LocalizationHelper.formatCurrency(netFee))")
+                steps.append("VAT (20%): \(LocalizationHelper.formatCurrency(kdv))")
+                steps.append("Total collected: \(LocalizationHelper.formatCurrency(tahsilEdilecekTutar))")
             }
-            steps.append("Net fee: \(LocalizationHelper.formatCurrency(netFee))")
-            steps.append("VAT (20%): \(LocalizationHelper.formatCurrency(kdv))")
-            steps.append("Total collected: \(LocalizationHelper.formatCurrency(tahsilEdilecekTutar))")
         }
-        
+
         let result = SMMPersonResult(
             personType: personType,
             brutFee: brutFee,
@@ -192,7 +199,6 @@ struct SMMCalculator {
             kdv: kdv,
             tahsilEdilecekTutar: tahsilEdilecekTutar
         )
-        
         let breakdown = SMMPersonBreakdown(
             personType: personType,
             steps: steps,
@@ -202,7 +208,6 @@ struct SMMCalculator {
             kdv: kdv,
             tahsilEdilecekTutar: tahsilEdilecekTutar
         )
-        
         return (result, breakdown)
     }
 }
@@ -303,27 +308,27 @@ struct SMMPersonResult {
     
     /// Formatted gross fee
     var formattedBrutFee: String {
-        return LocalizationHelper.formatCurrencyForDisplay(brutFee)
+        return LocalizationHelper.formatCurrencyForDisplay(brutFee.truncate(toPlaces: 2))
     }
     
     /// Formatted withholding tax
     var formattedStopaj: String {
-        return LocalizationHelper.formatCurrencyForDisplay(stopaj)
+        return LocalizationHelper.formatCurrencyForDisplay(stopaj.truncate(toPlaces: 2))
     }
     
     /// Formatted net fee
     var formattedNetFee: String {
-        return LocalizationHelper.formatCurrencyForDisplay(netFee)
+        return LocalizationHelper.formatCurrencyForDisplay(netFee.truncate(toPlaces: 2))
     }
     
     /// Formatted VAT
     var formattedKdv: String {
-        return LocalizationHelper.formatCurrencyForDisplay(kdv)
+        return LocalizationHelper.formatCurrencyForDisplay(kdv.truncate(toPlaces: 2))
     }
     
     /// Formatted total collected amount
     var formattedTahsilEdilecekTutar: String {
-        return LocalizationHelper.formatCurrencyForDisplay(tahsilEdilecekTutar)
+        return LocalizationHelper.formatCurrencyForDisplay(tahsilEdilecekTutar.truncate(toPlaces: 2))
     }
 }
 
