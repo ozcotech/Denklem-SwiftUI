@@ -1711,6 +1711,23 @@
         }
       }
     },
+    "Hello, world!" : {
+      "comment" : "first message",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hello, world!"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hello, world!"
+          }
+        }
+      }
+    },
     "home.dispute_categories" : {
       "comment" : "home screen",
       "extractionState" : "manual",
@@ -3655,6 +3672,24 @@
         }
       }
     },
+    "validation.dispute_type_not_supported_in_year" : {
+      "comment" : "validation message",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Dispute type not supported in tariff year"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu uyuşmazlık türü %d yılında desteklenmiyor"
+          }
+        }
+      }
+    },
     "validation.estimated_tariff" : {
       "comment" : "validation message",
       "extractionState" : "manual",
@@ -3777,6 +3812,24 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bu alan zorunludur"
+          }
+        }
+      }
+    },
+    "validation.year_not_supported" : {
+      "comment" : "validation message",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Year not supported"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d yılı desteklemiyor."
           }
         }
       }

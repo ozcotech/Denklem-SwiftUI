@@ -215,8 +215,8 @@ enum TariffYear: Int, CaseIterable, Identifiable, Hashable {
             return .failure(
                 code: ValidationConstants.DisputeType.validationErrorCode,
                 message: NSLocalizedString("validation.dispute_type_not_supported_in_year", 
-                                         value: "Bu uyuşmazlık türü \(displayName) yılında desteklenmiyor", 
-                                         comment: "Dispute type not supported in tariff year")
+                                         value: "Dispute type not supported in tariff year", 
+                                         comment: "validation message")
             )
         }
         
@@ -268,8 +268,8 @@ enum TariffYear: Int, CaseIterable, Identifiable, Hashable {
             return .failure(
                 code: ValidationConstants.Year.validationErrorCode,
                 message: NSLocalizedString("validation.year_not_supported", 
-                                         value: "\(displayName) yılı desteklenmiyor", 
-                                         comment: "Year not supported")
+                                         value: "Year not supported",
+                                         comment: "validation message")
             )
         }
         
