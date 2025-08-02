@@ -39,28 +39,28 @@
 
 // MARK: - Dispute Type Descriptions
 "dispute_type.worker_employer.description" = "İş Hukukundan Kaynaklanan Uyuşmazlıklar";
-"dispute_type.commercial.description" = "Ticari İşlemlerden Kaynaklanan Uyuşmazlıklar";
-"dispute_type.consumer.description" = "Tüketici Haklarından Kaynaklanan Uyuşmazlıklar";
-"dispute_type.rent.description" = "Kira İlişkisinden Kaynaklanan Uyuşmazlıklar";
+"dispute_type.commercial.description" = "Ticaret Hukukundan Kaynaklanan Uyuşmazlıklar";
+"dispute_type.consumer.description" = "Tüketici Hukukundan Kaynaklanan Uyuşmazlıklar";
+"dispute_type.rent.description" = "Kira Hukukundan Kaynaklanan Uyuşmazlıklar";
 "dispute_type.neighbor.description" = "Komşu Hukukundan Kaynaklanan Uyuşmazlıklar";
-"dispute_type.condominium.description" = "Kat Mülkiyeti Kanunundan Kaynaklanan Uyuşmazlıklar";
+"dispute_type.condominium.description" = "Kat Mülkiyeti Hukukundan Kaynaklanan Uyuşmazlıklar";
 "dispute_type.family.description" = "Aile Hukukundan Kaynaklanan Uyuşmazlıklar";
 "dispute_type.partnership_dissolution.description" = "Ortaklığın Giderilmesine İlişkin Uyuşmazlıklar";
 "dispute_type.other.description" = "Diğer Uyuşmazlık Türleri";
 
 // MARK: - Dispute Categories
-"dispute_category.employment" = "İstihdam Hukuku";
-"dispute_category.business" = "İş Hukuku";
+"dispute_category.employment" = "İş Hukuku";
+"dispute_category.business" = "Ticaret Hukuku";
 "dispute_category.consumer" = "Tüketici Hukuku";
 "dispute_category.immovable" = "Taşınmaz Hukuku";
 "dispute_category.family" = "Aile Hukuku";
-"dispute_category.general" = "Genel";
+"dispute_category.general" = "Genel Hukuk";
 
 // MARK: - Tariff Years
 "tariff_year.2025" = "2025 Tarifesi";
 "tariff_year.2026" = "2026 Tarifesi";
-"tariff_year.2025.description" = "2025 yılı resmi arabuluculuk tarifeleri";
-"tariff_year.2026.description" = "2026 yılı tahmini arabuluculuk tarifeleri";
+"tariff_year.2025.description" = "2025 Yılı Resmi Arabuluculuk Tarifesi";
+"tariff_year.2026.description" = "2026 Yılı Tahmini Arabuluculuk Tarifesi";
 "tariff_year.warning.estimated" = "⚠️ Bu tarife tahmini değerlerdir, resmi değildir";
 "tariff_year.status.estimated" = "Tahmini";
 "tariff_year.status.current" = "Geçerli";
@@ -94,10 +94,10 @@
 "smm_calculation_type.vat_excluded_withholding_excluded" = "KDV Hariç, Stopaj Hariç";
 
 // MARK: - SMM Calculation Type Descriptions
-"smm_calculation_type.vat_included_withholding_excluded.description" = "KDV dahil, gelir vergisi stopajı hariç hesaplama";
-"smm_calculation_type.vat_excluded_withholding_included.description" = "KDV hariç, gelir vergisi stopajı dahil hesaplama";
-"smm_calculation_type.vat_included_withholding_included.description" = "KDV dahil, gelir vergisi stopajı dahil hesaplama";
-"smm_calculation_type.vat_excluded_withholding_excluded.description" = "KDV hariç, gelir vergisi stopajı hariç hesaplama";
+"smm_calculation_type.vat_included_withholding_excluded.description" = "KDV Dahil, Gelir Vergisi Stopajı Hariç Hesaplama";
+"smm_calculation_type.vat_excluded_withholding_included.description" = "KDV Hariç, Gelir Vergisi Stopajı Dahil Hesaplama";
+"smm_calculation_type.vat_included_withholding_included.description" = "KDV Dahil, Gelir Vergisi Stopajı Dahil Hesaplama";
+"smm_calculation_type.vat_excluded_withholding_excluded.description" = "KDV Hariç, Gelir Vergisi Stopajı Hariç Hesaplama";
 
 // MARK: - SMM Result Table Labels
 "smm_result.mediation_fee" = "Brüt Ücret (KDV Hariç)";
@@ -148,8 +148,8 @@
 "input.start_date" = "Başlangıç Tarihi";
 
 // MARK: - Input Placeholders
-"input.placeholder.amount" = "Anlaşma Tutarı";
-"input.placeholder.party_count" = "Taraf Sayısı";
+"input.placeholder.amount" = "Anlaşma Tutarı Girin";
+"input.placeholder.party_count" = "Taraf Sayısı Girin";
 "input.placeholder.mediation_fee" = "Hesaplanacak Ücreti Girin";
 
 // MARK: - Input Hints
@@ -203,7 +203,7 @@
 // MARK: - About Screen
 "about.app_info" = "Uygulama Bilgileri";
 "about.version" = "Versiyon";
-"about.developer" = "Geliştirici";
+"about.developer" = "Geliştiren";
 "about.contact" = "İletişim";
 "about.company" = "Şirket";
 "about.legal_info" = "Yasal Bilgiler";
@@ -248,10 +248,10 @@
 "error.try_again" = "Tekrar deneyin";
 
 // MARK: - Success Messages
-"success.calculation_completed" = "Hesaplama başarıyla tamamlandı";
-"success.data_saved" = "Veriler kaydedildi";
-"success.data_exported" = "Veriler dışa aktarıldı";
-"success.shared" = "Paylaşıldı";
+"success.calculation_completed" = "Hesaplama başarıyla tamamlandı.";
+"success.data_saved" = "Veriler kaydedildi.";
+"success.data_exported" = "Veriler dışa aktarıldı.";
+"success.shared" = "Paylaşıldı.";
 
 // MARK: - Loading Messages
 "loading.calculating" = "Hesaplanıyor...";
@@ -267,9 +267,9 @@
 // MARK: - Language Settings
 "language.title" = "Dil Ayarları";
 "language.current" = "Mevcut Dil";
-"language.select" = "Dil Seçin";
+"language.select" = "Dil Seçiniz";
 "language.turkish" = "Türkçe";
-"language.english" = "English";
+"language.english" = "İngilizce";
 "language.change_success" = "Dil başarıyla değiştirildi";
 "language.restart_required" = "Değişiklikler için uygulamayı yeniden başlatın";
 
@@ -285,7 +285,7 @@
 "legal.source" = "Kaynak";
 "legal.privacy_policy" = "Gizlilik Politikası";
 "legal.terms_of_use" = "Kullanım Şartları";
-"legal.data_protection" = "Veri Korunması";
+"legal.data_protection" = "Veri Koruması";
 "legal.official_source" = "Resmi Kaynak";
 "about.who_we_are" = "Biz Kimiz";
 "about.app_description_long" = "Arabuluculuk Ücreti Hesaplama Uygulaması";

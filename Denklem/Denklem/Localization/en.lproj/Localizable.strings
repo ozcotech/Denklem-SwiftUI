@@ -39,9 +39,9 @@
 
 // MARK: - Dispute Type Descriptions
 "dispute_type.worker_employer.description" = "Disputes Arising From Labor Law";
-"dispute_type.commercial.description" = "Disputes Arising From Commercial Transactions";
-"dispute_type.consumer.description" = "Disputes Arising From Consumer Rights";
-"dispute_type.rent.description" = "Disputes Arising From Rental Relationships";
+"dispute_type.commercial.description" = "Disputes Arising From Commercial Law";
+"dispute_type.consumer.description" = "Disputes Arising From Consumer Law";
+"dispute_type.rent.description" = "Disputes Arising From Rental Law";
 "dispute_type.neighbor.description" = "Disputes Arising From Neighbor Law";
 "dispute_type.condominium.description" = "Disputes Arising From Condominium Law";
 "dispute_type.family.description" = "Disputes Arising From Family Law";
@@ -54,13 +54,13 @@
 "dispute_category.consumer" = "Consumer Law";
 "dispute_category.immovable" = "Immovable Property Law";
 "dispute_category.family" = "Family Law";
-"dispute_category.general" = "General";
+"dispute_category.general" = "General Law";
 
 // MARK: - Tariff Years
 "tariff_year.2025" = "2025 Tariff";
 "tariff_year.2026" = "2026 Tariff";
-"tariff_year.2025.description" = "2025 official mediation tariffs";
-"tariff_year.2026.description" = "2026 estimated mediation tariffs";
+"tariff_year.2025.description" = "2025 Official Mediation Tariffs";
+"tariff_year.2026.description" = "2026 Estimated Mediation Tariffs";
 "tariff_year.warning.estimated" = "⚠️ This tariff contains estimated values, not official";
 "tariff_year.status.estimated" = "Estimated";
 "tariff_year.status.current" = "Current";
@@ -72,8 +72,8 @@
 "agreement_status.not_agreed" = "No Agreement";
 
 // MARK: - Agreement Status Descriptions
-"agreement_status.agreed.description" = "Parties reached an agreement";
-"agreement_status.not_agreed.description" = "Parties could not reach an agreement";
+"agreement_status.agreed.description" = "Parties reached an agreement.";
+"agreement_status.not_agreed.description" = "Parties could not reach an agreement.";
 
 // MARK: - Calculation Types
 "calculation_type.monetary" = "Monetary";
@@ -94,10 +94,10 @@
 "smm_calculation_type.vat_excluded_withholding_excluded" = "VAT Excluded, Withholding Excluded";
 
 // MARK: - SMM Calculation Type Descriptions
-"smm_calculation_type.vat_included_withholding_excluded.description" = "VAT included, income tax withholding excluded calculation";
-"smm_calculation_type.vat_excluded_withholding_included.description" = "VAT excluded, income tax withholding included calculation";
-"smm_calculation_type.vat_included_withholding_included.description" = "VAT included, income tax withholding included calculation";
-"smm_calculation_type.vat_excluded_withholding_excluded.description" = "VAT excluded, income tax withholding excluded calculation";
+"smm_calculation_type.vat_included_withholding_excluded.description" = "VAT Included, Income Tax Withholding Excluded Calculation";
+"smm_calculation_type.vat_excluded_withholding_included.description" = "VAT Excluded, Income Tax Withholding Included Calculation";
+"smm_calculation_type.vat_included_withholding_included.description" = "VAT Included, Income Tax Withholding Included Calculation";
+"smm_calculation_type.vat_excluded_withholding_excluded.description" = "VAT Excluded, Income Tax Withholding Excluded Calculation";
 
 // MARK: - SMM Result Table Labels
 "smm_result.mediation_fee" = "Gross Fee (VAT Excluded)";
@@ -248,10 +248,10 @@
 "error.try_again" = "Try again";
 
 // MARK: - Success Messages
-"success.calculation_completed" = "Calculation completed successfully";
-"success.data_saved" = "Data saved";
-"success.data_exported" = "Data exported";
-"success.shared" = "Shared";
+"success.calculation_completed" = "Calculation completed successfully.";
+"success.data_saved" = "Data saved.";
+"success.data_exported" = "Data exported.";
+"success.shared" = "Shared.";
 
 // MARK: - Loading Messages
 "loading.calculating" = "Calculating...";
@@ -268,13 +268,13 @@
 "language.title" = "Language Settings";
 "language.current" = "Current Language";
 "language.select" = "Select Language";
-"language.turkish" = "Türkçe";
+"language.turkish" = "Turkish";
 "language.english" = "English";
 "language.change_success" = "Language changed successfully";
 "language.restart_required" = "Restart the app for changes to take effect";
 
 // MARK: - Contact & Support
-"contact.email" = "Email";
+"contact.email" = "E-mail";
 "contact.website" = "Website";
 "contact.share_app" = "Share App";
 "contact.rate_app" = "Rate App";
