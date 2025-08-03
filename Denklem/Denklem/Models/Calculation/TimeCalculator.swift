@@ -16,10 +16,9 @@ final class TimeCalculator: ObservableObject {
     @Published var disputeType: DisputeType = .commercial
     @Published var startDate: Date = Date()
     @Published var currentResult: TimeCalculationResult?
-    @Published var validationState: ValidationResult = .pending
+    @Published var validationState: ValidationResult = .success
     
     // MARK: - Private Properties
-    private let localizationHelper = LocalizationHelper.shared
     private let validationConstants = ValidationConstants.TimeCalculation.self
     
     // MARK: - Initialization
@@ -34,8 +33,8 @@ final class TimeCalculator: ObservableObject {
     /// - Returns: TimeCalculationResult containing deadline information
     func calculate() -> TimeCalculationResult {
         // Validate inputs first
-        validationState = validateInputs()
-        guard validationState == .valid else {
+        let validationResult = validateInputs()
+        guard validationResult.isValid else {
             let errorResult = TimeCalculationResult(
                 disputeType: disputeType,
                 startDate: startDate,
@@ -43,7 +42,7 @@ final class TimeCalculator: ObservableObject {
                 extendedDeadline: startDate,
                 weekCount: 0,
                 isValid: false,
-                errorMessage: getValidationErrorMessage()
+                errorMessage: validationResult.errorMessage ?? "Validation failed"
             )
             currentResult = errorResult
             return errorResult
@@ -63,7 +62,7 @@ final class TimeCalculator: ObservableObject {
                 extendedDeadline: startDate,
                 weekCount: weekCount,
                 isValid: false,
-                errorMessage: LocalizationKeys.ErrorMessage.calculationFailed.localized
+                errorMessage: LocalizationKeys.Error.calculationFailed.localized
             )
             currentResult = errorResult
             return errorResult
@@ -87,18 +86,16 @@ final class TimeCalculator: ObservableObject {
     /// - Parameter newDisputeType: The new dispute type
     func updateDisputeType(_ newDisputeType: DisputeType) {
         disputeType = newDisputeType
-        if TariffConstants.autoCalculateEnabled {
-            _ = calculate()
-        }
+        // Auto-calculate if needed (can be implemented later)
+        // if autoCalculateEnabled { _ = calculate() }
     }
     
     /// Updates start date and recalculates if auto-calculation is enabled
     /// - Parameter newStartDate: The new start date
     func updateStartDate(_ newStartDate: Date) {
         startDate = newStartDate
-        if TariffConstants.autoCalculateEnabled {
-            _ = calculate()
-        }
+        // Auto-calculate if needed (can be implemented later)
+        // if autoCalculateEnabled { _ = calculate() }
     }
     
     /// Resets calculator to initial state
@@ -106,7 +103,7 @@ final class TimeCalculator: ObservableObject {
         disputeType = .commercial
         startDate = Date()
         currentResult = nil
-        validationState = .pending
+        validationState = .success
     }
     
     // MARK: - Private Methods
@@ -116,15 +113,21 @@ final class TimeCalculator: ObservableObject {
     private func validateInputs() -> ValidationResult {
         // Validate dispute type
         guard isDisputeTypeSupported(disputeType) else {
-            return .invalid(LocalizationKeys.Validation.invalidDisputeType.localized)
+            return .failure(
+                code: 1001,
+                message: LocalizationKeys.Validation.invalidDisputeType.localized
+            )
         }
         
         // Validate start date
         guard isStartDateValid(startDate) else {
-            return .invalid(validationConstants.dateRange.localized)
+            return .failure(
+                code: 1002,
+                message: "Start date is not within valid range"
+            )
         }
         
-        return .valid
+        return .success
     }
     
     /// Checks if dispute type is supported for time calculations
@@ -200,19 +203,6 @@ final class TimeCalculator: ObservableObject {
             return "labor_law" // Default to labor law timing
         }
     }
-    
-    /// Gets validation error message based on current validation state
-    /// - Returns: Localized error message
-    private func getValidationErrorMessage() -> String {
-        switch validationState {
-        case .invalid(let message):
-            return message
-        case .pending:
-            return LocalizationKeys.Validation.requiredField.localized
-        case .valid:
-            return ""
-        }
-    }
 }
 
 // MARK: - TimeCalculationResult
@@ -243,27 +233,27 @@ struct TimeCalculationResult {
     
     /// Formatted start date string
     var formattedStartDate: String {
-        return LocalizationHelper.shared.formatDate(startDate)
+        return LocalizationHelper.formatDate(startDate)
     }
     
     /// Formatted deadline string
     var formattedDeadline: String {
-        return LocalizationHelper.shared.formatDate(deadline)
+        return LocalizationHelper.formatDate(deadline)
     }
     
     /// Formatted extended deadline string
     var formattedExtendedDeadline: String {
-        return LocalizationHelper.shared.formatDate(extendedDeadline)
+        return LocalizationHelper.formatDate(extendedDeadline)
     }
     
     /// Formatted calculation date string
     var formattedCalculationDate: String {
-        return LocalizationHelper.shared.formatDate(calculationDate)
+        return LocalizationHelper.formatDate(calculationDate)
     }
     
     /// Localized dispute type name
     var localizedDisputeType: String {
-        return disputeType.localizedName
+        return disputeType.displayName
     }
     
     /// Week count description
@@ -271,7 +261,7 @@ struct TimeCalculationResult {
         if weekCount == 1 {
             return LocalizationKeys.TimeCalculation.Result.week.localized
         } else {
-            return LocalizationKeys.TimeCalculation.Result.weeks.localized(weekCount)
+            return String(format: LocalizationKeys.TimeCalculation.Result.weeks.localized, weekCount)
         }
     }
     
