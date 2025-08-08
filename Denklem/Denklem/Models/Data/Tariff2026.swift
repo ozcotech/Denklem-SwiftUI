@@ -94,29 +94,7 @@ struct Tariff2026: TariffProtocol {
         return hourlyRates[disputeType] ?? hourlyRates[DisputeConstants.DisputeTypeKeys.other] ?? 902.75
     }
     
-    func getFixedFee(for disputeType: String, partyCount: Int) -> Double {
-        // Get fees array for dispute type
-        guard let fees = fixedFees[disputeType] else {
-            // Fallback to 'other' type if not found
-            guard let defaultFees = fixedFees[DisputeConstants.DisputeTypeKeys.other] else {
-                return 1805.5 // Ultimate fallback (1570 × 1.15)
-            }
-            return getFixedFeeFromArray(defaultFees, partyCount: partyCount)
-        }
-        
-        return getFixedFeeFromArray(fees, partyCount: partyCount)
-    }
-    
-    /// Helper method to get fee from fees array based on party count
-    private func getFixedFeeFromArray(_ fees: [Double], partyCount: Int) -> Double {
-        // Determine fee index based on party count thresholds
-        for (index, threshold) in partyCountThresholds.enumerated() {
-            if partyCount < threshold {
-                return fees[safe: index] ?? fees.last ?? 1805.5
-            }
-        }
-        return fees.last ?? 1805.5
-    }
+
     
     func getMinimumFee(for disputeType: String) -> Double {
         // Commercial disputes use higher minimum
