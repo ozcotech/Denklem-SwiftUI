@@ -16,24 +16,6 @@
       "appearances" : [
         {
           "appearance" : "luminosity",
-          "value" : "light"
-        }
-      ],
-      "color" : {
-        "color-space" : "srgb",
-        "components" : {
-          "alpha" : "1.000",
-          "blue" : "1.000",
-          "green" : "1.000",
-          "red" : "1.000"
-        }
-      },
-      "idiom" : "universal"
-    },
-    {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
           "value" : "dark"
         }
       ],
@@ -41,33 +23,14 @@
         "color-space" : "srgb",
         "components" : {
           "alpha" : "1.000",
-          "blue" : "0.000",
-          "green" : "0.000",
-          "red" : "0.000"
+          "blue" : "0.071",
+          "green" : "0.051",
+          "red" : "0.043"
         }
       },
       "idiom" : "universal"
     },
     {
-      "color" : {
-        "color-space" : "srgb",
-        "components" : {
-          "alpha" : "1.000",
-          "blue" : "1.000",
-          "green" : "1.000",
-          "red" : "1.000"
-        }
-      },
-      "idiom" : "universal",
-      "locale" : "en"
-    },
-    {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "light"
-        }
-      ],
       "color" : {
         "color-space" : "srgb",
         "components" : {
@@ -91,34 +54,15 @@
         "color-space" : "srgb",
         "components" : {
           "alpha" : "1.000",
-          "blue" : "0.000",
-          "green" : "0.000",
-          "red" : "0.000"
+          "blue" : "0.071",
+          "green" : "0.051",
+          "red" : "0.043"
         }
       },
       "idiom" : "universal",
       "locale" : "en"
     },
     {
-      "color" : {
-        "color-space" : "srgb",
-        "components" : {
-          "alpha" : "1.000",
-          "blue" : "1.000",
-          "green" : "1.000",
-          "red" : "1.000"
-        }
-      },
-      "idiom" : "universal",
-      "locale" : "tr"
-    },
-    {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "light"
-        }
-      ],
       "color" : {
         "color-space" : "srgb",
         "components" : {
@@ -142,9 +86,9 @@
         "color-space" : "srgb",
         "components" : {
           "alpha" : "1.000",
-          "blue" : "0.000",
-          "green" : "0.000",
-          "red" : "0.000"
+          "blue" : "0.071",
+          "green" : "0.051",
+          "red" : "0.043"
         }
       },
       "idiom" : "universal",
