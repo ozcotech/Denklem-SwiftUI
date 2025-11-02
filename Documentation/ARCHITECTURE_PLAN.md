@@ -142,9 +142,9 @@ Theme/
 ├── ThemeProtocol.swift
 ├── LightTheme.swift
 ├── DarkTheme.swift
-├── Colors.swift
-├── Typography.swift
-└── Dimensions.swift
+└── LiquidGlass/
+    ├── LiquidGlassStyles.swift
+    └── GlassShapes.swift
 
 Localization/
 ├── LocalizationKeys.swift
@@ -694,6 +694,7 @@ struct FeatureFlags {
     // UI Features
     static let enableDarkMode = true
     static let enableAnimations = true
+    static let enableLiquidGlass = true  // iOS 26+
     static let enableHapticFeedback = true
     
     // Calculation Features
@@ -810,3 +811,20 @@ struct FeatureFlags {
 **Project Structure:** MediationCalculator SwiftUI Implementation
 
 ----
+
+## 🌊 Liquid Glass Architecture (iOS 26+)
+
+### Glass Effect Components
+```swift
+// LiquidGlassStyles.swift - Button styles
+extension ButtonStyle where Self == GlassButtonStyle {
+    static var glass: GlassButtonStyle { GlassButtonStyle() }
+}
+
+// View extensions for glass effects
+extension View {
+    func glassCard(theme: ThemeProtocol) -> some View {
+        // Implementation
+    }
+}
+```

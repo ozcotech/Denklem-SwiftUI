@@ -186,12 +186,12 @@ Managers/
 
 ```
 Theme/
-├── ThemeProtocol.swift      # Theme interface definition
-├── LightTheme.swift         # Light mode theme
-├── DarkTheme.swift          # Dark mode theme
-├── Colors.swift             # Color definitions
-├── Typography.swift         # Font and text styles
-└── Dimensions.swift         # Spacing and sizing
+├── ThemeProtocol.swift          # Theme interface with Liquid Glass support
+├── LightTheme.swift            # Light mode implementation
+├── DarkTheme.swift             # Dark mode implementation
+└── LiquidGlass/                # Liquid Glass specific components
+    ├── LiquidGlassStyles.swift # Button styles, view modifiers
+    └── GlassShapes.swift       # Custom shapes (optional)
 ```
 
 
@@ -199,6 +199,9 @@ Theme/
 - **ThemeProtocol.swift:** Theme interface, color/font contracts
 - **LightTheme.swift:** Light mode color scheme
 - **DarkTheme.swift:** Dark mode color scheme  
+- **LiquidGlass/:** Components and styles for Liquid Glass effect
+    - **LiquidGlassStyles.swift:** Styles for buttons and views
+    - **GlassShapes.swift:** Custom shapes for Liquid Glass effect (optional)
 - **Colors.swift:** Semantic color definitions
 - **Typography.swift:** Font styles, text formatting
 - **Dimensions.swift:** Layout constants, spacing rules
