@@ -159,6 +159,7 @@ struct LocalizationKeys {
     struct ScreenTitle {
         static let home = "screen.title.home"
         static let disputeCategory = "screen.title.dispute_category"
+        static let disputeCategoryComingSoon = "screen.dispute_category.coming_soon"
         static let agreementStatus = "screen.title.agreement_status"
         static let disputeType = "screen.title.dispute_type"
         static let input = "screen.title.input"
@@ -236,7 +237,12 @@ struct LocalizationKeys {
     
     // MARK: - Start Screen
     struct Start {
+        static let appTitle = "app.name"
+        static let appSubtitle = "app.tagline"
+        static let tariffYearLabel = "start.tariff_year_label"
         static let enterButton = "start.enter_button"
+        static let enterButtonWithYear = "start.enter_button_with_year"
+        static let yearDropdownHint = "start.year_dropdown_hint"
         static let year2025 = "start.year_2025"
         static let year2026 = "start.year_2026"
         static let selectYearHint = "start.select_year_hint"
