@@ -31,7 +31,7 @@ struct GlassButtonStyle: ButtonStyle {
 }
 
 /// Prominent glass button style for primary actions
-/// Uses primary color tint for emphasis
+/// Uses primary color tint for emphasis with enhanced Liquid Glass effect
 @available(iOS 26.0, *)
 struct GlassProminentButtonStyle: ButtonStyle {
     let theme: ThemeProtocol
@@ -40,14 +40,46 @@ struct GlassProminentButtonStyle: ButtonStyle {
         configuration.label
             .frame(height: theme.buttonHeightLarge)
             .padding(.horizontal, theme.spacingL)
-            .foregroundColor(.white)
+            .foregroundStyle(.white)
             .background {
-                Capsule()
-                    .fill(theme.primary)
+                ZStack {
+                    // Primary color base layer
+                    Capsule()
+                        .fill(
+                            LinearGradient(
+                                colors: [
+                                    theme.primary,
+                                    theme.primary.opacity(0.85)
+                                ],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                        )
+                    
+                    // Highlight overlay for depth
+                    Capsule()
+                        .fill(
+                            LinearGradient(
+                                colors: [
+                                    .white.opacity(0.25),
+                                    .clear
+                                ],
+                                startPoint: .top,
+                                endPoint: .center
+                            )
+                        )
+                }
             }
-            .glassEffect(theme.glassRegular, in: Capsule())
-            .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
-            .animation(.spring(response: theme.springResponse, dampingFraction: theme.springDamping), value: configuration.isPressed)
+            .contentShape(Capsule())
+            .glassEffect(.regular, in: Capsule())
+            .shadow(
+                color: theme.primary.opacity(configuration.isPressed ? 0.2 : 0.4),
+                radius: configuration.isPressed ? 8 : 16,
+                x: 0,
+                y: configuration.isPressed ? 4 : 8
+            )
+            .scaleEffect(configuration.isPressed ? 0.97 : 1.0)
+            .animation(.spring(response: 0.25, dampingFraction: 0.7), value: configuration.isPressed)
     }
 }
 

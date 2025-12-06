@@ -14,6 +14,10 @@ struct StartScreenView: View {
     @StateObject private var viewModel = StartScreenViewModel()
     @Environment(\.theme) var theme
     
+    // MARK: - Animation Properties
+    
+    @State private var arrowOffset: CGFloat = 0
+    
     // MARK: - Body
     
     var body: some View {
@@ -158,19 +162,36 @@ struct StartScreenView: View {
         Button {
             viewModel.proceedToDisputeCategory()
         } label: {
-            HStack {
+            HStack(spacing: theme.spacingM) {
                 // LOCALIZED with format ✅
                 Text(String(format: LocalizationKeys.Start.enterButtonWithYear.localized, viewModel.selectedYear.displayName))
                     .font(theme.headline)
                     .fontWeight(.semibold)
                 
+                // Animated Arrow
                 Image(systemName: "arrow.right")
                     .font(.headline)
+                    .offset(x: arrowOffset)
             }
             .frame(maxWidth: .infinity)
             .frame(height: theme.buttonHeightLarge)
         }
         .buttonStyle(.glassProminent(theme: theme))
+        .onAppear {
+            startButtonAnimations()
+        }
+    }
+    
+    // MARK: - Animation Methods
+    
+    private func startButtonAnimations() {
+        // Arrow bounce animation - subtle right movement
+        withAnimation(
+            .easeInOut(duration: 0.8)
+            .repeatForever(autoreverses: true)
+        ) {
+            arrowOffset = 4
+        }
     }
 }
 
