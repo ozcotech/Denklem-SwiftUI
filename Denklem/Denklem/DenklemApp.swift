@@ -6,15 +6,17 @@
 //
 
 import SwiftUI
-@available(iOS 26.0, *) 
+
 @main
+@available(iOS 26.0, *)
 struct DenklemApp: App {
+    
     @StateObject private var themeManager = ThemeManager()
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environment(\.theme, themeManager.currentTheme)
+            StartScreenView()  
+                .injectTheme(themeManager.currentTheme)
                 .preferredColorScheme(themeManager.colorScheme)
         }
     }
