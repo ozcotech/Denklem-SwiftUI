@@ -137,7 +137,7 @@ struct LightTheme: ThemeProtocol {
         .regular
     }
     
-    var glassProminent: Glass {
+    var glassProminentEffect: Glass {
         .regular
     }
     

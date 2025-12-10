@@ -30,59 +30,6 @@ struct GlassButtonStyle: ButtonStyle {
     }
 }
 
-/// Prominent glass button style for primary actions
-/// Uses primary color tint for emphasis with enhanced Liquid Glass effect
-@available(iOS 26.0, *)
-struct GlassProminentButtonStyle: ButtonStyle {
-    let theme: ThemeProtocol
-    
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .frame(height: theme.buttonHeightLarge)
-            .padding(.horizontal, theme.spacingL)
-            .foregroundStyle(.white)
-            .background {
-                ZStack {
-                    // Primary color base layer
-                    Capsule()
-                        .fill(
-                            LinearGradient(
-                                colors: [
-                                    theme.primary,
-                                    theme.primary.opacity(0.85)
-                                ],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            )
-                        )
-                    
-                    // Highlight overlay for depth
-                    Capsule()
-                        .fill(
-                            LinearGradient(
-                                colors: [
-                                    .white.opacity(0.25),
-                                    .clear
-                                ],
-                                startPoint: .top,
-                                endPoint: .center
-                            )
-                        )
-                }
-            }
-            .contentShape(Capsule())
-            .glassEffect(.regular, in: Capsule())
-            .shadow(
-                color: theme.primary.opacity(configuration.isPressed ? 0.2 : 0.4),
-                radius: configuration.isPressed ? 8 : 16,
-                x: 0,
-                y: configuration.isPressed ? 4 : 8
-            )
-            .scaleEffect(configuration.isPressed ? 0.97 : 1.0)
-            .animation(.spring(response: 0.25, dampingFraction: 0.7), value: configuration.isPressed)
-    }
-}
-
 /// Clear glass button style for subtle actions
 /// Minimal visual weight with clear glass effect
 @available(iOS 26.0, *)
@@ -219,14 +166,6 @@ extension ButtonStyle where Self == GlassButtonStyle {
     /// Standard glass button style
     static func glass(theme: ThemeProtocol) -> GlassButtonStyle {
         GlassButtonStyle(theme: theme)
-    }
-}
-
-@available(iOS 26.0, *)
-extension ButtonStyle where Self == GlassProminentButtonStyle {
-    /// Prominent glass button style for primary actions
-    static func glassProminent(theme: ThemeProtocol) -> GlassProminentButtonStyle {
-        GlassProminentButtonStyle(theme: theme)
     }
 }
 

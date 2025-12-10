@@ -139,9 +139,9 @@ protocol ThemeProtocol {
     /// Default glass variant for standard controls
     var glassRegular: Glass { get }
     
-    /// Prominent glass variant for primary actions
-    var glassProminent: Glass { get }
-    
+    /// Prominent glass effect for primary actions
+    var glassProminentEffect: Glass { get } 
+
     /// Clear glass variant for subtle elements
     var glassClear: Glass { get }
     

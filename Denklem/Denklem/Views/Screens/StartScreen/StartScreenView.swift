@@ -23,9 +23,23 @@ struct StartScreenView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                // Background
-                theme.background
+                // Background Image
+                Image("AppStartBackground")
+                    .resizable()
+                    .scaledToFill()
                     .ignoresSafeArea()
+                    .blur(radius: 20) // Modern iOS blur effect
+                
+                // Gradient Overlay for readability
+                LinearGradient(
+                    colors: [
+                        Color.black.opacity(0.4),
+                        Color.black.opacity(0.6)
+                    ],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+                .ignoresSafeArea()
                 
                 // Content
                 ScrollView {
@@ -95,65 +109,24 @@ struct StartScreenView: View {
     // MARK: - Year Selection Section
     
     private var yearSelectionSection: some View {
-        VStack(spacing: 0) {
-            // Dropdown Button
-            Button {
-                withAnimation(.spring(response: theme.springResponse, dampingFraction: theme.springDamping)) {
-                    viewModel.toggleYearDropdown()
-                }
-            } label: {
-                HStack {
-                    // LOCALIZED with format ✅
-                    Text(String(format: LocalizationKeys.Start.tariffYearLabel.localized, viewModel.selectedYear.displayName))
-                        .font(theme.body)
-                        .foregroundColor(theme.textPrimary)
-                    
-                    Spacer()
-                    
-                    Image(systemName: viewModel.isYearDropdownVisible ? "chevron.up" : "chevron.down")
-                        .foregroundColor(theme.textSecondary)
-                        .font(.caption)
-                }
-                .padding(theme.spacingM)
-            }
-            .glassCard(theme: theme)
-            
-            // Dropdown Options
-            if viewModel.isYearDropdownVisible {
-                VStack(spacing: 0) {
-                    ForEach(TariffYear.allCases, id: \.self) { year in
-                        Button {
-                            viewModel.selectYear(year)  
-                        } label: {
-                            HStack {
-                                Text("\(year.rawValue)")
-                                    .font(theme.body)
-                                    .foregroundColor(theme.textPrimary)
-                                
-                                Spacer()
-                                
-                                if year == viewModel.selectedYear {
-                                    Image(systemName: "checkmark")
-                                        .foregroundColor(theme.primary)
-                                        .font(.headline)
-                                }
-                            }
-                            .padding(theme.spacingM)
-                            .contentShape(Rectangle())
-                        }
-                        .buttonStyle(.plain)
-                        
-                        if year != TariffYear.allCases.last {
-                            Divider()
-                                .background(theme.outline)
-                        }
-                    }
-                }
-                .glassCard(theme: theme)
-                .transition(.opacity.combined(with: .scale(scale: 0.95, anchor: .top)))
+        // Native Segmented Picker with custom height
+        Picker("", selection: $viewModel.selectedYear) {
+            ForEach(TariffYear.allCases, id: \.self) { year in
+                Text(String(format: "%d", year.rawValue))
+                    .font(.system(size: 18, weight: .semibold))
+                    .tag(year)
             }
         }
-        .padding(.horizontal, theme.spacingL)
+        .pickerStyle(.segmented)
+        .tint(theme.primary)
+        .padding(.horizontal, theme.spacingXXL)
+        .onAppear {
+            // Set UISegmentedControl height via UIKit
+            UISegmentedControl.appearance().setContentHuggingPriority(.defaultLow, for: .vertical)
+        }
+        .onChange(of: viewModel.selectedYear) { _, newYear in
+            viewModel.selectYear(newYear)
+        }
     }
     
     // MARK: - Primary Action Button
@@ -163,20 +136,20 @@ struct StartScreenView: View {
             viewModel.proceedToDisputeCategory()
         } label: {
             HStack(spacing: theme.spacingM) {
-                // LOCALIZED with format ✅
                 Text(String(format: LocalizationKeys.Start.enterButtonWithYear.localized, viewModel.selectedYear.displayName))
                     .font(theme.headline)
-                    .fontWeight(.semibold)
+                    .foregroundColor(.white)
                 
-                // Animated Arrow
                 Image(systemName: "arrow.right")
-                    .font(.headline)
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundColor(.white)
                     .offset(x: arrowOffset)
             }
-            .frame(maxWidth: .infinity)
-            .frame(height: theme.buttonHeightLarge)
+            .padding(.horizontal, theme.spacingL)
+            .frame(height: 50)
         }
-        .buttonStyle(.glassProminent(theme: theme))
+        .buttonStyle(.glass)
+        .padding(.horizontal, theme.spacingXXL)
         .onAppear {
             startButtonAnimations()
         }
