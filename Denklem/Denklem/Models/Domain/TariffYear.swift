@@ -20,9 +20,10 @@ enum TariffYear: Int, CaseIterable, Identifiable, Hashable {
     
     // MARK: - Static Properties
     
-    /// Current active tariff year
+    /// Current active tariff year (automatically determined based on current date)
     static var current: TariffYear {
-        return .year2025  // Update this as needed
+        let currentYear = Calendar.current.component(.year, from: Date())
+        return TariffYear(rawValue: currentYear) ?? .year2026
     }
     
     /// Default tariff year for calculations
@@ -68,7 +69,7 @@ enum TariffYear: Int, CaseIterable, Identifiable, Hashable {
         case .year2025:
             return NSLocalizedString("tariff_year.2025.description", value: "2025 yılı resmi arabuluculuk tarifeleri", comment: "2025 official mediation tariffs")
         case .year2026:
-            return NSLocalizedString("tariff_year.2026.description", value: "2026 yılı tahmini arabuluculuk tarifeleri", comment: "2026 estimated mediation tariffs")
+            return NSLocalizedString("tariff_year.2026.description", value: "2026 yılı resmi arabuluculuk tarifeleri", comment: "2026 official mediation tariffs")
         }
     }
     
@@ -85,7 +86,7 @@ enum TariffYear: Int, CaseIterable, Identifiable, Hashable {
         case .year2025:
             return true
         case .year2026:
-            return false  // Estimated values
+            return true  // Official 2026 tariff
         }
     }
     

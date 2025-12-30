@@ -8,74 +8,73 @@
 import Foundation
 
 // MARK: - Tariff 2026 Implementation
-/// Implementation of TariffProtocol for 2026 tariff data (PLACEHOLDER)
-/// Uses estimated tariff rates and fees with 15% increase from 2025 values
-/// WARNING: These are estimated values - will be updated when official 2026 tariff is published
+/// Implementation of TariffProtocol for 2026 tariff data
+/// Official tariff rates and fees for 2026
 struct Tariff2026: TariffProtocol {
     
     // MARK: - Basic Properties
     
     let year: Int = 2026
     
-    let isFinalized: Bool = false  // ⚠️ IMPORTANT: These are estimated values!
+    let isFinalized: Bool = true
     
     // MARK: - Minimum Hours Multiplier
     
     let minimumHoursMultiplier: Int = 2
     
-    // MARK: - Hourly Rates (Estimated - 2025 × 1.15)
+    // MARK: - Hourly Rates
     
     let hourlyRates: [String: Double] = [
-        DisputeConstants.DisputeTypeKeys.workerEmployer: 902.75,        // 785 × 1.15
-        DisputeConstants.DisputeTypeKeys.commercial: 1322.5,           // 1150 × 1.15
-        DisputeConstants.DisputeTypeKeys.consumer: 902.75,             // 785 × 1.15
-        DisputeConstants.DisputeTypeKeys.rent: 960.25,                 // 835 × 1.15
-        DisputeConstants.DisputeTypeKeys.neighbor: 960.25,             // 835 × 1.15
-        DisputeConstants.DisputeTypeKeys.condominium: 960.25,          // 835 × 1.15
-        DisputeConstants.DisputeTypeKeys.family: 902.75,               // 785 × 1.15
-        DisputeConstants.DisputeTypeKeys.partnershipDissolution: 1035.0, // 900 × 1.15
-        DisputeConstants.DisputeTypeKeys.other: 902.75                 // 785 × 1.15
+        DisputeConstants.DisputeTypeKeys.workerEmployer: 1130.0,        
+        DisputeConstants.DisputeTypeKeys.commercial: 1500.0,           
+        DisputeConstants.DisputeTypeKeys.consumer: 1000.0,             
+        DisputeConstants.DisputeTypeKeys.rent: 1170.0,                 
+        DisputeConstants.DisputeTypeKeys.neighbor: 1000.0,             
+        DisputeConstants.DisputeTypeKeys.condominium: 1000.0,          
+        DisputeConstants.DisputeTypeKeys.family: 1000.00,               
+        DisputeConstants.DisputeTypeKeys.partnershipDissolution: 1170.0, 
+        DisputeConstants.DisputeTypeKeys.other: 1000.0                 
     ]
     
-    // MARK: - Fixed Fees (Estimated - 2025 × 1.15)
+    // MARK: - Fixed Fees
     
-    /// Fixed fees by dispute type and party count ranges (ESTIMATED VALUES)
+    /// Fixed fees by dispute type and party count ranges
     /// Array indices: [0: 2 parties, 1: 3-5 parties, 2: 6-10 parties, 3: 11+ parties]
     let fixedFees: [String: [Double]] = [
-        DisputeConstants.DisputeTypeKeys.workerEmployer: [1805.5, 1897.5, 2012.5, 2127.5],    // [1570, 1650, 1750, 1850] × 1.15
-        DisputeConstants.DisputeTypeKeys.commercial: [2645.0, 2702.5, 2817.5, 2932.5],        // [2300, 2350, 2450, 2550] × 1.15
-        DisputeConstants.DisputeTypeKeys.consumer: [1805.5, 1897.5, 2012.5, 2127.5],          // [1570, 1650, 1750, 1850] × 1.15
-        DisputeConstants.DisputeTypeKeys.rent: [1920.5, 2012.5, 2127.5, 2242.5],              // [1670, 1750, 1850, 1950] × 1.15
-        DisputeConstants.DisputeTypeKeys.neighbor: [1920.5, 2012.5, 2127.5, 2242.5],          // [1670, 1750, 1850, 1950] × 1.15
-        DisputeConstants.DisputeTypeKeys.condominium: [1920.5, 2012.5, 2127.5, 2242.5],       // [1670, 1750, 1850, 1950] × 1.15
-        DisputeConstants.DisputeTypeKeys.family: [1805.5, 1897.5, 2012.5, 2127.5],            // [1570, 1650, 1750, 1850] × 1.15
-        DisputeConstants.DisputeTypeKeys.partnershipDissolution: [2070.0, 2300.0, 2415.0, 2530.0], // [1800, 2000, 2100, 2200] × 1.15
-        DisputeConstants.DisputeTypeKeys.other: [1805.5, 1897.5, 2012.5, 2127.5]              // [1570, 1650, 1750, 1850] × 1.15
+        DisputeConstants.DisputeTypeKeys.workerEmployer: [2260.0, 2460.0, 2560.0, 2660.0],    
+        DisputeConstants.DisputeTypeKeys.commercial: [3000.0, 3200.0, 3300.0, 3400.0],        
+        DisputeConstants.DisputeTypeKeys.consumer: [2000.0, 2200.0, 2300.0, 2400.0],          
+        DisputeConstants.DisputeTypeKeys.rent: [2340.0, 2540.0, 2640.0, 2740.0],              
+        DisputeConstants.DisputeTypeKeys.neighbor: [2340.0, 2540.0, 2640.0, 2740.0],          
+        DisputeConstants.DisputeTypeKeys.condominium: [2340.0, 2540.0, 2640.0, 2740.0],       
+        DisputeConstants.DisputeTypeKeys.family: [2000.0, 2200.0, 2300.0, 2400.0],            
+        DisputeConstants.DisputeTypeKeys.partnershipDissolution: [2340.0, 2540.0, 2640.0, 2740.0], 
+        DisputeConstants.DisputeTypeKeys.other: [2000.0, 2200.0, 2300.0, 2400.0]             
     ]
     
     /// Party count thresholds for fee calculation
     let partyCountThresholds: [Int] = [2, 5, 10, Int.max]
     
-    // MARK: - Minimum Fees (Estimated - 2025 × 1.15)
+    // MARK: - Minimum Fees
     
     let minimumFees: [String: Double] = [
-        "general": 6900.0,     // 6000 × 1.15 - General minimum fee (estimated)
-        "commercial": 10350.0  // 9000 × 1.15 - Commercial minimum fee (estimated)
+        "general": 9000.0,     
+        "commercial": 13000.0  
     ]
     
-    // MARK: - Calculation Brackets (Estimated - 2025 × 1.15)
+    // MARK: - Calculation Brackets
     
-    /// Progressive calculation brackets for agreement cases (ESTIMATED VALUES)
+    /// Progressive calculation brackets for agreement cases
     /// Format: (upper limit, percentage rate)
     let brackets: [(limit: Double, rate: Double)] = [
-        (345000.0, 0.06),       // 300,000 × 1.15 = 345,000 TL: 6%
-        (897000.0, 0.05),       // 780,000 × 1.15 = 897,000 TL: 5%
-        (1794000.0, 0.04),      // 1,560,000 × 1.15 = 1,794,000 TL: 4%
-        (5382000.0, 0.03),      // 4,680,000 × 1.15 = 5,382,000 TL: 3%
-        (7176000.0, 0.02),      // 6,240,000 × 1.15 = 7,176,000 TL: 2%
-        (14352000.0, 0.015),    // 12,480,000 × 1.15 = 14,352,000 TL: 1.5%
-        (30498000.0, 0.01),     // 26,520,000 × 1.15 = 30,498,000 TL: 1%
-        (Double.infinity, 0.005) // 30,498,001+ TL: 0.5%
+        (600000.0, 0.06),       
+        (1560000.0, 0.05),       
+        (3120000.0, 0.04),      
+        (6240000.0, 0.03),      
+        (15600000.0, 0.02),      
+        (28080000.0, 0.015),    
+        (53040000.0, 0.01),     
+        (Double.infinity, 0.005) 
     ]
     
     // MARK: - Validation & Support Methods
@@ -91,7 +90,7 @@ struct Tariff2026: TariffProtocol {
     // MARK: - Fee Calculation Methods
     
     func getHourlyRate(for disputeType: String) -> Double {
-        return hourlyRates[disputeType] ?? hourlyRates[DisputeConstants.DisputeTypeKeys.other] ?? 902.75
+        return hourlyRates[disputeType] ?? hourlyRates[DisputeConstants.DisputeTypeKeys.other] ?? 1000.0
     }
     
 
@@ -100,11 +99,11 @@ struct Tariff2026: TariffProtocol {
         // Commercial disputes use higher minimum
         if disputeType == DisputeConstants.DisputeTypeKeys.commercial ||
            disputeType == DisputeConstants.DisputeTypeKeys.partnershipDissolution {
-            return minimumFees["commercial"] ?? 10350.0
+            return minimumFees["commercial"] ?? 13000.0
         }
         
         // All other disputes use general minimum
-        return minimumFees["general"] ?? 6900.0
+        return minimumFees["general"] ?? 9000.0
     }
     
     func calculateBracketFee(for amount: Double) -> Double {
@@ -168,7 +167,7 @@ private extension Array {
 // MARK: - Tariff 2026 Factory
 extension Tariff2026 {
     
-    /// Creates a new Tariff2026 instance with estimated values
+    /// Creates a new Tariff2026 instance
     static func create() -> Tariff2026 {
         return Tariff2026()
     }
@@ -197,29 +196,20 @@ extension Tariff2026 {
         return true
     }
     
-    /// Returns a summary of the tariff data with estimation warning
+    /// Returns a summary of the tariff data
     func getSummary() -> String {
         let supportedTypes = getSupportedDisputeTypes().count
         let minGeneralFee = minimumFees["general"] ?? 0.0
         let minCommercialFee = minimumFees["commercial"] ?? 0.0
         
         return """
-        ⚠️ ESTIMATED TARIFF - NOT FINALIZED
-        Tariff Year: \(year) (Placeholder)
+        Tariff Year: \(year)
         Supported Dispute Types: \(supportedTypes)
-        General Minimum Fee: \(LocalizationHelper.formatCurrency(minGeneralFee)) (Est.)
-        Commercial Minimum Fee: \(LocalizationHelper.formatCurrency(minCommercialFee)) (Est.)
+        General Minimum Fee: \(LocalizationHelper.formatCurrency(minGeneralFee))
+        Commercial Minimum Fee: \(LocalizationHelper.formatCurrency(minCommercialFee))
         Bracket Count: \(brackets.count)
-        Data Status: \(isFinalized ? "Finalized" : "Estimated (15% increase from 2025)")
-        
-        ⚠️ WARNING: These values are estimates based on 15% increase from 2025
-        Official 2026 tariff will be published in January 2026
+        Data Status: \(isFinalized ? "Finalized" : "Draft")
         """
-    }
-    
-    /// Returns warning message for UI display
-    func getEstimationWarning() -> String {
-        return NSLocalizedString(LocalizationKeys.Validation.estimatedTariff, comment: "Estimated tariff warning")
     }
 }
 

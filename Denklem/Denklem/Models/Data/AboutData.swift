@@ -196,11 +196,11 @@ struct AboutData {
         case 2026:
             return DataSource(
                 year: 2026,
-                isOfficial: false,
-                source: "Estimated Data",
+                isOfficial: true,
+                source: legislationSource,
                 url: legislationURL,
-                lastUpdated: Date(),
-                isFinalized: false
+                lastUpdated: Date(), // Should be actual legislation date
+                isFinalized: true
             )
         default:
             return DataSource(

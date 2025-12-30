@@ -140,13 +140,13 @@ extension TariffProtocol {
     // MARK: - Default Calculation Methods
     
     func getHourlyRate(for disputeType: String) -> Double {
-        return hourlyRates[disputeType] ?? hourlyRates[DisputeConstants.DisputeTypeKeys.other] ?? 785.0
+        return hourlyRates[disputeType] ?? hourlyRates[DisputeConstants.DisputeTypeKeys.other] ?? 1000.0
     }
     
     func getFixedFee(for disputeType: String, partyCount: Int) -> Double {
         guard let fees = fixedFees[disputeType] else {
             // Fallback to 'other' dispute type fees
-            return fixedFees[DisputeConstants.DisputeTypeKeys.other]?.first ?? 1570.0
+            return fixedFees[DisputeConstants.DisputeTypeKeys.other]?.first ?? 2000.0
         }
         
         // Find the appropriate fee index based on party count
@@ -158,21 +158,21 @@ extension TariffProtocol {
                     return fees[index]
                 } else {
                     // If index is out of bounds, return last available fee
-                    return fees.last ?? 1570.0
+                    return fees.last ?? 2000.0
                 }
             }
         }
         
         // If no threshold matched, return last fee
-        return fees.last ?? 1570.0
+        return fees.last ?? 2000.0
     }
     
     func getMinimumFee(for disputeType: String) -> Double {
         // Commercial disputes have higher minimum fee
         if disputeType == DisputeConstants.DisputeTypeKeys.commercial {
-            return minimumFees["commercial"] ?? 9000.0
+            return minimumFees["commercial"] ?? 13000.0
         }
-        return minimumFees["general"] ?? 6000.0
+        return minimumFees["general"] ?? 9000.0
     }
     
     func calculateBracketFee(for amount: Double) -> Double {
