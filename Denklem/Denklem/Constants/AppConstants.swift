@@ -168,11 +168,15 @@ extension AppConstants {
     }
 }
 
-// MARK: - Language Support
-enum SupportedLanguage: String, CaseIterable {
+// MARK: - Supported Languages
+/// Global enum for supported languages - used throughout the app
+enum SupportedLanguage: String, CaseIterable, Identifiable, Hashable, Sendable {
     case turkish = "tr"
     case english = "en"
     
+    var id: String { rawValue }
+    
+    /// Returns localized display name for the language
     var displayName: String {
         switch self {
         case .turkish: 
@@ -182,13 +186,47 @@ enum SupportedLanguage: String, CaseIterable {
         }
     }
     
+    /// Returns short name (uppercase language code)
+    var shortName: String {
+        return rawValue.uppercased()
+    }
+    
+    /// Returns flag emoji for the language
+    var flagEmoji: String {
+        switch self {
+        case .turkish: return "🇹🇷"
+        case .english: return "🇺🇸"
+        }
+    }
+    
+    /// Returns locale identifier for the language
+    var localeIdentifier: String {
+        switch self {
+        case .turkish: return "tr_TR"
+        case .english: return "en_US"
+        }
+    }
+    
     /// Returns the language code
     var code: String {
         return self.rawValue
     }
     
-    /// Returns localized language name
+    /// Returns localized language name (alias for displayName)
     var localizedName: String {
         return displayName
+    }
+    
+    /// Returns the opposite language for toggle functionality
+    var toggled: SupportedLanguage {
+        switch self {
+        case .turkish: return .english
+        case .english: return .turkish
+        }
+    }
+    
+    /// System image name for the language
+    var systemImage: String {
+        return "globe"
     }
 }

@@ -42,6 +42,14 @@ struct LightTheme: ThemeProtocol {
         Color("AppTextSecondary")
     }
     
+    var textTertiary: Color {
+        Color.gray.opacity(0.6)
+    }
+    
+    var border: Color {
+        Color("AppOutline")
+    }
+    
     var success: Color {
         Color("AppSuccess")
     }

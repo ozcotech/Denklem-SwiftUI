@@ -42,6 +42,14 @@ struct DarkTheme: ThemeProtocol {
         Color("AppTextSecondary")
     }
     
+    var textTertiary: Color {
+        Color.gray.opacity(0.5)
+    }
+    
+    var border: Color {
+        Color("AppOutline")
+    }
+    
     var success: Color {
         Color("AppSuccess")
     }

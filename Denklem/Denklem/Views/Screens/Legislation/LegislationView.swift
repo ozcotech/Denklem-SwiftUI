@@ -1,0 +1,486 @@
+//
+//  LegislationView.swift
+//  Denklem
+//
+//  Created by ozkan on 31.12.2025.
+//
+
+import SwiftUI
+
+// MARK: - Legislation View
+/// Displays legislation documents related to mediation
+/// Provides access to tariff documents, laws, and regulations
+@available(iOS 26.0, *)
+struct LegislationView: View {
+    
+    // MARK: - Properties
+    
+    @StateObject private var viewModel = LegislationViewModel()
+    @Environment(\.theme) var theme
+    
+    // MARK: - Body
+    
+    var body: some View {
+        ScrollView {
+            VStack(spacing: theme.spacingL) {
+                // Header Section
+                headerSection
+                
+                // Filter Section
+                filterSection
+                
+                // Documents List
+                documentsSection
+            }
+            .padding(.horizontal, theme.spacingM)
+            .padding(.top, theme.spacingM)
+            .padding(.bottom, theme.spacingXXL)
+        }
+        .background(theme.background)
+        .navigationTitle(LocalizationKeys.ScreenTitle.legislation.localized)
+        .navigationBarTitleDisplayMode(.large)
+        .searchable(
+            text: $viewModel.searchText,
+            prompt: Text(NSLocalizedString("legislation.search.prompt", value: "Belge ara...", comment: ""))
+        )
+        .refreshable {
+            viewModel.loadDocuments()
+        }
+        .sheet(isPresented: $viewModel.showPDFViewer) {
+            if let document = viewModel.selectedDocument {
+                DocumentDetailSheet(document: document)
+            }
+        }
+        .alert(
+            LocalizationKeys.General.error.localized,
+            isPresented: Binding(
+                get: { viewModel.errorMessage != nil },
+                set: { if !$0 { viewModel.errorMessage = nil } }
+            )
+        ) {
+            Button(LocalizationKeys.General.ok.localized, role: .cancel) {}
+        } message: {
+            if let errorMessage = viewModel.errorMessage {
+                Text(errorMessage)
+            }
+        }
+    }
+    
+    // MARK: - Header Section
+    
+    private var headerSection: some View {
+        VStack(alignment: .leading, spacing: theme.spacingS) {
+            Text(NSLocalizedString("legislation.header.title", value: "Mevzuat", comment: ""))
+                .font(theme.title2)
+                .fontWeight(.bold)
+                .foregroundStyle(theme.textPrimary)
+            
+            Text(NSLocalizedString("legislation.header.subtitle", value: "Arabuluculuk ile ilgili güncel mevzuat ve tarifeler", comment: ""))
+                .font(theme.body)
+                .foregroundStyle(theme.textSecondary)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.vertical, theme.spacingS)
+    }
+    
+    // MARK: - Filter Section
+    
+    private var filterSection: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: theme.spacingS) {
+                // All filter
+                FilterChip(
+                    title: NSLocalizedString("legislation.filter.all", value: "Tümü", comment: ""),
+                    isSelected: viewModel.selectedFilter == nil
+                ) {
+                    viewModel.selectedFilter = nil
+                }
+                
+                // Type filters
+                ForEach(LegislationDocument.DocumentType.allCases, id: \.self) { type in
+                    FilterChip(
+                        title: type.displayName,
+                        systemImage: type.systemImage,
+                        isSelected: viewModel.selectedFilter == type
+                    ) {
+                        viewModel.selectedFilter = type
+                    }
+                }
+            }
+            .padding(.horizontal, theme.spacingXS)
+        }
+    }
+    
+    // MARK: - Documents Section
+    
+    private var documentsSection: some View {
+        LazyVStack(spacing: theme.spacingM, pinnedViews: [.sectionHeaders]) {
+            ForEach(viewModel.sortedYears, id: \.self) { year in
+                Section {
+                    ForEach(viewModel.documentsByYear[year] ?? []) { document in
+                        DocumentCard(document: document) {
+                            viewModel.selectDocument(document)
+                        } onOpenInSafari: {
+                            viewModel.openInSafari(document)
+                        }
+                    }
+                } header: {
+                    YearSectionHeader(year: year)
+                }
+            }
+        }
+    }
+}
+
+// MARK: - Filter Chip
+
+@available(iOS 26.0, *)
+struct FilterChip: View {
+    
+    let title: String
+    var systemImage: String?
+    let isSelected: Bool
+    let action: () -> Void
+    
+    @Environment(\.theme) var theme
+    
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: 4) {
+                if let systemImage = systemImage {
+                    Image(systemName: systemImage)
+                        .font(.caption)
+                }
+                
+                Text(title)
+                    .font(.subheadline)
+                    .fontWeight(isSelected ? .semibold : .regular)
+            }
+            .padding(.horizontal, 12)
+            .padding(.vertical, 8)
+            .background(
+                Capsule()
+                    .fill(isSelected ? theme.primary.opacity(0.15) : theme.surface)
+            )
+            .overlay(
+                Capsule()
+                    .stroke(isSelected ? theme.primary : theme.border, lineWidth: 1)
+            )
+            .foregroundStyle(isSelected ? theme.primary : theme.textSecondary)
+        }
+        .buttonStyle(.plain)
+    }
+}
+
+// MARK: - Year Section Header
+
+@available(iOS 26.0, *)
+struct YearSectionHeader: View {
+    
+    let year: Int
+    
+    @Environment(\.theme) var theme
+    
+    var body: some View {
+        HStack {
+            Text(String(year))
+                .font(.headline)
+                .fontWeight(.bold)
+                .foregroundStyle(theme.textPrimary)
+            
+            Spacer()
+        }
+        .padding(.vertical, theme.spacingS)
+        .padding(.horizontal, theme.spacingXS)
+        .background(theme.background)
+    }
+}
+
+// MARK: - Document Card
+
+@available(iOS 26.0, *)
+struct DocumentCard: View {
+    
+    let document: LegislationDocument
+    let onTap: () -> Void
+    let onOpenInSafari: () -> Void
+    
+    @Environment(\.theme) var theme
+    
+    var body: some View {
+        Button {
+            onTap()
+        } label: {
+            HStack(spacing: theme.spacingM) {
+                // Document Icon
+                ZStack {
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(theme.primary.opacity(0.1))
+                        .frame(width: 50, height: 50)
+                    
+                    Image(systemName: document.type.systemImage)
+                        .font(.title2)
+                        .foregroundStyle(theme.primary)
+                }
+                
+                // Document Info
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(document.title)
+                        .font(theme.headline)
+                        .fontWeight(.medium)
+                        .foregroundStyle(theme.textPrimary)
+                        .lineLimit(2)
+                        .multilineTextAlignment(.leading)
+                    
+                    Text(document.subtitle)
+                        .font(theme.caption)
+                        .foregroundStyle(theme.textSecondary)
+                        .lineLimit(1)
+                    
+                    // Tags
+                    HStack(spacing: theme.spacingS) {
+                        DocumentTag(
+                            text: document.type.displayName,
+                            color: theme.primary
+                        )
+                        
+                        if document.isOfficial {
+                            DocumentTag(
+                                text: NSLocalizedString("legislation.tag.official", value: "Resmi", comment: ""),
+                                color: theme.success
+                            )
+                        }
+                    }
+                }
+                
+                Spacer()
+                
+                // Chevron
+                Image(systemName: "chevron.right")
+                    .font(.caption)
+                    .foregroundStyle(theme.textTertiary)
+            }
+            .padding(theme.spacingM)
+            .background(
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(theme.surface)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 16)
+                    .stroke(theme.border, lineWidth: 0.5)
+            )
+        }
+        .buttonStyle(.plain)
+        .contextMenu {
+            if document.url != nil {
+                Button {
+                    onOpenInSafari()
+                } label: {
+                    Label(
+                        NSLocalizedString("legislation.action.open_in_safari", value: "Safari'de Aç", comment: ""),
+                        systemImage: "safari"
+                    )
+                }
+            }
+            
+            Button {
+                // Share action
+            } label: {
+                Label(LocalizationKeys.General.share.localized, systemImage: "square.and.arrow.up")
+            }
+        }
+    }
+}
+
+// MARK: - Document Tag
+
+@available(iOS 26.0, *)
+struct DocumentTag: View {
+    
+    let text: String
+    let color: Color
+    
+    var body: some View {
+        Text(text)
+            .font(.caption2)
+            .fontWeight(.medium)
+            .padding(.horizontal, 6)
+            .padding(.vertical, 2)
+            .background(
+                Capsule()
+                    .fill(color.opacity(0.1))
+            )
+            .foregroundStyle(color)
+    }
+}
+
+// MARK: - Document Detail Sheet
+
+@available(iOS 26.0, *)
+struct DocumentDetailSheet: View {
+    
+    let document: LegislationDocument
+    
+    @Environment(\.theme) var theme
+    @Environment(\.dismiss) private var dismiss
+    
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                VStack(spacing: theme.spacingL) {
+                    // Document Header
+                    documentHeader
+                    
+                    // Document Info
+                    documentInfo
+                    
+                    // Actions
+                    actionButtons
+                }
+                .padding(theme.spacingM)
+            }
+            .background(theme.background)
+            .navigationTitle(document.type.displayName)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button(LocalizationKeys.General.close.localized) {
+                        dismiss()
+                    }
+                }
+            }
+        }
+    }
+    
+    private var documentHeader: some View {
+        VStack(spacing: theme.spacingM) {
+            ZStack {
+                Circle()
+                    .fill(theme.primary.opacity(0.1))
+                    .frame(width: 80, height: 80)
+                
+                Image(systemName: document.type.systemImage)
+                    .font(.largeTitle)
+                    .foregroundStyle(theme.primary)
+            }
+            
+            Text(document.title)
+                .font(theme.title3)
+                .fontWeight(.bold)
+                .foregroundStyle(theme.textPrimary)
+                .multilineTextAlignment(.center)
+            
+            Text(document.subtitle)
+                .font(theme.body)
+                .foregroundStyle(theme.textSecondary)
+        }
+        .padding(.vertical, theme.spacingM)
+    }
+    
+    private var documentInfo: some View {
+        VStack(spacing: theme.spacingS) {
+            InfoRow(
+                label: NSLocalizedString("legislation.info.year", value: "Yıl", comment: ""),
+                value: String(document.year)
+            )
+            
+            InfoRow(
+                label: NSLocalizedString("legislation.info.type", value: "Tür", comment: ""),
+                value: document.type.displayName
+            )
+            
+            InfoRow(
+                label: NSLocalizedString("legislation.info.status", value: "Durum", comment: ""),
+                value: document.isOfficial ? 
+                    NSLocalizedString("legislation.status.official", value: "Resmi", comment: "") :
+                    NSLocalizedString("legislation.status.draft", value: "Taslak", comment: "")
+            )
+            
+            InfoRow(
+                label: NSLocalizedString("legislation.info.updated", value: "Güncelleme", comment: ""),
+                value: LocalizationHelper.formatDate(document.lastUpdated)
+            )
+        }
+        .padding(theme.spacingM)
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(theme.surface)
+        )
+    }
+    
+    private var actionButtons: some View {
+        VStack(spacing: theme.spacingM) {
+            if let urlString = document.url, let url = URL(string: urlString) {
+                Button {
+                    UIApplication.shared.open(url)
+                } label: {
+                    Label(
+                        NSLocalizedString("legislation.action.open_document", value: "Belgeyi Aç", comment: ""),
+                        systemImage: "doc.text"
+                    )
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                }
+                .buttonStyle(.borderedProminent)
+                .tint(theme.primary)
+            }
+            
+            Button {
+                // Share action
+            } label: {
+                Label(LocalizationKeys.General.share.localized, systemImage: "square.and.arrow.up")
+                    .frame(maxWidth: .infinity)
+                    .padding()
+            }
+            .buttonStyle(.bordered)
+        }
+    }
+}
+
+// MARK: - Info Row
+
+@available(iOS 26.0, *)
+struct InfoRow: View {
+    
+    let label: String
+    let value: String
+    
+    @Environment(\.theme) var theme
+    
+    var body: some View {
+        HStack {
+            Text(label)
+                .font(theme.body)
+                .foregroundStyle(theme.textSecondary)
+            
+            Spacer()
+            
+            Text(value)
+                .font(theme.body)
+                .fontWeight(.medium)
+                .foregroundStyle(theme.textPrimary)
+        }
+    }
+}
+
+// MARK: - Preview
+
+@available(iOS 26.0, *)
+struct LegislationView_Previews: PreviewProvider {
+    static var previews: some View {
+        Group {
+            NavigationStack {
+                LegislationView()
+            }
+            .injectTheme(LightTheme())
+            .previewDisplayName("Light Mode")
+            
+            NavigationStack {
+                LegislationView()
+            }
+            .injectTheme(DarkTheme())
+            .preferredColorScheme(.dark)
+            .previewDisplayName("Dark Mode")
+        }
+    }
+}

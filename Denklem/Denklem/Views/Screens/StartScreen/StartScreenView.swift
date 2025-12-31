@@ -21,56 +21,56 @@ struct StartScreenView: View {
     // MARK: - Body
     
     var body: some View {
-        NavigationStack {
-            ZStack {
-                // Background Image
-                Image("AppStartBackground")
-                    .resizable()
-                    .scaledToFill()
-                    .ignoresSafeArea()
-                    .blur(radius: 20) // Modern iOS blur effect
-                
-                // Gradient Overlay for readability
-                LinearGradient(
-                    colors: [
-                        Color.black.opacity(0.4),
-                        Color.black.opacity(0.6)
-                    ],
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
+        ZStack {
+            // Background Image
+            Image("AppStartBackground")
+                .resizable()
+                .scaledToFill()
                 .ignoresSafeArea()
-                
-                // Content
-                ScrollView {
-                    VStack(spacing: theme.spacingXXL) {
-                        
-                        Spacer()
-                            .frame(height: theme.spacingXXL)
-                        
-                        // Header Section
-                        headerSection
-                        
-                        Spacer()
-                            .frame(height: theme.spacingL)
-                        
-                        // Year Selection
-                        yearSelectionSection
-                        
-                        // Primary Action Button
-                        primaryActionButton
-                        
-                        Spacer()
-                    }
-                    .padding(.horizontal, theme.spacingXL)
+                .blur(radius: 20) // Modern iOS blur effect
+            
+            // Gradient Overlay for readability
+            LinearGradient(
+                colors: [
+                    Color.black.opacity(0.4),
+                    Color.black.opacity(0.6)
+                ],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            .ignoresSafeArea()
+            
+            // Content
+            ScrollView {
+                VStack(spacing: theme.spacingXXL) {
+                    
+                    Spacer()
+                        .frame(height: theme.spacingXXL)
+                    
+                    // Header Section
+                    headerSection
+                    
+                    Spacer()
+                        .frame(height: theme.spacingL)
+                    
+                    // Year Selection
+                    yearSelectionSection
+                    
+                    // Primary Action Button
+                    primaryActionButton
+                    
+                    Spacer()
                 }
+                .padding(.horizontal, theme.spacingXL)
             }
-            .navigationDestination(isPresented: $viewModel.navigateToDisputeCategory) {
-                // TODO: Navigate to DisputeCategoryView
-                Text(LocalizationKeys.ScreenTitle.disputeCategoryComingSoon.localized)
-                    .font(theme.title)
-                    .foregroundColor(theme.textPrimary)
-            }
+        }
+        .navigationTitle("")
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationDestination(isPresented: $viewModel.navigateToDisputeCategory) {
+            // TODO: Navigate to DisputeCategoryView
+            Text(LocalizationKeys.ScreenTitle.disputeCategoryComingSoon.localized)
+                .font(theme.title)
+                .foregroundColor(theme.textPrimary)
         }
     }
     

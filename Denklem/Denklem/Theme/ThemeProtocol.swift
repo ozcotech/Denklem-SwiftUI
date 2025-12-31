@@ -34,6 +34,12 @@ protocol ThemeProtocol {
     /// Secondary text color - supporting content
     var textSecondary: Color { get }
     
+    /// Tertiary text color - hints and disabled text
+    var textTertiary: Color { get }
+    
+    /// Border color for dividers and outlines
+    var border: Color { get }
+    
     /// Success state color - positive feedback
     var success: Color { get }
     

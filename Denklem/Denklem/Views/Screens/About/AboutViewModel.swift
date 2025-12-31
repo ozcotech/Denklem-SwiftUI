@@ -1,0 +1,297 @@
+//
+//  AboutViewModel.swift
+//  Denklem
+//
+//  Created by ozkan on 31.12.2025.
+//
+
+import SwiftUI
+import Combine
+
+// MARK: - About Section Item
+/// Model representing an item in the about screen sections
+struct AboutSectionItem: Identifiable, Hashable {
+    let id: UUID
+    let title: String
+    let value: String?
+    let systemImage: String?
+    let action: AboutItemAction?
+    
+    enum AboutItemAction: Hashable {
+        case openURL(String)
+        case sendEmail(String)
+        case shareApp
+        case rateApp
+        case showLanguagePicker
+        case none
+    }
+    
+    init(
+        id: UUID = UUID(),
+        title: String,
+        value: String? = nil,
+        systemImage: String? = nil,
+        action: AboutItemAction? = nil
+    ) {
+        self.id = id
+        self.title = title
+        self.value = value
+        self.systemImage = systemImage
+        self.action = action
+    }
+}
+
+// MARK: - About Section
+/// Model representing a section in the about screen
+struct AboutScreenSection: Identifiable, Hashable {
+    let id: UUID
+    let title: String
+    let items: [AboutSectionItem]
+    
+    init(
+        id: UUID = UUID(),
+        title: String,
+        items: [AboutSectionItem]
+    ) {
+        self.id = id
+        self.title = title
+        self.items = items
+    }
+}
+
+// MARK: - About ViewModel
+/// ViewModel for AboutView - manages app information and about screen data
+@available(iOS 26.0, *)
+@MainActor
+final class AboutViewModel: ObservableObject {
+    
+    // MARK: - Published Properties
+    
+    /// Sections displayed in the about screen
+    @Published private(set) var sections: [AboutScreenSection] = []
+    
+    /// Show language picker sheet
+    @Published var showLanguagePicker: Bool = false
+    
+    /// Show share sheet
+    @Published var showShareSheet: Bool = false
+    
+    /// Error message if any
+    @Published var errorMessage: String?
+    
+    // MARK: - Computed Properties
+    
+    /// App version string
+    var appVersion: String {
+        return AboutData.fullVersionString
+    }
+    
+    /// App name
+    var appName: String {
+        return AboutData.localizedAppName
+    }
+    
+    /// Developer name
+    var developerName: String {
+        return AboutData.developerName
+    }
+    
+    /// Copyright text
+    var copyrightText: String {
+        return AboutData.copyrightText
+    }
+    
+    // MARK: - Initialization
+    
+    init() {
+        loadSections()
+    }
+    
+    // MARK: - Public Methods
+    
+    /// Loads about screen sections
+    func loadSections() {
+        sections = createSections()
+    }
+    
+    /// Handles item action
+    /// - Parameter item: The item that was tapped
+    func handleAction(for item: AboutSectionItem) {
+        guard let action = item.action else { return }
+        
+        switch action {
+        case .openURL(let urlString):
+            openURL(urlString)
+        case .sendEmail(let email):
+            sendEmail(to: email)
+        case .shareApp:
+            showShareSheet = true
+        case .rateApp:
+            openAppStore()
+        case .showLanguagePicker:
+            showLanguagePicker = true
+        case .none:
+            break
+        }
+    }
+    
+    /// Opens a URL in Safari
+    /// - Parameter urlString: URL string to open
+    func openURL(_ urlString: String) {
+        guard let url = URL(string: urlString) else {
+            errorMessage = NSLocalizedString(LocalizationKeys.ErrorMessage.networkError, comment: "")
+            return
+        }
+        
+        UIApplication.shared.open(url)
+    }
+    
+    /// Opens email composer
+    /// - Parameter email: Email address
+    func sendEmail(to email: String) {
+        let mailtoURL = "mailto:\(email)?subject=DENKLEM%20App%20Feedback"
+        if let url = URL(string: mailtoURL) {
+            UIApplication.shared.open(url)
+        }
+    }
+    
+    /// Opens App Store for rating
+    func openAppStore() {
+        if let url = URL(string: AboutData.appStoreReviewURL) {
+            UIApplication.shared.open(url)
+        }
+    }
+    
+    /// Returns share items for the app
+    func getShareItems() -> [Any] {
+        let appStoreURL = AboutData.appStoreURL
+        let shareText = String(format: NSLocalizedString(
+            "about.share.text",
+            value: "DENKLEM - Arabuluculuk Ücreti Hesaplama uygulamasını deneyin!",
+            comment: ""
+        ))
+        
+        return [shareText, appStoreURL]
+    }
+    
+    // MARK: - Private Methods
+    
+    /// Creates about screen sections
+    private func createSections() -> [AboutScreenSection] {
+        return [
+            createAppInfoSection(),
+            createDeveloperSection(),
+            createSupportSection(),
+            createLegalSection()
+        ]
+    }
+    
+    /// Creates app info section
+    private func createAppInfoSection() -> AboutScreenSection {
+        AboutScreenSection(
+            title: NSLocalizedString(LocalizationKeys.About.appInfo, comment: ""),
+            items: [
+                AboutSectionItem(
+                    title: NSLocalizedString(LocalizationKeys.About.version, comment: ""),
+                    value: AboutData.fullVersionString,
+                    systemImage: "info.circle"
+                ),
+                AboutSectionItem(
+                    title: NSLocalizedString(LocalizationKeys.About.supportedYears, comment: ""),
+                    value: AboutData.supportedYears.map { String($0) }.joined(separator: ", "),
+                    systemImage: "calendar"
+                ),
+                AboutSectionItem(
+                    title: NSLocalizedString(LocalizationKeys.About.disputeTypes, comment: ""),
+                    value: String(AboutData.supportedDisputeTypesCount),
+                    systemImage: "list.bullet"
+                ),
+                AboutSectionItem(
+                    title: NSLocalizedString(LocalizationKeys.About.calculationTypes, comment: ""),
+                    value: String(AboutData.supportedCalculationTypesCount),
+                    systemImage: "function"
+                )
+            ]
+        )
+    }
+    
+    /// Creates developer section
+    private func createDeveloperSection() -> AboutScreenSection {
+        AboutScreenSection(
+            title: NSLocalizedString(LocalizationKeys.About.developer, comment: ""),
+            items: [
+                AboutSectionItem(
+                    title: NSLocalizedString(LocalizationKeys.About.company, comment: ""),
+                    value: AboutData.companyName,
+                    systemImage: "building.2"
+                ),
+                AboutSectionItem(
+                    title: NSLocalizedString(LocalizationKeys.Contact.email, comment: ""),
+                    value: AboutData.developerEmail,
+                    systemImage: "envelope",
+                    action: .sendEmail(AboutData.developerEmail)
+                ),
+                AboutSectionItem(
+                    title: NSLocalizedString(LocalizationKeys.Contact.website, comment: ""),
+                    value: AboutData.companyWebsite,
+                    systemImage: "globe",
+                    action: .openURL(AboutData.companyWebsite)
+                )
+            ]
+        )
+    }
+    
+    /// Creates support section
+    private func createSupportSection() -> AboutScreenSection {
+        AboutScreenSection(
+            title: NSLocalizedString(LocalizationKeys.About.contact, comment: ""),
+            items: [
+                AboutSectionItem(
+                    title: NSLocalizedString(LocalizationKeys.Contact.rateApp, comment: ""),
+                    systemImage: "star",
+                    action: .rateApp
+                ),
+                AboutSectionItem(
+                    title: NSLocalizedString(LocalizationKeys.Contact.shareApp, comment: ""),
+                    systemImage: "square.and.arrow.up",
+                    action: .shareApp
+                ),
+                AboutSectionItem(
+                    title: NSLocalizedString(LocalizationKeys.Contact.sendFeedback, comment: ""),
+                    systemImage: "envelope",
+                    action: .sendEmail(AboutData.developerEmail)
+                )
+            ]
+        )
+    }
+    
+    /// Creates legal section
+    private func createLegalSection() -> AboutScreenSection {
+        AboutScreenSection(
+            title: NSLocalizedString(LocalizationKeys.About.legal, comment: ""),
+            items: [
+                AboutSectionItem(
+                    title: NSLocalizedString(LocalizationKeys.Legal.source, comment: ""),
+                    value: AboutData.legislationSource,
+                    systemImage: "doc.text"
+                ),
+                AboutSectionItem(
+                    title: NSLocalizedString(LocalizationKeys.Legal.disclaimer, comment: ""),
+                    systemImage: "exclamationmark.triangle"
+                )
+            ]
+        )
+    }
+}
+
+// MARK: - Preview Support
+
+#if DEBUG
+@available(iOS 26.0, *)
+extension AboutViewModel {
+    /// Creates a preview instance
+    static var preview: AboutViewModel {
+        return AboutViewModel()
+    }
+}
+#endif

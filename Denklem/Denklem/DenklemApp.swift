@@ -11,12 +11,18 @@ import SwiftUI
 @available(iOS 26.0, *)
 struct DenklemApp: App {
     
+    // MARK: - State Objects
+    
     @StateObject private var themeManager = ThemeManager()
+    @StateObject private var localeManager = LocaleManager.shared
+    
+    // MARK: - Body
     
     var body: some Scene {
         WindowGroup {
-            StartScreenView()  
+            TabBarView()
                 .injectTheme(themeManager.currentTheme)
+                .injectLocaleManager(localeManager)
                 .preferredColorScheme(themeManager.colorScheme)
         }
     }
