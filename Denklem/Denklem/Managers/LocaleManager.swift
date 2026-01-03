@@ -32,6 +32,9 @@ final class LocaleManager: ObservableObject {
     /// Current locale based on selected language
     @Published private(set) var currentLocale: Locale
     
+    /// Refresh ID for forcing view updates when locale changes
+    @Published var refreshID: UUID = UUID()
+    
     /// Whether a language change requires app restart
     @Published private(set) var requiresRestart: Bool = false
     
@@ -62,6 +65,7 @@ final class LocaleManager: ObservableObject {
         guard language != currentLanguage else { return }
         
         currentLanguage = language
+        refreshID = UUID()  // Force view refresh
         requiresRestart = true
     }
     

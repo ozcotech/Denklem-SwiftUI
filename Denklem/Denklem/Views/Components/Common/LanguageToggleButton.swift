@@ -9,7 +9,7 @@ import SwiftUI
 
 // MARK: - Language Toggle Button
 /// A toolbar button that toggles between Turkish and English languages
-/// Uses iOS 26 native Liquid Glass button style
+/// Uses iOS 26 native Liquid Glass button style with circle shape
 @available(iOS 26.0, *)
 struct LanguageToggleButton: View {
     
@@ -27,18 +27,14 @@ struct LanguageToggleButton: View {
         Button {
             toggleLanguage()
         } label: {
-            HStack(spacing: 4) {
-                Image(systemName: "globe")
-                    .font(.system(size: 14, weight: .medium))
-                
-                Text(localeManager.toggleTargetShortName)
-                    .font(.system(size: 13, weight: .semibold))
-                    .contentTransition(.numericText())
-            }
-            .foregroundStyle(theme.primary)
+            Text(localeManager.toggleTargetShortName)
+                .font(.system(size: 14, weight: .bold))
+                .contentTransition(.numericText())
+                .foregroundStyle(theme.primary)
+                .frame(width: 20, height: 20)
         }
-        .buttonStyle(.bordered)
-        .buttonBorderShape(.capsule)
+        .buttonStyle(.glass)
+        .buttonBorderShape(.circle)
         .accessibilityLabel(accessibilityLabel)
         .accessibilityHint(accessibilityHint)
     }

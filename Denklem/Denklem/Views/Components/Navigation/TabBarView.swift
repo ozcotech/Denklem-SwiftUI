@@ -20,11 +20,11 @@ enum TabItem: String, CaseIterable, Identifiable, Hashable {
     var title: String {
         switch self {
         case .home:
-            return NSLocalizedString(LocalizationKeys.TabBar.home, comment: "Home tab")
+            return NSLocalizedString(LocalizationKeys.TabBar.home, tableName: nil, bundle: Bundle.localizedBundle, value: "", comment: "Home tab")
         case .legislation:
-            return NSLocalizedString(LocalizationKeys.TabBar.legislation, comment: "Legislation tab")
+            return NSLocalizedString(LocalizationKeys.TabBar.legislation, tableName: nil, bundle: Bundle.localizedBundle, value: "", comment: "Legislation tab")
         case .about:
-            return NSLocalizedString(LocalizationKeys.TabBar.about, comment: "About tab")
+            return NSLocalizedString(LocalizationKeys.TabBar.about, tableName: nil, bundle: Bundle.localizedBundle, value: "", comment: "About tab")
         }
     }
     
@@ -77,6 +77,9 @@ struct TabBarView: View {
     // MARK: - Body
     
     var body: some View {
+        // Observe language changes to trigger view refresh
+        let _ = localeManager.refreshID
+        
         TabView(selection: $selectedTab) {
             // MARK: - Home Tab
             Tab(value: .home) {

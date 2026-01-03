@@ -33,105 +33,110 @@ struct TariffConstants {
     // MARK: - Time Calculation Constants
     static let timeCalculationEnabled = true
     
-    // MARK: - 2025 Tariff Constants
+    // MARK: - 2025 Tariff Constants (Official)
     struct Tariff2025 {
         
-        // MARK: - Minimum Hours Multiplier (for fee calculation)
-        static let minimumHoursMultiplier = 2 // Non-agreement cases require minimum 2 hours
-        // MARK: - Hourly Rates
+        // MARK: - Minimum Hours Multiplier
+        static let minimumHoursMultiplier = 2
+        
+        // MARK: - Hourly Rates (Official 2025 Rates)
         static let hourlyRates: [String: Double] = [
-            "worker_employer": 785,
-            "commercial": 1150,
-            "consumer": 785,
-            "rent": 835,
-            "neighbor": 835,
-            "condominium": 835,
-            "family": 785,
-            "other": 785,
-            "partnership_dissolution": 900
+            DisputeConstants.DisputeTypeKeys.workerEmployer: 785.0,
+            DisputeConstants.DisputeTypeKeys.commercial: 1150.0,
+            DisputeConstants.DisputeTypeKeys.consumer: 785.0,
+            DisputeConstants.DisputeTypeKeys.rent: 835.0,
+            DisputeConstants.DisputeTypeKeys.neighbor: 835.0,
+            DisputeConstants.DisputeTypeKeys.condominium: 835.0,
+            DisputeConstants.DisputeTypeKeys.family: 785.0,
+            DisputeConstants.DisputeTypeKeys.partnershipDissolution: 900.0,
+            DisputeConstants.DisputeTypeKeys.other: 785.0
         ]
         
         // MARK: - Party Count Thresholds
         static let partyCountThresholds = [2, 5, 10, Int.max]
         
-        // MARK: - Fixed Fees by Party Count
+        // MARK: - Fixed Fees by Party Count (Official 2025 Fees)
         static let fixedFees: [String: [Double]] = [
-            "worker_employer": [1570, 1650, 1750, 1850],
-            "commercial": [2300, 2350, 2450, 2550],
-            "consumer": [1570, 1650, 1750, 1850],
-            "rent": [1670, 1750, 1850, 1950],
-            "neighbor": [1670, 1750, 1850, 1950],
-            "condominium": [1670, 1750, 1850, 1950],
-            "family": [1570, 1650, 1750, 1850],
-            "partnership_dissolution": [1800, 2000, 2100, 2200],
-            "other": [1570, 1650, 1750, 1850]
+            DisputeConstants.DisputeTypeKeys.workerEmployer: [1570.0, 1650.0, 1750.0, 1850.0],
+            DisputeConstants.DisputeTypeKeys.commercial: [2300.0, 2350.0, 2450.0, 2550.0],
+            DisputeConstants.DisputeTypeKeys.consumer: [1570.0, 1650.0, 1750.0, 1850.0],
+            DisputeConstants.DisputeTypeKeys.rent: [1670.0, 1750.0, 1850.0, 1950.0],
+            DisputeConstants.DisputeTypeKeys.neighbor: [1670.0, 1750.0, 1850.0, 1950.0],
+            DisputeConstants.DisputeTypeKeys.condominium: [1670.0, 1750.0, 1850.0, 1950.0],
+            DisputeConstants.DisputeTypeKeys.family: [1570.0, 1650.0, 1750.0, 1850.0],
+            DisputeConstants.DisputeTypeKeys.partnershipDissolution: [1800.0, 2000.0, 2100.0, 2200.0],
+            DisputeConstants.DisputeTypeKeys.other: [1570.0, 1650.0, 1750.0, 1850.0]
         ]
         
-        // MARK: - Minimum Fees
+        // MARK: - Minimum Fees (Official 2025)
         static let minimumFees: [String: Double] = [
-            "general": 6000,
-            "commercial": 9000
+            "general": 6000.0,
+            "commercial": 9000.0
         ]
         
-        // MARK: - Bracket Calculation (for monetary disputes with agreement)
+        // MARK: - Bracket Calculation (Official 2025)
         static let brackets: [(limit: Double, rate: Double)] = [
-            (300_000, 0.06),
-            (780_000, 0.05),
-            (1_560_000, 0.04),
-            (4_680_000, 0.03),
-            (6_240_000, 0.02),
-            (12_480_000, 0.015),
-            (26_520_000, 0.01),
+            (300_000.0, 0.06),
+            (780_000.0, 0.05),
+            (1_560_000.0, 0.04),
+            (4_680_000.0, 0.03),
+            (6_240_000.0, 0.02),
+            (12_480_000.0, 0.015),
+            (26_520_000.0, 0.01),
             (Double.infinity, 0.005)
         ]
     }
     
-    // MARK: - 2026 Tariff Constants (Placeholder - Will be updated in January 2026)
+    // MARK: - 2026 Tariff Constants (Official - Updated)
     struct Tariff2026 {
-        // MARK: - Minimum Hours Multiplier (for fee calculation)
-        static let minimumHoursMultiplier = 2 // Non-agreement cases require minimum 2 hours
-        // TODO: These values are estimates with 15% increase
-        // IMPORTANT: Update these values when official 2026 tariff is published in January 2026
         
+        // MARK: - Minimum Hours Multiplier
+        static let minimumHoursMultiplier = 2
+        
+        // MARK: - Hourly Rates (Official 2026 Rates)
         static let hourlyRates: [String: Double] = [
-            "worker_employer": 785 * 1.15,
-            "commercial": 1150 * 1.15,
-            "consumer": 785 * 1.15,
-            "rent": 835 * 1.15,
-            "neighbor": 835 * 1.15,
-            "condominium": 835 * 1.15,
-            "family": 785 * 1.15,
-            "other": 785 * 1.15,
-            "partnership_dissolution": 900 * 1.15
+            DisputeConstants.DisputeTypeKeys.workerEmployer: 1130.0,
+            DisputeConstants.DisputeTypeKeys.commercial: 1500.0,
+            DisputeConstants.DisputeTypeKeys.consumer: 1000.0,
+            DisputeConstants.DisputeTypeKeys.rent: 1170.0,
+            DisputeConstants.DisputeTypeKeys.neighbor: 1000.0,
+            DisputeConstants.DisputeTypeKeys.condominium: 1000.0,
+            DisputeConstants.DisputeTypeKeys.family: 1000.0,
+            DisputeConstants.DisputeTypeKeys.partnershipDissolution: 1170.0,
+            DisputeConstants.DisputeTypeKeys.other: 1000.0
         ]
         
+        // MARK: - Party Count Thresholds
+        static let partyCountThresholds = [2, 5, 10, Int.max]
+        
+        // MARK: - Fixed Fees by Party Count (Official 2026 Fees)
         static let fixedFees: [String: [Double]] = [
-            "worker_employer": [1570 * 1.15, 1650 * 1.15, 1750 * 1.15, 1850 * 1.15],
-            "commercial": [2300 * 1.15, 2350 * 1.15, 2450 * 1.15, 2550 * 1.15],
-            "consumer": [1570 * 1.15, 1650 * 1.15, 1750 * 1.15, 1850 * 1.15],
-            "rent": [1670 * 1.15, 1750 * 1.15, 1850 * 1.15, 1950 * 1.15],
-            "neighbor": [1670 * 1.15, 1750 * 1.15, 1850 * 1.15, 1950 * 1.15],
-            "condominium": [1670 * 1.15, 1750 * 1.15, 1850 * 1.15, 1950 * 1.15],
-            "family": [1570 * 1.15, 1650 * 1.15, 1750 * 1.15, 1850 * 1.15],
-            "partnership_dissolution": [1800 * 1.15, 2000 * 1.15, 2100 * 1.15, 2200 * 1.15],
-            "other": [1570 * 1.15, 1650 * 1.15, 1750 * 1.15, 1850 * 1.15]
+            DisputeConstants.DisputeTypeKeys.workerEmployer: [2260.0, 2460.0, 2560.0, 2660.0],
+            DisputeConstants.DisputeTypeKeys.commercial: [3000.0, 3200.0, 3300.0, 3400.0],
+            DisputeConstants.DisputeTypeKeys.consumer: [2000.0, 2200.0, 2300.0, 2400.0],
+            DisputeConstants.DisputeTypeKeys.rent: [2340.0, 2540.0, 2640.0, 2740.0],
+            DisputeConstants.DisputeTypeKeys.neighbor: [2340.0, 2540.0, 2640.0, 2740.0],
+            DisputeConstants.DisputeTypeKeys.condominium: [2340.0, 2540.0, 2640.0, 2740.0],
+            DisputeConstants.DisputeTypeKeys.family: [2000.0, 2200.0, 2300.0, 2400.0],
+            DisputeConstants.DisputeTypeKeys.partnershipDissolution: [2340.0, 2540.0, 2640.0, 2740.0],
+            DisputeConstants.DisputeTypeKeys.other: [2000.0, 2200.0, 2300.0, 2400.0]
         ]
         
+        // MARK: - Minimum Fees (Official 2026)
         static let minimumFees: [String: Double] = [
-            // TODO: Update with official 2026 values
-            "general": 6000 * 1.15,
-            "commercial": 9000 * 1.15
+            "general": 9000.0,
+            "commercial": 13000.0
         ]
         
+        // MARK: - Bracket Calculation (Official 2026)
         static let brackets: [(limit: Double, rate: Double)] = [
-            // TODO: Update with official 2026 values
-            (300_000 * 1.15, 0.06),
-            (780_000 * 1.15, 0.05),
-            (1_560_000 * 1.15, 0.04),
-            (4_680_000 * 1.15, 0.03),
-            (6_240_000 * 1.15, 0.02),
-            (12_480_000 * 1.15, 0.015),
-            (26_520_000 * 1.15, 0.01),
+            (600_000.0, 0.06),
+            (1_560_000.0, 0.05),
+            (3_120_000.0, 0.04),
+            (6_240_000.0, 0.03),
+            (15_600_000.0, 0.02),
+            (28_080_000.0, 0.015),
+            (53_040_000.0, 0.01),
             (Double.infinity, 0.005)
         ]
     }
@@ -269,21 +274,21 @@ extension TariffConstants {
     /// Maps dispute type key to localized display name using LocalizationKeys
     static func getLocalizedDisputeTypeName(for key: String) -> String {
         switch key {
-        case "worker_employer":
+        case DisputeConstants.DisputeTypeKeys.workerEmployer:
             return NSLocalizedString(LocalizationKeys.DisputeType.workerEmployer, comment: "")
-        case "commercial":
+        case DisputeConstants.DisputeTypeKeys.commercial:
             return NSLocalizedString(LocalizationKeys.DisputeType.commercial, comment: "")
-        case "consumer":
+        case DisputeConstants.DisputeTypeKeys.consumer:
             return NSLocalizedString(LocalizationKeys.DisputeType.consumer, comment: "")
-        case "rent":
+        case DisputeConstants.DisputeTypeKeys.rent:
             return NSLocalizedString(LocalizationKeys.DisputeType.rent, comment: "")
-        case "neighbor":
+        case DisputeConstants.DisputeTypeKeys.neighbor:
             return NSLocalizedString(LocalizationKeys.DisputeType.neighbor, comment: "")
-        case "condominium":
+        case DisputeConstants.DisputeTypeKeys.condominium:
             return NSLocalizedString(LocalizationKeys.DisputeType.condominium, comment: "")
-        case "family":
+        case DisputeConstants.DisputeTypeKeys.family:
             return NSLocalizedString(LocalizationKeys.DisputeType.family, comment: "")
-        case "partnership_dissolution":
+        case DisputeConstants.DisputeTypeKeys.partnershipDissolution:
             return NSLocalizedString(LocalizationKeys.DisputeType.partnershipDissolution, comment: "")
         default:
             return NSLocalizedString(LocalizationKeys.DisputeType.other, comment: "")
@@ -292,23 +297,46 @@ extension TariffConstants {
     
     /// Maps dispute type to tariff key
     static func mapDisputeTypeToTariffKey(_ disputeType: String?) -> String {
-        guard let disputeType = disputeType else { return "other" }
+        guard let disputeType = disputeType else { return DisputeConstants.DisputeTypeKeys.other }
         
-        if disputeType.contains("Kira") || disputeType.contains("Rent") { return "rent" }
-        if disputeType.contains("Komşu") || disputeType.contains("Neighbor") { return "neighbor" }
-        if disputeType.contains("Kat Mülkiyeti") || disputeType.contains("Condominium") { return "condominium" }
-        if disputeType.contains("Ortaklık") || disputeType.contains("Partnership") { return "partnership_dissolution" }
-        if disputeType.contains("İşçi") || disputeType.contains("İşveren") || disputeType.contains("Worker") || disputeType.contains("Employer") { return "worker_employer" }
-        if disputeType.contains("Ticari") || disputeType.contains("Commercial") { return "commercial" }
-        if disputeType.contains("Tüketici") || disputeType.contains("Consumer") { return "consumer" }
-        if disputeType.contains("Aile") || disputeType.contains("Family") { return "family" }
+        // Direct key match first
+        if DisputeConstants.DisputeTypeKeys.allKeys.contains(disputeType) {
+            return disputeType
+        }
         
-        return "other"
+        // Fallback string matching
+        if disputeType.contains("Kira") || disputeType.contains("Rent") {
+            return DisputeConstants.DisputeTypeKeys.rent
+        }
+        if disputeType.contains("Komşu") || disputeType.contains("Neighbor") {
+            return DisputeConstants.DisputeTypeKeys.neighbor
+        }
+        if disputeType.contains("Kat Mülkiyeti") || disputeType.contains("Condominium") {
+            return DisputeConstants.DisputeTypeKeys.condominium
+        }
+        if disputeType.contains("Ortaklık") || disputeType.contains("Partnership") {
+            return DisputeConstants.DisputeTypeKeys.partnershipDissolution
+        }
+        if disputeType.contains("İşçi") || disputeType.contains("İşveren") || disputeType.contains("Worker") || disputeType.contains("Employer") {
+            return DisputeConstants.DisputeTypeKeys.workerEmployer
+        }
+        if disputeType.contains("Ticari") || disputeType.contains("Commercial") {
+            return DisputeConstants.DisputeTypeKeys.commercial
+        }
+        if disputeType.contains("Tüketici") || disputeType.contains("Consumer") {
+            return DisputeConstants.DisputeTypeKeys.consumer
+        }
+        if disputeType.contains("Aile") || disputeType.contains("Family") {
+            return DisputeConstants.DisputeTypeKeys.family
+        }
+        
+        return DisputeConstants.DisputeTypeKeys.other
     }
 }
 
-// MARK: - Dispute Categories (Localized)
-enum DisputeCategory: String, CaseIterable {
+// MARK: - Legacy Dispute Type Enum (For Backward Compatibility)
+// Note: Use Models/Domain/DisputeType for new code
+enum LegacyDisputeType: String, CaseIterable {
     case workerEmployer = "worker_employer"
     case commercial = "commercial"
     case consumer = "consumer"

@@ -62,14 +62,30 @@ struct LocalizationKeys {
         }
     }
     
-    // MARK: - Dispute Categories
+    // MARK: - Dispute Categories (Main Categories)
     struct DisputeCategory {
-        static let employment = "dispute_category.employment"
-        static let business = "dispute_category.business"
-        static let consumer = "dispute_category.consumer"
-        static let immovable = "dispute_category.immovable"
-        static let family = "dispute_category.family"
-        static let general = "dispute_category.general"
+        // Screen
+        static let title = "dispute_category.title"
+        static let subtitle = "dispute_category.subtitle"
+        
+        // Main Categories
+        static let monetary = "dispute_category.monetary"
+        static let monetaryDescription = "dispute_category.monetary.description"
+        static let nonMonetary = "dispute_category.non_monetary"
+        static let nonMonetaryDescription = "dispute_category.non_monetary.description"
+        
+        // Other Calculations
+        static let otherCalculations = "dispute_category.other_calculations"
+        static let timeCalculation = "dispute_category.time_calculation"
+        static let timeCalculationDescription = "dispute_category.time_calculation.description"
+        static let smmCalculation = "dispute_category.smm_calculation"
+        static let smmCalculationDescription = "dispute_category.smm_calculation.description"
+        
+        // Future Features (Phase 2+)
+        static let rentSpecial = "dispute_category.rent_special"
+        static let rentSpecialDescription = "dispute_category.rent_special.description"
+        static let lawyerFee = "dispute_category.lawyer_fee"
+        static let lawyerFeeDescription = "dispute_category.lawyer_fee.description"
     }
     
     // MARK: - Agreement Status
@@ -387,17 +403,19 @@ extension LocalizationKeys {
 extension String {
     
     /// Returns localized string using the string as key
+    /// Uses Bundle.localizedBundle for runtime language switching
     var localized: String {
-        return NSLocalizedString(self, comment: "")
+        return NSLocalizedString(self, tableName: nil, bundle: Bundle.localizedBundle, value: "", comment: "")
     }
     
     /// Returns localized string with format arguments
     func localized(_ arguments: CVarArg...) -> String {
-        return String(format: NSLocalizedString(self, comment: ""), arguments: arguments)
+        let format = NSLocalizedString(self, tableName: nil, bundle: Bundle.localizedBundle, value: "", comment: "")
+        return String(format: format, arguments: arguments)
     }
     
     /// Returns localized string with custom comment
     func localized(comment: String) -> String {
-        return NSLocalizedString(self, comment: comment)
+        return NSLocalizedString(self, tableName: nil, bundle: Bundle.localizedBundle, value: "", comment: comment)
     }
 }

@@ -23,6 +23,7 @@ struct DenklemApp: App {
             TabBarView()
                 .injectTheme(themeManager.currentTheme)
                 .injectLocaleManager(localeManager)
+                .environment(\.locale, localeManager.currentLocale)
                 .preferredColorScheme(themeManager.colorScheme)
         }
     }

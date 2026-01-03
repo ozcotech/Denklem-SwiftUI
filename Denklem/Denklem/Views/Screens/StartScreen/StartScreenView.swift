@@ -12,6 +12,7 @@ struct StartScreenView: View {
     // MARK: - Properties
     
     @StateObject private var viewModel = StartScreenViewModel()
+    @ObservedObject private var localeManager = LocaleManager.shared
     @Environment(\.theme) var theme
     
     // MARK: - Animation Properties
@@ -21,6 +22,9 @@ struct StartScreenView: View {
     // MARK: - Body
     
     var body: some View {
+        // Observe language changes to trigger view refresh
+        let _ = localeManager.refreshID
+        
         ZStack {
             // Background Image
             Image("AppStartBackground")
@@ -67,10 +71,7 @@ struct StartScreenView: View {
         .navigationTitle("")
         .navigationBarTitleDisplayMode(.inline)
         .navigationDestination(isPresented: $viewModel.navigateToDisputeCategory) {
-            // TODO: Navigate to DisputeCategoryView
-            Text(LocalizationKeys.ScreenTitle.disputeCategoryComingSoon.localized)
-                .font(theme.title)
-                .foregroundColor(theme.textPrimary)
+            DisputeCategoryView(selectedYear: viewModel.selectedYear)
         }
     }
     

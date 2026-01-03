@@ -16,11 +16,15 @@ struct LegislationView: View {
     // MARK: - Properties
     
     @StateObject private var viewModel = LegislationViewModel()
+    @ObservedObject private var localeManager = LocaleManager.shared
     @Environment(\.theme) var theme
     
     // MARK: - Body
     
     var body: some View {
+        // Observe language changes to trigger view refresh
+        let _ = localeManager.refreshID
+        
         ScrollView {
             VStack(spacing: theme.spacingL) {
                 // Header Section

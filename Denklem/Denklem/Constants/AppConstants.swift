@@ -180,9 +180,9 @@ enum SupportedLanguage: String, CaseIterable, Identifiable, Hashable, Sendable {
     var displayName: String {
         switch self {
         case .turkish: 
-            return NSLocalizedString(LocalizationKeys.Language.turkish, comment: "Turkish language")
+            return NSLocalizedString(LocalizationKeys.Language.turkish, tableName: nil, bundle: Bundle.localizedBundle, value: "", comment: "Turkish language")
         case .english: 
-            return NSLocalizedString(LocalizationKeys.Language.english, comment: "English language")
+            return NSLocalizedString(LocalizationKeys.Language.english, tableName: nil, bundle: Bundle.localizedBundle, value: "", comment: "English language")
         }
     }
     
