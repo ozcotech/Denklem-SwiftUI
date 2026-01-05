@@ -76,13 +76,13 @@ struct StartScreenView: View {
             // App Title - LOCALIZED ✅
             Text(LocalizationKeys.AppInfo.name.localized)
                 .font(theme.title2)
-                .foregroundColor(theme.textPrimary)
+                .foregroundColor(.white)
                 .fontWeight(.bold)
             
             // App Subtitle - LOCALIZED ✅
             Text(LocalizationKeys.AppInfo.tagline.localized)
                 .font(theme.subheadline)
-                .foregroundColor(theme.textSecondary)
+                .foregroundColor(.white.opacity(0.8))
                 .multilineTextAlignment(.center)
         }
         .frame(maxWidth: .infinity)
@@ -96,17 +96,14 @@ struct StartScreenView: View {
         Picker("", selection: $viewModel.selectedYear) {
             ForEach(TariffYear.allCases, id: \.self) { year in
                 Text(String(format: "%d", year.rawValue))
-                    .font(.system(size: 18, weight: .semibold))
+                    .font(.system(size: 18, weight: .regular))
                     .tag(year)
             }
         }
         .pickerStyle(.segmented)
         .tint(theme.primary)
+        .scaleEffect(y: 1.4) 
         .padding(.horizontal, theme.spacingXXL)
-        .onAppear {
-            // Set UISegmentedControl height via UIKit
-            UISegmentedControl.appearance().setContentHuggingPriority(.defaultLow, for: .vertical)
-        }
         .onChange(of: viewModel.selectedYear) { _, newYear in
             viewModel.selectYear(newYear)
         }
