@@ -42,7 +42,20 @@ struct StartScreenView: View {
                 startPoint: .top,
                 endPoint: .bottom
             )
-            .ignoresSafeArea()
+                        refactor: redesign StartScreen layout with minimalist header and bottom-aligned controls
+            
+            UI Changes:
+            - Removed app logo icon for cleaner, minimalist design
+            - Reduced header text size (title2, subheadline) and tightened spacing
+            - Moved header to top with minimal padding
+            
+            Layout Improvements:
+            - Removed ScrollView to prevent unwanted scrolling behavior
+            - Implemented fixed VStack layout with Spacer() for vertical alignment
+            - Positioned year picker and Enter button at bottom above tab bar
+            - Added bottom padding to maintain safe distance from tab bar
+            
+            Result: Clean, static layout with controls anchored to bottom, no scrolling
             
             // Content
             VStack(spacing: theme.spacingXXL) {
