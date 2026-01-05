@@ -45,28 +45,22 @@ struct StartScreenView: View {
             .ignoresSafeArea()
             
             // Content
-            ScrollView {
-                VStack(spacing: theme.spacingXXL) {
-                    
-                    Spacer()
-                        .frame(height: theme.spacingXXL)
-                    
-                    // Header Section
-                    headerSection
-                    
-                    Spacer()
-                        .frame(height: theme.spacingL)
-                    
-                    // Year Selection
-                    yearSelectionSection
-                    
-                    // Primary Action Button
-                    primaryActionButton
-                    
-                    Spacer()
-                }
-                .padding(.horizontal, theme.spacingXL)
+            VStack(spacing: theme.spacingXXL) {
+                
+                // Header Section at top
+                headerSection
+                
+                // Spacer pushes content to bottom
+                Spacer()
+                
+                // Year Selection
+                yearSelectionSection
+                
+                // Primary Action Button
+                primaryActionButton
             }
+            .padding(.horizontal, theme.spacingXL)
+            .padding(.bottom, theme.spacingXXL)
         }
         .navigationTitle("")
         .navigationBarTitleDisplayMode(.inline)
@@ -78,33 +72,21 @@ struct StartScreenView: View {
     // MARK: - Header Section
     
     private var headerSection: some View {
-        VStack(spacing: theme.spacingL) {
-            // App Logo
-            Image(systemName: "scale.3d")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 120, height: 120)
-                .foregroundColor(theme.primary)
-                .shadow(
-                    color: theme.primary.opacity(0.3),
-                    radius: 20,
-                    x: 0,
-                    y: 10
-                )
-            
+        VStack(spacing: theme.spacingXS) {
             // App Title - LOCALIZED ✅
             Text(LocalizationKeys.AppInfo.name.localized)
-                .font(theme.largeTitle)
+                .font(theme.title2)
                 .foregroundColor(theme.textPrimary)
                 .fontWeight(.bold)
             
             // App Subtitle - LOCALIZED ✅
             Text(LocalizationKeys.AppInfo.tagline.localized)
-                .font(theme.headline)
+                .font(theme.subheadline)
                 .foregroundColor(theme.textSecondary)
                 .multilineTextAlignment(.center)
-                .padding(.horizontal, theme.spacingL)
         }
+        .frame(maxWidth: .infinity)
+        .padding(.top, theme.spacingXL)
     }
     
     // MARK: - Year Selection Section
