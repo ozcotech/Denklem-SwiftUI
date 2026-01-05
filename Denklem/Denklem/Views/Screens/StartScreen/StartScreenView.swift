@@ -146,7 +146,7 @@ struct StartScreenView: View {
                     .foregroundColor(.white)
                     .offset(x: arrowOffset)
             }
-            .padding(.horizontal, theme.spacingL)
+            .frame(maxWidth: .infinity)
             .frame(height: 50)
         }
         .buttonStyle(.glass)

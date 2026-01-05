@@ -34,16 +34,17 @@ struct TimeCalculationView: View {
             
             ScrollView {
                 VStack(spacing: theme.spacingXL) {
-                    // Date Input Section
+                    // Date Input Section - matches Calculate button width
                     dateInputSection
+                        .padding(.horizontal, theme.spacingXXL)
                     
-                    // Calculate Button
+                    // Calculate Button - independent padding (matches StartScreen Enter button)
                     calculateButton
+                        .padding(.horizontal, theme.spacingXXL)
                     
                     Spacer()
                         .frame(height: theme.spacingXXL)
                 }
-                .padding(.horizontal, theme.spacingL)
                 .padding(.top, theme.spacingXL)
             }
         }
@@ -125,7 +126,7 @@ struct TimeCalculationView: View {
             }
             .foregroundStyle(theme.textPrimary)
             .frame(maxWidth: .infinity)
-            .frame(height: 56)
+            .frame(height: 50)
         }
         .buttonStyle(.glass)
         .tint(theme.primary)
@@ -172,18 +173,25 @@ struct ResultsSheet: View {
                 .padding(.horizontal, theme.spacingL)
                 .padding(.top, theme.spacingM)
             }
-            .background(theme.background)
             .navigationTitle(LocalizationKeys.TimeCalculation.Result.processEndDates.localized)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button(LocalizationKeys.General.done.localized) {
+                    Button {
                         dismiss()
+                    } label: {
+                        Text("✓")
+                            .font(.system(size: 18, weight: .bold))
+                            .foregroundStyle(theme.textPrimary)
+                            .frame(width: 30, height: 30)
                     }
-                    .buttonStyle(.glass)
+                    .buttonStyle(.plain)
+                    .accessibilityLabel(LocalizationKeys.General.done.localized)
                 }
             }
         }
+        .presentationBackground(.clear) // Transparent sheet background
+        .presentationBackgroundInteraction(.enabled) // Allow interaction through glass
         .presentationDetents([.medium, .large])
         .presentationDragIndicator(.visible)
     }
@@ -209,10 +217,7 @@ struct ResultsSheet: View {
                 .foregroundStyle(theme.primary)
         }
         .padding(theme.spacingM)
-        .background(
-            RoundedRectangle(cornerRadius: theme.cornerRadiusL)
-                .fill(theme.surface)
-        )
+        .glassEffect(.regular.interactive()) // Liquid Glass header card
     }
 }
 
