@@ -16,6 +16,9 @@ struct DenklemApp: App {
     @StateObject private var themeManager = ThemeManager()
     @StateObject private var localeManager = LocaleManager.shared
     
+    /// System color scheme to detect appearance changes
+    @Environment(\.colorScheme) private var systemColorScheme
+    
     // MARK: - Body
     
     var body: some Scene {
@@ -25,6 +28,9 @@ struct DenklemApp: App {
                 .injectLocaleManager(localeManager)
                 .environment(\.locale, localeManager.currentLocale)
                 .preferredColorScheme(themeManager.colorScheme)
+                .onChange(of: systemColorScheme) { _, newColorScheme in
+                    themeManager.applySystemTheme(newColorScheme)
+                }
         }
     }
 }

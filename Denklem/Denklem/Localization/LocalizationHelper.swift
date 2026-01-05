@@ -146,7 +146,7 @@ struct LocalizationHelper {
     static func formatDate(_ date: Date) -> String {
         let formatter = DateFormatter()
         formatter.locale = currentLocale
-        formatter.dateStyle = .medium
+        formatter.dateStyle = .long  // Changed from .medium to .long for full month names
         formatter.timeStyle = .none
         
         return formatter.string(from: date)

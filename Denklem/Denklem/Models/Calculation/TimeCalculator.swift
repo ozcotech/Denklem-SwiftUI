@@ -199,6 +199,8 @@ final class TimeCalculator: ObservableObject {
             return "labor_law" // Family disputes use same timing as labor law
         case .partnershipDissolution:
             return "partnership_dissolution"
+        case .agriculturalProduction:
+            return "agricultural_production" // Agricultural production has 2-3 weeks timing
         case .other:
             return "labor_law" // Default to labor law timing
         }

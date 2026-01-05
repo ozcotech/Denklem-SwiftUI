@@ -19,6 +19,7 @@ enum DisputeType: String, CaseIterable, Identifiable, Hashable {
     case condominium = "condominium"
     case family = "family"
     case partnershipDissolution = "partnership_dissolution"
+    case agriculturalProduction = "agricultural_production"
     case other = "other"
     
     // MARK: - Identifiable Conformance
@@ -46,6 +47,8 @@ enum DisputeType: String, CaseIterable, Identifiable, Hashable {
             return NSLocalizedString(LocalizationKeys.DisputeType.family, comment: "Family dispute type")
         case .partnershipDissolution:
             return NSLocalizedString(LocalizationKeys.DisputeType.partnershipDissolution, comment: "Partnership dissolution dispute type")
+        case .agriculturalProduction:
+            return NSLocalizedString(LocalizationKeys.TimeCalculation.agriculturalProduction, comment: "Agricultural production dispute type")
         case .other:
             return NSLocalizedString(LocalizationKeys.DisputeType.other, comment: "Other dispute type")
         }
@@ -70,6 +73,8 @@ enum DisputeType: String, CaseIterable, Identifiable, Hashable {
             return NSLocalizedString(LocalizationKeys.DisputeType.Description.family, comment: "Family description")
         case .partnershipDissolution:
             return NSLocalizedString(LocalizationKeys.DisputeType.Description.partnershipDissolution, comment: "Partnership dissolution description")
+        case .agriculturalProduction:
+            return NSLocalizedString(LocalizationKeys.TimeCalculation.agriculturalProduction, comment: "Agricultural production description")
         case .other:
             return NSLocalizedString(LocalizationKeys.DisputeType.Description.other, comment: "Other description")
         }
@@ -96,6 +101,8 @@ enum DisputeType: String, CaseIterable, Identifiable, Hashable {
             return .family
         case .partnershipDissolution:
             return .partnershipDissolution
+        case .agriculturalProduction:
+            return .other
         case .other:
             return .other
         }
@@ -112,7 +119,8 @@ enum DisputeType: String, CaseIterable, Identifiable, Hashable {
         case .condominium: return 6
         case .neighbor: return 7
         case .partnershipDissolution: return 8
-        case .other: return 9
+        case .agriculturalProduction: return 9
+        case .other: return 10
         }
     }
     
@@ -121,7 +129,7 @@ enum DisputeType: String, CaseIterable, Identifiable, Hashable {
         switch self {
         case .commercial, .rent, .partnershipDissolution:
             return true
-        case .workerEmployer, .consumer, .neighbor, .condominium, .family, .other:
+        case .workerEmployer, .consumer, .neighbor, .condominium, .family, .agriculturalProduction, .other:
             return false // Can be both monetary and non-monetary
         }
     }
@@ -265,7 +273,7 @@ enum DisputeType: String, CaseIterable, Identifiable, Hashable {
             return 900.0
         case .rent, .neighbor, .condominium:
             return 835.0
-        case .workerEmployer, .consumer, .family, .other:
+        case .workerEmployer, .consumer, .family, .agriculturalProduction, .other:
             return 785.0 // Standard rate
         }
     }
@@ -280,7 +288,7 @@ enum DisputeType: String, CaseIterable, Identifiable, Hashable {
             baseFee = 1800.0
         case .rent, .neighbor, .condominium:
             baseFee = 1670.0
-        case .workerEmployer, .consumer, .family, .other:
+        case .workerEmployer, .consumer, .family, .agriculturalProduction, .other:
             baseFee = 1570.0
         }
         

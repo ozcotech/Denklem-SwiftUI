@@ -30,11 +30,11 @@ struct LanguageToggleButton: View {
             Text(localeManager.toggleTargetShortName)
                 .font(.system(size: 14, weight: .bold))
                 .contentTransition(.numericText())
-                .foregroundStyle(theme.primary)
-                .frame(width: 20, height: 20)
+                .foregroundStyle(theme.textPrimary)
+                .frame(width: 30, height: 30)
+                .glassEffect(.regular.interactive(), in: Circle())
         }
-        .buttonStyle(.glass)
-        .buttonBorderShape(.circle)
+        .buttonStyle(.plain)
         .accessibilityLabel(accessibilityLabel)
         .accessibilityHint(accessibilityHint)
     }

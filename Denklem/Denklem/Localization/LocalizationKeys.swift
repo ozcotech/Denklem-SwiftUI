@@ -192,6 +192,7 @@ struct LocalizationKeys {
         static let partyCount = "input.party_count"
         static let mediationFee = "input.mediation_fee"
         static let startDate = "input.start_date"
+        static let assignmentDate = "input.assignment_date"
         
         struct Placeholder {
             static let amount = "input.placeholder.amount"
@@ -233,6 +234,7 @@ struct LocalizationKeys {
             static let weeks = "time_calculation.weeks"
             static let deadline = "time_calculation.deadline"
             static let extendedDeadline = "time_calculation.extended_deadline"
+            static let processEndDates = "time_calculation.process_end_dates"
         }
         
         static let disputeTypeDuration = "time_calculation.dispute_type_duration"
