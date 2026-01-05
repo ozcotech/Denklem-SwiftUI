@@ -97,7 +97,12 @@ struct DisputeTypeView: View {
     // MARK: - Dispute Type Buttons Section
     
     private var disputeTypeButtonsSection: some View {
-        VStack(spacing: theme.spacingM) {
+        let columns = [
+            GridItem(.flexible(), spacing: theme.spacingM),
+            GridItem(.flexible(), spacing: theme.spacingM)
+        ]
+        
+        return LazyVGrid(columns: columns, spacing: theme.spacingM) {
             ForEach(viewModel.availableDisputeTypes) { disputeType in
                 DisputeTypeButton(
                     disputeType: disputeType,
@@ -125,8 +130,12 @@ struct DisputeTypeButton: View {
                 .font(theme.body)
                 .fontWeight(.medium)
                 .foregroundStyle(theme.textPrimary)
+                .multilineTextAlignment(.center)
+                .lineLimit(2)
+                .minimumScaleFactor(0.85)
                 .frame(maxWidth: .infinity)
                 .frame(height: 56)
+                .padding(.horizontal, theme.spacingXS)
         }
         .buttonStyle(.glass)
         .buttonBorderShape(.roundedRectangle(radius: 16))
