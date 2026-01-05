@@ -32,7 +32,6 @@ struct LanguageToggleButton: View {
                 .contentTransition(.numericText())
                 .foregroundStyle(theme.textPrimary)
                 .frame(width: 30, height: 30)
-                .glassEffect(.regular.interactive(), in: Circle())
         }
         .buttonStyle(.plain)
         .accessibilityLabel(accessibilityLabel)
