@@ -32,25 +32,25 @@ enum DisputeType: String, CaseIterable, Identifiable, Hashable {
     var displayName: String {
         switch self {
         case .workerEmployer:
-            return NSLocalizedString(LocalizationKeys.DisputeType.workerEmployer, comment: "Worker-Employer dispute type")
+            return LocalizationKeys.DisputeType.workerEmployer.localized
         case .commercial:
-            return NSLocalizedString(LocalizationKeys.DisputeType.commercial, comment: "Commercial dispute type")
+            return LocalizationKeys.DisputeType.commercial.localized
         case .consumer:
-            return NSLocalizedString(LocalizationKeys.DisputeType.consumer, comment: "Consumer dispute type")
+            return LocalizationKeys.DisputeType.consumer.localized
         case .rent:
-            return NSLocalizedString(LocalizationKeys.DisputeType.rent, comment: "Rent dispute type")
+            return LocalizationKeys.DisputeType.rent.localized
         case .neighbor:
-            return NSLocalizedString(LocalizationKeys.DisputeType.neighbor, comment: "Neighbor dispute type")
+            return LocalizationKeys.DisputeType.neighbor.localized
         case .condominium:
-            return NSLocalizedString(LocalizationKeys.DisputeType.condominium, comment: "Condominium dispute type")
+            return LocalizationKeys.DisputeType.condominium.localized
         case .family:
-            return NSLocalizedString(LocalizationKeys.DisputeType.family, comment: "Family dispute type")
+            return LocalizationKeys.DisputeType.family.localized
         case .partnershipDissolution:
-            return NSLocalizedString(LocalizationKeys.DisputeType.partnershipDissolution, comment: "Partnership dissolution dispute type")
+            return LocalizationKeys.DisputeType.partnershipDissolution.localized
         case .agriculturalProduction:
-            return NSLocalizedString(LocalizationKeys.TimeCalculation.agriculturalProduction, comment: "Agricultural production dispute type")
+            return LocalizationKeys.TimeCalculation.agriculturalProduction.localized
         case .other:
-            return NSLocalizedString(LocalizationKeys.DisputeType.other, comment: "Other dispute type")
+            return LocalizationKeys.DisputeType.other.localized
         }
     }
     
@@ -58,25 +58,25 @@ enum DisputeType: String, CaseIterable, Identifiable, Hashable {
     var description: String {
         switch self {
         case .workerEmployer:
-            return NSLocalizedString(LocalizationKeys.DisputeType.Description.workerEmployer, comment: "Worker-Employer description")
+            return LocalizationKeys.DisputeType.Description.workerEmployer.localized
         case .commercial:
-            return NSLocalizedString(LocalizationKeys.DisputeType.Description.commercial, comment: "Commercial description")
+            return LocalizationKeys.DisputeType.Description.commercial.localized
         case .consumer:
-            return NSLocalizedString(LocalizationKeys.DisputeType.Description.consumer, comment: "Consumer description")
+            return LocalizationKeys.DisputeType.Description.consumer.localized
         case .rent:
-            return NSLocalizedString(LocalizationKeys.DisputeType.Description.rent, comment: "Rent description")
+            return LocalizationKeys.DisputeType.Description.rent.localized
         case .neighbor:
-            return NSLocalizedString(LocalizationKeys.DisputeType.Description.neighbor, comment: "Neighbor description")
+            return LocalizationKeys.DisputeType.Description.neighbor.localized
         case .condominium:
-            return NSLocalizedString(LocalizationKeys.DisputeType.Description.condominium, comment: "Condominium description")
+            return LocalizationKeys.DisputeType.Description.condominium.localized
         case .family:
-            return NSLocalizedString(LocalizationKeys.DisputeType.Description.family, comment: "Family description")
+            return LocalizationKeys.DisputeType.Description.family.localized
         case .partnershipDissolution:
-            return NSLocalizedString(LocalizationKeys.DisputeType.Description.partnershipDissolution, comment: "Partnership dissolution description")
+            return LocalizationKeys.DisputeType.Description.partnershipDissolution.localized
         case .agriculturalProduction:
-            return NSLocalizedString(LocalizationKeys.TimeCalculation.agriculturalProduction, comment: "Agricultural production description")
+            return LocalizationKeys.TimeCalculation.agriculturalProduction.localized
         case .other:
-            return NSLocalizedString(LocalizationKeys.DisputeType.Description.other, comment: "Other description")
+            return LocalizationKeys.DisputeType.Description.other.localized
         }
     }
     

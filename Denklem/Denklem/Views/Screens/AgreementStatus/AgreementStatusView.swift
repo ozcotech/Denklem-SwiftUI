@@ -66,10 +66,11 @@ struct AgreementStatusView: View {
             }
         }
         .navigationDestination(isPresented: $viewModel.navigateToDisputeType) {
-            // TODO: Navigate to DisputeTypeView when implemented
-            Text(verbatim: "DisputeTypeView - isMonetary: \(String(viewModel.isMonetary)), hasAgreement: \(String(viewModel.selectedStatus == .agreed))")
-                .font(theme.title)
-                .foregroundColor(theme.textPrimary)
+            DisputeTypeView(
+                selectedYear: viewModel.selectedYear,
+                isMonetary: viewModel.isMonetary,
+                hasAgreement: viewModel.selectedStatus == .agreed
+            )
         }
     }
     
