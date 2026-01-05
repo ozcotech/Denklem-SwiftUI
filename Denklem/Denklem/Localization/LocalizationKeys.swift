@@ -92,6 +92,8 @@ struct LocalizationKeys {
     struct AgreementStatus {
         static let agreed = "agreement_status.agreed"
         static let notAgreed = "agreement_status.not_agreed"
+        static let selectPrompt = "agreement_status.select_prompt"
+        static let tapToSelect = "agreement_status.tap_to_select"
         
         struct Description {
             static let agreed = "agreement_status.agreed.description"

@@ -64,11 +64,8 @@ struct DisputeCategoryView: View {
                 LanguageToggleButton()
             }
         }
-        .navigationDestination(isPresented: $viewModel.navigateToDisputeType) {
-            // TODO: Navigate to DisputeTypeView
-            Text("DisputeTypeView - isMonetary: \\(viewModel.isMonetary)")
-                .font(theme.title)
-                .foregroundColor(theme.textPrimary)
+        .navigationDestination(isPresented: $viewModel.navigateToAgreementStatus) {
+            AgreementStatusView(selectedYear: viewModel.selectedYear, isMonetary: viewModel.isMonetary)
         }
         .navigationDestination(isPresented: $viewModel.navigateToTimeCalculation) {
             TimeCalculationView()

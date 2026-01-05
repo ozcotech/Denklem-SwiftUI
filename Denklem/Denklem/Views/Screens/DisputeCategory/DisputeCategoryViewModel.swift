@@ -87,14 +87,14 @@ final class DisputeCategoryViewModel: ObservableObject {
     @Published var selectedYear: TariffYear
     
     /// Navigation flags
-    @Published var navigateToDisputeType: Bool = false
+    @Published var navigateToAgreementStatus: Bool = false
     @Published var navigateToTimeCalculation: Bool = false
     @Published var navigateToSMMCalculation: Bool = false
     
     /// Selected category for navigation
     @Published var selectedCategory: DisputeCategoryType?
     
-    /// Is monetary dispute (for DisputeTypeView parameter)
+    /// Is monetary dispute (for AgreementStatusView parameter)
     @Published var isMonetary: Bool = false
     
     // MARK: - Computed Properties
@@ -140,11 +140,11 @@ final class DisputeCategoryViewModel: ObservableObject {
         switch category {
         case .monetary:
             isMonetary = true
-            navigateToDisputeType = true
+            navigateToAgreementStatus = true
             
         case .nonMonetary:
             isMonetary = false
-            navigateToDisputeType = true
+            navigateToAgreementStatus = true
             
         case .timeCalculation:
             navigateToTimeCalculation = true
@@ -164,7 +164,7 @@ final class DisputeCategoryViewModel: ObservableObject {
     
     /// Resets navigation state
     func resetNavigation() {
-        navigateToDisputeType = false
+        navigateToAgreementStatus = false
         navigateToTimeCalculation = false
         navigateToSMMCalculation = false
         selectedCategory = nil
