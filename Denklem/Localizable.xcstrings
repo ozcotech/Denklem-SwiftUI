@@ -3372,13 +3372,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Input"
+            "value" : "Dispute Information"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bilgi Girişi"
+            "value" : "Uyuşmazlık Bilgileri"
           }
         }
       }

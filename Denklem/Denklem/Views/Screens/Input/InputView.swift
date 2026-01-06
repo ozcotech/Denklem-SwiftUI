@@ -20,6 +20,10 @@ struct InputView: View {
     @Environment(\.theme) var theme
     @Environment(\.dismiss) private var dismiss
     
+    // MARK: - Namespace for Morphing Transitions
+    
+    @Namespace private var glassNamespace
+    
     // MARK: - Initialization
     
     init(selectedYear: TariffYear, isMonetary: Bool, hasAgreement: Bool, selectedDisputeType: DisputeType) {
@@ -64,6 +68,10 @@ struct InputView: View {
                 .padding(.bottom, theme.spacingXXL)
             }
         }
+        .onTapGesture {
+            // Dismiss keyboard when tapping outside
+            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+        }
         .navigationTitle(viewModel.screenTitle)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -84,7 +92,7 @@ struct InputView: View {
         VStack(spacing: theme.spacingS) {
             // Dispute Type Badge
             Text(viewModel.selectedDisputeType.displayName)
-                .font(theme.caption)
+                .font(theme.footnote)
                 .fontWeight(.semibold)
                 .foregroundStyle(theme.textSecondary)
                 .padding(.horizontal, theme.spacingM)
@@ -94,17 +102,17 @@ struct InputView: View {
                         .fill(theme.surfaceElevated.opacity(0.6))
                 }
             
-            // Title
-            Text(viewModel.hasAgreement ? LocalizationKeys.Input.agreementAmount.localized : LocalizationKeys.Input.partyCount.localized)
+            // Agreement Status
+            Text(viewModel.agreementStatusText)
                 .font(theme.title3)
-                .fontWeight(.bold)
-                .foregroundStyle(theme.textPrimary)
-                .multilineTextAlignment(.center)
-            
-            // Subtitle
-            Text(viewModel.hasAgreement ? LocalizationKeys.Start.selectYearHint.localized : LocalizationKeys.Start.selectYearHint.localized)
-                .font(theme.subheadline)
+                .fontWeight(.semibold)
                 .foregroundStyle(theme.textSecondary)
+            
+            // Selected Year
+            Text(viewModel.selectedYearText)
+                .font(theme.caption)
+                .fontWeight(.semibold)
+                .foregroundStyle(theme.textPrimary)
                 .multilineTextAlignment(.center)
         }
         .frame(maxWidth: .infinity)
@@ -128,63 +136,61 @@ struct InputView: View {
     // MARK: - Amount Input Field
     
     private var amountInputField: some View {
-        VStack(alignment: .leading, spacing: theme.spacingXS) {
-            Text(viewModel.amountLabel)
-                .font(theme.footnote)
-                .fontWeight(.medium)
-                .foregroundStyle(theme.textSecondary)
-            
-            TextField("", text: $viewModel.amountText)
-                .font(theme.body)
-                .fontWeight(.medium)
-                .foregroundStyle(theme.textPrimary)
-                .keyboardType(.decimalPad)
-                .textFieldStyle(.plain)
-                .padding(theme.spacingM)
-                .frame(height: 56)
-                .background {
-                    RoundedRectangle(cornerRadius: 16)
-                        .fill(theme.surfaceElevated)
-                }
-                .overlay {
-                    RoundedRectangle(cornerRadius: 16)
-                        .stroke(theme.outline.opacity(0.2), lineWidth: 1)
-                }
-                .onChange(of: viewModel.amountText) { _, _ in
-                    viewModel.formatAmountInput()
-                }
-        }
+        TextField("", text: $viewModel.amountText)
+            .font(theme.body)
+            .fontWeight(.medium)
+            .foregroundStyle(theme.textPrimary)
+            .keyboardType(.decimalPad)
+            .textFieldStyle(.plain)
+            .multilineTextAlignment(.center)
+            .padding(theme.spacingM)
+            .frame(height: 50)
+            .background {
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(theme.surfaceElevated)
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 16)
+                            .fill(Color.primary.opacity(0.03))
+                    }
+            }
+            .overlay {
+                RoundedRectangle(cornerRadius: 16)
+                    .stroke(theme.outline.opacity(0.15), lineWidth: 1)
+            }
+            .glassEffectID("amountInput", in: glassNamespace)
+            .onChange(of: viewModel.amountText) { _, _ in
+                viewModel.formatAmountInput()
+            }
     }
     
     // MARK: - Party Count Input Field
     
     private var partyCountInputField: some View {
-        VStack(alignment: .leading, spacing: theme.spacingXS) {
-            Text(viewModel.partyCountLabel)
-                .font(theme.footnote)
-                .fontWeight(.medium)
-                .foregroundStyle(theme.textSecondary)
-            
-            TextField("", text: $viewModel.partyCountText)
-                .font(theme.body)
-                .fontWeight(.medium)
-                .foregroundStyle(theme.textPrimary)
-                .keyboardType(.numberPad)
-                .textFieldStyle(.plain)
-                .padding(theme.spacingM)
-                .frame(height: 56)
-                .background {
-                    RoundedRectangle(cornerRadius: 16)
-                        .fill(theme.surfaceElevated)
-                }
-                .overlay {
-                    RoundedRectangle(cornerRadius: 16)
-                        .stroke(theme.outline.opacity(0.2), lineWidth: 1)
-                }
-                .onChange(of: viewModel.partyCountText) { _, _ in
-                    viewModel.formatPartyCountInput()
-                }
-        }
+        TextField("", text: $viewModel.partyCountText)
+            .font(theme.body)
+            .fontWeight(.medium)
+            .foregroundStyle(theme.textPrimary)
+            .keyboardType(.numberPad)
+            .textFieldStyle(.plain)
+            .multilineTextAlignment(.center)
+            .padding(theme.spacingM)
+            .frame(height: 50)
+            .background {
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(theme.surfaceElevated)
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 16)
+                            .fill(Color.primary.opacity(0.03))
+                    }
+            }
+            .overlay {
+                RoundedRectangle(cornerRadius: 16)
+                    .stroke(theme.outline.opacity(0.15), lineWidth: 1)
+            }
+            .glassEffectID("partyCountInput", in: glassNamespace)
+            .onChange(of: viewModel.partyCountText) { _, _ in
+                viewModel.formatPartyCountInput()
+            }
     }
     
     // MARK: - Error Message View
@@ -212,9 +218,15 @@ struct InputView: View {
     
     private var calculateButton: some View {
         Button {
+            // Dismiss keyboard before calculating
+            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
             viewModel.calculate()
         } label: {
-            HStack(spacing: theme.spacingS) {
+            HStack(spacing: theme.spacingM) {
+                Text(viewModel.calculateButtonText)
+                    .font(theme.body)
+                    .fontWeight(.semibold)
+                
                 if viewModel.isCalculating {
                     ProgressView()
                         .tint(theme.textPrimary)
@@ -223,17 +235,14 @@ struct InputView: View {
                         .font(theme.body)
                         .fontWeight(.semibold)
                 }
-                
-                Text(viewModel.calculateButtonText)
-                    .font(theme.body)
-                    .fontWeight(.semibold)
             }
             .foregroundStyle(theme.textPrimary)
             .frame(maxWidth: .infinity)
-            .frame(height: 56)
+            .frame(height: 50)
         }
         .buttonStyle(.glass)
-        .buttonBorderShape(.roundedRectangle(radius: 16))
+        .tint(theme.primary)
+        .glassEffectID("calculate", in: glassNamespace)
         .disabled(!viewModel.isCalculateButtonEnabled || viewModel.isCalculating)
         .opacity(viewModel.isCalculateButtonEnabled ? 1.0 : 0.5)
     }
@@ -251,42 +260,25 @@ struct ResultSheet: View {
     
     var body: some View {
         NavigationStack {
-            ZStack {
-                // Background
-                theme.background
-                    .ignoresSafeArea()
-                
-                // Content
-                ScrollView {
-                    VStack(spacing: theme.spacingL) {
-                        
-                        // Success Icon
-                        Image(systemName: "checkmark.circle.fill")
-                            .font(.system(size: 64))
-                            .foregroundStyle(theme.success)
-                            .padding(.top, theme.spacingXL)
-                        
-                        // Result Title
-                        Text(LocalizationKeys.General.success.localized)
-                            .font(theme.title2)
-                            .fontWeight(.bold)
-                            .foregroundStyle(theme.textPrimary)
-                            .multilineTextAlignment(.center)
-                        
-                        // Main Fee Card
-                        mainFeeCard
-                        
-                        // Details Card
-                        detailsCard
-                        
-                        // Action Buttons
-                        actionButtons
-                    }
-                    .padding(.horizontal, theme.spacingL)
-                    .padding(.bottom, theme.spacingXXL)
+            ScrollView {
+                VStack(spacing: theme.spacingL) {
+                    
+                    // Success Icon
+                    Image(systemName: "checkmark.circle.fill")
+                        .font(.system(size: 64))
+                        .foregroundStyle(theme.success)
+                        .padding(.top, theme.spacingXL)
+                    
+                    // Main Fee Card
+                    mainFeeCard
+                    
+                    // Details Card
+                    detailsCard
                 }
+                .padding(.horizontal, theme.spacingL)
+                .padding(.bottom, theme.spacingXXL)
             }
-            .navigationTitle(LocalizationKeys.ScreenTitle.result.localized)
+            .navigationTitle("")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -300,6 +292,10 @@ struct ResultSheet: View {
                 }
             }
         }
+        .presentationBackground(.clear)
+        .presentationBackgroundInteraction(.enabled)
+        .presentationDetents([.large])
+        .presentationDragIndicator(.visible)
     }
     
     // MARK: - Main Fee Card
@@ -348,7 +344,7 @@ struct ResultSheet: View {
                 .background(theme.outline.opacity(0.2))
             
             detailRow(
-                label: LocalizationKeys.AgreementStatus.agreed.localized,
+                label: LocalizationKeys.ScreenTitle.agreementStatus.localized,
                 value: result.agreementStatus.displayName
             )
             
@@ -394,47 +390,7 @@ struct ResultSheet: View {
         }
     }
     
-    // MARK: - Action Buttons
-    
-    private var actionButtons: some View {
-        VStack(spacing: theme.spacingM) {
-            // Share Button
-            Button {
-                shareResult()
-            } label: {
-                HStack(spacing: theme.spacingS) {
-                    Image(systemName: "square.and.arrow.up")
-                        .font(theme.body)
-                        .fontWeight(.semibold)
-                    
-                    Text(LocalizationKeys.General.share.localized)
-                        .font(theme.body)
-                        .fontWeight(.semibold)
-                }
-                .foregroundStyle(theme.textPrimary)
-                .frame(maxWidth: .infinity)
-                .frame(height: 56)
-            }
-            .buttonStyle(.glass)
-            .buttonBorderShape(.roundedRectangle(radius: 16))
-            
-            // New Calculation Button
-            Button {
-                dismiss()
-            } label: {
-                Text(LocalizationKeys.General.close.localized)
-                    .font(theme.body)
-                    .fontWeight(.semibold)
-                    .foregroundStyle(theme.textSecondary)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 56)
-            }
-            .buttonStyle(.glassClear(theme: theme))
-            .buttonBorderShape(.roundedRectangle(radius: 16))
-        }
-    }
-    
-    // MARK: - Private Methods
+    // MARK: - Private Methods (for future use)
     
     private func shareResult() {
         let text = """

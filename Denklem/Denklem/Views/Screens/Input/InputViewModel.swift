@@ -68,6 +68,16 @@ final class InputViewModel: ObservableObject {
         LocalizationKeys.General.calculate.localized
     }
     
+    /// Agreement status display text
+    var agreementStatusText: String {
+        hasAgreement ? LocalizationKeys.AgreementStatus.agreed.localized : LocalizationKeys.AgreementStatus.notAgreed.localized
+    }
+    
+    /// Selected year display text
+    var selectedYearText: String {
+        selectedYear.displayName
+    }
+    
     /// Whether amount input should be visible (only for agreement cases)
     var showAmountInput: Bool {
         hasAgreement
@@ -109,7 +119,16 @@ final class InputViewModel: ObservableObject {
         // Parse amount for agreement cases
         let amount: Double?
         if hasAgreement {
-            guard let parsedAmount = Double(amountText.replacingOccurrences(of: ",", with: ".")),
+            // Remove formatting and parse with locale awareness
+            let locale = LocaleManager.shared.currentLocale
+            let decimalSeparator = locale.decimalSeparator ?? ","
+            let groupingSeparator = locale.groupingSeparator ?? "."
+            
+            let cleanedAmount = amountText
+                .replacingOccurrences(of: groupingSeparator, with: "")
+                .replacingOccurrences(of: decimalSeparator, with: ".")
+            
+            guard let parsedAmount = Double(cleanedAmount),
                   parsedAmount >= ValidationConstants.Amount.minimum else {
                 errorMessage = LocalizationKeys.Validation.invalidAmount.localized
                 isCalculating = false
@@ -170,11 +189,59 @@ final class InputViewModel: ObservableObject {
         showResult = false
     }
     
-    /// Formats currency input as user types
+    /// Formats currency input as user types with locale-aware thousand separators and decimals
     func formatAmountInput() {
-        // Remove non-numeric characters except comma and dot
-        let filtered = amountText.filter { $0.isNumber || $0 == "," || $0 == "." }
-        amountText = filtered
+        // Get locale separators
+        let locale = LocaleManager.shared.currentLocale
+        let decimalSeparator = locale.decimalSeparator ?? ","
+        let groupingSeparator = locale.groupingSeparator ?? "."
+        
+        // Remove all formatting (keep only numbers and decimal separator)
+        var cleaned = amountText.replacingOccurrences(of: groupingSeparator, with: "")
+        
+        // Allow only numbers and one decimal separator
+        let allowedChars = CharacterSet.decimalDigits.union(CharacterSet(charactersIn: decimalSeparator))
+        cleaned = String(cleaned.unicodeScalars.filter { allowedChars.contains($0) })
+        
+        // Ensure only one decimal separator
+        let parts = cleaned.components(separatedBy: decimalSeparator)
+        if parts.count > 2 {
+            cleaned = parts[0] + decimalSeparator + parts[1]
+        }
+        
+        // If empty, clear
+        guard !cleaned.isEmpty else {
+            amountText = ""
+            return
+        }
+        
+        // Split into integer and decimal parts
+        let components = cleaned.components(separatedBy: decimalSeparator)
+        let integerPart = components[0]
+        let decimalPart = components.count > 1 ? components[1] : ""
+        
+        // Format integer part with grouping separators
+        if let number = Int(integerPart), number >= 0 {
+            let formatter = NumberFormatter()
+            formatter.numberStyle = .decimal
+            formatter.locale = locale
+            formatter.groupingSeparator = groupingSeparator
+            formatter.usesGroupingSeparator = true
+            formatter.maximumFractionDigits = 0
+            
+            if let formatted = formatter.string(from: NSNumber(value: number)) {
+                if decimalPart.isEmpty {
+                    amountText = formatted
+                } else {
+                    // Limit decimal part to 2 digits
+                    let limitedDecimal = String(decimalPart.prefix(2))
+                    amountText = formatted + decimalSeparator + limitedDecimal
+                }
+            }
+        } else if cleaned == decimalSeparator {
+            // If user just types decimal separator
+            amountText = "0" + decimalSeparator
+        }
     }
     
     /// Formats party count input as user types
