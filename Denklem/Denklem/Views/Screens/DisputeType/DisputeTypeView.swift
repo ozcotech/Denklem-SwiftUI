@@ -63,13 +63,13 @@ struct DisputeTypeView: View {
             }
         }
         .navigationDestination(isPresented: $viewModel.navigateToInput) {
-            // TODO: Navigate to InputView when implemented
             if let disputeType = viewModel.selectedDisputeType {
-                Text(verbatim: "InputView - Year: \(viewModel.selectedYear.displayName), Type: \(disputeType.displayName), Monetary: \(String(viewModel.isMonetary)), Agreement: \(String(viewModel.hasAgreement))")
-                    .font(theme.body)
-                    .foregroundColor(theme.textPrimary)
-                    .multilineTextAlignment(.center)
-                    .padding()
+                InputView(
+                    selectedYear: viewModel.selectedYear,
+                    isMonetary: viewModel.isMonetary,
+                    hasAgreement: viewModel.hasAgreement,
+                    selectedDisputeType: disputeType
+                )
             }
         }
     }

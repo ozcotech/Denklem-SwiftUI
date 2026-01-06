@@ -1,0 +1,485 @@
+//
+//  InputView.swift
+//  Denklem
+//
+//  Created by ozkan on 06.01.2026.
+//
+
+import SwiftUI
+
+// MARK: - Input View
+/// Displays input fields for calculation based on agreement status
+/// Shows amount + party count for agreement cases, only party count for non-agreement
+@available(iOS 26.0, *)
+struct InputView: View {
+    
+    // MARK: - Properties
+    
+    @StateObject private var viewModel: InputViewModel
+    @ObservedObject private var localeManager = LocaleManager.shared
+    @Environment(\.theme) var theme
+    @Environment(\.dismiss) private var dismiss
+    
+    // MARK: - Initialization
+    
+    init(selectedYear: TariffYear, isMonetary: Bool, hasAgreement: Bool, selectedDisputeType: DisputeType) {
+        _viewModel = StateObject(wrappedValue: InputViewModel(
+            selectedYear: selectedYear,
+            isMonetary: isMonetary,
+            hasAgreement: hasAgreement,
+            selectedDisputeType: selectedDisputeType
+        ))
+    }
+    
+    // MARK: - Body
+    
+    var body: some View {
+        // Observe language changes to trigger view refresh
+        let _ = localeManager.refreshID
+        
+        ZStack {
+            // Background
+            theme.background
+                .ignoresSafeArea()
+            
+            // Content
+            ScrollView {
+                VStack(spacing: theme.spacingL) {
+                    
+                    // Header Section
+                    headerSection
+                    
+                    // Input Fields Section
+                    inputFieldsSection
+                    
+                    // Error Message
+                    if let errorMessage = viewModel.errorMessage {
+                        errorMessageView(errorMessage)
+                    }
+                    
+                    // Calculate Button
+                    calculateButton
+                }
+                .padding(.horizontal, theme.spacingL)
+                .padding(.bottom, theme.spacingXXL)
+            }
+        }
+        .navigationTitle(viewModel.screenTitle)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                LanguageToggleButton()
+            }
+        }
+        .sheet(isPresented: $viewModel.showResult) {
+            if let result = viewModel.calculationResult {
+                ResultSheet(result: result, theme: theme)
+            }
+        }
+    }
+    
+    // MARK: - Header Section
+    
+    private var headerSection: some View {
+        VStack(spacing: theme.spacingS) {
+            // Dispute Type Badge
+            Text(viewModel.selectedDisputeType.displayName)
+                .font(theme.caption)
+                .fontWeight(.semibold)
+                .foregroundStyle(theme.textSecondary)
+                .padding(.horizontal, theme.spacingM)
+                .padding(.vertical, theme.spacingXS)
+                .background {
+                    Capsule()
+                        .fill(theme.surfaceElevated.opacity(0.6))
+                }
+            
+            // Title
+            Text(viewModel.hasAgreement ? LocalizationKeys.Input.agreementAmount.localized : LocalizationKeys.Input.partyCount.localized)
+                .font(theme.title3)
+                .fontWeight(.bold)
+                .foregroundStyle(theme.textPrimary)
+                .multilineTextAlignment(.center)
+            
+            // Subtitle
+            Text(viewModel.hasAgreement ? LocalizationKeys.Start.selectYearHint.localized : LocalizationKeys.Start.selectYearHint.localized)
+                .font(theme.subheadline)
+                .foregroundStyle(theme.textSecondary)
+                .multilineTextAlignment(.center)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.top, theme.spacingL)
+    }
+    
+    // MARK: - Input Fields Section
+    
+    private var inputFieldsSection: some View {
+        VStack(spacing: theme.spacingM) {
+            // Amount Input (only for agreement cases)
+            if viewModel.showAmountInput {
+                amountInputField
+            }
+            
+            // Party Count Input
+            partyCountInputField
+        }
+    }
+    
+    // MARK: - Amount Input Field
+    
+    private var amountInputField: some View {
+        VStack(alignment: .leading, spacing: theme.spacingXS) {
+            Text(viewModel.amountLabel)
+                .font(theme.footnote)
+                .fontWeight(.medium)
+                .foregroundStyle(theme.textSecondary)
+            
+            TextField("", text: $viewModel.amountText)
+                .font(theme.body)
+                .fontWeight(.medium)
+                .foregroundStyle(theme.textPrimary)
+                .keyboardType(.decimalPad)
+                .textFieldStyle(.plain)
+                .padding(theme.spacingM)
+                .frame(height: 56)
+                .background {
+                    RoundedRectangle(cornerRadius: 16)
+                        .fill(theme.surfaceElevated)
+                }
+                .overlay {
+                    RoundedRectangle(cornerRadius: 16)
+                        .stroke(theme.outline.opacity(0.2), lineWidth: 1)
+                }
+                .onChange(of: viewModel.amountText) { _, _ in
+                    viewModel.formatAmountInput()
+                }
+        }
+    }
+    
+    // MARK: - Party Count Input Field
+    
+    private var partyCountInputField: some View {
+        VStack(alignment: .leading, spacing: theme.spacingXS) {
+            Text(viewModel.partyCountLabel)
+                .font(theme.footnote)
+                .fontWeight(.medium)
+                .foregroundStyle(theme.textSecondary)
+            
+            TextField("", text: $viewModel.partyCountText)
+                .font(theme.body)
+                .fontWeight(.medium)
+                .foregroundStyle(theme.textPrimary)
+                .keyboardType(.numberPad)
+                .textFieldStyle(.plain)
+                .padding(theme.spacingM)
+                .frame(height: 56)
+                .background {
+                    RoundedRectangle(cornerRadius: 16)
+                        .fill(theme.surfaceElevated)
+                }
+                .overlay {
+                    RoundedRectangle(cornerRadius: 16)
+                        .stroke(theme.outline.opacity(0.2), lineWidth: 1)
+                }
+                .onChange(of: viewModel.partyCountText) { _, _ in
+                    viewModel.formatPartyCountInput()
+                }
+        }
+    }
+    
+    // MARK: - Error Message View
+    
+    private func errorMessageView(_ message: String) -> some View {
+        HStack(spacing: theme.spacingS) {
+            Image(systemName: "exclamationmark.triangle.fill")
+                .font(theme.caption)
+                .foregroundStyle(theme.error)
+            
+            Text(message)
+                .font(theme.footnote)
+                .foregroundStyle(theme.textPrimary)
+                .multilineTextAlignment(.leading)
+        }
+        .padding(theme.spacingM)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background {
+            RoundedRectangle(cornerRadius: 12)
+                .fill(theme.error.opacity(0.1))
+        }
+    }
+    
+    // MARK: - Calculate Button
+    
+    private var calculateButton: some View {
+        Button {
+            viewModel.calculate()
+        } label: {
+            HStack(spacing: theme.spacingS) {
+                if viewModel.isCalculating {
+                    ProgressView()
+                        .tint(theme.textPrimary)
+                } else {
+                    Image(systemName: "arrow.right.circle.fill")
+                        .font(theme.body)
+                        .fontWeight(.semibold)
+                }
+                
+                Text(viewModel.calculateButtonText)
+                    .font(theme.body)
+                    .fontWeight(.semibold)
+            }
+            .foregroundStyle(theme.textPrimary)
+            .frame(maxWidth: .infinity)
+            .frame(height: 56)
+        }
+        .buttonStyle(.glass)
+        .buttonBorderShape(.roundedRectangle(radius: 16))
+        .disabled(!viewModel.isCalculateButtonEnabled || viewModel.isCalculating)
+        .opacity(viewModel.isCalculateButtonEnabled ? 1.0 : 0.5)
+    }
+}
+
+// MARK: - Result Sheet
+/// Full screen sheet displaying calculation result
+@available(iOS 26.0, *)
+struct ResultSheet: View {
+    
+    let result: CalculationResult
+    let theme: ThemeProtocol
+    
+    @Environment(\.dismiss) private var dismiss
+    
+    var body: some View {
+        NavigationStack {
+            ZStack {
+                // Background
+                theme.background
+                    .ignoresSafeArea()
+                
+                // Content
+                ScrollView {
+                    VStack(spacing: theme.spacingL) {
+                        
+                        // Success Icon
+                        Image(systemName: "checkmark.circle.fill")
+                            .font(.system(size: 64))
+                            .foregroundStyle(theme.success)
+                            .padding(.top, theme.spacingXL)
+                        
+                        // Result Title
+                        Text(LocalizationKeys.General.success.localized)
+                            .font(theme.title2)
+                            .fontWeight(.bold)
+                            .foregroundStyle(theme.textPrimary)
+                            .multilineTextAlignment(.center)
+                        
+                        // Main Fee Card
+                        mainFeeCard
+                        
+                        // Details Card
+                        detailsCard
+                        
+                        // Action Buttons
+                        actionButtons
+                    }
+                    .padding(.horizontal, theme.spacingL)
+                    .padding(.bottom, theme.spacingXXL)
+                }
+            }
+            .navigationTitle(LocalizationKeys.ScreenTitle.result.localized)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .font(theme.body)
+                            .foregroundStyle(theme.textSecondary)
+                    }
+                }
+            }
+        }
+    }
+    
+    // MARK: - Main Fee Card
+    
+    private var mainFeeCard: some View {
+        VStack(spacing: theme.spacingM) {
+            Text(LocalizationKeys.Result.mediationFee.localized)
+                .font(theme.footnote)
+                .fontWeight(.medium)
+                .foregroundStyle(theme.textSecondary)
+            
+            Text(LocalizationHelper.formatCurrency(result.amount))
+                .font(.system(size: 48, weight: .bold, design: .rounded))
+                .foregroundStyle(theme.primary)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(theme.spacingL)
+        .background {
+            RoundedRectangle(cornerRadius: 20)
+                .fill(theme.surfaceElevated)
+        }
+        .overlay {
+            RoundedRectangle(cornerRadius: 20)
+                .stroke(theme.primary.opacity(0.2), lineWidth: 2)
+        }
+    }
+    
+    // MARK: - Details Card
+    
+    private var detailsCard: some View {
+        VStack(spacing: theme.spacingM) {
+            detailRow(
+                label: LocalizationKeys.Result.disputeType.localized,
+                value: result.disputeType.displayName
+            )
+            
+            Divider()
+                .background(theme.outline.opacity(0.2))
+            
+            detailRow(
+                label: LocalizationKeys.Result.tariffYear.localized,
+                value: result.input.tariffYear.displayName
+            )
+            
+            Divider()
+                .background(theme.outline.opacity(0.2))
+            
+            detailRow(
+                label: LocalizationKeys.AgreementStatus.agreed.localized,
+                value: result.agreementStatus.displayName
+            )
+            
+            if let amount = result.input.disputeAmount {
+                Divider()
+                    .background(theme.outline.opacity(0.2))
+                
+                detailRow(
+                    label: LocalizationKeys.Input.agreementAmount.localized,
+                    value: LocalizationHelper.formatCurrency(amount)
+                )
+            }
+            
+            Divider()
+                .background(theme.outline.opacity(0.2))
+            
+            detailRow(
+                label: LocalizationKeys.Result.partyCount.localized,
+                value: "\(result.input.partyCount)"
+            )
+        }
+        .padding(theme.spacingL)
+        .background {
+            RoundedRectangle(cornerRadius: 20)
+                .fill(theme.surfaceElevated)
+        }
+    }
+    
+    // MARK: - Detail Row
+    
+    private func detailRow(label: String, value: String) -> some View {
+        HStack {
+            Text(label)
+                .font(theme.footnote)
+                .foregroundStyle(theme.textSecondary)
+            
+            Spacer()
+            
+            Text(value)
+                .font(theme.body)
+                .fontWeight(.medium)
+                .foregroundStyle(theme.textPrimary)
+        }
+    }
+    
+    // MARK: - Action Buttons
+    
+    private var actionButtons: some View {
+        VStack(spacing: theme.spacingM) {
+            // Share Button
+            Button {
+                shareResult()
+            } label: {
+                HStack(spacing: theme.spacingS) {
+                    Image(systemName: "square.and.arrow.up")
+                        .font(theme.body)
+                        .fontWeight(.semibold)
+                    
+                    Text(LocalizationKeys.General.share.localized)
+                        .font(theme.body)
+                        .fontWeight(.semibold)
+                }
+                .foregroundStyle(theme.textPrimary)
+                .frame(maxWidth: .infinity)
+                .frame(height: 56)
+            }
+            .buttonStyle(.glass)
+            .buttonBorderShape(.roundedRectangle(radius: 16))
+            
+            // New Calculation Button
+            Button {
+                dismiss()
+            } label: {
+                Text(LocalizationKeys.General.close.localized)
+                    .font(theme.body)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(theme.textSecondary)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 56)
+            }
+            .buttonStyle(.glassClear(theme: theme))
+            .buttonBorderShape(.roundedRectangle(radius: 16))
+        }
+    }
+    
+    // MARK: - Private Methods
+    
+    private func shareResult() {
+        let text = """
+        \(LocalizationKeys.Result.mediationFee.localized): \(LocalizationHelper.formatCurrency(result.amount))
+        \(LocalizationKeys.Result.disputeType.localized): \(result.disputeType.displayName)
+        \(LocalizationKeys.Result.tariffYear.localized): \(result.input.tariffYear.displayName)
+        """
+        
+        let activityVC = UIActivityViewController(activityItems: [text], applicationActivities: nil)
+        
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let rootVC = windowScene.windows.first?.rootViewController {
+            rootVC.present(activityVC, animated: true)
+        }
+    }
+}
+
+// MARK: - Preview
+
+@available(iOS 26.0, *)
+struct InputView_Previews: PreviewProvider {
+    static var previews: some View {
+        Group {
+            NavigationStack {
+                InputView(
+                    selectedYear: .year2025,
+                    isMonetary: true,
+                    hasAgreement: true,
+                    selectedDisputeType: .workerEmployer
+                )
+            }
+            .injectTheme(LightTheme())
+            .previewDisplayName("Agreement - Light Mode")
+            
+            NavigationStack {
+                InputView(
+                    selectedYear: .year2025,
+                    isMonetary: true,
+                    hasAgreement: false,
+                    selectedDisputeType: .commercial
+                )
+            }
+            .injectTheme(DarkTheme())
+            .preferredColorScheme(.dark)
+            .previewDisplayName("Non-Agreement - Dark Mode")
+        }
+    }
+}
