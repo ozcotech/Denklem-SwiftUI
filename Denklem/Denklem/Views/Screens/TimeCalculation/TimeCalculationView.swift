@@ -20,6 +20,10 @@ struct TimeCalculationView: View {
     @Environment(\.theme) var theme
     @Environment(\.dismiss) private var dismiss
     
+    // MARK: - State for Date Picker Sheet
+    
+    @State private var showDatePicker = false
+    
     // MARK: - Namespace for Morphing Transitions
     
     @Namespace private var glassNamespace
@@ -32,7 +36,10 @@ struct TimeCalculationView: View {
             theme.background
                 .ignoresSafeArea()
             
-            ScrollView {
+            VStack {
+                Spacer()
+                    .frame(height: 80)
+                
                 VStack(spacing: theme.spacingXL) {
                     // Date Input Section - matches Calculate button width
                     dateInputSection
@@ -41,11 +48,9 @@ struct TimeCalculationView: View {
                     // Calculate Button - independent padding (matches StartScreen Enter button)
                     calculateButton
                         .padding(.horizontal, theme.spacingXXL)
-                    
-                    Spacer()
-                        .frame(height: theme.spacingXXL)
                 }
-                .padding(.top, theme.spacingXL)
+                
+                Spacer()
             }
         }
         .navigationTitle(LocalizationKeys.ScreenTitle.timeCalculation.localized)
@@ -88,26 +93,48 @@ struct TimeCalculationView: View {
             Text(LocalizationKeys.Input.assignmentDate.localized)
                 .font(theme.headline)
                 .foregroundStyle(theme.textPrimary)
-                .frame(maxWidth: .infinity, alignment: .leading)
+                .frame(maxWidth: .infinity, alignment: .center)
             
-            // Date Picker with Glass Effect
-            DatePicker(
-                "",
-                selection: $viewModel.startDate,
-                displayedComponents: .date
-            )
-            .datePickerStyle(.graphical)
-            .tint(theme.primary)
-            .padding(theme.spacingM)
-            .background(
-                RoundedRectangle(cornerRadius: theme.cornerRadiusL)
-                    .fill(theme.surface)
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: theme.cornerRadiusL)
-                    .stroke(theme.outline, lineWidth: theme.borderWidth)
-            )
+            // Date Selection Button with Glass Effect
+            Button {
+                showDatePicker = true
+            } label: {
+                HStack {
+                    Image(systemName: "calendar")
+                        .font(.title3)
+                        .foregroundStyle(theme.primary)
+                    
+                    Text(formattedDate)
+                        .font(theme.body)
+                        .foregroundStyle(theme.textPrimary)
+                    
+                    Spacer()
+                    
+                    Image(systemName: "chevron.right")
+                        .font(.caption)
+                        .foregroundStyle(theme.textSecondary)
+                }
+                .padding(theme.spacingM)
+                .frame(maxWidth: .infinity)
+                .frame(height: 50)
+            }
+            .buttonStyle(.glass)
+            .tint(theme.surface)
+            .glassEffectID("dateSelector", in: glassNamespace)
         }
+        .sheet(isPresented: $showDatePicker) {
+            DatePickerSheet(selectedDate: $viewModel.startDate, glassNamespace: glassNamespace)
+        }
+    }
+    
+    // MARK: - Formatted Date String
+    
+    private var formattedDate: String {
+        let formatter = DateFormatter()
+        // TR: dd.MM.yyyy / EN: MM/dd/yyyy
+        formatter.locale = localeManager.currentLocale
+        formatter.dateStyle = .medium
+        return formatter.string(from: viewModel.startDate)
     }
     
     // MARK: - Calculate Button
@@ -309,6 +336,58 @@ struct DeadlineRow: View {
                 )
                 .frame(maxWidth: 180) // Fixed max width for consistent alignment
         }
+    }
+}
+
+// MARK: - Date Picker Sheet
+/// Sheet displaying graphical date picker for date selection
+@available(iOS 26.0, *)
+struct DatePickerSheet: View {
+    
+    @Binding var selectedDate: Date
+    let glassNamespace: Namespace.ID
+    
+    @Environment(\.theme) var theme
+    @Environment(\.dismiss) private var dismiss
+    @ObservedObject private var localeManager = LocaleManager.shared
+    
+    var body: some View {
+        NavigationStack {
+            VStack(spacing: theme.spacingL) {
+                // Date Picker
+                DatePicker(
+                    "",
+                    selection: $selectedDate,
+                    displayedComponents: .date
+                )
+                .datePickerStyle(.graphical)
+                .tint(theme.primary)
+                .padding(theme.spacingM)
+                
+                Spacer()
+            }
+            .padding(.horizontal, theme.spacingL)
+            .padding(.top, theme.spacingM)
+            .navigationTitle(LocalizationKeys.Input.assignmentDate.localized)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Text("✓")
+                            .font(.system(size: 18, weight: .bold))
+                            .foregroundStyle(theme.primary)
+                            .frame(width: 30, height: 30)
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel(LocalizationKeys.General.done.localized)
+                }
+            }
+        }
+        .presentationDetents([.medium])
+        .presentationDragIndicator(.visible)
+        .id(localeManager.refreshID)
     }
 }
 
