@@ -50,9 +50,7 @@ struct LanguageToggleButton: View {
         localeManager.toggleLanguage()
         
         // Reset animation state
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
             isAnimating = false
-        }
     }
     
     // MARK: - Accessibility

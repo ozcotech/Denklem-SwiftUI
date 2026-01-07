@@ -170,7 +170,7 @@ final class InputViewModel: ObservableObject {
         if result.isSuccess {
             calculationResult = result
             // Small delay for better UX
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
+            DispatchQueue.main.async { [weak self] in
                 self?.isCalculating = false
                 self?.showResult = true
             }

@@ -109,11 +109,8 @@ final class AgreementStatusViewModel: ObservableObject {
     /// Selects an agreement status and navigates to DisputeTypeView
     /// - Parameter status: The agreement status to select
     func selectStatus(_ status: AgreementStatusType) {
-        selectedStatus = status
-        // Small delay to show selection before navigating
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
-            self?.navigateToDisputeType = true
-        }
+    selectedStatus = status
+    navigateToDisputeType = true
     }
     
     /// Validates status selection

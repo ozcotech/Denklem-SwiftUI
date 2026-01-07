@@ -67,11 +67,8 @@ final class DisputeTypeViewModel: ObservableObject {
     /// Selects a dispute type and navigates to InputView
     /// - Parameter disputeType: The dispute type to select
     func selectDisputeType(_ disputeType: DisputeType) {
-        selectedDisputeType = disputeType
-        // Small delay to show selection before navigating
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
-            self?.navigateToInput = true
-        }
+    selectedDisputeType = disputeType
+    navigateToInput = true
     }
     
     /// Validates dispute type selection
