@@ -102,7 +102,7 @@ struct StartScreenView: View {
         }
         .pickerStyle(.segmented)
         .tint(theme.primary)
-        .scaleEffect(y: 1.4) 
+        .scaleEffect(y: 1.2) 
         .padding(.horizontal, theme.spacingXXL)
         .onChange(of: viewModel.selectedYear) { _, newYear in
             viewModel.selectYear(newYear)

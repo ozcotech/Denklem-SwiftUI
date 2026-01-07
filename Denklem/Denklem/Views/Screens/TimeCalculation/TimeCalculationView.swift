@@ -271,7 +271,7 @@ struct DisputeTypeResultCard: View {
             DeadlineRow(
                 label: result.normalWeekLabel,
                 date: result.formattedNormalDeadline,
-                color: .blue,
+                color: theme.primary,
                 theme: theme
             )
             
@@ -279,7 +279,7 @@ struct DisputeTypeResultCard: View {
             DeadlineRow(
                 label: result.extendedWeekLabel,
                 date: result.formattedExtendedDeadline,
-                color: Color(red: 0.9, green: 0.3, blue: 0.4),
+                color: theme.error,
                 theme: theme
             )
         }
