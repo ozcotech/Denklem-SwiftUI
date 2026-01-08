@@ -78,11 +78,7 @@ struct AgreementStatusView: View {
     
     private var headerSection: some View {
         VStack(spacing: theme.spacingXS) {
-            Text(viewModel.screenTitle)
-                .font(theme.title2)
-                .fontWeight(.bold)
-                .foregroundStyle(theme.textPrimary)
-                .multilineTextAlignment(.center)
+            // Empty header for spacing consistency
         }
         .frame(maxWidth: .infinity)
         .padding(.top, theme.spacingXL)

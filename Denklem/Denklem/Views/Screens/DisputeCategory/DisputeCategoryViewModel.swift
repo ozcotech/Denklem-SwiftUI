@@ -88,6 +88,7 @@ final class DisputeCategoryViewModel: ObservableObject {
     
     /// Navigation flags
     @Published var navigateToAgreementStatus: Bool = false
+    @Published var navigateToDisputeType: Bool = false
     @Published var navigateToTimeCalculation: Bool = false
     @Published var navigateToSMMCalculation: Bool = false
     
@@ -143,8 +144,10 @@ final class DisputeCategoryViewModel: ObservableObject {
             navigateToAgreementStatus = true
             
         case .nonMonetary:
+            // Non-monetary disputes bypass AgreementStatus and go directly to DisputeType
+            // They are treated as non-agreement cases per Tariff Article 7, Paragraph 1
             isMonetary = false
-            navigateToAgreementStatus = true
+            navigateToDisputeType = true
             
         case .timeCalculation:
             navigateToTimeCalculation = true
@@ -165,6 +168,7 @@ final class DisputeCategoryViewModel: ObservableObject {
     /// Resets navigation state
     func resetNavigation() {
         navigateToAgreementStatus = false
+        navigateToDisputeType = false
         navigateToTimeCalculation = false
         navigateToSMMCalculation = false
         selectedCategory = nil

@@ -78,17 +78,7 @@ struct DisputeTypeView: View {
     
     private var headerSection: some View {
         VStack(spacing: theme.spacingXS) {
-            Text(viewModel.screenTitle)
-                .font(theme.title2)
-                .fontWeight(.bold)
-                .foregroundStyle(theme.textPrimary)
-                .multilineTextAlignment(.center)
-            
-            Text(LocalizationKeys.DisputeType.Description.other.localized)
-                .font(theme.subheadline)
-                .foregroundStyle(theme.textSecondary)
-                .multilineTextAlignment(.center)
-                .opacity(0) // Hidden but maintains spacing consistency
+            // Empty header for spacing consistency
         }
         .frame(maxWidth: .infinity)
         .padding(.top, theme.spacingL)

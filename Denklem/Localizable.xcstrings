@@ -3203,6 +3203,42 @@
         }
       }
     },
+    "result.dispute_subject" : {
+      "comment" : "result label - for non-monetary disputes",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dispute Subject"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uyuşmazlık Konusu"
+          }
+        }
+      }
+    },
+    "result.agreement_status" : {
+      "comment" : "result label - for monetary disputes",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Agreement Status"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anlaşma Durumu"
+          }
+        }
+      }
+    },
     "result.mediation_fee" : {
       "comment" : "result label",
       "extractionState" : "manual",

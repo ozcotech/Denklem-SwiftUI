@@ -169,11 +169,8 @@ final class InputViewModel: ObservableObject {
         // Handle result
         if result.isSuccess {
             calculationResult = result
-            // Small delay for better UX
-            DispatchQueue.main.async { [weak self] in
-                self?.isCalculating = false
-                self?.showResult = true
-            }
+            isCalculating = false
+            showResult = true
         } else {
             errorMessage = result.errorMessage ?? LocalizationKeys.ErrorMessage.calculationFailed.localized
             isCalculating = false

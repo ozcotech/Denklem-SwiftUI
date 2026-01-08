@@ -81,7 +81,7 @@ struct InputView: View {
         }
         .sheet(isPresented: $viewModel.showResult) {
             if let result = viewModel.calculationResult {
-                ResultSheet(result: result, theme: theme)
+                ResultSheet(result: result, theme: theme, isMonetary: viewModel.isMonetary)
             }
         }
     }
@@ -102,11 +102,13 @@ struct InputView: View {
                         .fill(theme.surfaceElevated.opacity(0.6))
                 }
             
-            // Agreement Status
-            Text(viewModel.agreementStatusText)
-                .font(theme.title3)
-                .fontWeight(.semibold)
-                .foregroundStyle(theme.textSecondary)
+            // Agreement Status (only for monetary disputes)
+            if viewModel.isMonetary {
+                Text(viewModel.agreementStatusText)
+                    .font(theme.title3)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(theme.textSecondary)
+            }
             
             // Selected Year
             Text(viewModel.selectedYearText)
@@ -255,6 +257,7 @@ struct ResultSheet: View {
     
     let result: CalculationResult
     let theme: ThemeProtocol
+    let isMonetary: Bool
     
     @Environment(\.dismiss) private var dismiss
     
@@ -327,6 +330,23 @@ struct ResultSheet: View {
     
     private var detailsCard: some View {
         VStack(spacing: theme.spacingM) {
+            // Agreement Status - special text for non-monetary disputes
+            if !isMonetary {
+                detailRow(
+                    label: LocalizationKeys.Result.disputeSubject.localized,
+                    value: "Konusu Para Olmayan"
+                )
+            } else {
+                detailRow(
+                    label: LocalizationKeys.Result.agreementStatus.localized,
+                    value: result.input.agreementStatus == .agreed ? LocalizationKeys.AgreementStatus.agreed.localized : LocalizationKeys.AgreementStatus.notAgreed.localized
+                )
+            }
+            
+            Divider()
+                .background(theme.outline.opacity(0.2))
+            
+            // Dispute Type
             detailRow(
                 label: LocalizationKeys.Result.disputeType.localized,
                 value: result.disputeType.displayName
@@ -335,6 +355,7 @@ struct ResultSheet: View {
             Divider()
                 .background(theme.outline.opacity(0.2))
             
+            // Tariff Year
             detailRow(
                 label: LocalizationKeys.Result.tariffYear.localized,
                 value: result.input.tariffYear.displayName
@@ -343,11 +364,13 @@ struct ResultSheet: View {
             Divider()
                 .background(theme.outline.opacity(0.2))
             
+            // Party Count
             detailRow(
-                label: LocalizationKeys.ScreenTitle.agreementStatus.localized,
-                value: result.agreementStatus.displayName
+                label: LocalizationKeys.Result.partyCount.localized,
+                value: "\(result.input.partyCount)"
             )
             
+            // Amount (only for agreement cases with amount)
             if let amount = result.input.disputeAmount {
                 Divider()
                     .background(theme.outline.opacity(0.2))
@@ -357,14 +380,6 @@ struct ResultSheet: View {
                     value: LocalizationHelper.formatCurrency(amount)
                 )
             }
-            
-            Divider()
-                .background(theme.outline.opacity(0.2))
-            
-            detailRow(
-                label: LocalizationKeys.Result.partyCount.localized,
-                value: "\(result.input.partyCount)"
-            )
         }
         .padding(theme.spacingL)
         .background {
