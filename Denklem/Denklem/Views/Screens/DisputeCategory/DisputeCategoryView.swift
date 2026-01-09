@@ -59,13 +59,14 @@ struct DisputeCategoryView: View {
         }
         .navigationTitle("")
         .navigationBarTitleDisplayMode(.inline)
-        .navigationDestination(isPresented: $viewModel.navigateToAgreementStatus) {
-            AgreementStatusView(selectedYear: viewModel.selectedYear, isMonetary: viewModel.isMonetary)
-        }
         .navigationDestination(isPresented: $viewModel.navigateToDisputeType) {
-            // Non-monetary disputes go directly to DisputeType (bypass AgreementStatus)
-            // hasAgreement = false as per Tariff Article 7, Paragraph 1
-            DisputeTypeView(selectedYear: viewModel.selectedYear, isMonetary: false, hasAgreement: false)
+            // Navigate to DisputeType with isMonetary flag
+            // For monetary disputes, agreement selector will show in DisputeType
+            // For non-monetary, hasAgreement = false per Tariff Article 7, Paragraph 1
+            DisputeTypeView(
+                selectedYear: viewModel.selectedYear,
+                isMonetary: viewModel.isMonetary
+            )
         }
         .navigationDestination(isPresented: $viewModel.navigateToTimeCalculation) {
             TimeCalculationView()
