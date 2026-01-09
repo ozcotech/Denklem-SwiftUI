@@ -55,11 +55,6 @@ struct TimeCalculationView: View {
         }
         .navigationTitle(LocalizationKeys.ScreenTitle.timeCalculation.localized)
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                LanguageToggleButton()
-            }
-        }
         .sheet(isPresented: $viewModel.showResults) {
             ResultsSheet(viewModel: viewModel, glassNamespace: glassNamespace)
         }

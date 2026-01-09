@@ -46,9 +46,6 @@ struct AboutView: View {
         .background(theme.background)
         .navigationTitle(LocalizationKeys.ScreenTitle.about.localized)
         .navigationBarTitleDisplayMode(.large)
-        .sheet(isPresented: $viewModel.showLanguagePicker) {
-            LanguagePickerSheet()
-        }
         .sheet(isPresented: $viewModel.showShareSheet) {
             ShareSheet(items: viewModel.getShareItems())
         }

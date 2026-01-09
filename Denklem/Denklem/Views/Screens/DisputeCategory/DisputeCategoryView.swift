@@ -59,11 +59,6 @@ struct DisputeCategoryView: View {
         }
         .navigationTitle("")
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                LanguageToggleButton()
-            }
-        }
         .navigationDestination(isPresented: $viewModel.navigateToAgreementStatus) {
             AgreementStatusView(selectedYear: viewModel.selectedYear, isMonetary: viewModel.isMonetary)
         }

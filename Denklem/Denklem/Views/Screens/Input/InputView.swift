@@ -74,11 +74,6 @@ struct InputView: View {
         }
         .navigationTitle(viewModel.screenTitle)
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                LanguageToggleButton()
-            }
-        }
         .sheet(isPresented: $viewModel.showResult) {
             if let result = viewModel.calculationResult {
                 ResultSheet(result: result, theme: theme, isMonetary: viewModel.isMonetary)

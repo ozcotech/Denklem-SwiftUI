@@ -57,11 +57,6 @@ struct DisputeTypeView: View {
         }
         .navigationTitle(viewModel.screenTitle)
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                LanguageToggleButton()
-            }
-        }
         .navigationDestination(isPresented: $viewModel.navigateToInput) {
             if let disputeType = viewModel.selectedDisputeType {
                 InputView(

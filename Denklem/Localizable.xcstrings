@@ -502,18 +502,6 @@
         }
       }
     },
-    "accessibility.switch_to_language" : {
-      "comment" : "Accessibility hint for language toggle",
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Switch to %@"
-          }
-        }
-      }
-    },
     "agreement_status.agreed" : {
       "comment" : "agreement status",
       "extractionState" : "manual",

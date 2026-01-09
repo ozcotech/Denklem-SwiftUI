@@ -64,11 +64,6 @@ struct SMMCalculationView: View {
         }
         .navigationTitle(viewModel.screenTitle)
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                LanguageToggleButton()
-            }
-        }
         .sheet(isPresented: $viewModel.showResult) {
             if let result = viewModel.calculationResult {
                 SMMResultSheet(result: result, theme: theme, glassNamespace: glassNamespace)

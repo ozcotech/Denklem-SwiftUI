@@ -13,11 +13,12 @@ enum TabItem: String, CaseIterable, Identifiable, Hashable {
     case home
     case legislation
     case about
+    case language
     
     var id: String { rawValue }
     
     /// Localized title for the tab
-    var title: String {
+    func title(currentLanguage: SupportedLanguage) -> String {
         switch self {
         case .home:
             return NSLocalizedString(LocalizationKeys.TabBar.home, tableName: nil, bundle: Bundle.localizedBundle, value: "", comment: "Home tab")
@@ -25,6 +26,9 @@ enum TabItem: String, CaseIterable, Identifiable, Hashable {
             return NSLocalizedString(LocalizationKeys.TabBar.legislation, tableName: nil, bundle: Bundle.localizedBundle, value: "", comment: "Legislation tab")
         case .about:
             return NSLocalizedString(LocalizationKeys.TabBar.about, tableName: nil, bundle: Bundle.localizedBundle, value: "", comment: "About tab")
+        case .language:
+            // Show opposite language code as toggle indicator
+            return currentLanguage == .turkish ? "EN" : "TR"
         }
     }
     
@@ -37,6 +41,8 @@ enum TabItem: String, CaseIterable, Identifiable, Hashable {
             return "doc.text.fill"
         case .about:
             return "info.circle.fill"
+        case .language:
+            return "globe"
         }
     }
     
@@ -49,12 +55,14 @@ enum TabItem: String, CaseIterable, Identifiable, Hashable {
             return "doc.text"
         case .about:
             return "info.circle"
+        case .language:
+            return "globe"
         }
     }
     
     /// Accessibility label for the tab
-    var accessibilityLabel: String {
-        return title
+    func accessibilityLabel(currentLanguage: SupportedLanguage) -> String {
+        return title(currentLanguage: currentLanguage)
     }
 }
 
@@ -71,6 +79,9 @@ struct TabBarView: View {
     /// Currently selected tab
     @State private var selectedTab: TabItem = .home
     
+    /// Previous tab before language toggle (to return after language change)
+    @State private var previousTab: TabItem = .home
+    
     /// Selected tariff year (passed from StartScreen or managed here)
     @State private var selectedYear: TariffYear = .current
     
@@ -85,47 +96,51 @@ struct TabBarView: View {
             Tab(value: .home) {
                 NavigationStack {
                     StartScreenView()
-                        .toolbar {
-                            toolbarContent
-                        }
                 }
             } label: {
-                Label(TabItem.home.title, systemImage: selectedTab == .home ? TabItem.home.systemImage : TabItem.home.systemImageUnselected)
+                Label(TabItem.home.title(currentLanguage: localeManager.currentLanguage), systemImage: selectedTab == .home ? TabItem.home.systemImage : TabItem.home.systemImageUnselected)
             }
             
             // MARK: - Legislation Tab
             Tab(value: .legislation) {
                 NavigationStack {
                     LegislationView()
-                        .toolbar {
-                            toolbarContent
-                        }
                 }
             } label: {
-                Label(TabItem.legislation.title, systemImage: selectedTab == .legislation ? TabItem.legislation.systemImage : TabItem.legislation.systemImageUnselected)
+                Label(TabItem.legislation.title(currentLanguage: localeManager.currentLanguage), systemImage: selectedTab == .legislation ? TabItem.legislation.systemImage : TabItem.legislation.systemImageUnselected)
             }
             
             // MARK: - About Tab
             Tab(value: .about) {
                 NavigationStack {
                     AboutView()
-                        .toolbar {
-                            toolbarContent
-                        }
                 }
             } label: {
-                Label(TabItem.about.title, systemImage: selectedTab == .about ? TabItem.about.systemImage : TabItem.about.systemImageUnselected)
+                Label(TabItem.about.title(currentLanguage: localeManager.currentLanguage), systemImage: selectedTab == .about ? TabItem.about.systemImage : TabItem.about.systemImageUnselected)
+            }
+            
+            // MARK: - Language Tab
+            Tab(value: .language) {
+                // Empty view - language toggle happens on tap
+                Color.clear
+                    .onAppear {
+                        // Toggle language and return to previous tab
+                        localeManager.toggleLanguage()
+                        // Return to the tab we were on before clicking language
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                            selectedTab = previousTab
+                        }
+                    }
+            } label: {
+                Label(TabItem.language.title(currentLanguage: localeManager.currentLanguage), systemImage: TabItem.language.systemImage)
             }
         }
         .tint(theme.primary)
-    }
-    
-    // MARK: - Toolbar Content
-    
-    @ToolbarContentBuilder
-    private var toolbarContent: some ToolbarContent {
-        ToolbarItem(placement: .topBarTrailing) {
-            LanguageToggleButton()
+        .onChange(of: selectedTab) { oldValue, newValue in
+            // Store the previous tab before switching to language tab
+            if newValue == .language {
+                previousTab = oldValue
+            }
         }
     }
 }

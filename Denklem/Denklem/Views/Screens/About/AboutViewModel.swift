@@ -22,7 +22,6 @@ struct AboutSectionItem: Identifiable, Hashable {
         case sendEmail(String)
         case shareApp
         case rateApp
-        case showLanguagePicker
         case none
     }
     
@@ -69,9 +68,6 @@ final class AboutViewModel: ObservableObject {
     
     /// Sections displayed in the about screen
     @Published private(set) var sections: [AboutScreenSection] = []
-    
-    /// Show language picker sheet
-    @Published var showLanguagePicker: Bool = false
     
     /// Show share sheet
     @Published var showShareSheet: Bool = false
@@ -128,8 +124,6 @@ final class AboutViewModel: ObservableObject {
             showShareSheet = true
         case .rateApp:
             openAppStore()
-        case .showLanguagePicker:
-            showLanguagePicker = true
         case .none:
             break
         }
