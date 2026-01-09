@@ -30,13 +30,13 @@ struct LegislationDocument: Identifiable, Hashable {
         var displayName: String {
             switch self {
             case .tariff:
-                return NSLocalizedString("legislation.type.tariff", value: "Tarife", comment: "")
+                return LocalizationKeys.Legislation.typeTariff.localized
             case .regulation:
-                return NSLocalizedString("legislation.type.regulation", value: "Yönetmelik", comment: "")
+                return LocalizationKeys.Legislation.typeRegulation.localized
             case .law:
-                return NSLocalizedString("legislation.type.law", value: "Kanun", comment: "")
+                return LocalizationKeys.Legislation.typeLaw.localized
             case .circular:
-                return NSLocalizedString("legislation.type.circular", value: "Genelge", comment: "")
+                return LocalizationKeys.Legislation.typeCircular.localized
             }
         }
         
@@ -197,61 +197,51 @@ final class LegislationViewModel: ObservableObject {
     /// Creates default legislation documents
     private static func createDefaultDocuments() -> [LegislationDocument] {
         return [
-            // 2026 Documents
+            // 2026 Tarifesi
             LegislationDocument(
-                title: NSLocalizedString("legislation.tariff.2026.title", 
-                                        value: "2026 Yılı Arabuluculuk Asgari Ücret Tarifesi", 
-                                        comment: ""),
-                subtitle: NSLocalizedString("legislation.tariff.2026.subtitle", 
-                                           value: "Resmi Gazete: 31 Aralık 2025", 
-                                           comment: ""),
+                title: NSLocalizedString("legislation.tariff.2026.title", value: "2026 Yılı Arabuluculuk Asgari Ücret Tarifesi", comment: ""),
+                subtitle: NSLocalizedString("legislation.tariff.2026.subtitle", value: "Resmi Gazete: 31 Aralık 2025", comment: ""),
                 year: 2026,
                 type: .tariff,
-                url: AppConstants.legislationURL,
+                url: "https://www.resmigazete.gov.tr/eskiler/2025/12/20251226-3.htm",
                 pdfFileName: "arabuluculuk_tarifesi_2026.pdf",
                 isOfficial: true
             ),
-            
-            // 2025 Documents
+            // 2025 Tarifesi
             LegislationDocument(
-                title: NSLocalizedString("legislation.tariff.2025.title", 
-                                        value: "2025 Yılı Arabuluculuk Asgari Ücret Tarifesi", 
-                                        comment: ""),
-                subtitle: NSLocalizedString("legislation.tariff.2025.subtitle", 
-                                           value: "Resmi Gazete: 31 Aralık 2024", 
-                                           comment: ""),
+                title: NSLocalizedString("legislation.tariff.2025.title", value: "2025 Yılı Arabuluculuk Asgari Ücret Tarifesi", comment: ""),
+                subtitle: NSLocalizedString("legislation.tariff.2025.subtitle", value: "Resmi Gazete: 31 Aralık 2024", comment: ""),
                 year: 2025,
                 type: .tariff,
-                url: AppConstants.legislationURL,
+                url: "https://adb.adalet.gov.tr/Resimler/SayfaDokuman/251220241628282024.pdf",
                 pdfFileName: "arabuluculuk_tarifesi_2025.pdf",
                 isOfficial: true
             ),
-            
-            // Main Law
+            // Arabuluculuk Kanunu
             LegislationDocument(
-                title: NSLocalizedString("legislation.law.title", 
-                                        value: "6325 Sayılı Hukuk Uyuşmazlıklarında Arabuluculuk Kanunu", 
-                                        comment: ""),
-                subtitle: NSLocalizedString("legislation.law.subtitle", 
-                                           value: "Kabul Tarihi: 07.06.2012", 
-                                           comment: ""),
+                title: NSLocalizedString("legislation.law.title", value: "6325 Sayılı Hukuk Uyuşmazlıklarında Arabuluculuk Kanunu", comment: ""),
+                subtitle: NSLocalizedString("legislation.law.subtitle", value: "Kabul Tarihi: 07.06.2012", comment: ""),
                 year: 2012,
                 type: .law,
-                url: "https://www.mevzuat.gov.tr/MevzuatMetin/1.5.6325.pdf",
+                url: "https://adb.adalet.gov.tr/Resimler/SayfaDokuman/11120231556551.5.6325.pdf",
                 isOfficial: true
             ),
-            
-            // Regulation
+            // Yönetmelik
             LegislationDocument(
-                title: NSLocalizedString("legislation.regulation.title", 
-                                        value: "Hukuk Uyuşmazlıklarında Arabuluculuk Kanunu Yönetmeliği", 
-                                        comment: ""),
-                subtitle: NSLocalizedString("legislation.regulation.subtitle", 
-                                           value: "Resmi Gazete: 26.01.2013", 
-                                           comment: ""),
+                title: NSLocalizedString("legislation.regulation.title", value: "Hukuk Uyuşmazlıklarında Arabuluculuk Kanunu Yönetmeliği", comment: ""),
+                subtitle: NSLocalizedString("legislation.regulation.subtitle", value: "Resmi Gazete: 26.01.2013", comment: ""),
                 year: 2013,
                 type: .regulation,
-                url: "https://www.mevzuat.gov.tr/mevzuat?MevzuatNo=17647&MevzuatTur=7",
+                url: "https://adb.adalet.gov.tr/Resimler/SayfaDokuman/30120221536271.pdf",
+                isOfficial: true
+            ),
+            // İş Mahkemeleri Kanunu
+            LegislationDocument(
+                title: NSLocalizedString("legislation.laborcourt.title", value: "7036 Sayılı İş Mahkemeleri Kanunu", comment: ""),
+                subtitle: NSLocalizedString("legislation.laborcourt.subtitle", value: "Kabul Tarihi: 12.10.2017", comment: ""),
+                year: 2017,
+                type: .law,
+                url: "https://adb.adalet.gov.tr/Resimler/SayfaDokuman/15120210744381.5.7036.pdf",
                 isOfficial: true
             )
         ]

@@ -309,9 +309,24 @@ struct LocalizationKeys {
     // MARK: - Legislation Screen
     struct Legislation {
         static let title = "legislation.title"
+        static let subtitle = "legislation.subtitle"
         static let year = "legislation.year"
         static let source = "legislation.source"
         static let viewDocument = "legislation.view_document"
+        static let searchPrompt = "legislation.search.prompt"
+        static let filterAll = "legislation.filter.all"
+        static let tagOfficial = "legislation.tag.official"
+        static let openInSafari = "legislation.action.open_in_safari"
+        static let openDocument = "legislation.action.open_document"
+        static let infoYear = "legislation.info.year"
+        static let infoType = "legislation.info.type"
+        static let infoStatus = "legislation.info.status"
+        static let statusOfficial = "legislation.status.official"
+        static let statusDraft = "legislation.status.draft"
+        static let typeTariff = "legislation.type.tariff"
+        static let typeRegulation = "legislation.type.regulation"
+        static let typeLaw = "legislation.type.law"
+        static let typeCircular = "legislation.type.circular"
     }
     
     // MARK: - Error Messages

@@ -41,11 +41,11 @@ struct LegislationView: View {
             .padding(.bottom, theme.spacingXXL)
         }
         .background(theme.background)
-        .navigationTitle(LocalizationKeys.ScreenTitle.legislation.localized)
+        .navigationTitle(LocalizationKeys.Legislation.title.localized)
         .navigationBarTitleDisplayMode(.large)
         .searchable(
             text: $viewModel.searchText,
-            prompt: Text(NSLocalizedString("legislation.search.prompt", value: "Belge ara...", comment: ""))
+            prompt: Text(LocalizationKeys.Legislation.searchPrompt.localized)
         )
         .refreshable {
             viewModel.loadDocuments()
@@ -74,12 +74,7 @@ struct LegislationView: View {
     
     private var headerSection: some View {
         VStack(alignment: .leading, spacing: theme.spacingS) {
-            Text(NSLocalizedString("legislation.header.title", value: "Mevzuat", comment: ""))
-                .font(theme.title2)
-                .fontWeight(.bold)
-                .foregroundStyle(theme.textPrimary)
-            
-            Text(NSLocalizedString("legislation.header.subtitle", value: "Arabuluculuk ile ilgili güncel mevzuat ve tarifeler", comment: ""))
+            Text(LocalizationKeys.Legislation.subtitle.localized)
                 .font(theme.body)
                 .foregroundStyle(theme.textSecondary)
         }
@@ -94,7 +89,7 @@ struct LegislationView: View {
             HStack(spacing: theme.spacingS) {
                 // All filter
                 FilterChip(
-                    title: NSLocalizedString("legislation.filter.all", value: "Tümü", comment: ""),
+                    title: LocalizationKeys.Legislation.filterAll.localized,
                     isSelected: viewModel.selectedFilter == nil
                 ) {
                     viewModel.selectedFilter = nil
@@ -250,7 +245,7 @@ struct DocumentCard: View {
                         
                         if document.isOfficial {
                             DocumentTag(
-                                text: NSLocalizedString("legislation.tag.official", value: "Resmi", comment: ""),
+                                text: LocalizationKeys.Legislation.tagOfficial.localized,
                                 color: theme.success
                             )
                         }
@@ -281,7 +276,7 @@ struct DocumentCard: View {
                     onOpenInSafari()
                 } label: {
                     Label(
-                        NSLocalizedString("legislation.action.open_in_safari", value: "Safari'de Aç", comment: ""),
+                        LocalizationKeys.Legislation.openInSafari.localized,
                         systemImage: "safari"
                     )
                 }
@@ -348,8 +343,10 @@ struct DocumentDetailSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button(LocalizationKeys.General.close.localized) {
-                        dismiss()
+                    Button(action: { dismiss() }) {
+                        Image(systemName: "xmark.circle.fill")
+                            .font(.title2)
+                            .foregroundStyle(theme.textSecondary)
                     }
                 }
             }
@@ -384,25 +381,18 @@ struct DocumentDetailSheet: View {
     private var documentInfo: some View {
         VStack(spacing: theme.spacingS) {
             InfoRow(
-                label: NSLocalizedString("legislation.info.year", value: "Yıl", comment: ""),
+                label: LocalizationKeys.Legislation.infoYear.localized,
                 value: String(document.year)
             )
-            
             InfoRow(
-                label: NSLocalizedString("legislation.info.type", value: "Tür", comment: ""),
+                label: LocalizationKeys.Legislation.infoType.localized,
                 value: document.type.displayName
             )
-            
             InfoRow(
-                label: NSLocalizedString("legislation.info.status", value: "Durum", comment: ""),
+                label: LocalizationKeys.Legislation.infoStatus.localized,
                 value: document.isOfficial ? 
-                    NSLocalizedString("legislation.status.official", value: "Resmi", comment: "") :
-                    NSLocalizedString("legislation.status.draft", value: "Taslak", comment: "")
-            )
-            
-            InfoRow(
-                label: NSLocalizedString("legislation.info.updated", value: "Güncelleme", comment: ""),
-                value: LocalizationHelper.formatDate(document.lastUpdated)
+                    LocalizationKeys.Legislation.statusOfficial.localized :
+                    LocalizationKeys.Legislation.statusDraft.localized
             )
         }
         .padding(theme.spacingM)
@@ -419,24 +409,14 @@ struct DocumentDetailSheet: View {
                     UIApplication.shared.open(url)
                 } label: {
                     Label(
-                        NSLocalizedString("legislation.action.open_document", value: "Belgeyi Aç", comment: ""),
+                        LocalizationKeys.Legislation.openDocument.localized,
                         systemImage: "doc.text"
                     )
                     .frame(maxWidth: .infinity)
                     .padding()
                 }
-                .buttonStyle(.borderedProminent)
-                .tint(theme.primary)
+                .buttonStyle(.glass)
             }
-            
-            Button {
-                // Share action
-            } label: {
-                Label(LocalizationKeys.General.share.localized, systemImage: "square.and.arrow.up")
-                    .frame(maxWidth: .infinity)
-                    .padding()
-            }
-            .buttonStyle(.bordered)
         }
     }
 }
