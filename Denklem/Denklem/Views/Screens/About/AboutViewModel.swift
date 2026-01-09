@@ -22,6 +22,7 @@ struct AboutSectionItem: Identifiable, Hashable {
         case sendEmail(String)
         case shareApp
         case rateApp
+        case showDisclaimer
         case none
     }
     
@@ -66,7 +67,7 @@ final class AboutViewModel: ObservableObject {
     
     // MARK: - Published Properties
     
-    /// Sections displayed in the about screen
+    /// Sections displayed in the about screen (updated on language change)
     @Published private(set) var sections: [AboutScreenSection] = []
     
     /// Show share sheet
@@ -105,7 +106,7 @@ final class AboutViewModel: ObservableObject {
     
     // MARK: - Public Methods
     
-    /// Loads about screen sections
+    /// Loads about screen sections (called on init and language change)
     func loadSections() {
         sections = createSections()
     }
@@ -124,6 +125,8 @@ final class AboutViewModel: ObservableObject {
             showShareSheet = true
         case .rateApp:
             openAppStore()
+        case .showDisclaimer:
+            break
         case .none:
             break
         }
@@ -133,7 +136,7 @@ final class AboutViewModel: ObservableObject {
     /// - Parameter urlString: URL string to open
     func openURL(_ urlString: String) {
         guard let url = URL(string: urlString) else {
-            errorMessage = NSLocalizedString(LocalizationKeys.ErrorMessage.networkError, comment: "")
+            errorMessage = LocalizationKeys.ErrorMessage.networkError.localized
             return
         }
         
@@ -159,11 +162,7 @@ final class AboutViewModel: ObservableObject {
     /// Returns share items for the app
     func getShareItems() -> [Any] {
         let appStoreURL = AboutData.appStoreURL
-        let shareText = String(format: NSLocalizedString(
-            "about.share.text",
-            value: "DENKLEM - Arabuluculuk Ücreti Hesaplama uygulamasını deneyin!",
-            comment: ""
-        ))
+        let shareText = "about.share.text".localized
         
         return [shareText, appStoreURL]
     }
@@ -183,15 +182,15 @@ final class AboutViewModel: ObservableObject {
     /// Creates app info section
     private func createAppInfoSection() -> AboutScreenSection {
         AboutScreenSection(
-            title: NSLocalizedString(LocalizationKeys.About.appInfo, comment: ""),
+            title: LocalizationKeys.About.appInfo.localized,
             items: [
                 AboutSectionItem(
-                    title: NSLocalizedString(LocalizationKeys.About.version, comment: ""),
+                    title: LocalizationKeys.About.version.localized,
                     value: AboutData.fullVersionString,
                     systemImage: "info.circle"
                 ),
                 AboutSectionItem(
-                    title: NSLocalizedString(LocalizationKeys.About.supportedYears, comment: ""),
+                    title: LocalizationKeys.About.supportedYears.localized,
                     value: AboutData.supportedYears.map { String($0) }.joined(separator: ", "),
                     systemImage: "calendar"
                 )
@@ -202,21 +201,21 @@ final class AboutViewModel: ObservableObject {
     /// Creates developer section
     private func createDeveloperSection() -> AboutScreenSection {
         AboutScreenSection(
-            title: NSLocalizedString(LocalizationKeys.About.developer, comment: ""),
+            title: LocalizationKeys.About.developer.localized,
             items: [
                 AboutSectionItem(
-                    title: NSLocalizedString(LocalizationKeys.About.developer, comment: ""),
+                    title: LocalizationKeys.About.developer.localized,
                     value: AboutData.developerName,
                     systemImage: "person.circle"
                 ),
                 AboutSectionItem(
-                    title: NSLocalizedString(LocalizationKeys.Contact.email, comment: ""),
+                    title: LocalizationKeys.Contact.email.localized,
                     value: AboutData.developerEmail,
                     systemImage: "envelope",
                     action: .sendEmail(AboutData.developerEmail)
                 ),
                 AboutSectionItem(
-                    title: NSLocalizedString(LocalizationKeys.Contact.website, comment: ""),
+                    title: LocalizationKeys.Contact.website.localized,
                     value: AboutData.companyWebsite,
                     systemImage: "globe",
                     action: .openURL(AboutData.companyWebsite)
@@ -228,20 +227,20 @@ final class AboutViewModel: ObservableObject {
     /// Creates support section
     private func createSupportSection() -> AboutScreenSection {
         AboutScreenSection(
-            title: NSLocalizedString(LocalizationKeys.About.contact, comment: ""),
+            title: LocalizationKeys.About.contact.localized,
             items: [
                 AboutSectionItem(
-                    title: NSLocalizedString(LocalizationKeys.Contact.rateApp, comment: ""),
+                    title: LocalizationKeys.Contact.rateApp.localized,
                     systemImage: "star",
                     action: .rateApp
                 ),
                 AboutSectionItem(
-                    title: NSLocalizedString(LocalizationKeys.Contact.shareApp, comment: ""),
+                    title: LocalizationKeys.Contact.shareApp.localized,
                     systemImage: "square.and.arrow.up",
                     action: .shareApp
                 ),
                 AboutSectionItem(
-                    title: NSLocalizedString(LocalizationKeys.Contact.sendFeedback, comment: ""),
+                    title: LocalizationKeys.Contact.sendFeedback.localized,
                     systemImage: "envelope",
                     action: .sendEmail(AboutData.developerEmail)
                 )
@@ -252,15 +251,15 @@ final class AboutViewModel: ObservableObject {
     /// Creates legal section
     private func createLegalSection() -> AboutScreenSection {
         AboutScreenSection(
-            title: NSLocalizedString(LocalizationKeys.About.legal, comment: ""),
+            title: LocalizationKeys.About.legal.localized,
             items: [
                 AboutSectionItem(
-                    title: NSLocalizedString(LocalizationKeys.Legal.disclaimer, comment: ""),
-                    value: NSLocalizedString(LocalizationKeys.Legal.disclaimerText, comment: ""),
-                    systemImage: "exclamationmark.triangle"
+                    title: LocalizationKeys.Legal.disclaimer.localized,
+                    systemImage: "exclamationmark.triangle",
+                    action: .showDisclaimer
                 ),
                 AboutSectionItem(
-                    title: NSLocalizedString(LocalizationKeys.Legal.privacyPolicy, comment: ""),
+                    title: LocalizationKeys.Legal.privacyPolicy.localized,
                     systemImage: "hand.raised",
                     action: .openURL("https://denklem.org/en/privacy/")
                 )

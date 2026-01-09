@@ -46,6 +46,9 @@ struct AboutView: View {
         .background(theme.background)
         .navigationTitle(LocalizationKeys.ScreenTitle.about.localized)
         .navigationBarTitleDisplayMode(.large)
+        .onChange(of: localeManager.refreshID) { _, _ in
+            viewModel.loadSections()
+        }
         .sheet(isPresented: $viewModel.showShareSheet) {
             ShareSheet(items: viewModel.getShareItems())
         }
@@ -103,7 +106,7 @@ struct AboutView: View {
                 .font(theme.caption)
                 .foregroundStyle(theme.textTertiary)
             
-            Text(NSLocalizedString("about.made_with_love", value: "Made with ❤️ in Türkiye", comment: ""))
+            Text("about.made_with_love".localized)
                 .font(theme.caption)
                 .foregroundStyle(theme.textTertiary)
         }
@@ -165,9 +168,16 @@ struct AboutItemRow: View {
     let action: () -> Void
     
     @Environment(\.theme) var theme
+    @State private var showingDisclaimer = false
     
     var body: some View {
-        Button(action: action) {
+        Button(action: {
+            if item.action == .showDisclaimer {
+                showingDisclaimer = true
+            } else {
+                action()
+            }
+        }) {
             HStack(spacing: theme.spacingM) {
                 // Icon
                 if let systemImage = item.systemImage {
@@ -204,6 +214,11 @@ struct AboutItemRow: View {
         }
         .buttonStyle(.plain)
         .disabled(item.action == nil || item.action == AboutSectionItem.AboutItemAction.none)
+        .popover(isPresented: $showingDisclaimer, arrowEdge: .bottom) {
+            DisclaimerPopoverContent()
+                .presentationCompactAdaptation(.popover)
+                .presentationBackground { Color.clear }
+        }
     }
 }
 
@@ -220,6 +235,44 @@ struct ShareSheet: UIViewControllerRepresentable {
     }
     
     func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
+}
+
+// MARK: - Disclaimer Popover Content
+
+@available(iOS 26.0, *)
+struct DisclaimerPopoverContent: View {
+    
+    @Environment(\.theme) var theme
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: theme.spacingM) {
+            // Header
+            HStack(spacing: theme.spacingS) {
+                Image(systemName: "exclamationmark.triangle.fill")
+                    .font(.title3)
+                    .foregroundStyle(theme.warning)
+                
+                Text(LocalizationKeys.Legal.disclaimer.localized)
+                    .font(theme.headline)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(theme.textPrimary)
+            }
+            .padding(.bottom, theme.spacingXS)
+            
+            // Disclaimer Text
+            ScrollView {
+                Text(LocalizationKeys.Legal.disclaimerText.localized)
+                    .font(theme.body)
+                    .foregroundStyle(theme.textPrimary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            .scrollContentBackground(.hidden)
+            .frame(maxHeight: 500)
+        }
+        .padding(theme.spacingL)
+        .frame(width: 380)
+        .glassEffect(.regular, in: .rect(cornerRadius: 28))
+    }
 }
 
 // MARK: - Preview
