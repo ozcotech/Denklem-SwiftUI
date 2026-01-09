@@ -22,9 +22,9 @@ struct AppConstants {
     }
     
     // MARK: - App Store Information
-    static let appStoreID = "YOUR_APP_STORE_ID" // Will be updated after App Store submission
-    static let appStoreURL = "https://apps.apple.com/app/id\(appStoreID)"
-    static let appStoreReviewURL = "https://apps.apple.com/app/id\(appStoreID)?action=write-review"
+    static let appStoreID = "6746580824"
+    static let appStoreURL = "https://apps.apple.com/tr/app/denklem/id6746580824"
+    static let appStoreReviewURL = "https://apps.apple.com/tr/app/denklem/id6746580824?action=write-review"
     
     // MARK: - Developer Information
     static let developerName = "Özkan Cömert"

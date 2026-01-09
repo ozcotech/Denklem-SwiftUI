@@ -388,6 +388,7 @@ struct LocalizationKeys {
     // MARK: - Legal
     struct Legal {
         static let disclaimer = "legal.disclaimer"
+        static let disclaimerText = "legal.disclaimer_text"
         static let source = "legal.source"
         static let privacyPolicy = "legal.privacy_policy"
         static let termsOfUse = "legal.terms_of_use"

@@ -68,24 +68,6 @@ struct AboutView: View {
     
     private var appHeaderSection: some View {
         VStack(spacing: theme.spacingM) {
-            // App Icon
-            ZStack {
-                RoundedRectangle(cornerRadius: 24)
-                    .fill(
-                        LinearGradient(
-                            colors: [theme.primary, theme.primary.opacity(0.7)],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                    .frame(width: 100, height: 100)
-                    .shadow(color: theme.primary.opacity(0.3), radius: 10, x: 0, y: 5)
-                
-                Image(systemName: "scale.3d")
-                    .font(.system(size: 50, weight: .medium))
-                    .foregroundStyle(.white)
-            }
-            
             // App Name
             Text(viewModel.appName)
                 .font(theme.largeTitle)
@@ -121,7 +103,7 @@ struct AboutView: View {
                 .font(theme.caption)
                 .foregroundStyle(theme.textTertiary)
             
-            Text(NSLocalizedString("about.made_with_love", value: "Made with ❤️ in Turkey", comment: ""))
+            Text(NSLocalizedString("about.made_with_love", value: "Made with ❤️ in Türkiye", comment: ""))
                 .font(theme.caption)
                 .foregroundStyle(theme.textTertiary)
         }

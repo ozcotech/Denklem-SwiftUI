@@ -194,16 +194,6 @@ final class AboutViewModel: ObservableObject {
                     title: NSLocalizedString(LocalizationKeys.About.supportedYears, comment: ""),
                     value: AboutData.supportedYears.map { String($0) }.joined(separator: ", "),
                     systemImage: "calendar"
-                ),
-                AboutSectionItem(
-                    title: NSLocalizedString(LocalizationKeys.About.disputeTypes, comment: ""),
-                    value: String(AboutData.supportedDisputeTypesCount),
-                    systemImage: "list.bullet"
-                ),
-                AboutSectionItem(
-                    title: NSLocalizedString(LocalizationKeys.About.calculationTypes, comment: ""),
-                    value: String(AboutData.supportedCalculationTypesCount),
-                    systemImage: "function"
                 )
             ]
         )
@@ -215,9 +205,9 @@ final class AboutViewModel: ObservableObject {
             title: NSLocalizedString(LocalizationKeys.About.developer, comment: ""),
             items: [
                 AboutSectionItem(
-                    title: NSLocalizedString(LocalizationKeys.About.company, comment: ""),
-                    value: AboutData.companyName,
-                    systemImage: "building.2"
+                    title: NSLocalizedString(LocalizationKeys.About.developer, comment: ""),
+                    value: AboutData.developerName,
+                    systemImage: "person.circle"
                 ),
                 AboutSectionItem(
                     title: NSLocalizedString(LocalizationKeys.Contact.email, comment: ""),
@@ -265,13 +255,14 @@ final class AboutViewModel: ObservableObject {
             title: NSLocalizedString(LocalizationKeys.About.legal, comment: ""),
             items: [
                 AboutSectionItem(
-                    title: NSLocalizedString(LocalizationKeys.Legal.source, comment: ""),
-                    value: AboutData.legislationSource,
-                    systemImage: "doc.text"
+                    title: NSLocalizedString(LocalizationKeys.Legal.disclaimer, comment: ""),
+                    value: NSLocalizedString(LocalizationKeys.Legal.disclaimerText, comment: ""),
+                    systemImage: "exclamationmark.triangle"
                 ),
                 AboutSectionItem(
-                    title: NSLocalizedString(LocalizationKeys.Legal.disclaimer, comment: ""),
-                    systemImage: "exclamationmark.triangle"
+                    title: NSLocalizedString(LocalizationKeys.Legal.privacyPolicy, comment: ""),
+                    systemImage: "hand.raised",
+                    action: .openURL("https://denklem.org/en/privacy/")
                 )
             ]
         )
