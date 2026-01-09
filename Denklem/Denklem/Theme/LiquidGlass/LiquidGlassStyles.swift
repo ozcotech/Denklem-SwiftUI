@@ -163,16 +163,17 @@ extension View {
 
 @available(iOS 26.0, *)
 extension ButtonStyle where Self == GlassButtonStyle {
-    /// Standard glass button style
-    static func glass(theme: ThemeProtocol) -> GlassButtonStyle {
+    /// Custom themed glass button style (uses project theme)
+    /// For Apple's native Liquid Glass, use .buttonStyle(.glass) directly
+    static func themedGlass(theme: ThemeProtocol) -> GlassButtonStyle {
         GlassButtonStyle(theme: theme)
     }
 }
 
 @available(iOS 26.0, *)
 extension ButtonStyle where Self == GlassClearButtonStyle {
-    /// Clear glass button style for subtle actions
-    static func glassClear(theme: ThemeProtocol) -> GlassClearButtonStyle {
+    /// Clear glass button style for subtle actions (uses project theme)
+    static func themedGlassClear(theme: ThemeProtocol) -> GlassClearButtonStyle {
         GlassClearButtonStyle(theme: theme)
     }
 }

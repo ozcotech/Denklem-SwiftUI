@@ -133,11 +133,12 @@ struct LocalizationKeys {
     
     // MARK: - SMM Result Table Labels
     struct SMMResult {
-        static let mediationFee = "smm_result.mediation_fee"
-        static let incomeTaxWithholding = "smm_result.income_tax_withholding"
+        static let title = "smm_result.title"
+        static let grossFee = "smm_result.gross_fee"
+        static let withholding = "smm_result.withholding"
         static let netFee = "smm_result.net_fee"
         static let vat = "smm_result.vat"
-        static let collectedFee = "smm_result.collected_fee"
+        static let totalCollected = "smm_result.total_collected"
         static let legalPerson = "smm_result.legal_person"
         static let realPerson = "smm_result.real_person"
     }
@@ -220,6 +221,7 @@ struct LocalizationKeys {
         static let partyCount = "result.party_count"
         static let calculationDate = "result.calculation_date"
         static let tariffYear = "result.tariff_year"
+        static let calculationSteps = "result.calculation_steps"
     }
     
     // MARK: - Time Calculation

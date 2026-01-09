@@ -76,10 +76,7 @@ struct DisputeCategoryView: View {
             TimeCalculationView()
         }
         .navigationDestination(isPresented: $viewModel.navigateToSMMCalculation) {
-            // TODO: Navigate to SMMCalculationView
-            Text("SMMCalculationView")
-                .font(theme.title)
-                .foregroundColor(theme.textPrimary)
+            SMMCalculationView()
         }
     }
     

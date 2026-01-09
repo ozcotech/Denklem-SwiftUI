@@ -31,7 +31,7 @@ struct StartScreenView: View {
                 .resizable()
                 .scaledToFill()
                 .ignoresSafeArea()
-                .blur(radius: 20) // Modern iOS blur effect
+                //.blur(radius: 12) // Modern iOS blur effect
             
             // Gradient Overlay for readability
             LinearGradient(
@@ -128,7 +128,7 @@ struct StartScreenView: View {
             .frame(maxWidth: .infinity)
             .frame(height: 50)
         }
-        .buttonStyle(.glass)
+        .buttonStyle(.glass) // Apple's native Liquid Glass button style
         .padding(.horizontal, theme.spacingXXL)
         .onAppear {
             startButtonAnimations()

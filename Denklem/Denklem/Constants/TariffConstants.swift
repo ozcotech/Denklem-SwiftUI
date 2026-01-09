@@ -504,11 +504,11 @@ enum CalculationType: String, CaseIterable {
 
 // MARK: - SMM Result Table Labels (Localized)
 struct SMMResultTableLabels {
-    static let mediationFee = NSLocalizedString(LocalizationKeys.SMMResult.mediationFee, comment: "")
-    static let gelirVergisiStopaji = NSLocalizedString(LocalizationKeys.SMMResult.incomeTaxWithholding, comment: "")
+    static let mediationFee = NSLocalizedString(LocalizationKeys.SMMResult.grossFee, comment: "")
+    static let gelirVergisiStopaji = NSLocalizedString(LocalizationKeys.SMMResult.withholding, comment: "")
     static let netUcret = NSLocalizedString(LocalizationKeys.SMMResult.netFee, comment: "")
     static let kdv = NSLocalizedString(LocalizationKeys.SMMResult.vat, comment: "")
-    static let tahsilEdilecek = NSLocalizedString(LocalizationKeys.SMMResult.collectedFee, comment: "")
+    static let tahsilEdilecek = NSLocalizedString(LocalizationKeys.SMMResult.totalCollected, comment: "")
     static let tuzelKisi = NSLocalizedString(LocalizationKeys.SMMResult.legalPerson, comment: "")
     static let gercekKisi = NSLocalizedString(LocalizationKeys.SMMResult.realPerson, comment: "")
 }
