@@ -32,7 +32,7 @@ final class InputViewModel: ObservableObject {
     @Published var amountText: String = ""
     
     /// Party count input
-    @Published var partyCountText: String = "2"
+    @Published var partyCountText: String = ""
     
     /// Show result sheet
     @Published var showResult: Bool = false
@@ -180,7 +180,7 @@ final class InputViewModel: ObservableObject {
     /// Resets all inputs
     func reset() {
         amountText = ""
-        partyCountText = "2"
+        partyCountText = ""
         calculationResult = nil
         errorMessage = nil
         showResult = false

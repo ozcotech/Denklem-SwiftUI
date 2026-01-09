@@ -138,7 +138,7 @@ struct InputView: View {
     // MARK: - Amount Input Field
     
     private var amountInputField: some View {
-        TextField("", text: $viewModel.amountText)
+        TextField(LocalizationKeys.Input.Placeholder.amount.localized, text: $viewModel.amountText)
             .font(theme.body)
             .fontWeight(.medium)
             .foregroundStyle(theme.textPrimary)
@@ -168,7 +168,7 @@ struct InputView: View {
     // MARK: - Party Count Input Field
     
     private var partyCountInputField: some View {
-        TextField("", text: $viewModel.partyCountText)
+        TextField(LocalizationKeys.Input.Placeholder.partyCount.localized, text: $viewModel.partyCountText)
             .font(theme.body)
             .fontWeight(.medium)
             .foregroundStyle(theme.textPrimary)
