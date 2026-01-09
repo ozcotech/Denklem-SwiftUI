@@ -214,6 +214,7 @@ struct LocalizationKeys {
         static let mediationFee = "result.mediation_fee"
         static let disputeType = "result.dispute_type"
         static let disputeSubject = "result.dispute_subject"
+        static let disputeSubjectNonMonetary = "result.dispute_subject_non_monetary"
         static let agreementStatus = "result.agreement_status"
         static let amount = "result.amount"
         static let partyCount = "result.party_count"

@@ -334,7 +334,7 @@ struct ResultSheet: View {
             if !isMonetary {
                 detailRow(
                     label: LocalizationKeys.Result.disputeSubject.localized,
-                    value: "Konusu Para Olmayan"
+                    value: LocalizationKeys.Result.disputeSubjectNonMonetary.localized
                 )
             } else {
                 detailRow(

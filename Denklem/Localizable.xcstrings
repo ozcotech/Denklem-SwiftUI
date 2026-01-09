@@ -2698,6 +2698,114 @@
         }
       }
     },
+    "legislation.action.open_document" : {
+      "comment" : "legislation open document action",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Document"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Belgeyi Aç"
+          }
+        }
+      }
+    },
+    "legislation.action.open_in_safari" : {
+      "comment" : "legislation open in safari action",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open in Safari"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Safari'de Aç"
+          }
+        }
+      }
+    },
+    "legislation.filter.all" : {
+      "comment" : "legislation filter all option",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tümü"
+          }
+        }
+      }
+    },
+    "legislation.info.status" : {
+      "comment" : "legislation info status label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Status"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Durum"
+          }
+        }
+      }
+    },
+    "legislation.info.type" : {
+      "comment" : "legislation info type label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Type"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tür"
+          }
+        }
+      }
+    },
+    "legislation.info.year" : {
+      "comment" : "legislation info year label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Year"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yıl"
+          }
+        }
+      }
+    },
     "legislation.laborcourt.subtitle" : {
       "comment" : "Subtitle of the legislation document \"İş Mahkemeleri Kanunu\".",
       "extractionState" : "extracted_with_value",
@@ -2776,6 +2884,24 @@
         }
       }
     },
+    "legislation.search.prompt" : {
+      "comment" : "legislation screen search placeholder",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search documents..."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Belge ara..."
+          }
+        }
+      }
+    },
     "legislation.source" : {
       "comment" : "legislation screen",
       "extractionState" : "manual",
@@ -2794,6 +2920,42 @@
         }
       }
     },
+    "legislation.status.draft" : {
+      "comment" : "legislation draft status",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Draft"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Taslak"
+          }
+        }
+      }
+    },
+    "legislation.status.official" : {
+      "comment" : "legislation official status",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Official"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resmi"
+          }
+        }
+      }
+    },
     "legislation.subtitle" : {
       "comment" : "legislation screen subtitle",
       "extractionState" : "manual",
@@ -2808,6 +2970,24 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Arabuluculuk ile ilgili mevzuat ve tarifeler"
+          }
+        }
+      }
+    },
+    "legislation.tag.official" : {
+      "comment" : "legislation official tag",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Official"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resmi"
           }
         }
       }
@@ -2882,6 +3062,78 @@
         }
       }
     },
+    "legislation.type.circular" : {
+      "comment" : "legislation document type circular",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Circular"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Genelge"
+          }
+        }
+      }
+    },
+    "legislation.type.law" : {
+      "comment" : "legislation document type law",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Law"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kanun"
+          }
+        }
+      }
+    },
+    "legislation.type.regulation" : {
+      "comment" : "legislation document type regulation",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regulation"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yönetmelik"
+          }
+        }
+      }
+    },
+    "legislation.type.tariff" : {
+      "comment" : "legislation document type tariff",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tariff"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tarife"
+          }
+        }
+      }
+    },
     "legislation.view_document" : {
       "comment" : "legislation screen",
       "extractionState" : "manual",
@@ -2914,258 +3166,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Yıl"
-          }
-        }
-      }
-    },
-    "legislation.search.prompt" : {
-      "comment" : "legislation screen search placeholder",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Search documents..."
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Belge ara..."
-          }
-        }
-      }
-    },
-    "legislation.filter.all" : {
-      "comment" : "legislation filter all option",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "All"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tümü"
-          }
-        }
-      }
-    },
-    "legislation.tag.official" : {
-      "comment" : "legislation official tag",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Official"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Resmi"
-          }
-        }
-      }
-    },
-    "legislation.action.open_in_safari" : {
-      "comment" : "legislation open in safari action",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Open in Safari"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Safari'de Aç"
-          }
-        }
-      }
-    },
-    "legislation.action.open_document" : {
-      "comment" : "legislation open document action",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Open Document"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Belgeyi Aç"
-          }
-        }
-      }
-    },
-    "legislation.info.year" : {
-      "comment" : "legislation info year label",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Year"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Yıl"
-          }
-        }
-      }
-    },
-    "legislation.info.type" : {
-      "comment" : "legislation info type label",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Type"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tür"
-          }
-        }
-      }
-    },
-    "legislation.info.status" : {
-      "comment" : "legislation info status label",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Status"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Durum"
-          }
-        }
-      }
-    },
-    "legislation.status.official" : {
-      "comment" : "legislation official status",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Official"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Resmi"
-          }
-        }
-      }
-    },
-    "legislation.status.draft" : {
-      "comment" : "legislation draft status",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Draft"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Taslak"
-          }
-        }
-      }
-    },
-    "legislation.type.tariff" : {
-      "comment" : "legislation document type tariff",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tariff"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tarife"
-          }
-        }
-      }
-    },
-    "legislation.type.regulation" : {
-      "comment" : "legislation document type regulation",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Regulation"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Yönetmelik"
-          }
-        }
-      }
-    },
-    "legislation.type.law" : {
-      "comment" : "legislation document type law",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Law"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kanun"
-          }
-        }
-      }
-    },
-    "legislation.type.circular" : {
-      "comment" : "legislation document type circular",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Circular"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Genelge"
           }
         }
       }
@@ -3292,6 +3292,24 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Uyuşmazlık Konusu"
+          }
+        }
+      }
+    },
+    "result.dispute_subject_non_monetary" : {
+      "comment" : "result value - for non-monetary disputes",
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non-Monetary Dispute"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Konusu Para Olmayan"
           }
         }
       }
