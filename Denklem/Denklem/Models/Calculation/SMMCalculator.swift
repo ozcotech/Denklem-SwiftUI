@@ -265,9 +265,9 @@ enum SMMPersonType: String, CaseIterable {
     var displayName: String {
         switch self {
         case .realPerson:
-            return NSLocalizedString(LocalizationKeys.SMMResult.realPerson, comment: "")
+            return LocalizationKeys.SMMResult.realPerson.localized
         case .legalPerson:
-            return NSLocalizedString(LocalizationKeys.SMMResult.legalPerson, comment: "")
+            return LocalizationKeys.SMMResult.legalPerson.localized
         }
     }
     

@@ -402,18 +402,18 @@ enum AgreementStatus: String, CaseIterable {
     var displayName: String {
         switch self {
         case .agreed:
-            return NSLocalizedString(LocalizationKeys.AgreementStatus.agreed, comment: "")
+            return LocalizationKeys.AgreementStatus.agreed.localized
         case .notAgreed:
-            return NSLocalizedString(LocalizationKeys.AgreementStatus.notAgreed, comment: "")
+            return LocalizationKeys.AgreementStatus.notAgreed.localized
         }
     }
     
     var description: String {
         switch self {
         case .agreed:
-            return NSLocalizedString(LocalizationKeys.AgreementStatus.Description.agreed, comment: "")
+            return LocalizationKeys.AgreementStatus.Description.agreed.localized
         case .notAgreed:
-            return NSLocalizedString(LocalizationKeys.AgreementStatus.Description.notAgreed, comment: "")
+            return LocalizationKeys.AgreementStatus.Description.notAgreed.localized
         }
     }
 }
@@ -428,26 +428,26 @@ enum SMMCalculationType: String, CaseIterable {
     var displayName: String {
         switch self {
         case .vatIncludedWithholdingExcluded:
-            return NSLocalizedString(LocalizationKeys.SMMCalculationType.vatIncludedWithholdingExcluded, comment: "")
+            return LocalizationKeys.SMMCalculationType.vatIncludedWithholdingExcluded.localized
         case .vatExcludedWithholdingIncluded:
-            return NSLocalizedString(LocalizationKeys.SMMCalculationType.vatExcludedWithholdingIncluded, comment: "")
+            return LocalizationKeys.SMMCalculationType.vatExcludedWithholdingIncluded.localized
         case .vatIncludedWithholdingIncluded:
-            return NSLocalizedString(LocalizationKeys.SMMCalculationType.vatIncludedWithholdingIncluded, comment: "")
+            return LocalizationKeys.SMMCalculationType.vatIncludedWithholdingIncluded.localized
         case .vatExcludedWithholdingExcluded:
-            return NSLocalizedString(LocalizationKeys.SMMCalculationType.vatExcludedWithholdingExcluded, comment: "")
+            return LocalizationKeys.SMMCalculationType.vatExcludedWithholdingExcluded.localized
         }
     }
     
     var description: String {
         switch self {
         case .vatIncludedWithholdingExcluded:
-            return NSLocalizedString(LocalizationKeys.SMMCalculationType.Description.vatIncludedWithholdingExcluded, comment: "")
+            return LocalizationKeys.SMMCalculationType.Description.vatIncludedWithholdingExcluded.localized
         case .vatExcludedWithholdingIncluded:
-            return NSLocalizedString(LocalizationKeys.SMMCalculationType.Description.vatExcludedWithholdingIncluded, comment: "")
+            return LocalizationKeys.SMMCalculationType.Description.vatExcludedWithholdingIncluded.localized
         case .vatIncludedWithholdingIncluded:
-            return NSLocalizedString(LocalizationKeys.SMMCalculationType.Description.vatIncludedWithholdingIncluded, comment: "")
+            return LocalizationKeys.SMMCalculationType.Description.vatIncludedWithholdingIncluded.localized
         case .vatExcludedWithholdingExcluded:
-            return NSLocalizedString(LocalizationKeys.SMMCalculationType.Description.vatExcludedWithholdingExcluded, comment: "")
+            return LocalizationKeys.SMMCalculationType.Description.vatExcludedWithholdingExcluded.localized
         }
     }
     
@@ -478,39 +478,39 @@ enum CalculationType: String, CaseIterable {
     var displayName: String {
         switch self {
         case .monetary:
-            return NSLocalizedString(LocalizationKeys.CalculationType.monetary, comment: "")
+            return LocalizationKeys.CalculationType.monetary.localized
         case .nonMonetary:
-            return NSLocalizedString(LocalizationKeys.CalculationType.nonMonetary, comment: "")
+            return LocalizationKeys.CalculationType.nonMonetary.localized
         case .timeCalculation:
-            return NSLocalizedString(LocalizationKeys.CalculationType.timeCalculation, comment: "")
+            return LocalizationKeys.CalculationType.timeCalculation.localized
         case .smmCalculation:
-            return NSLocalizedString(LocalizationKeys.CalculationType.smmCalculation, comment: "")
+            return LocalizationKeys.CalculationType.smmCalculation.localized
         }
     }
     
     var description: String {
         switch self {
         case .monetary:
-            return NSLocalizedString(LocalizationKeys.CalculationType.Description.monetary, comment: "")
+            return LocalizationKeys.CalculationType.Description.monetary.localized
         case .nonMonetary:
-            return NSLocalizedString(LocalizationKeys.CalculationType.Description.nonMonetary, comment: "")
+            return LocalizationKeys.CalculationType.Description.nonMonetary.localized
         case .timeCalculation:
-            return NSLocalizedString(LocalizationKeys.CalculationType.Description.timeCalculation, comment: "")
+            return LocalizationKeys.CalculationType.Description.timeCalculation.localized
         case .smmCalculation:
-            return NSLocalizedString(LocalizationKeys.CalculationType.Description.smmCalculation, comment: "")
+            return LocalizationKeys.CalculationType.Description.smmCalculation.localized
         }
     }
 }
 
 // MARK: - SMM Result Table Labels (Localized)
 struct SMMResultTableLabels {
-    static let mediationFee = NSLocalizedString(LocalizationKeys.SMMResult.grossFee, comment: "")
-    static let gelirVergisiStopaji = NSLocalizedString(LocalizationKeys.SMMResult.withholding, comment: "")
-    static let netUcret = NSLocalizedString(LocalizationKeys.SMMResult.netFee, comment: "")
-    static let kdv = NSLocalizedString(LocalizationKeys.SMMResult.vat, comment: "")
-    static let tahsilEdilecek = NSLocalizedString(LocalizationKeys.SMMResult.totalCollected, comment: "")
-    static let tuzelKisi = NSLocalizedString(LocalizationKeys.SMMResult.legalPerson, comment: "")
-    static let gercekKisi = NSLocalizedString(LocalizationKeys.SMMResult.realPerson, comment: "")
+    static var mediationFee: String { LocalizationKeys.SMMResult.grossFee.localized }
+    static var gelirVergisiStopaji: String { LocalizationKeys.SMMResult.withholding.localized }
+    static var netUcret: String { LocalizationKeys.SMMResult.netFee.localized }
+    static var kdv: String { LocalizationKeys.SMMResult.vat.localized }
+    static var tahsilEdilecek: String { LocalizationKeys.SMMResult.totalCollected.localized }
+    static var tuzelKisi: String { LocalizationKeys.SMMResult.legalPerson.localized }
+    static var gercekKisi: String { LocalizationKeys.SMMResult.realPerson.localized }
 }
 
 // MARK: - SMM Result Models

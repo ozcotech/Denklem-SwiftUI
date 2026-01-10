@@ -251,10 +251,15 @@ struct SMMResultSheet: View {
     let result: SMMCalculationResult
     let theme: ThemeProtocol
     let glassNamespace: Namespace.ID
+
+    @ObservedObject private var localeManager = LocaleManager.shared
     
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
+        // Observe language changes to trigger view refresh while sheet is open
+        let _ = localeManager.refreshID
+
         NavigationStack {
             ScrollView {
                 VStack(spacing: theme.spacingL) {
