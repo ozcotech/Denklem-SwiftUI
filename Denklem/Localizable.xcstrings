@@ -1458,6 +1458,24 @@
         }
       }
     },
+    "dispute_type.non_monetary_note" : {
+      "comment" : "Non-monetary dispute info note",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "According to Article 7/1 of the Mediation Fee Tariff, for legal disputes that are non-monetary or cannot be evaluated with money, the mediation fee is calculated as a flat rate based solely on the number of parties."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arabuluculuk Ücret Tarifesi m.7/1 hükmünce konusu para olmayan veya para ile değerlendirilemeyen hukuki uyuşmazlıklarda arabuluculuk ücreti sadece taraf sayısına göre maktu hesaplanır."
+          }
+        }
+      }
+    },
     "dispute_type.neighbor" : {
       "comment" : "dispute type",
       "extractionState" : "manual",

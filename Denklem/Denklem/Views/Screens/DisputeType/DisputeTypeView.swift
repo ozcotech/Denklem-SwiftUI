@@ -47,11 +47,14 @@ struct DisputeTypeView: View {
             
             // Content
             ScrollView {
-                VStack(spacing: theme.spacingL) {
+                VStack(spacing: theme.spacingS) {
                     
-                    // Agreement Status Selector (only for monetary disputes)
+                    // Agreement Status Selector (always reserve space for consistent layout)
                     if viewModel.showAgreementSelector {
                         agreementSelectorSection
+                    } else {
+                        // Non-monetary dispute info text
+                        nonMonetaryInfoSection
                     }
                     
                     // Dispute Type Buttons
@@ -73,6 +76,22 @@ struct DisputeTypeView: View {
                     selectedDisputeType: disputeType
                 )
             }
+        }
+    }
+    
+    // MARK: - Non-Monetary Info Section
+    
+    private var nonMonetaryInfoSection: some View {
+        VStack(spacing: theme.spacingS) {
+            Text(LocalizationKeys.DisputeType.nonMonetaryNote.localized)
+                .font(theme.footnote)
+                .foregroundStyle(theme.textSecondary)
+                .multilineTextAlignment(.leading)
+                .lineSpacing(4)
+                .padding(.horizontal, theme.spacingS)
+                .padding(.top, theme.spacingS)
+
+                .frame(minHeight: 130)
         }
     }
     

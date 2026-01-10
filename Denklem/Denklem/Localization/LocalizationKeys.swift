@@ -47,6 +47,7 @@ struct LocalizationKeys {
         static let family = "dispute_type.family"
         static let partnershipDissolution = "dispute_type.partnership_dissolution"
         static let other = "dispute_type.other"
+        static let nonMonetaryNote = "dispute_type.non_monetary_note"
         
         // Descriptions
         struct Description {
