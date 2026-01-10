@@ -461,7 +461,7 @@ This project is licensed under the MIT License.
 
 <div align="center">
 
-**Made with ❤️ in Turkey**
+**Made with ❤️ in Türkiye**
 
 Developed to simplify mediation processes
 </div>
