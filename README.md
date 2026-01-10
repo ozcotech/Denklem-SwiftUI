@@ -1,32 +1,33 @@
 # 🧮 DENKLEM – Mediation Fee Calculator
 
-**DENKLEM** (from Latin "aequare" = "to equalize", meaning "to create equality" in Turkish) is a comprehensive **native iOS application** that calculates mediation fees according to Turkish law. Written from scratch with SwiftUI, the app performs calculations based on 2025 and 2026 mediation fee tariffs.
+**DENKLEM** (from Latin "aequare" = "to equalize") is a comprehensive **native iOS application** for calculating mediation fees according to Turkish law. Written from scratch with SwiftUI, the app performs calculations based on the 2025 and 2026 mediation fee tariffs.
 
-The name "DENKLEM" derives from the concept of creating equality and balance between parties - which aligns perfectly with the essence of the mediation process: establishing balance and fair resolution between disputing parties.
+The name "DENKLEM" reflects the concept of creating equality and balance between parties, which aligns perfectly with the essence of mediation: establishing balance and fair resolution between disputing parties.
 
-> 🚀 **New Version**: This app is a modern version completely rewritten with native SwiftUI, replacing the previous React Native version. Developed with native performance and iOS 26.0+ features after the first version published on the App Store.
+> 🚀 **First Version Available on the App Store!**  
+> Download now: [DENKLEM on App Store](https://apps.apple.com/us/app/denklem/id6746580824)
 
 ---
 
 ## ✨ Why SwiftUI Version?
 
 ### 🎯 **Native Performance**
-- **Faster**: 60% faster calculations compared to React Native version
+- **Faster**: 60% faster calculations compared to the React Native version
 - **Low Memory Usage**: Average memory consumption below 50MB
 - **Smooth Animations**: Consistent 60fps performance
-- **Instant Launch**: <2 seconds app startup time
+- **Instant Launch**: App startup time under 2 seconds
 
 ### 🌟 **Modern iOS Features**
 - **Liquid Glass Design**: Modern glass effects for iOS 26.0+
 - **Native Components**: Fully SwiftUI and native iOS APIs
 - **Future-Ready**: Optimized for iOS 26.0+
-- **Offline-First**: Complete offline operation without internet connection
+- **Offline-First**: Works completely offline
 
 ### 🎨 **Enhanced User Experience**
 - **Bilingual Support**: Turkish and English (instant language switching)
 - **Light/Dark Mode**: Automatic theme support
 - **Liquid Glass UI**: Optional modern visual effects
-- **Accessibility**: VoiceOver support (coming in future updates)
+- **Accessibility**: VoiceOver support coming in future updates
 
 ---
 
@@ -34,7 +35,7 @@ The name "DENKLEM" derives from the concept of creating equality and balance bet
 
 ### 💰 **Core Functionality - Fee Calculation**
 - **2025 & 2026 Official Tariffs**: Based on current Turkish mediation fee tariff
-- **Smart Calculation Engine**: Both monetary and non-monetary disputes
+- **Smart Calculation Engine**: Handles both monetary and non-monetary disputes
 - **Dual Scenario Support**: Different calculations for agreement vs. non-agreement cases
 - **Automatic Tariff Selection**: User selects tariff year at startup (2025 or 2026)
 
@@ -342,8 +343,7 @@ Denklem/
 
 ---
 
-## 🎨 Tasarım Özellikleri
-Design Features
+## 🎨 Design Features
 
 ### **Liquid Glass Effect (iOS 26.0+)**
 ```swift
@@ -371,14 +371,13 @@ Text("Title")
 // Multi-language support
 Text(LocalizationKeys.Home.welcome.localized)
 
-// Dynamic language switchingtLanguage(.turkish)
+// Dynamic language switching
 LocaleManager.shared.setLanguage(.english)
 ```
 
 ---
 
-## 🚀 Gelecek Özellikler (v2.1+)
-Future Features (v2.1+)
+## 🚀 Upcoming Features (v2.1+)
 
 ### **Planned Features**
 - 🏢 **Attorney Fee Calculation**: Power of attorney fee calculation in mediation process
@@ -389,16 +388,15 @@ Future Features (v2.1+)
 - 🔔 **Tariff Notifications**: Push notifications for new tariff updates
 
 ### **Technical Improvements**
-- 📱 **iPad Optimization**: Coming soon with split-view and larger screen designs
 - ⚡ **Performance Improvements**: Faster calculations and animations
 - 🧪 **Enhanced Test Coverage**: Target 95%+ test coverage
 - 🌐 **Additional Languages**: More language support beyond English
+
 ---
 
-## 📖 Dokümantasyon
-cumentation
+## 📖 Documentation
 
-See `Documentation/` folder for detailed documentation:
+See the `Documentation/` folder for detailed documentation:
 
 - 📋 [PROJECT_OVERVIEW.md](Documentation/PROJECT_OVERVIEW.md) - Project overview
 - 🏗️ [ARCHITECTURE_PLAN.md](Documentation/ARCHITECTURE_PLAN.md) - Architecture details
@@ -407,10 +405,10 @@ See `Documentation/` folder for detailed documentation:
 - ✨ [FEATURES_BREAKDOWN.md](Documentation/FEATURES_BREAKDOWN.md) - Feature details
 - 💻 [CODING_STANDARDS.md](Documentation/CODING_STANDARDS.md) - Coding standards
 - 🧑‍⚖️ [ATTORNEY_FEE_CALCULATION_PLAN.md](Documentation/ATTORNEY_FEE_CALCULATION_PLAN.md) - Attorney fee planning
+
 ---
 
-## 🤝 Katkıda Bulunma
-Contributing
+## 🤝 Contributing
 
 This project is currently managed by a single developer. Please contact for suggestions and feedback.
 
@@ -440,15 +438,7 @@ This project is licensed under the MIT License.
 
 ---
 
-## 📱 App Store
-
-> 🚀 **Available on the App Store!**  
-> Download now: [DENKLEM on App Store](https://apps.apple.com/us/app/denklem/id6746580824)
----
-
-## 🔄 Versiyon Geçmişi
-
-### v2.0.0 on History
+## 🔄 Version History
 
 ### v2.0.0 (January 2026) - SwiftUI Native Rewrite
 - ✨ Completely rewritten with SwiftUI
@@ -474,3 +464,4 @@ This project is licensed under the MIT License.
 **Made with ❤️ in Turkey**
 
 Developed to simplify mediation processes
+</div>
