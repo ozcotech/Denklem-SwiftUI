@@ -138,22 +138,52 @@ final class SMMCalculationViewModel: ObservableObject {
         let decimalSeparator = locale.decimalSeparator ?? ","
         let groupingSeparator = locale.groupingSeparator ?? "."
 
-        // Accept both comma and period as decimal separators (for keyboard compatibility)
-        // Replace the "other" one with current locale's decimal separator
-        let otherSeparator = decimalSeparator == "," ? "." : ","
-        var cleaned = amountText.replacingOccurrences(of: otherSeparator, with: decimalSeparator)
+        // Step 1: Keep only digits, dots, and commas
+        var cleaned = String(amountText.unicodeScalars.filter { 
+            CharacterSet.decimalDigits.contains($0) || $0 == "." || $0 == ","
+        })
         
-        // Remove grouping separators
-        cleaned = cleaned.replacingOccurrences(of: groupingSeparator, with: "")
-
-        // Allow only numbers and current decimal separator
-        let allowedChars = CharacterSet.decimalDigits.union(CharacterSet(charactersIn: decimalSeparator))
-        cleaned = String(cleaned.unicodeScalars.filter { allowedChars.contains($0) })
-
-        // Ensure only one decimal separator
-        let parts = cleaned.components(separatedBy: decimalSeparator)
-        if parts.count > 2 {
-            cleaned = parts[0] + decimalSeparator + parts[1]
+        // Step 2: Find the last separator (dot or comma) - this is likely the decimal separator
+        let lastDotIndex = cleaned.lastIndex(of: ".")
+        let lastCommaIndex = cleaned.lastIndex(of: ",")
+        
+        // Determine which is the last separator
+        var lastSepIndex: String.Index? = nil
+        
+        if let dot = lastDotIndex, let comma = lastCommaIndex {
+            lastSepIndex = dot > comma ? dot : comma
+        } else {
+            lastSepIndex = lastDotIndex ?? lastCommaIndex
+        }
+        
+        // Step 3: Check if last separator looks like a decimal (0-2 digits after it)
+        var integerPart = ""
+        var decimalPart = ""
+        var hasDecimal = false
+        
+        if let sepIndex = lastSepIndex {
+            let afterSep = String(cleaned[cleaned.index(after: sepIndex)...])
+            // If 0-2 digits after separator OR it's at the end, treat as decimal
+            if afterSep.count <= 2 {
+                hasDecimal = true
+                integerPart = String(cleaned[..<sepIndex])
+                decimalPart = afterSep
+            }
+        }
+        
+        if !hasDecimal {
+            integerPart = cleaned
+        }
+        
+        // Step 4: Remove all separators from integer part (these are grouping separators we added)
+        integerPart = integerPart.replacingOccurrences(of: ".", with: "")
+        integerPart = integerPart.replacingOccurrences(of: ",", with: "")
+        
+        // Step 5: Rebuild cleaned string
+        if hasDecimal {
+            cleaned = integerPart + decimalSeparator + decimalPart
+        } else {
+            cleaned = integerPart
         }
 
         // If empty, clear
@@ -164,13 +194,13 @@ final class SMMCalculationViewModel: ObservableObject {
 
         let hasTrailingDecimalSeparator = cleaned.hasSuffix(decimalSeparator)
 
-        // Split into integer and decimal parts
+        // Split into integer and decimal parts for formatting
         let components = cleaned.components(separatedBy: decimalSeparator)
-        let integerPart = components[0]
-        let decimalPart = components.count > 1 ? components[1] : ""
+        let finalIntegerPart = components[0]
+        let finalDecimalPart = components.count > 1 ? components[1] : ""
 
         // Format integer part with grouping separators
-        if let number = Int(integerPart), number >= 0 {
+        if !finalIntegerPart.isEmpty, let number = Double(finalIntegerPart), number >= 0 {
             let formatter = NumberFormatter()
             formatter.numberStyle = .decimal
             formatter.locale = locale
@@ -179,17 +209,26 @@ final class SMMCalculationViewModel: ObservableObject {
             formatter.maximumFractionDigits = 0
 
             if let formatted = formatter.string(from: NSNumber(value: number)) {
-                if !decimalPart.isEmpty {
-                    let limitedDecimal = String(decimalPart.prefix(2))
-                    amountText = formatted + decimalSeparator + limitedDecimal
+                let newValue: String
+                if !finalDecimalPart.isEmpty {
+                    let limitedDecimal = String(finalDecimalPart.prefix(2))
+                    newValue = formatted + decimalSeparator + limitedDecimal
                 } else if hasTrailingDecimalSeparator {
-                    amountText = formatted + decimalSeparator
+                    newValue = formatted + decimalSeparator
                 } else {
-                    amountText = formatted
+                    newValue = formatted
+                }
+                
+                // Only update if value actually changed
+                if amountText != newValue {
+                    amountText = newValue
                 }
             }
         } else if cleaned == decimalSeparator {
-            amountText = "0" + decimalSeparator
+            let newValue = "0" + decimalSeparator
+            if amountText != newValue {
+                amountText = newValue
+            }
         }
     }
 }
