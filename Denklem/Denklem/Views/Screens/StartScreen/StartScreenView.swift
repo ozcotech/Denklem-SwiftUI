@@ -92,47 +92,54 @@ struct StartScreenView: View {
     // MARK: - Year Selection Section
     
     private var yearSelectionSection: some View {
-        // Native Segmented Picker with custom height
-        Picker("", selection: $viewModel.selectedYear) {
-            ForEach(TariffYear.allCases, id: \.self) { year in
-                Text(String(format: "%d", year.rawValue))
-                    .font(.system(size: 18, weight: .regular))
-                    .tag(year)
+        GeometryReader { geometry in
+            Picker("", selection: $viewModel.selectedYear) {
+                ForEach(TariffYear.allCases, id: \.self) { year in
+                    Text(String(format: "%d", year.rawValue))
+                        .font(.system(size: 18, weight: .regular))
+                        .tag(year)
+                }
+            }
+            .pickerStyle(.segmented)
+            .tint(theme.primary)
+            .scaleEffect(y: 1.2)
+            .frame(width: geometry.size.width * 0.9) // %90 width
+            .padding(.horizontal, theme.spacingM)
+            .onChange(of: viewModel.selectedYear) { _, newYear in
+                viewModel.selectYear(newYear)
             }
         }
-        .pickerStyle(.segmented)
-        .tint(theme.primary)
-        .scaleEffect(y: 1.2) 
-        .padding(.horizontal, theme.spacingXXL)
-        .onChange(of: viewModel.selectedYear) { _, newYear in
-            viewModel.selectYear(newYear)
-        }
+        .frame(height: 50) // Fixed height for picker
     }
     
     // MARK: - Primary Action Button
     
     private var primaryActionButton: some View {
-        Button {
-            viewModel.proceedToDisputeCategory()
-        } label: {
-            HStack(spacing: theme.spacingM) {
-                Text(String(format: LocalizationKeys.Start.enterButtonWithYear.localized, viewModel.selectedYear.displayName))
-                    .font(theme.headline)
-                    .foregroundColor(.white)
-                
-                Image(systemName: "arrow.right")
-                    .font(.system(size: 18, weight: .semibold))
-                    .foregroundColor(.white)
-                    .offset(x: arrowOffset)
+        GeometryReader { geometry in
+            Button {
+                viewModel.proceedToDisputeCategory()
+            } label: {
+                HStack(spacing: theme.spacingM) {
+                    Text(String(format: LocalizationKeys.Start.enterButtonWithYear.localized, viewModel.selectedYear.displayName))
+                        .font(theme.headline)
+                        .foregroundColor(.white)
+                    
+                    Image(systemName: "arrow.right")
+                        .font(.system(size: 18, weight: .semibold))
+                        .foregroundColor(.white)
+                        .offset(x: arrowOffset)
+                }
+                .frame(maxWidth: .infinity)
+                .frame(height: 50)
             }
-            .frame(maxWidth: .infinity)
-            .frame(height: 50)
+            .buttonStyle(.glass)
+            .frame(width: geometry.size.width * 0.9) // 90% width
+            .padding(.horizontal, theme.spacingM)
+            .onAppear {
+                startButtonAnimations()
+            }
         }
-        .buttonStyle(.glass) // Apple's native Liquid Glass button style
-        .padding(.horizontal, theme.spacingXXL)
-        .onAppear {
-            startButtonAnimations()
-        }
+        .frame(height: 50) // Fixed height for button
     }
     
     // MARK: - Animation Methods

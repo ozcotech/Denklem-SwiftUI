@@ -138,10 +138,15 @@ final class SMMCalculationViewModel: ObservableObject {
         let decimalSeparator = locale.decimalSeparator ?? ","
         let groupingSeparator = locale.groupingSeparator ?? "."
 
-        // Remove all formatting (keep only numbers and decimal separator)
-        var cleaned = amountText.replacingOccurrences(of: groupingSeparator, with: "")
+        // Accept both comma and period as decimal separators (for keyboard compatibility)
+        // Replace the "other" one with current locale's decimal separator
+        let otherSeparator = decimalSeparator == "," ? "." : ","
+        var cleaned = amountText.replacingOccurrences(of: otherSeparator, with: decimalSeparator)
+        
+        // Remove grouping separators
+        cleaned = cleaned.replacingOccurrences(of: groupingSeparator, with: "")
 
-        // Allow only numbers and one decimal separator
+        // Allow only numbers and current decimal separator
         let allowedChars = CharacterSet.decimalDigits.union(CharacterSet(charactersIn: decimalSeparator))
         cleaned = String(cleaned.unicodeScalars.filter { allowedChars.contains($0) })
 
