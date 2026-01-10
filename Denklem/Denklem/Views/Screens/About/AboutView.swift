@@ -7,47 +7,87 @@
 
 import SwiftUI
 
+// MARK: - Disclaimer Anchor Preference
+
+@available(iOS 26.0, *)
+private struct DisclaimerAnchorKey: PreferenceKey {
+    static var defaultValue: Anchor<CGRect>? = nil
+    static func reduce(value: inout Anchor<CGRect>?, nextValue: () -> Anchor<CGRect>?) {
+        value = value ?? nextValue()
+    }
+}
+
 // MARK: - About View
-/// Displays app information, developer details, and support options
 @available(iOS 26.0, *)
 struct AboutView: View {
-    
+
     // MARK: - Properties
-    
+
     @StateObject private var viewModel = AboutViewModel()
     @ObservedObject private var localeManager = LocaleManager.shared
     @Environment(\.theme) var theme
-    
+
+    @State private var showingDisclaimerPopover: Bool = false
+
     // MARK: - Body
-    
+
     var body: some View {
         // Observe language changes to trigger view refresh
         let _ = localeManager.refreshID
-        
+
         ScrollView {
             VStack(spacing: theme.spacingL) {
-                // App Header
                 appHeaderSection
-                
-                // Sections
+
                 ForEach(viewModel.sections) { section in
-                    AboutSectionView(section: section) { item in
-                        viewModel.handleAction(for: item)
-                    }
+                    AboutSectionView(
+                        section: section,
+                        onShowDisclaimer: { showingDisclaimerPopover = true },
+                        onItemTap: { item in viewModel.handleAction(for: item) }
+                    )
                 }
-                
-                // Copyright Footer
+
                 copyrightFooter
             }
             .padding(.horizontal, theme.spacingM)
             .padding(.top, theme.spacingM)
             .padding(.bottom, theme.spacingXXL)
         }
+        .coordinateSpace(name: "about.scroll")
         .background(theme.background)
         .navigationTitle(LocalizationKeys.ScreenTitle.about.localized)
         .navigationBarTitleDisplayMode(.large)
         .onChange(of: localeManager.refreshID) { _, _ in
             viewModel.loadSections()
+        }
+        .overlayPreferenceValue(DisclaimerAnchorKey.self) { anchor in
+            GeometryReader { proxy in
+                if let anchor, showingDisclaimerPopover {
+                    let rect = proxy[anchor]
+                    let maxWidth = max(260, min(420, proxy.size.width - (theme.spacingM * 2)))
+
+                    ZStack {
+                        // Tap outside to dismiss (no dimming, fully clear)
+                        Color.clear
+                            .contentShape(Rectangle())
+                            .onTapGesture { showingDisclaimerPopover = false }
+
+                        // The actual glass popover (NO system popover chrome)
+                        DisclaimerPopoverContent()
+                            .frame(width: maxWidth)
+                            .fixedSize(horizontal: false, vertical: true)
+                            // place above the row; clamp so it stays on-screen
+                            .position(
+                                x: min(max(rect.midX, maxWidth / 2 + theme.spacingM),
+                                       proxy.size.width - maxWidth / 2 - theme.spacingM),
+                                y: max(theme.spacingM + 20, rect.minY - 72)
+                            )
+                            .onTapGesture { /* swallow taps */ }
+                            .transition(.opacity.combined(with: .scale(scale: 0.98, anchor: .bottom)))
+                    }
+                    .animation(.easeInOut(duration: theme.fastAnimationDuration), value: showingDisclaimerPopover)
+                }
+            }
         }
         .sheet(isPresented: $viewModel.showShareSheet) {
             ShareSheet(items: viewModel.getShareItems())
@@ -66,9 +106,9 @@ struct AboutView: View {
             }
         }
     }
-    
+
     // MARK: - App Header Section
-    
+
     private var appHeaderSection: some View {
         VStack(spacing: theme.spacingM) {
             // App Name
@@ -76,13 +116,13 @@ struct AboutView: View {
                 .font(theme.largeTitle)
                 .fontWeight(.bold)
                 .foregroundStyle(theme.textPrimary)
-            
+
             // App Tagline
             Text(LocalizationKeys.AppInfo.tagline.localized)
                 .font(theme.body)
                 .foregroundStyle(theme.textSecondary)
                 .multilineTextAlignment(.center)
-            
+
             // Version Badge
             Text("v\(viewModel.appVersion)")
                 .font(theme.caption)
@@ -91,21 +131,21 @@ struct AboutView: View {
                 .padding(.vertical, 6)
                 .background(
                     Capsule()
-                        .fill(theme.primary.opacity(0.1))
+                        .fill(.clear)
                 )
                 .foregroundStyle(theme.primary)
         }
         .padding(.vertical, theme.spacingL)
     }
-    
+
     // MARK: - Copyright Footer
-    
+
     private var copyrightFooter: some View {
         VStack(spacing: theme.spacingS) {
             Text(viewModel.copyrightText)
                 .font(theme.caption)
                 .foregroundStyle(theme.textTertiary)
-            
+
             Text("about.made_with_love".localized)
                 .font(theme.caption)
                 .foregroundStyle(theme.textTertiary)
@@ -119,28 +159,29 @@ struct AboutView: View {
 
 @available(iOS 26.0, *)
 struct AboutSectionView: View {
-    
+
     let section: AboutScreenSection
+    let onShowDisclaimer: () -> Void
     let onItemTap: (AboutSectionItem) -> Void
-    
+
     @Environment(\.theme) var theme
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: theme.spacingS) {
-            // Section Header
             Text(section.title)
                 .font(theme.headline)
                 .fontWeight(.semibold)
                 .foregroundStyle(theme.textSecondary)
                 .padding(.leading, theme.spacingXS)
-            
-            // Section Items
+
             VStack(spacing: 0) {
                 ForEach(Array(section.items.enumerated()), id: \.element.id) { index, item in
-                    AboutItemRow(item: item) {
-                        onItemTap(item)
-                    }
-                    
+                    AboutItemRow(
+                        item: item,
+                        onShowDisclaimer: onShowDisclaimer,
+                        action: { onItemTap(item) }
+                    )
+
                     if index < section.items.count - 1 {
                         Divider()
                             .padding(.leading, 50)
@@ -149,7 +190,7 @@ struct AboutSectionView: View {
             }
             .background(
                 RoundedRectangle(cornerRadius: 12)
-                    .fill(theme.surface)
+                    .fill(.clear)
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 12)
@@ -163,45 +204,42 @@ struct AboutSectionView: View {
 
 @available(iOS 26.0, *)
 struct AboutItemRow: View {
-    
+
     let item: AboutSectionItem
+    let onShowDisclaimer: () -> Void
     let action: () -> Void
-    
+
     @Environment(\.theme) var theme
-    @State private var showingDisclaimer = false
-    
+
     var body: some View {
         Button(action: {
             if item.action == .showDisclaimer {
-                showingDisclaimer = true
+                onShowDisclaimer()
             } else {
                 action()
             }
         }) {
             HStack(spacing: theme.spacingM) {
-                // Icon
                 if let systemImage = item.systemImage {
                     Image(systemName: systemImage)
                         .font(.body)
                         .foregroundStyle(theme.primary)
                         .frame(width: 30)
                 }
-                
-                // Title
+
                 Text(item.title)
                     .font(theme.body)
                     .foregroundStyle(theme.textPrimary)
-                
+
                 Spacer()
-                
-                // Value or Chevron
+
                 if let value = item.value {
                     Text(value)
                         .font(theme.body)
                         .foregroundStyle(theme.textSecondary)
                         .lineLimit(1)
                 }
-                
+
                 if item.action != nil && item.action != AboutSectionItem.AboutItemAction.none {
                     Image(systemName: "chevron.right")
                         .font(.caption)
@@ -214,10 +252,12 @@ struct AboutItemRow: View {
         }
         .buttonStyle(.plain)
         .disabled(item.action == nil || item.action == AboutSectionItem.AboutItemAction.none)
-        .popover(isPresented: $showingDisclaimer, arrowEdge: .bottom) {
-            DisclaimerPopoverContent()
-                .presentationCompactAdaptation(.popover)
-                .presentationBackground { Color.clear }
+        // Anchor only the disclaimer row so we can position the overlay correctly
+        .anchorPreference(
+            key: DisclaimerAnchorKey.self,
+            value: .bounds
+        ) { anchor in
+            (item.action == .showDisclaimer) ? anchor : nil
         }
     }
 }
@@ -226,14 +266,14 @@ struct AboutItemRow: View {
 
 @available(iOS 26.0, *)
 struct ShareSheet: UIViewControllerRepresentable {
-    
+
     let items: [Any]
-    
+
     func makeUIViewController(context: Context) -> UIActivityViewController {
         let controller = UIActivityViewController(activityItems: items, applicationActivities: nil)
         return controller
     }
-    
+
     func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
 }
 
@@ -241,25 +281,22 @@ struct ShareSheet: UIViewControllerRepresentable {
 
 @available(iOS 26.0, *)
 struct DisclaimerPopoverContent: View {
-    
+
     @Environment(\.theme) var theme
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: theme.spacingM) {
-            // Header
             HStack(spacing: theme.spacingS) {
                 Image(systemName: "exclamationmark.triangle.fill")
                     .font(.title3)
                     .foregroundStyle(theme.warning)
-                
+
                 Text(LocalizationKeys.Legal.disclaimer.localized)
                     .font(theme.headline)
                     .fontWeight(.semibold)
                     .foregroundStyle(theme.textPrimary)
             }
-            .padding(.bottom, theme.spacingXS)
-            
-            // Disclaimer Text
+
             ScrollView {
                 Text(LocalizationKeys.Legal.disclaimerText.localized)
                     .font(theme.body)
@@ -267,11 +304,12 @@ struct DisclaimerPopoverContent: View {
                     .fixedSize(horizontal: false, vertical: true)
             }
             .scrollContentBackground(.hidden)
-            .frame(maxHeight: 500)
+            .frame(maxHeight: 420)
         }
         .padding(theme.spacingL)
-        .frame(width: 380)
-        .glassEffect(.regular, in: .rect(cornerRadius: 28))
+        .background(.clear)
+        // Use theme glass; system popover removed so this is now the only "background"
+        .glassEffect(theme.glassClear, in: RoundedRectangle(cornerRadius: 28))
     }
 }
 
@@ -286,7 +324,7 @@ struct AboutView_Previews: PreviewProvider {
             }
             .injectTheme(LightTheme())
             .previewDisplayName("Light Mode")
-            
+
             NavigationStack {
                 AboutView()
             }
