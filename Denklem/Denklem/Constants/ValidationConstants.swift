@@ -125,7 +125,7 @@ struct ValidationConstants {
         static let stopajRate: Double = 0.20
         
         // SMM amount limits
-        static let minimumSMMAmount: Double = 0.01
+        static let minimumSMMAmount: Double = 0.0
         static let maximumSMMAmount: Double = 999_999_999.0
         
         // Valid SMM calculation types (from TariffConstants enum)
@@ -166,10 +166,12 @@ struct ValidationConstants {
         // Error codes
         static let invalidTypeErrorCode = 1006
         static let validationErrorCode = 1005
-    }    // MARK: - Time Calculation Validation
+    }
+
+    // MARK: - Time Calculation Validation
     struct TimeCalculation {
         // Valid time calculation dispute types from TariffConstants
-        static let validTimeDisputeTypes = [
+        static let validTimeDisputeTypes: [String] = [
             "labor_law",
             "commercial_law",
             "consumer_law",
@@ -179,12 +181,12 @@ struct ValidationConstants {
             "neighbor_law",
             "agricultural_production"
         ]
-        
+
         // Time limits
         static let minimumWeeks = 1
         static let maximumWeeks = 52
         static let defaultWeeks = 4
-        
+
         // Week calculation patterns
         static let weekPattern = "^[1-9][0-9]?$"  // 1-99 weeks
     }

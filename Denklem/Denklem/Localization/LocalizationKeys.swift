@@ -134,6 +134,7 @@ struct LocalizationKeys {
     // MARK: - SMM Result Table Labels
     struct SMMResult {
         static let title = "smm_result.title"
+        static let calculatedFee = "smm_result.calculated_fee"
         static let grossFee = "smm_result.gross_fee"
         static let withholding = "smm_result.withholding"
         static let netFee = "smm_result.net_fee"
@@ -141,6 +142,11 @@ struct LocalizationKeys {
         static let totalCollected = "smm_result.total_collected"
         static let legalPerson = "smm_result.legal_person"
         static let realPerson = "smm_result.real_person"
+    }
+
+    // MARK: - SMM Calculation Screen
+    struct SMMCalculation {
+        static let note = "smm_calculation.note"
     }
     
     // MARK: - Validation Messages

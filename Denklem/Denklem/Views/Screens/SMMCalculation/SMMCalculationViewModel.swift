@@ -69,11 +69,17 @@ final class SMMCalculationViewModel: ObservableObject {
         errorMessage = nil
         isCalculating = true
         
-        // Parse amount
-        let cleanedAmount = amountText.replacingOccurrences(of: " ", with: "")
+        // Parse amount (locale-aware)
+        let locale = LocaleManager.shared.currentLocale
+        let decimalSeparator = locale.decimalSeparator ?? ","
+        let groupingSeparator = locale.groupingSeparator ?? "."
+
+        let cleanedAmount = amountText
+            .replacingOccurrences(of: " ", with: "")
             .replacingOccurrences(of: "₺", with: "")
-            .replacingOccurrences(of: ",", with: "")
-        
+            .replacingOccurrences(of: groupingSeparator, with: "")
+            .replacingOccurrences(of: decimalSeparator, with: ".")
+
         guard let amount = Double(cleanedAmount) else {
             errorMessage = LocalizationKeys.Validation.invalidAmount.localized
             isCalculating = false
@@ -127,30 +133,54 @@ final class SMMCalculationViewModel: ObservableObject {
     
     /// Formats currency input as user types
     func formatAmountInput() {
-        // Remove all formatting first
-        let cleanedAmount = amountText.replacingOccurrences(of: " ", with: "")
-            .replacingOccurrences(of: "₺", with: "")
-            .replacingOccurrences(of: ",", with: "")
-            .replacingOccurrences(of: ".", with: "")
-        
-        // If empty or invalid, clear
-        guard !cleanedAmount.isEmpty, let _ = Double(cleanedAmount) else {
-            if amountText != "" {
-                amountText = ""
-            }
+        // Get locale separators
+        let locale = LocaleManager.shared.currentLocale
+        let decimalSeparator = locale.decimalSeparator ?? ","
+        let groupingSeparator = locale.groupingSeparator ?? "."
+
+        // Remove all formatting (keep only numbers and decimal separator)
+        var cleaned = amountText.replacingOccurrences(of: groupingSeparator, with: "")
+
+        // Allow only numbers and one decimal separator
+        let allowedChars = CharacterSet.decimalDigits.union(CharacterSet(charactersIn: decimalSeparator))
+        cleaned = String(cleaned.unicodeScalars.filter { allowedChars.contains($0) })
+
+        // Ensure only one decimal separator
+        let parts = cleaned.components(separatedBy: decimalSeparator)
+        if parts.count > 2 {
+            cleaned = parts[0] + decimalSeparator + parts[1]
+        }
+
+        // If empty, clear
+        guard !cleaned.isEmpty else {
+            amountText = ""
             return
         }
-        
-        // Format with thousand separators
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        formatter.groupingSeparator = " "
-        formatter.minimumFractionDigits = 0
-        formatter.maximumFractionDigits = 2
-        
-        if let number = Double(cleanedAmount) {
-            let formattedNumber = formatter.string(from: NSNumber(value: number / 100)) ?? ""
-            amountText = formattedNumber
+
+        // Split into integer and decimal parts
+        let components = cleaned.components(separatedBy: decimalSeparator)
+        let integerPart = components[0]
+        let decimalPart = components.count > 1 ? components[1] : ""
+
+        // Format integer part with grouping separators
+        if let number = Int(integerPart), number >= 0 {
+            let formatter = NumberFormatter()
+            formatter.numberStyle = .decimal
+            formatter.locale = locale
+            formatter.groupingSeparator = groupingSeparator
+            formatter.usesGroupingSeparator = true
+            formatter.maximumFractionDigits = 0
+
+            if let formatted = formatter.string(from: NSNumber(value: number)) {
+                if decimalPart.isEmpty {
+                    amountText = formatted
+                } else {
+                    let limitedDecimal = String(decimalPart.prefix(2))
+                    amountText = formatted + decimalSeparator + limitedDecimal
+                }
+            }
+        } else if cleaned == decimalSeparator {
+            amountText = "0" + decimalSeparator
         }
     }
 }

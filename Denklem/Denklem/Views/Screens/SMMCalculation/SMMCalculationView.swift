@@ -75,13 +75,8 @@ struct SMMCalculationView: View {
     
     private var headerSection: some View {
         VStack(spacing: theme.spacingS) {
-            Text(LocalizationKeys.DisputeCategory.smmCalculation.localized)
-                .font(theme.title2)
-                .fontWeight(.bold)
-                .foregroundStyle(theme.textPrimary)
-            
-            Text(LocalizationKeys.DisputeCategory.smmCalculationDescription.localized)
-                .font(theme.body)
+            Text(LocalizationKeys.SMMCalculation.note.localized)
+                .font(theme.footnote)
                 .foregroundStyle(theme.textSecondary)
                 .multilineTextAlignment(.center)
         }
@@ -111,19 +106,27 @@ struct SMMCalculationView: View {
                 .foregroundStyle(theme.textSecondary)
             
             TextField(LocalizationKeys.Input.Placeholder.amount.localized, text: $viewModel.amountText)
-                .font(theme.title3)
-                .fontWeight(.semibold)
+                .font(theme.body)
+                .fontWeight(.medium)
                 .foregroundStyle(theme.textPrimary)
-                .keyboardType(.numberPad)
+                .keyboardType(.decimalPad)
+                .textFieldStyle(.plain)
+                .multilineTextAlignment(.center)
                 .padding(theme.spacingM)
+                .frame(height: 50)
                 .background {
-                    RoundedRectangle(cornerRadius: theme.cornerRadiusM)
-                        .fill(theme.surface)
+                    RoundedRectangle(cornerRadius: 16)
+                        .fill(theme.surfaceElevated)
+                        .overlay {
+                            RoundedRectangle(cornerRadius: 16)
+                                .fill(Color.primary.opacity(0.03))
+                        }
                 }
                 .overlay {
-                    RoundedRectangle(cornerRadius: theme.cornerRadiusM)
-                        .stroke(theme.border, lineWidth: theme.borderWidth)
+                    RoundedRectangle(cornerRadius: 16)
+                        .stroke(theme.outline.opacity(0.15), lineWidth: 1)
                 }
+                .glassEffectID("smmAmountInput", in: glassNamespace)
                 .onChange(of: viewModel.amountText) { _, _ in
                     viewModel.formatAmountInput()
                 }
@@ -209,20 +212,22 @@ struct SMMCalculationView: View {
             viewModel.calculate()
         } label: {
             HStack(spacing: theme.spacingM) {
+                Text(viewModel.calculateButtonText)
+                    .font(theme.body)
+                    .fontWeight(.semibold)
+
                 if viewModel.isCalculating {
                     ProgressView()
-                        .tint(.white)
+                        .tint(theme.textPrimary)
                 } else {
-                    Image(systemName: "function")
-                        .font(.system(size: 18, weight: .semibold))
-                    
-                    Text(viewModel.calculateButtonText)
-                        .font(theme.headline)
+                    Image(systemName: "arrow.right.circle.fill")
+                        .font(theme.body)
+                        .fontWeight(.semibold)
                 }
             }
-            .foregroundColor(.white)
+            .foregroundStyle(theme.textPrimary)
             .frame(maxWidth: .infinity)
-            .frame(height: theme.buttonHeightLarge)
+            .frame(height: 50)
         }
         .buttonStyle(.glass)
         .tint(theme.primary)
@@ -296,10 +301,10 @@ struct SMMResultSheet: View {
     
     private var resultHeaderSection: some View {
         VStack(spacing: theme.spacingS) {
-            Text(LocalizationKeys.Input.agreementAmount.localized)
+            Text(LocalizationKeys.SMMResult.calculatedFee.localized)
                 .font(theme.subheadline)
                 .foregroundStyle(theme.textSecondary)
-            
+
             Text(LocalizationHelper.formatCurrency(result.input.amount))
                 .font(theme.title2)
                 .fontWeight(.bold)
@@ -364,30 +369,6 @@ struct SMMResultSheet: View {
                 isHighlighted: true
             )
             
-            // Calculation Steps
-            if !breakdown.steps.isEmpty {
-                Divider()
-                    .background(theme.border)
-                
-                VStack(alignment: .leading, spacing: theme.spacingS) {
-                    Text(LocalizationKeys.Result.calculationSteps.localized)
-                        .font(theme.subheadline)
-                        .fontWeight(.semibold)
-                        .foregroundStyle(theme.textSecondary)
-                    
-                    ForEach(Array(breakdown.steps.enumerated()), id: \.offset) { index, step in
-                        HStack(alignment: .top, spacing: theme.spacingS) {
-                            Text("\(index + 1).")
-                                .font(theme.caption)
-                                .foregroundStyle(theme.textTertiary)
-                            
-                            Text(step)
-                                .font(theme.caption)
-                                .foregroundStyle(theme.textSecondary)
-                        }
-                    }
-                }
-            }
         }
         .padding(theme.spacingL)
         .background {
