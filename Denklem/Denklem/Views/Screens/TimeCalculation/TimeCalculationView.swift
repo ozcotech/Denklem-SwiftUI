@@ -43,11 +43,9 @@ struct TimeCalculationView: View {
                 VStack(spacing: theme.spacingXL) {
                     // Date Input Section - matches Calculate button width
                     dateInputSection
-                        .padding(.horizontal, theme.spacingXXL)
                     
                     // Calculate Button - independent padding (matches StartScreen Enter button)
                     calculateButton
-                        .padding(.horizontal, theme.spacingXXL)
                 }
                 
                 Spacer()
@@ -83,43 +81,50 @@ struct TimeCalculationView: View {
     // MARK: - Date Input Section
     
     private var dateInputSection: some View {
-        VStack(spacing: theme.spacingM) {
-            // Section Title
-            Text(LocalizationKeys.Input.assignmentDate.localized)
-                .font(theme.headline)
-                .foregroundStyle(theme.textPrimary)
-                .frame(maxWidth: .infinity, alignment: .center)
-            
-            // Date Selection Button with Glass Effect
-            Button {
-                showDatePicker = true
-            } label: {
+        GeometryReader { geometry in
+            VStack(spacing: theme.spacingM) {
+                // Section Title
+                Text(LocalizationKeys.Input.assignmentDate.localized)
+                    .font(theme.headline)
+                    .foregroundStyle(theme.textPrimary)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                
+                // Date Selection Button with Glass Effect
                 HStack {
-                    Image(systemName: "calendar")
-                        .font(.title3)
-                        .foregroundStyle(theme.primary)
-                    
-                    Text(formattedDate)
-                        .font(theme.body)
-                        .foregroundStyle(theme.textPrimary)
-                    
                     Spacer()
-                    
-                    Image(systemName: "chevron.right")
-                        .font(.caption)
-                        .foregroundStyle(theme.textSecondary)
+                    Button {
+                        showDatePicker = true
+                    } label: {
+                        HStack {
+                            Image(systemName: "calendar")
+                                .font(.title3)
+                                .foregroundStyle(theme.primary)
+                            
+                            Text(formattedDate)
+                                .font(theme.body)
+                                .foregroundStyle(theme.textPrimary)
+                            
+                            Spacer()
+                            
+                            Image(systemName: "chevron.right")
+                                .font(.caption)
+                                .foregroundStyle(theme.textSecondary)
+                        }
+                        .padding(theme.spacingM)
+                        .frame(height: 50)
+                    }
+                    .buttonStyle(.glass)
+                    .tint(theme.surface)
+                    .frame(width: geometry.size.width * 0.9) // 90% width
+                    .glassEffectID("dateSelector", in: glassNamespace)
+                    Spacer()
                 }
-                .padding(theme.spacingM)
-                .frame(maxWidth: .infinity)
-                .frame(height: 50)
             }
-            .buttonStyle(.glass)
-            .tint(theme.surface)
-            .glassEffectID("dateSelector", in: glassNamespace)
+            .sheet(isPresented: $showDatePicker) {
+                DatePickerSheet(selectedDate: $viewModel.startDate, glassNamespace: glassNamespace)
+            }
         }
-        .sheet(isPresented: $showDatePicker) {
-            DatePickerSheet(selectedDate: $viewModel.startDate, glassNamespace: glassNamespace)
-        }
+        .frame(height: 90) // Fixed height for section
     }
     
     // MARK: - Formatted Date String
@@ -135,26 +140,34 @@ struct TimeCalculationView: View {
     // MARK: - Calculate Button
     
     private var calculateButton: some View {
-        Button {
-            viewModel.calculate()
-        } label: {
-            HStack(spacing: theme.spacingM) {
-                Text(LocalizationKeys.General.calculate.localized)
-                    .font(theme.headline)
-                    .fontWeight(.semibold)
-                
-                Image(systemName: "arrow.right.circle.fill")
-                    .font(.title3)
+        GeometryReader { geometry in
+            HStack {
+                Spacer()
+                Button {
+                    viewModel.calculate()
+                } label: {
+                    HStack(spacing: theme.spacingM) {
+                        Text(LocalizationKeys.General.calculate.localized)
+                            .font(theme.headline)
+                            .fontWeight(.semibold)
+                        
+                        Image(systemName: "arrow.right.circle.fill")
+                            .font(.title3)
+                    }
+                    .foregroundStyle(theme.textPrimary)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 50)
+                }
+                .buttonStyle(.glass)
+                .tint(theme.primary)
+                .frame(width: geometry.size.width * 0.9) // 90% width
+                .glassEffectID("calculate", in: glassNamespace)
+                .disabled(viewModel.isLoading)
+                .opacity(viewModel.isLoading ? 0.6 : 1.0)
+                Spacer()
             }
-            .foregroundStyle(theme.textPrimary)
-            .frame(maxWidth: .infinity)
-            .frame(height: 50)
         }
-        .buttonStyle(.glass)
-        .tint(theme.primary)
-        .glassEffectID("calculate", in: glassNamespace)
-        .disabled(viewModel.isLoading)
-        .opacity(viewModel.isLoading ? 0.6 : 1.0)
+        .frame(height: 50) // Fixed height for button
     }
 }
 
