@@ -33,4 +33,23 @@ final class DenklemTests: XCTestCase {
         }
     }
 
+    func testSMM_vatIncluded_withholdingIncluded_legalPerson_math() throws {
+        let input = SMMCalculationInput(amount: 4_520.00, calculationType: .vatIncludedWithholdingIncluded)
+        let result = SMMCalculator.calculateSMM(input: input)
+
+        let legal = result.legalPersonResult
+
+        // Expected (20% VAT, 20% withholding)
+        // Gross (VAT excluded) = 4520 / 1.2 = 3766.666...
+        // VAT = 753.333...
+        // Withholding = 753.333...
+        // Net = 3013.333...
+        // Collected from payer (VAT included minus withholding) = 3766.666...
+        XCTAssertEqual(legal.brutFee, 3_766.6667, accuracy: 0.01)
+        XCTAssertEqual(legal.kdv, 753.3333, accuracy: 0.01)
+        XCTAssertEqual(legal.stopaj, 753.3333, accuracy: 0.01)
+        XCTAssertEqual(legal.netFee, 3_013.3333, accuracy: 0.01)
+        XCTAssertEqual(legal.tahsilEdilecekTutar, 3_766.6667, accuracy: 0.01)
+    }
+
 }

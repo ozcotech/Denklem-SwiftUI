@@ -212,6 +212,8 @@ final class InputViewModel: ObservableObject {
             return
         }
         
+        let hasTrailingDecimalSeparator = cleaned.hasSuffix(decimalSeparator)
+
         // Split into integer and decimal parts
         let components = cleaned.components(separatedBy: decimalSeparator)
         let integerPart = components[0]
@@ -227,12 +229,14 @@ final class InputViewModel: ObservableObject {
             formatter.maximumFractionDigits = 0
             
             if let formatted = formatter.string(from: NSNumber(value: number)) {
-                if decimalPart.isEmpty {
-                    amountText = formatted
-                } else {
+                if !decimalPart.isEmpty {
                     // Limit decimal part to 2 digits
                     let limitedDecimal = String(decimalPart.prefix(2))
                     amountText = formatted + decimalSeparator + limitedDecimal
+                } else if hasTrailingDecimalSeparator {
+                    amountText = formatted + decimalSeparator
+                } else {
+                    amountText = formatted
                 }
             }
         } else if cleaned == decimalSeparator {

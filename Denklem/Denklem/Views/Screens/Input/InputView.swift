@@ -255,6 +255,11 @@ struct ResultSheet: View {
     let isMonetary: Bool
     
     @Environment(\.dismiss) private var dismiss
+
+    private var smmLegalPersonResultForFee: SMMPersonResult {
+        let input = SMMCalculationInput(amount: result.amount, calculationType: .vatIncludedWithholdingIncluded)
+        return SMMCalculator.calculateSMM(input: input).legalPersonResult
+    }
     
     var body: some View {
         NavigationStack {
@@ -265,13 +270,18 @@ struct ResultSheet: View {
                     Image(systemName: "checkmark.circle.fill")
                         .font(.system(size: 64))
                         .foregroundStyle(theme.success)
-                        .padding(.top, theme.spacingXL)
+                        .padding(.top, theme.spacingL)
                     
                     // Main Fee Card
                     mainFeeCard
                     
-                    // Details Card
-                    detailsCard
+                    // Calculation Info Card
+                    calculationInfoCard
+                    
+                    // SMM Result Card (only for non-agreement cases)
+                    if result.input.agreementStatus == .notAgreed {
+                        smmResultCard
+                    }
                 }
                 .padding(.horizontal, theme.spacingL)
                 .padding(.bottom, theme.spacingXXL)
@@ -283,7 +293,7 @@ struct ResultSheet: View {
                     Button {
                         dismiss()
                     } label: {
-                        Image(systemName: "xmark.circle.fill")
+                        Image(systemName: "checkmark.circle.fill")
                             .font(theme.body)
                             .foregroundStyle(theme.textSecondary)
                     }
@@ -321,10 +331,23 @@ struct ResultSheet: View {
         }
     }
     
-    // MARK: - Details Card
+    // MARK: - Calculation Info Card
     
-    private var detailsCard: some View {
+    private var calculationInfoCard: some View {
         VStack(spacing: theme.spacingM) {
+            // Card Header
+            HStack {
+                Text("Hesaplama Bilgileri")
+                    .font(theme.headline)
+                    .fontWeight(.bold)
+                    .foregroundStyle(theme.textPrimary)
+                
+                Spacer()
+            }
+            
+            Divider()
+                .background(theme.border)
+            
             // Agreement Status - special text for non-monetary disputes
             if !isMonetary {
                 detailRow(
@@ -378,8 +401,78 @@ struct ResultSheet: View {
         }
         .padding(theme.spacingL)
         .background {
-            RoundedRectangle(cornerRadius: 20)
-                .fill(theme.surfaceElevated)
+            RoundedRectangle(cornerRadius: theme.cornerRadiusL)
+                .fill(theme.surface)
+        }
+        .overlay {
+            RoundedRectangle(cornerRadius: theme.cornerRadiusL)
+                .stroke(theme.border, lineWidth: theme.borderWidth)
+        }
+    }
+    
+    // MARK: - SMM Result Card
+    
+    private var smmResultCard: some View {
+        VStack(spacing: theme.spacingM) {
+            // Card Header
+            HStack {
+                Text("Hesaplama Sonucu")
+                    .font(theme.headline)
+                    .fontWeight(.bold)
+                    .foregroundStyle(theme.textPrimary)
+                
+                Spacer()
+            }
+            
+            Divider()
+                .background(theme.border)
+            
+            // SMM breakdown rows
+            detailRow(
+                label: LocalizationKeys.SMMResult.grossFee.localized,
+                value: smmLegalPersonResultForFee.formattedBrutFee
+            )
+
+            Divider()
+                .background(theme.outline.opacity(0.2))
+
+            detailRow(
+                label: LocalizationKeys.SMMResult.withholding.localized,
+                value: smmLegalPersonResultForFee.formattedStopaj
+            )
+
+            Divider()
+                .background(theme.outline.opacity(0.2))
+
+            detailRow(
+                label: LocalizationKeys.SMMResult.netFee.localized,
+                value: smmLegalPersonResultForFee.formattedNetFee
+            )
+
+            Divider()
+                .background(theme.outline.opacity(0.2))
+
+            detailRow(
+                label: LocalizationKeys.SMMResult.vat.localized,
+                value: smmLegalPersonResultForFee.formattedKdv
+            )
+
+            Divider()
+                .background(theme.border)
+
+            detailRow(
+                label: LocalizationKeys.SMMResult.totalCollected.localized,
+                value: smmLegalPersonResultForFee.formattedTahsilEdilecekTutar
+            )
+        }
+        .padding(theme.spacingL)
+        .background {
+            RoundedRectangle(cornerRadius: theme.cornerRadiusL)
+                .fill(theme.surface)
+        }
+        .overlay {
+            RoundedRectangle(cornerRadius: theme.cornerRadiusL)
+                .stroke(theme.border, lineWidth: theme.borderWidth)
         }
     }
     

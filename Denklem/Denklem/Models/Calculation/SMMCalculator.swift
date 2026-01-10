@@ -138,12 +138,14 @@ struct SMMCalculator {
         case .vatIncludedWithholdingIncluded:
             // 3️⃣ KDV dahil, stopaj dahil
             if personType == .legalPerson {
-                let B = baseAmount / ((1 + kdvRate) * (1 - stopajRate))
+                // In this scenario, the entered amount is VAT-included invoice total.
+                // Withholding is applied on the VAT-excluded gross fee and deducted from the payable.
+                let B = baseAmount / (1 + kdvRate)
                 brutFee = B
+                kdv = B * kdvRate
                 stopaj = B * stopajRate
                 netFee = B - stopaj
-                kdv = B * kdvRate
-                tahsilEdilecekTutar = brutFee
+                tahsilEdilecekTutar = baseAmount - stopaj
             } else {
                 let B = baseAmount / (1 + kdvRate)
                 brutFee = B
