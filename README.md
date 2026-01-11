@@ -128,7 +128,7 @@ Tab bar accessible from any screen:
 
 ## 📸 Screenshots
 
-Below are screenshots hosted in the separate screenshots repository: https://github.com/ozcotech/Denklem-SwiftUI-screenshots
+Below are screenshots hosted in the separate screenshots repository: [Denklem Screenshots Repository](https://github.com/ozcotech/Denklem-SwiftUI-screenshots)
 
 ### Main Flow Screenshots
 
