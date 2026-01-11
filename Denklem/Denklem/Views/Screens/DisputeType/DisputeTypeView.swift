@@ -21,10 +21,6 @@ struct DisputeTypeView: View {
     @Environment(\.theme) var theme
     @Environment(\.dismiss) private var dismiss
     
-    // MARK: - Namespace for Morphing Transitions
-    
-    @Namespace private var glassNamespace
-    
     // MARK: - Initialization
     
     init(selectedYear: TariffYear, isMonetary: Bool) {
@@ -99,113 +95,43 @@ struct DisputeTypeView: View {
     
     private var agreementSelectorSection: some View {
         VStack(spacing: theme.spacingM) {
-            GlassEffectContainer(spacing: 0) {
-                ZStack {
-                    // Agreed button (checkmark) - morphs from center
-                    if viewModel.showAgreementOptions {
-                        VStack(spacing: theme.spacingS) {
-                            Button {
-                                withAnimation(.bouncy(duration: 0.35)) {
-                                    viewModel.selectAgreement(.agreed)
-                                }
-                            } label: {
-                                Image(systemName: "checkmark")
-                                    .font(.system(size: 28, weight: .regular))
-                                    .foregroundStyle(.green)
-                                    .frame(width: 64, height: 64)
-                            }
-                            .buttonStyle(.glass)
-                            .buttonBorderShape(.circle)
-                            .tint(.green.opacity(0.3))
-                            .glassEffectID("agreed", in: glassNamespace)
-                            
-                            Text(LocalizationKeys.AgreementStatus.agreed.localized)
-                                .font(theme.caption)
-                                .fontWeight(.medium)
-                                .foregroundStyle(theme.textSecondary)
-                        }
-                        .offset(x: -100)
-                        .transition(.scale.combined(with: .opacity))
-                    }
-                    
-                    // Toggle button (always visible) - center
-                    // Shows selected state or question mark
-                    Button {
-                        withAnimation(.bouncy(duration: 0.4)) {
-                            viewModel.toggleAgreementOptions()
-                        }
-                    } label: {
-                        Group {
-                            if viewModel.showAgreementOptions {
-                                Image(systemName: "xmark")
-                                    .font(.system(size: 28, weight: .regular))
-                                    .foregroundStyle(theme.textPrimary.opacity(0.8))
-                            } else if let selected = viewModel.selectedAgreement {
-                                Image(systemName: selected.systemImage)
-                                    .font(.system(size: 28, weight: .regular))
-                                    .foregroundStyle(selected.iconColor)
-                            } else {
-                                Image(systemName: "questionmark")
-                                    .font(.system(size: 28, weight: .regular))
-                                    .foregroundStyle(theme.textPrimary.opacity(0.8))
-                            }
-                        }
-                        .frame(width: 72, height: 72)
-                        .contentTransition(.symbolEffect(.replace))
-                    }
-                    .buttonStyle(.glass)
-                    .buttonBorderShape(.circle)
-                    .glassEffectID("toggle", in: glassNamespace)
-                    
-                    // Not Agreed button (xmark) - morphs from center
-                    if viewModel.showAgreementOptions {
-                        VStack(spacing: theme.spacingS) {
-                            Button {
-                                withAnimation(.bouncy(duration: 0.35)) {
-                                    viewModel.selectAgreement(.notAgreed)
-                                }
-                            } label: {
-                                Image(systemName: "xmark")
-                                    .font(.system(size: 28, weight: .regular))
-                                    .foregroundStyle(.red)
-                                    .frame(width: 64, height: 64)
-                            }
-                            .buttonStyle(.glass)
-                            .buttonBorderShape(.circle)
-                            .tint(.red.opacity(0.3))
-                            .glassEffectID("notAgreed", in: glassNamespace)
-                            
-                            Text(LocalizationKeys.AgreementStatus.notAgreed.localized)
-                                .font(theme.caption)
-                                .fontWeight(.medium)
-                                .foregroundStyle(theme.textSecondary)
-                        }
-                        .offset(x: 100)
-                        .transition(.asymmetric(
-                            insertion: .scale.combined(with: .opacity),
-                            removal: .scale.combined(with: .opacity)
-                        ))
-                    }
+            // Agreement Segmented Picker - Native style
+            Picker("", selection: $viewModel.selectedAgreement) {
+                ForEach(AgreementSelectionType.allCases) { agreement in
+                    Text(agreement.displayName)
+                        .tag(agreement as AgreementSelectionType?)
                 }
             }
+            .pickerStyle(.segmented)
+            .controlSize(.large)
+            .tint(viewModel.selectedAgreement == .agreed ? .green : .red)
             
-            // Helper text - shows prompt or selected status
-            if !viewModel.showAgreementOptions {
-                if let selected = viewModel.selectedAgreement {
+            // Helper text - shows selected status with color
+            if let selected = viewModel.selectedAgreement {
+                HStack(spacing: theme.spacingXS) {
+                    Image(systemName: selected.systemImage)
+                        .font(.system(size: 14, weight: .semibold))
                     Text(selected.displayName)
                         .font(theme.subheadline)
                         .fontWeight(.medium)
-                        .foregroundStyle(selected.iconColor)
-                        .transition(.opacity)
-                } else {
-                    Text(LocalizationKeys.AgreementStatus.tapToSelect.localized)
-                        .font(theme.subheadline)
-                        .foregroundStyle(theme.textSecondary)
-                        .transition(.opacity)
                 }
+                .foregroundStyle(selected.iconColor)
+                .transition(.opacity.combined(with: .scale))
+            } else {
+                Text(LocalizationKeys.AgreementStatus.selectPrompt.localized)
+                    .font(theme.subheadline)
+                    .foregroundStyle(theme.textSecondary)
+                    .transition(.opacity)
             }
         }
         .padding(.bottom, theme.spacingM)
+        .id(localeManager.refreshID) // Force refresh when language changes
+        .onAppear {
+            // Auto-select first option if none selected (for better UX)
+            if viewModel.selectedAgreement == nil {
+                viewModel.selectAgreement(.agreed)
+            }
+        }
     }
     
     // MARK: - Dispute Type Buttons Section

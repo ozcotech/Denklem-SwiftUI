@@ -61,9 +61,6 @@ final class DisputeTypeViewModel: ObservableObject {
     /// Whether the dispute is monetary (determines if agreement selector is shown)
     @Published var isMonetary: Bool
     
-    /// Whether the agreement selector options are expanded (for morphing animation)
-    @Published var showAgreementOptions: Bool = false
-    
     /// Selected agreement status (nil until user makes a selection for monetary disputes)
     @Published var selectedAgreement: AgreementSelectionType?
     
@@ -130,16 +127,10 @@ final class DisputeTypeViewModel: ObservableObject {
     
     // MARK: - Public Methods
     
-    /// Toggles the agreement options visibility with animation
-    func toggleAgreementOptions() {
-        showAgreementOptions.toggle()
-    }
-    
     /// Selects an agreement status
     /// - Parameter agreement: The agreement status to select
     func selectAgreement(_ agreement: AgreementSelectionType) {
         selectedAgreement = agreement
-        showAgreementOptions = false
     }
     
     /// Selects a dispute type and navigates to InputView
@@ -162,7 +153,6 @@ final class DisputeTypeViewModel: ObservableObject {
     func resetSelection() {
         selectedAgreement = nil
         selectedDisputeType = nil
-        showAgreementOptions = false
     }
 }
 
