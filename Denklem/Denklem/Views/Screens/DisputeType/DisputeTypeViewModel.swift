@@ -103,12 +103,12 @@ final class DisputeTypeViewModel: ObservableObject {
     /// Returns 10 dispute types for mediation fee calculation
     var availableDisputeTypes: [DisputeType] {
         [
-            .workerEmployer,
-            .commercial,
-            .consumer,
             .rent,
-            .neighbor,
+            .workerEmployer,
             .condominium,
+            .commercial,
+            .neighbor,
+            .consumer,
             .family,
             .partnershipDissolution,
             .agriculturalProduction,

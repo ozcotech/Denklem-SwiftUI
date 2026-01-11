@@ -101,12 +101,12 @@ final class DisputeCategoryViewModel: ObservableObject {
     
     /// Main categories (monetary and non-monetary)
     var mainCategories: [DisputeCategoryType] {
-        return [.monetary, .nonMonetary]
+        return [.nonMonetary, .monetary]
     }
     
     /// Other calculations (time and SMM)
     var otherCalculations: [DisputeCategoryType] {
-        return [.timeCalculation, .smmCalculation]
+        return [.smmCalculation, .timeCalculation]
     }
     
     /// Screen title

@@ -20,7 +20,7 @@ final class SMMCalculationViewModel: ObservableObject {
     @Published var amountText: String = ""
     
     /// Selected calculation type
-    @Published var selectedCalculationType: SMMCalculationType = .vatIncludedWithholdingExcluded
+    @Published var selectedCalculationType: SMMCalculationType = .vatIncludedWithholdingIncluded
     
     /// Show result sheet
     @Published var showResult: Bool = false
