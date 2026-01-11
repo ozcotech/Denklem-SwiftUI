@@ -143,7 +143,7 @@ Below are screenshots hosted in the separate screenshots repository: [Denklem Sc
       <br><strong>Dispute Category</strong>
     </td>
     <td align="center" width="25%">
-      <img src="https://raw.githubusercontent.com/ozcotech/Denklem-SwiftUI-screenshots/master/mix-theme/dispute-type-screen-2.png" width="200" alt="Dispute Type">
+      <img src="https://github.com/ozcotech/Denklem-SwiftUI-screenshots/blob/master/mix-theme/dispute_type_screen-light.png" width="200" alt="Dispute Type">
       <br><strong>Dispute Type</strong>
   </tr>
 </table>
