@@ -156,14 +156,15 @@ Below are screenshots hosted in the separate screenshots repository: https://git
 
 <table>
   <tr>
-    <td align="center" width="50%">
+    <td align="center" width="33%">
       <img src="https://raw.githubusercontent.com/ozcotech/Denklem-SwiftUI-screenshots/master/mix-theme/inpute-screen-2.png" width="200" alt="Input Screen">
       <br><strong>Input Screen</strong>
     </td>
-    <td align="center" width="50%">
+    <td align="center" width="33%">
       <img src="https://raw.githubusercontent.com/ozcotech/Denklem-SwiftUI-screenshots/master/mix-theme/result-screen-1.png" width="200" alt="Result Screen 1">
       <br><strong>Result Screen 1</strong>
-      <br>
+    </td>
+    <td align="center" width="33%">
       <img src="https://raw.githubusercontent.com/ozcotech/Denklem-SwiftUI-screenshots/master/mix-theme/result-screen-2.png" width="200" alt="Result Screen 2">
       <br><strong>Result Screen 2</strong>
     </td>
@@ -174,17 +175,19 @@ Below are screenshots hosted in the separate screenshots repository: https://git
 
 <table>
   <tr>
-    <td align="center" width="50%">
+    <td align="center" width="25%">
       <img src="https://raw.githubusercontent.com/ozcotech/Denklem-SwiftUI-screenshots/master/mix-theme/timecalculation-screen-2.png" width="200" alt="Time Calculation 1">
       <br><strong>Time Calculation 1</strong>
-      <br>
+    </td>
+    <td align="center" width="25%">
       <img src="https://raw.githubusercontent.com/ozcotech/Denklem-SwiftUI-screenshots/master/mix-theme/time-calculation-screen-3.png" width="200" alt="Time Calculation 2">
       <br><strong>Time Calculation 2</strong>
     </td>
-    <td align="center" width="50%">
+    <td align="center" width="25%">
       <img src="https://raw.githubusercontent.com/ozcotech/Denklem-SwiftUI-screenshots/master/mix-theme/smmcalculation-screen-2.png" width="200" alt="SMM Calculation 1">
       <br><strong>SMM Calculation 1</strong>
-      <br>
+    </td>
+    <td align="center" width="25%">
       <img src="https://raw.githubusercontent.com/ozcotech/Denklem-SwiftUI-screenshots/master/mix-theme/smm-calculation-screen-3.png" width="200" alt="SMM Calculation 2">
       <br><strong>SMM Calculation 2</strong>
     </td>
