@@ -1584,6 +1584,42 @@
         }
       }
     },
+    "dispute_type.agricultural_production" : {
+      "comment" : "dispute type",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Agricultural Production"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tarımsal Üretim"
+          }
+        }
+      }
+    },
+    "dispute_type.agricultural_production.description" : {
+      "comment" : "dispute type description",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Agricultural Production Contract Disputes"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tarımsal Üretim Sözleşmesinden Kaynaklanan Uyuşmazlıklar"
+          }
+        }
+      }
+    },
     "dispute_type.rent" : {
       "comment" : "dispute type",
       "extractionState" : "manual",

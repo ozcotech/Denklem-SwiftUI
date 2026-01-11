@@ -46,6 +46,7 @@ struct LocalizationKeys {
         static let condominium = "dispute_type.condominium"
         static let family = "dispute_type.family"
         static let partnershipDissolution = "dispute_type.partnership_dissolution"
+        static let agriculturalProduction = "dispute_type.agricultural_production"
         static let other = "dispute_type.other"
         static let nonMonetaryNote = "dispute_type.non_monetary_note"
         
@@ -59,6 +60,7 @@ struct LocalizationKeys {
             static let condominium = "dispute_type.condominium.description"
             static let family = "dispute_type.family.description"
             static let partnershipDissolution = "dispute_type.partnership_dissolution.description"
+            static let agriculturalProduction = "dispute_type.agricultural_production.description"
             static let other = "dispute_type.other.description"
         }
     }

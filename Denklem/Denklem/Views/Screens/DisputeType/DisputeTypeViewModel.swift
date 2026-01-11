@@ -100,7 +100,7 @@ final class DisputeTypeViewModel: ObservableObject {
     }
     
     /// Available dispute types for selection
-    /// Returns 9 main dispute types (excludes agriculturalProduction which is time-specific)
+    /// Returns 10 dispute types for mediation fee calculation
     var availableDisputeTypes: [DisputeType] {
         [
             .workerEmployer,
@@ -111,6 +111,7 @@ final class DisputeTypeViewModel: ObservableObject {
             .condominium,
             .family,
             .partnershipDissolution,
+            .agriculturalProduction,
             .other
         ]
     }

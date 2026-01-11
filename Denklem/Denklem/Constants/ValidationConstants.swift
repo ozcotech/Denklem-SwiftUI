@@ -149,6 +149,7 @@ struct ValidationConstants {
             DisputeConstants.DisputeTypeKeys.condominium,
             DisputeConstants.DisputeTypeKeys.family,
             DisputeConstants.DisputeTypeKeys.partnershipDissolution,
+            DisputeConstants.DisputeTypeKeys.agriculturalProduction,
             DisputeConstants.DisputeTypeKeys.other
         ]
         

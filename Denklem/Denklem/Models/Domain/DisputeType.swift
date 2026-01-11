@@ -48,7 +48,7 @@ enum DisputeType: String, CaseIterable, Identifiable, Hashable {
         case .partnershipDissolution:
             return LocalizationKeys.DisputeType.partnershipDissolution.localized
         case .agriculturalProduction:
-            return LocalizationKeys.TimeCalculation.agriculturalProduction.localized
+            return LocalizationKeys.DisputeType.agriculturalProduction.localized
         case .other:
             return LocalizationKeys.DisputeType.other.localized
         }
@@ -74,7 +74,7 @@ enum DisputeType: String, CaseIterable, Identifiable, Hashable {
         case .partnershipDissolution:
             return LocalizationKeys.DisputeType.Description.partnershipDissolution.localized
         case .agriculturalProduction:
-            return LocalizationKeys.TimeCalculation.agriculturalProduction.localized
+            return LocalizationKeys.DisputeType.Description.agriculturalProduction.localized
         case .other:
             return LocalizationKeys.DisputeType.Description.other.localized
         }

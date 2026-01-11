@@ -22,6 +22,7 @@ struct DisputeConstants {
         static let condominium = "condominium"
         static let family = "family"
         static let partnershipDissolution = "partnership_dissolution"
+        static let agriculturalProduction = "agricultural_production"
         static let other = "other"
         
         /// All available dispute type keys
@@ -34,6 +35,7 @@ struct DisputeConstants {
             condominium,
             family,
             partnershipDissolution,
+            agriculturalProduction,
             other
         ]
     }
@@ -124,6 +126,7 @@ struct DisputeConstants {
             DisputeTypeKeys.condominium,
             DisputeTypeKeys.family,
             DisputeTypeKeys.partnershipDissolution,
+            DisputeTypeKeys.agriculturalProduction,
             DisputeTypeKeys.other
         ]
         
@@ -137,6 +140,7 @@ struct DisputeConstants {
             DisputeTypeKeys.condominium,
             DisputeTypeKeys.family,
             DisputeTypeKeys.partnershipDissolution,
+            DisputeTypeKeys.agriculturalProduction,
             DisputeTypeKeys.other
         ]
         
@@ -155,6 +159,7 @@ struct DisputeConstants {
             DisputeTypeKeys.condominium,
             DisputeTypeKeys.family,
             DisputeTypeKeys.partnershipDissolution,
+            DisputeTypeKeys.agriculturalProduction,
             DisputeTypeKeys.other
         ]
         
@@ -168,6 +173,7 @@ struct DisputeConstants {
             DisputeTypeKeys.condominium,
             DisputeTypeKeys.family,
             DisputeTypeKeys.partnershipDissolution,
+            DisputeTypeKeys.agriculturalProduction,
             DisputeTypeKeys.other
         ]
     }
@@ -241,6 +247,7 @@ struct DisputeConstants {
             DisputeTypeKeys.condominium,
             DisputeTypeKeys.family,
             DisputeTypeKeys.partnershipDissolution,
+            DisputeTypeKeys.agriculturalProduction,
             DisputeTypeKeys.other
         ]
         

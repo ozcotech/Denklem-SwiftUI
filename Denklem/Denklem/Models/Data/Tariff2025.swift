@@ -33,6 +33,7 @@ struct Tariff2025: TariffProtocol {
         DisputeConstants.DisputeTypeKeys.condominium: 835.0,
         DisputeConstants.DisputeTypeKeys.family: 785.0,
         DisputeConstants.DisputeTypeKeys.partnershipDissolution: 900.0,
+        DisputeConstants.DisputeTypeKeys.agriculturalProduction: 785.0,
         DisputeConstants.DisputeTypeKeys.other: 785.0
     ]
     
@@ -49,6 +50,7 @@ struct Tariff2025: TariffProtocol {
         DisputeConstants.DisputeTypeKeys.condominium: [1670.0, 1750.0, 1850.0, 1950.0],
         DisputeConstants.DisputeTypeKeys.family: [1570.0, 1650.0, 1750.0, 1850.0],
         DisputeConstants.DisputeTypeKeys.partnershipDissolution: [1800.0, 2000.0, 2100.0, 2200.0],
+        DisputeConstants.DisputeTypeKeys.agriculturalProduction: [1570.0, 1650.0, 1750.0, 1850.0],
         DisputeConstants.DisputeTypeKeys.other: [1570.0, 1650.0, 1750.0, 1850.0]
     ]
     
