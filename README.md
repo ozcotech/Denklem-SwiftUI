@@ -130,43 +130,66 @@ Tab bar accessible from any screen:
 
 Below are screenshots hosted in the separate screenshots repository: https://github.com/ozcotech/Denklem-SwiftUI-screenshots
 
-### Main Flow
+### Main Flow Screenshots
 
-Start Screen:
-![Start Screen](https://raw.githubusercontent.com/ozcotech/Denklem-SwiftUI-screenshots/master/mix-theme/home-screen.png)
+<table>
+  <tr>
+    <td align="center" width="25%">
+      <img src="https://raw.githubusercontent.com/ozcotech/Denklem-SwiftUI-screenshots/master/mix-theme/home-screen.png" width="200" alt="Start Screen">
+      <br><strong>Start Screen</strong>
+    </td>
+    <td align="center" width="25%">
+      <img src="https://raw.githubusercontent.com/ozcotech/Denklem-SwiftUI-screenshots/master/mix-theme/dispute-category-screen-dark.png" width="200" alt="Dispute Category">
+      <br><strong>Dispute Category</strong>
+    </td>
+    <td align="center" width="25%">
+      <img src="https://raw.githubusercontent.com/ozcotech/Denklem-SwiftUI-screenshots/master/mix-theme/dispute-type-screen-2.png" width="200" alt="Dispute Type">
+      <br><strong>Dispute Type</strong>
+    </td>
+    <td align="center" width="25%">
+      <!-- reserved for future -->
+    </td>
+  </tr>
+</table>
 
-Dispute Category:
-![Dispute Category](https://raw.githubusercontent.com/ozcotech/Denklem-SwiftUI-screenshots/master/mix-theme/dispute-category-screen-dark.png)
+### Input & Results Screenshots
 
-Dispute Type:
-![Dispute Type](https://raw.githubusercontent.com/ozcotech/Denklem-SwiftUI-screenshots/master/mix-theme/dispute-type-screen-2.png)
+<table>
+  <tr>
+    <td align="center" width="50%">
+      <img src="https://raw.githubusercontent.com/ozcotech/Denklem-SwiftUI-screenshots/master/mix-theme/inpute-screen-2.png" width="200" alt="Input Screen">
+      <br><strong>Input Screen</strong>
+    </td>
+    <td align="center" width="50%">
+      <img src="https://raw.githubusercontent.com/ozcotech/Denklem-SwiftUI-screenshots/master/mix-theme/result-screen-1.png" width="200" alt="Result Screen 1">
+      <br><strong>Result Screen 1</strong>
+      <br>
+      <img src="https://raw.githubusercontent.com/ozcotech/Denklem-SwiftUI-screenshots/master/mix-theme/result-screen-2.png" width="200" alt="Result Screen 2">
+      <br><strong>Result Screen 2</strong>
+    </td>
+  </tr>
+</table>
 
-### Input & Result
+### Additional Calculators Screenshots
 
-Input Screen:
-![Input Screen](https://raw.githubusercontent.com/ozcotech/Denklem-SwiftUI-screenshots/master/mix-theme/inpute-screen-2.png)
-
-Result Screen (1):
-![Result Screen 1](https://raw.githubusercontent.com/ozcotech/Denklem-SwiftUI-screenshots/master/mix-theme/result-screen-1.png)
-
-Result Screen (2):
-![Result Screen 2](https://raw.githubusercontent.com/ozcotech/Denklem-SwiftUI-screenshots/master/mix-theme/result-screen-2.png)
-
-### Time Calculation
-
-Time Calculation (1):
-![Time Calculation 1](https://raw.githubusercontent.com/ozcotech/Denklem-SwiftUI-screenshots/master/mix-theme/timecalculation-screen-2.png)
-
-Time Calculation (2):
-![Time Calculation 2](https://raw.githubusercontent.com/ozcotech/Denklem-SwiftUI-screenshots/master/mix-theme/time-calculation-screen-3.png)
-
-### SMM Calculation
-
-SMM Calculation (1):
-![SMM Calculation 1](https://raw.githubusercontent.com/ozcotech/Denklem-SwiftUI-screenshots/master/mix-theme/smmcalculation-screen-2.png)
-
-SMM Calculation (2):
-![SMM Calculation 2](https://raw.githubusercontent.com/ozcotech/Denklem-SwiftUI-screenshots/master/mix-theme/smm-calculation-screen-3.png)
+<table>
+  <tr>
+    <td align="center" width="50%">
+      <img src="https://raw.githubusercontent.com/ozcotech/Denklem-SwiftUI-screenshots/master/mix-theme/timecalculation-screen-2.png" width="200" alt="Time Calculation 1">
+      <br><strong>Time Calculation 1</strong>
+      <br>
+      <img src="https://raw.githubusercontent.com/ozcotech/Denklem-SwiftUI-screenshots/master/mix-theme/time-calculation-screen-3.png" width="200" alt="Time Calculation 2">
+      <br><strong>Time Calculation 2</strong>
+    </td>
+    <td align="center" width="50%">
+      <img src="https://raw.githubusercontent.com/ozcotech/Denklem-SwiftUI-screenshots/master/mix-theme/smmcalculation-screen-2.png" width="200" alt="SMM Calculation 1">
+      <br><strong>SMM Calculation 1</strong>
+      <br>
+      <img src="https://raw.githubusercontent.com/ozcotech/Denklem-SwiftUI-screenshots/master/mix-theme/smm-calculation-screen-3.png" width="200" alt="SMM Calculation 2">
+      <br><strong>SMM Calculation 2</strong>
+    </td>
+  </tr>
+</table>
 
 > Images hosted in the `Denklem-SwiftUI-screenshots` repository. Links point to raw images on GitHub.
 
