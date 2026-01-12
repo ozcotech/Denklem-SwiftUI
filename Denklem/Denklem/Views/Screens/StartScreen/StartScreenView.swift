@@ -92,54 +92,47 @@ struct StartScreenView: View {
     // MARK: - Year Selection Section
     
     private var yearSelectionSection: some View {
-        GeometryReader { geometry in
-            Picker("", selection: $viewModel.selectedYear) {
-                ForEach(TariffYear.allCases, id: \.self) { year in
-                    Text(String(format: "%d", year.rawValue))
-                        .font(.system(size: 18, weight: .regular))
-                        .tag(year)
-                }
-            }
-            .pickerStyle(.segmented)
-            .tint(theme.primary)
-            .scaleEffect(y: 1.2)
-            .frame(width: geometry.size.width * 0.9) // %90 width
-            .padding(.horizontal, theme.spacingM)
-            .onChange(of: viewModel.selectedYear) { _, newYear in
-                viewModel.selectYear(newYear)
+        Picker("", selection: $viewModel.selectedYear) {
+            ForEach(TariffYear.allCases, id: \.self) { year in
+                Text(String(format: "%d", year.rawValue))
+                    .font(.system(size: 18, weight: .regular))
+                    .tag(year)
             }
         }
-        .frame(height: 50) // Fixed height for picker
+        .pickerStyle(.segmented)
+        .tint(theme.primary)
+        .scaleEffect(y: 1.2)
+        .padding(.horizontal, theme.spacingXL)
+        .frame(height: 50)
+        .onChange(of: viewModel.selectedYear) { _, newYear in
+            viewModel.selectYear(newYear)
+        }
     }
     
     // MARK: - Primary Action Button
     
     private var primaryActionButton: some View {
-        GeometryReader { geometry in
-            Button {
-                viewModel.proceedToDisputeCategory()
-            } label: {
-                HStack(spacing: theme.spacingM) {
-                    Text(String(format: LocalizationKeys.Start.enterButtonWithYear.localized, viewModel.selectedYear.displayName))
-                        .font(theme.headline)
-                        .foregroundColor(.white)
-                    
-                    Image(systemName: "arrow.right")
-                        .font(.system(size: 18, weight: .semibold))
-                        .foregroundColor(.white)
-                        .offset(x: arrowOffset)
-                }
-                .frame(maxWidth: .infinity)
-                .frame(height: 50)
+        Button {
+            viewModel.proceedToDisputeCategory()
+        } label: {
+            HStack(spacing: theme.spacingM) {
+                Text(String(format: LocalizationKeys.Start.enterButtonWithYear.localized, viewModel.selectedYear.displayName))
+                    .font(theme.headline)
+                    .foregroundColor(.white)
+                
+                Image(systemName: "arrow.right")
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundColor(.white)
+                    .offset(x: arrowOffset)
             }
-            .buttonStyle(.glass)
-            .frame(width: geometry.size.width * 0.9) // 90% width
-            .padding(.horizontal, theme.spacingM)
-            .onAppear {
-                startButtonAnimations()
-            }
+            .frame(maxWidth: .infinity)
+            .frame(height: 50)
         }
-        .frame(height: 50) // Fixed height for button
+        .buttonStyle(.glass)
+        .padding(.horizontal, theme.spacingXL)
+        .onAppear {
+            startButtonAnimations()
+        }
     }
     
     // MARK: - Animation Methods
