@@ -231,6 +231,8 @@ struct LocalizationKeys {
         static let calculationDate = "result.calculation_date"
         static let tariffYear = "result.tariff_year"
         static let calculationSteps = "result.calculation_steps"
+        static let calculationInfo = "result.calculation_info"
+        static let calculationResult = "result.calculation_result"
     }
     
     // MARK: - Time Calculation

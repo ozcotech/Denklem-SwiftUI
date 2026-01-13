@@ -337,7 +337,7 @@ struct ResultSheet: View {
         VStack(spacing: theme.spacingM) {
             // Card Header
             HStack {
-                Text("Hesaplama Bilgileri")
+                Text(LocalizationKeys.Result.calculationInfo.localized)
                     .font(theme.headline)
                     .fontWeight(.bold)
                     .foregroundStyle(theme.textPrimary)
@@ -416,7 +416,7 @@ struct ResultSheet: View {
         VStack(spacing: theme.spacingM) {
             // Card Header
             HStack {
-                Text("Hesaplama Sonucu")
+                Text(LocalizationKeys.Result.calculationResult.localized)
                     .font(theme.headline)
                     .fontWeight(.bold)
                     .foregroundStyle(theme.textPrimary)
