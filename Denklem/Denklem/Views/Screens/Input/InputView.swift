@@ -293,7 +293,7 @@ struct ResultSheet: View {
                     Button {
                         dismiss()
                     } label: {
-                        Image(systemName: "checkmark.circle.fill")
+                        Image(systemName: "checkmark")
                             .font(theme.body)
                             .foregroundStyle(theme.textSecondary)
                     }
