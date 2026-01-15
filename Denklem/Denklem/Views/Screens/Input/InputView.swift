@@ -266,12 +266,6 @@ struct ResultSheet: View {
             ScrollView {
                 VStack(spacing: theme.spacingL) {
                     
-                    // Success Icon
-                    Image(systemName: "checkmark.circle.fill")
-                        .font(.system(size: 64))
-                        .foregroundStyle(theme.success)
-                        .padding(.top, theme.spacingL)
-                    
                     // Main Fee Card
                     mainFeeCard
                     

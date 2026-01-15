@@ -121,7 +121,7 @@ final class DisputeCategoryViewModel: ObservableObject {
     
     /// Other calculations section title
     var otherCalculationsTitle: String {
-        return NSLocalizedString(LocalizationKeys.DisputeCategory.otherCalculations, comment: "")
+        return NSLocalizedString(LocalizationKeys.DisputeCategory.otherCalculations, tableName: nil, bundle: Bundle.localizedBundle, value: "", comment: "")
     }
     
     // MARK: - Initialization
