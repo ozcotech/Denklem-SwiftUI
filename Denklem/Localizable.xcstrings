@@ -711,7 +711,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Parasal Uyuşmazlık"
+            "value" : "Parasal Olan Uyuşmazlık"
           }
         }
       }
@@ -1163,7 +1163,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Parasal Uyuşmazlık"
+            "value" : "Parasal Olan Uyuşmazlık"
           }
         }
       }

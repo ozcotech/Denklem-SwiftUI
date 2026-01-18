@@ -50,13 +50,13 @@ enum DisputeCategoryType: String, CaseIterable, Identifiable {
     var systemImage: String {
         switch self {
         case .monetary:
-            return "dollarsign.circle.fill"
+            return "turkishlirasign.circle.fill"
         case .nonMonetary:
-            return "doc.text.fill"
+            return "long.text.page.and.pencil.fill"
         case .timeCalculation:
-            return "clock.fill"
+            return "clock.circle.fill"
         case .smmCalculation:
-            return "doc.badge.gearshape.fill"
+            return "receipt.fill"
         }
     }
     
