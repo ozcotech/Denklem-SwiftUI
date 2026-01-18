@@ -82,7 +82,7 @@ struct DisputeCategoryView: View {
     
     private var mainCategoriesGrid: some View {
         VStack(spacing: theme.spacingM) {
-            // Section Title (moved to navigation bar, keep for future use)
+            // Section Title (moved to navigation bar, keep for future use🚨)
             /*
             Text(viewModel.mainCategoriesTitle)
                 .font(theme.title3)
@@ -118,13 +118,15 @@ struct DisputeCategoryView: View {
     
     private var otherCalculationsGrid: some View {
         VStack(spacing: theme.spacingM) {
-            // Section Title
+            // Section Title (commented out for now, kept for future use🚨)
+            /*
             Text(viewModel.otherCalculationsTitle)
                 .font(theme.title3)
                 .fontWeight(.semibold)
                 .foregroundStyle(theme.textPrimary)
                 .frame(maxWidth: .infinity, alignment: .center)
-            
+            */
+
             // 2x1 Grid with GlassEffectContainer for performance optimization
             GlassEffectContainer(spacing: theme.spacingM) {
                 LazyVGrid(
