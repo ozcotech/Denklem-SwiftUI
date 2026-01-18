@@ -36,20 +36,20 @@ struct DisputeCategoryView: View {
     var body: some View {
         // Observe language changes to trigger view refresh
         let _ = localeManager.refreshID
-        
+
         ZStack {
             // Background
             theme.background
                 .ignoresSafeArea()
-            
+
             ScrollView {
                 VStack(spacing: theme.spacingXL) {
                     // Main Categories Grid (2x2)
                     mainCategoriesGrid
-                    
+
                     // Other Calculations Grid (2x1)
                     otherCalculationsGrid
-                    
+
                     Spacer()
                         .frame(height: theme.spacingXL)
                 }
@@ -57,7 +57,9 @@ struct DisputeCategoryView: View {
                 .padding(.top, theme.spacingXL)
             }
         }
-        .navigationTitle("")
+        // Navigation bar title for Dispute Category screen ("Uyuşmazlık Kategorileri").
+        // Do not confuse with DisputeCategory.title ("Kategori Seçin") used elsewhere.
+        .navigationTitle(NSLocalizedString(LocalizationKeys.DisputeCategory.mainCategories, tableName: nil, bundle: Bundle.localizedBundle, value: "", comment: ""))
         .navigationBarTitleDisplayMode(.inline)
         .navigationDestination(isPresented: $viewModel.navigateToDisputeType) {
             // Navigate to DisputeType with isMonetary flag
@@ -80,13 +82,15 @@ struct DisputeCategoryView: View {
     
     private var mainCategoriesGrid: some View {
         VStack(spacing: theme.spacingM) {
-            // Section Title
+            // Section Title (moved to navigation bar, keep for future use)
+            /*
             Text(viewModel.mainCategoriesTitle)
                 .font(theme.title3)
                 .fontWeight(.semibold)
                 .foregroundStyle(theme.textPrimary)
                 .frame(maxWidth: .infinity, alignment: .center)
-            
+            */
+
             // 2x2 Grid with GlassEffectContainer for performance optimization
             GlassEffectContainer(spacing: theme.spacingM) {
                 LazyVGrid(
