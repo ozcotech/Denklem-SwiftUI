@@ -38,9 +38,9 @@ enum TabItem: String, CaseIterable, Identifiable, Hashable {
         case .home:
             return "house.fill"
         case .legislation:
-            return "doc.text.fill"
+            return "books.vertical.fill"
         case .about:
-            return "info.circle.fill"
+            return "info.square.fill"
         case .language:
             return "globe"
         }
@@ -52,9 +52,9 @@ enum TabItem: String, CaseIterable, Identifiable, Hashable {
         case .home:
             return "house"
         case .legislation:
-            return "doc.text"
+            return "books.vertical"
         case .about:
-            return "info.circle"
+            return "info.square"
         case .language:
             return "globe"
         }
