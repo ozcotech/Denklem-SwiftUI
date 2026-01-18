@@ -1625,7 +1625,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Partnership Dissolution"
+            "value" : "Partition"
           }
         },
         "tr" : {
@@ -1643,7 +1643,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Disputes Related To Partnership Dissolution"
+            "value" : "Dissolution of Joint Ownership"
           }
         },
         "tr" : {
@@ -1661,7 +1661,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rent"
+            "value" : "Tenancy"
           }
         },
         "tr" : {
@@ -1679,7 +1679,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dispute Arising From Rental Law"
+            "value" : "Dispute Arising From Tenancy Law"
           }
         },
         "tr" : {
@@ -1697,7 +1697,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Worker-Employer"
+            "value" : "Employment Dispute"
           }
         },
         "tr" : {
@@ -1715,7 +1715,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Disputes Arising From Labor Law"
+            "value" : "Employment Dispute"
           }
         },
         "tr" : {
@@ -4764,7 +4764,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Labor Law Disputes"
+            "value" : "Employment Disputes"
           }
         },
         "tr" : {
@@ -4800,7 +4800,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Partnership Dissolution Disputes"
+            "value" : "Dissolution of Joint Ownership Dispute"
           }
         },
         "tr" : {
