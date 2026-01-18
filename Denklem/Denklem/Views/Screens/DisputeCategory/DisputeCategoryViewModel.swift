@@ -119,6 +119,11 @@ final class DisputeCategoryViewModel: ObservableObject {
         return NSLocalizedString(LocalizationKeys.DisputeCategory.subtitle, comment: "")
     }
     
+    /// Main categories section title
+    var mainCategoriesTitle: String {
+        return NSLocalizedString(LocalizationKeys.DisputeCategory.mainCategories, tableName: nil, bundle: Bundle.localizedBundle, value: "", comment: "")
+    }
+
     /// Other calculations section title
     var otherCalculationsTitle: String {
         return NSLocalizedString(LocalizationKeys.DisputeCategory.otherCalculations, tableName: nil, bundle: Bundle.localizedBundle, value: "", comment: "")

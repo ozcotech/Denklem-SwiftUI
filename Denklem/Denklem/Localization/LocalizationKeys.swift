@@ -67,6 +67,7 @@ struct LocalizationKeys {
     
     // MARK: - Dispute Categories (Main Categories)
     struct DisputeCategory {
+        static let mainCategories = "dispute_category.main_categories"
         // Screen
         static let title = "dispute_category.title"
         static let subtitle = "dispute_category.subtitle"

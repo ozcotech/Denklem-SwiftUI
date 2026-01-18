@@ -81,11 +81,7 @@ struct DisputeCategoryView: View {
     private var mainCategoriesGrid: some View {
         VStack(spacing: theme.spacingM) {
             // Section Title
-            Text(NSLocalizedString("dispute_category.main_categories", 
-                                 tableName: nil,
-                                 bundle: Bundle.localizedBundle,
-                                 value: "Uyuşmazlık Kategorileri", 
-                                 comment: ""))
+            Text(viewModel.mainCategoriesTitle)
                 .font(theme.title3)
                 .fontWeight(.semibold)
                 .foregroundStyle(theme.textPrimary)
