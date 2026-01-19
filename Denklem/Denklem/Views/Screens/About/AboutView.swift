@@ -237,7 +237,7 @@ struct AboutItemRow: View {
                     Text(value)
                         .font(theme.body)
                         .foregroundStyle(theme.textSecondary)
-                        .lineLimit(1)
+                        .lineLimit(2)
                 }
 
                 if item.action != nil && item.action != AboutSectionItem.AboutItemAction.none {
