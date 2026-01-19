@@ -380,13 +380,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Made with ❤️ in Türkiye"
+            "value" : "Made with ❤️ in Türkiye."
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Türkiye'de ❤️ ile yapıldı"
+            "value" : "Türkiye'de ❤️ ile yapıldı."
           }
         }
       }

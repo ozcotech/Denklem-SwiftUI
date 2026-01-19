@@ -46,17 +46,17 @@ struct AboutData {
     
     /// Localized app name using LocalizationKeys
     static var localizedAppName: String {
-        return NSLocalizedString(LocalizationKeys.AppInfo.name, comment: "App name")
+        LocalizationKeys.AppInfo.name.localized
     }
-    
+
     /// Localized app tagline using LocalizationKeys
     static var localizedAppTagline: String {
-        return NSLocalizedString(LocalizationKeys.AppInfo.tagline, comment: "App tagline")
+        LocalizationKeys.AppInfo.tagline.localized
     }
-    
+
     /// Localized app description using LocalizationKeys
     static var localizedAppDescription: String {
-        return NSLocalizedString(LocalizationKeys.AppInfo.description, comment: "App description")
+        LocalizationKeys.AppInfo.description.localized
     }
     
     // MARK: - Developer Information
@@ -83,25 +83,25 @@ struct AboutData {
     /// Copyright text with current year
     static var copyrightText: String {
         let currentYear = Calendar.current.component(.year, from: Date())
-        let copyrightKey = NSLocalizedString(LocalizationKeys.About.copyright, comment: "Copyright text")
+        let copyrightKey = LocalizationKeys.About.copyright.localized
         return "© \(currentYear) \(developerName). \(copyrightKey)"
     }
     
     /// Legal disclaimer for tariff calculations
     static func legalDisclaimer(for year: Int) -> String {
-        let disclaimerKey = NSLocalizedString(LocalizationKeys.Legal.disclaimer, comment: "Legal disclaimer")
-        let sourceKey = NSLocalizedString(LocalizationKeys.Legal.source, comment: "Legal source")
+        let disclaimerKey = LocalizationKeys.Legal.disclaimer.localized
+        let sourceKey = LocalizationKeys.Legal.source.localized
         return "\(disclaimerKey)\n\n\(sourceKey): \(AppConstants.legislationSource) (\(year))"
     }
     
     /// Privacy policy text key
     static var privacyPolicyKey: String {
-        return NSLocalizedString(LocalizationKeys.Legal.privacyPolicy, comment: "Privacy policy")
+        LocalizationKeys.Legal.privacyPolicy.localized
     }
-    
+
     /// Terms of use text key
     static var termsOfUseKey: String {
-        return NSLocalizedString(LocalizationKeys.Legal.termsOfUse, comment: "Terms of use")
+        LocalizationKeys.Legal.termsOfUse.localized
     }
     
     // MARK: - Feature Information
@@ -313,26 +313,26 @@ struct AboutData {
     static var aboutSections: [AboutSection] {
         return [
             AboutSection(
-                title: NSLocalizedString(LocalizationKeys.About.appInfo, comment: ""),
+                title: LocalizationKeys.About.appInfo.localized,
                 items: [
-                    AboutItem(label: NSLocalizedString(LocalizationKeys.About.version, comment: ""), value: fullVersionString),
-                    AboutItem(label: NSLocalizedString(LocalizationKeys.About.developer, comment: ""), value: developerName),
-                    AboutItem(label: NSLocalizedString(LocalizationKeys.About.company, comment: ""), value: companyName)
+                    AboutItem(label: LocalizationKeys.About.version.localized, value: fullVersionString),
+                    AboutItem(label: LocalizationKeys.About.developer.localized, value: developerName),
+                    AboutItem(label: LocalizationKeys.About.company.localized, value: companyName)
                 ]
             ),
             AboutSection(
-                title: NSLocalizedString(LocalizationKeys.About.features, comment: ""),
+                title: LocalizationKeys.About.features.localized,
                 items: [
-                    AboutItem(label: NSLocalizedString(LocalizationKeys.About.supportedYears, comment: ""), value: supportedYears.map(String.init).joined(separator: ", ")),
-                    AboutItem(label: NSLocalizedString(LocalizationKeys.About.disputeTypes, comment: ""), value: "\(supportedDisputeTypesCount)"),
-                    AboutItem(label: NSLocalizedString(LocalizationKeys.About.languages, comment: ""), value: supportedLanguages.map(\.displayName).joined(separator: ", "))
+                    AboutItem(label: LocalizationKeys.About.supportedYears.localized, value: supportedYears.map(String.init).joined(separator: ", ")),
+                    AboutItem(label: LocalizationKeys.About.disputeTypes.localized, value: "\(supportedDisputeTypesCount)"),
+                    AboutItem(label: LocalizationKeys.About.languages.localized, value: supportedLanguages.map(\.displayName).joined(separator: ", "))
                 ]
             ),
             AboutSection(
-                title: NSLocalizedString(LocalizationKeys.About.legal, comment: ""),
+                title: LocalizationKeys.About.legal.localized,
                 items: [
-                    AboutItem(label: NSLocalizedString(LocalizationKeys.About.dataSource, comment: ""), value: legislationSource),
-                    AboutItem(label: NSLocalizedString(LocalizationKeys.About.copyright, comment: ""), value: copyrightText)
+                    AboutItem(label: LocalizationKeys.About.dataSource.localized, value: legislationSource),
+                    AboutItem(label: LocalizationKeys.About.copyright.localized, value: copyrightText)
                 ]
             )
         ]
@@ -352,11 +352,11 @@ struct DataSource {
     
     var statusText: String {
         if isOfficial && isFinalized {
-            return NSLocalizedString(LocalizationKeys.About.officialData, comment: "")
+            return LocalizationKeys.About.officialData.localized
         } else if isFinalized {
-            return NSLocalizedString(LocalizationKeys.About.finalizedData, comment: "")
+            return LocalizationKeys.About.finalizedData.localized
         } else {
-            return NSLocalizedString(LocalizationKeys.About.estimatedData, comment: "")
+            return LocalizationKeys.About.estimatedData.localized
         }
     }
 }
@@ -415,27 +415,27 @@ extension AboutData {
         return """
         \(localizedAppName)
         \(localizedAppTagline)
-        \(NSLocalizedString(LocalizationKeys.About.version, comment: "")): \(fullVersionString)
-        \(NSLocalizedString(LocalizationKeys.About.developer, comment: "")): \(developerName)
+        \(LocalizationKeys.About.version.localized): \(fullVersionString)
+        \(LocalizationKeys.About.developer.localized): \(developerName)
         """
     }
     
     /// Returns formatted feature summary
     static var featureSummary: String {
         return """
-        • \(supportedYears.count) \(NSLocalizedString(LocalizationKeys.About.tariffYears, comment: ""))
-        • \(supportedDisputeTypesCount) \(NSLocalizedString(LocalizationKeys.About.disputeTypes, comment: ""))
-        • \(supportedLanguages.count) \(NSLocalizedString(LocalizationKeys.About.languages, comment: ""))
-        • \(supportedCalculationTypesCount) \(NSLocalizedString(LocalizationKeys.About.calculationTypes, comment: ""))
+        • \(supportedYears.count) \(LocalizationKeys.About.tariffYears.localized)
+        • \(supportedDisputeTypesCount) \(LocalizationKeys.About.disputeTypes.localized)
+        • \(supportedLanguages.count) \(LocalizationKeys.About.languages.localized)
+        • \(supportedCalculationTypesCount) \(LocalizationKeys.About.calculationTypes.localized)
         """
     }
     
     /// Returns formatted technical information
     static var technicalInfo: String {
         return """
-        \(NSLocalizedString(LocalizationKeys.About.bundleId, comment: "")): \(bundleIdentifier)
-        \(NSLocalizedString(LocalizationKeys.About.minIOSVersion, comment: "")): \(minimumIOSVersion)
-        \(NSLocalizedString(LocalizationKeys.About.buildConfig, comment: "")): \(buildConfiguration)
+        \(LocalizationKeys.About.bundleId.localized): \(bundleIdentifier)
+        \(LocalizationKeys.About.minIOSVersion.localized): \(minimumIOSVersion)
+        \(LocalizationKeys.About.buildConfig.localized): \(buildConfiguration)
         """
     }
     
