@@ -192,6 +192,11 @@ final class AboutViewModel: ObservableObject {
                     title: LocalizationKeys.About.supportedYears.localized,
                     value: AboutData.supportedYears.map { String($0) }.joined(separator: ", "),
                     systemImage: "calendar"
+                ),
+                AboutSectionItem(
+                    title: LocalizationKeys.About.supportedLanguages.localized,
+                    value: "about.supported_languages.values".localized,
+                    systemImage: "globe"
                 )
             ]
         )

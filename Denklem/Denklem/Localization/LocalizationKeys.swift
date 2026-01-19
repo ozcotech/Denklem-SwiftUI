@@ -303,6 +303,7 @@ struct LocalizationKeys {
         // Feature Information
         static let features = "about.features"
         static let supportedYears = "about.supported_years"
+        static let supportedLanguages = "about.supported_languages"
         static let disputeTypes = "about.dispute_types"
         static let languages = "about.languages"
         static let calculationTypes = "about.calculation_types"
