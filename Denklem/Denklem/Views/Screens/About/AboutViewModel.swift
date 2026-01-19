@@ -163,7 +163,6 @@ final class AboutViewModel: ObservableObject {
     func getShareItems() -> [Any] {
         let appStoreURL = AboutData.appStoreURL
         let shareText = "about.share.text".localized
-        
         return [shareText, appStoreURL]
     }
     
