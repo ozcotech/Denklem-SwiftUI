@@ -59,7 +59,7 @@ struct DisputeCategoryView: View {
         }
         // Navigation bar title for Dispute Category screen ("Uyuşmazlık Kategorileri").
         // Do not confuse with DisputeCategory.title ("Kategori Seçin") used elsewhere.
-        .navigationTitle(NSLocalizedString(LocalizationKeys.DisputeCategory.mainCategories, tableName: nil, bundle: Bundle.localizedBundle, value: "", comment: ""))
+        .navigationTitle(LocalizationKeys.DisputeCategory.mainCategories.localized)
         .navigationBarTitleDisplayMode(.inline)
         .navigationDestination(isPresented: $viewModel.navigateToDisputeType) {
             // Navigate to DisputeType with isMonetary flag

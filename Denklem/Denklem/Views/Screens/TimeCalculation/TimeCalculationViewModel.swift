@@ -91,7 +91,7 @@ final class TimeCalculationViewModel: ObservableObject {
                 showResults = true
             }
         } else {
-            errorMessage = "Hesaplama başarısız oldu"
+            errorMessage = LocalizationKeys.Error.calculationFailed.localized
         }
     }
     

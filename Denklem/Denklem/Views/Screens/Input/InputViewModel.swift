@@ -52,22 +52,22 @@ final class InputViewModel: ObservableObject {
     var screenTitle: String {
         LocalizationKeys.ScreenTitle.input.localized
     }
-    
+
     /// Amount input label
     var amountLabel: String {
         LocalizationKeys.Input.agreementAmount.localized
     }
-    
+
     /// Party count input label
     var partyCountLabel: String {
         LocalizationKeys.Input.partyCount.localized
     }
-    
+
     /// Calculate button text
     var calculateButtonText: String {
         LocalizationKeys.General.calculate.localized
     }
-    
+
     /// Agreement status display text
     var agreementStatusText: String {
         hasAgreement ? LocalizationKeys.AgreementStatus.agreed.localized : LocalizationKeys.AgreementStatus.notAgreed.localized

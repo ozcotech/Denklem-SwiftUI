@@ -94,7 +94,8 @@ struct StartScreenView: View {
     private var yearSelectionSection: some View {
         Picker("", selection: $viewModel.selectedYear) {
             ForEach(TariffYear.allCases, id: \.self) { year in
-                Text(String(format: "%d", year.rawValue))
+                // If TariffYear has a displayName property that is already localized, use it. Otherwise, localize here if needed.
+                Text(year.displayName)
                     .font(.system(size: 18, weight: .regular))
                     .tag(year)
             }

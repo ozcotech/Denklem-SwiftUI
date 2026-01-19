@@ -22,27 +22,27 @@ enum DisputeCategoryType: String, CaseIterable, Identifiable {
     var displayName: String {
         switch self {
         case .monetary:
-            return NSLocalizedString(LocalizationKeys.DisputeCategory.monetary, tableName: nil, bundle: Bundle.localizedBundle, value: "", comment: "")
+            return LocalizationKeys.DisputeCategory.monetary.localized
         case .nonMonetary:
-            return NSLocalizedString(LocalizationKeys.DisputeCategory.nonMonetary, tableName: nil, bundle: Bundle.localizedBundle, value: "", comment: "")
+            return LocalizationKeys.DisputeCategory.nonMonetary.localized
         case .timeCalculation:
-            return NSLocalizedString(LocalizationKeys.DisputeCategory.timeCalculation, tableName: nil, bundle: Bundle.localizedBundle, value: "", comment: "")
+            return LocalizationKeys.DisputeCategory.timeCalculation.localized
         case .smmCalculation:
-            return NSLocalizedString(LocalizationKeys.DisputeCategory.smmCalculation, tableName: nil, bundle: Bundle.localizedBundle, value: "", comment: "")
+            return LocalizationKeys.DisputeCategory.smmCalculation.localized
         }
     }
-    
+
     /// Localized description
     var description: String {
         switch self {
         case .monetary:
-            return NSLocalizedString(LocalizationKeys.DisputeCategory.monetaryDescription, tableName: nil, bundle: Bundle.localizedBundle, value: "", comment: "")
+            return LocalizationKeys.DisputeCategory.monetaryDescription.localized
         case .nonMonetary:
-            return NSLocalizedString(LocalizationKeys.DisputeCategory.nonMonetaryDescription, tableName: nil, bundle: Bundle.localizedBundle, value: "", comment: "")
+            return LocalizationKeys.DisputeCategory.nonMonetaryDescription.localized
         case .timeCalculation:
-            return NSLocalizedString(LocalizationKeys.DisputeCategory.timeCalculationDescription, tableName: nil, bundle: Bundle.localizedBundle, value: "", comment: "")
+            return LocalizationKeys.DisputeCategory.timeCalculationDescription.localized
         case .smmCalculation:
-            return NSLocalizedString(LocalizationKeys.DisputeCategory.smmCalculationDescription, tableName: nil, bundle: Bundle.localizedBundle, value: "", comment: "")
+            return LocalizationKeys.DisputeCategory.smmCalculationDescription.localized
         }
     }
     
@@ -111,22 +111,22 @@ final class DisputeCategoryViewModel: ObservableObject {
     
     /// Screen title
     var screenTitle: String {
-        return NSLocalizedString(LocalizationKeys.DisputeCategory.title, comment: "")
+        LocalizationKeys.DisputeCategory.title.localized
     }
-    
+
     /// Screen subtitle
     var screenSubtitle: String {
-        return NSLocalizedString(LocalizationKeys.DisputeCategory.subtitle, comment: "")
+        LocalizationKeys.DisputeCategory.subtitle.localized
     }
-    
+
     /// Main categories section title
     var mainCategoriesTitle: String {
-        return NSLocalizedString(LocalizationKeys.DisputeCategory.mainCategories, tableName: nil, bundle: Bundle.localizedBundle, value: "", comment: "")
+        LocalizationKeys.DisputeCategory.mainCategories.localized
     }
 
     /// Other calculations section title
     var otherCalculationsTitle: String {
-        return NSLocalizedString(LocalizationKeys.DisputeCategory.otherCalculations, tableName: nil, bundle: Bundle.localizedBundle, value: "", comment: "")
+        LocalizationKeys.DisputeCategory.otherCalculations.localized
     }
     
     // MARK: - Initialization
