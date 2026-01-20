@@ -19,19 +19,34 @@ struct CapsuleButton: View {
 
     var body: some View {
         Button(action: action) {
-            HStack(spacing: 8) { // 8pt spacing between icon and text
-                Image(systemName: systemImage)
-                    .font(.system(size: 36, weight: .semibold)) // icon size 36pt
-                    .foregroundStyle(iconColor)
-                Text(text)
-                    .font(font)
-                    .fontWeight(.semibold)
-                    .foregroundStyle(textColor)
-                    .multilineTextAlignment(.leading)
-                    .lineLimit(3)
-                    .truncationMode(.tail)
+            Group {
+                if systemImage.isEmpty {
+                    // Centered text only (for DisputeTypeView)
+                    Text(text)
+                        .font(font)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(textColor)
+                        .multilineTextAlignment(.center)
+                        .lineLimit(3)
+                        .truncationMode(.tail)
+                        .frame(maxWidth: .infinity, minHeight: 56, alignment: .center)
+                } else {
+                    // Icon + text, left aligned (for DisputeCategoryView)
+                    HStack(spacing: 8) {
+                        Image(systemName: systemImage)
+                            .font(.system(size: 36, weight: .semibold))
+                            .foregroundStyle(iconColor)
+                        Text(text)
+                            .font(font)
+                            .fontWeight(.semibold)
+                            .foregroundStyle(textColor)
+                            .multilineTextAlignment(.leading)
+                            .lineLimit(3)
+                            .truncationMode(.tail)
+                    }
+                    .frame(maxWidth: .infinity, minHeight: 56, alignment: .leading)
+                }
             }
-            .frame(maxWidth: .infinity, minHeight: 56, alignment: .leading)
         }
         .buttonStyle(.glass)
         //.buttonBorderShape(.capsule)

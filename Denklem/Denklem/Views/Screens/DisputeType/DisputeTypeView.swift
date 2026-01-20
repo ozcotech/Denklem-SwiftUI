@@ -169,20 +169,14 @@ struct DisputeTypeButton: View {
     let action: () -> Void
     
     var body: some View {
-        Button(action: action) {
-            Text(disputeType.displayName)
-                .font(theme.body)
-                .fontWeight(.medium)
-                .foregroundStyle(isEnabled ? theme.textPrimary : theme.textSecondary.opacity(0.5))
-                .multilineTextAlignment(.center)
-                .lineLimit(2)
-                .minimumScaleFactor(0.85)
-                .frame(maxWidth: .infinity)
-                .frame(height: 56)
-                .padding(.horizontal, theme.spacingXS)
-        }
-        .buttonStyle(.glass)
-        .buttonBorderShape(.roundedRectangle(radius: 16))
+        CapsuleButton(
+            systemImage: "", // No icon for dispute type buttons
+            iconColor: .clear, // No icon color
+            text: disputeType.displayName,
+            textColor: isEnabled ? theme.textPrimary : theme.textSecondary.opacity(0.5),
+            font: theme.callout,
+            action: action
+        )
         .disabled(!isEnabled)
         .opacity(isEnabled ? 1.0 : 0.5)
     }
