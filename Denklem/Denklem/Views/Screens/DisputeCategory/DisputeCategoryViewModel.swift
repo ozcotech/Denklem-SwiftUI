@@ -52,11 +52,11 @@ enum DisputeCategoryType: String, CaseIterable, Identifiable {
         case .monetary:
             return "turkishlirasign.circle.fill"
         case .nonMonetary:
-            return "long.text.page.and.pencil.fill"
+            return "document.circle.fill"
         case .timeCalculation:
             return "clock.circle.fill"
         case .smmCalculation:
-            return "receipt.fill"
+            return "newspaper.circle.fill"
         }
     }
     

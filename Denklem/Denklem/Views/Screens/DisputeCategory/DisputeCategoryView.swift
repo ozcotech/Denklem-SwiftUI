@@ -82,14 +82,12 @@ struct DisputeCategoryView: View {
     
     private var mainCategoriesGrid: some View {
         VStack(spacing: theme.spacingM) {
-            // Section Title (moved to navigation bar, keep for future use🚨)
-            /*
+            // Section Title
             Text(viewModel.mainCategoriesTitle)
                 .font(theme.title3)
                 .fontWeight(.semibold)
                 .foregroundStyle(theme.textPrimary)
                 .frame(maxWidth: .infinity, alignment: .center)
-            */
 
             // 2x2 Grid with GlassEffectContainer for performance optimization
             GlassEffectContainer(spacing: theme.spacingM) {
@@ -101,13 +99,14 @@ struct DisputeCategoryView: View {
                     spacing: theme.spacingM
                 ) {
                     ForEach(viewModel.mainCategories) { category in
-                        GlassCategoryButton(
-                            category: category,
-                            theme: theme,
-                            namespace: glassNamespace
-                        ) {
-                            viewModel.selectCategory(category)
-                        }
+                        CapsuleButton(
+                            systemImage: category.systemImage,
+                            iconColor: category.iconColor,
+                            text: category.displayName,
+                            textColor: theme.textPrimary,
+                            font: theme.footnote,
+                            action: { viewModel.selectCategory(category) }
+                        )
                     }
                 }
             }
@@ -118,14 +117,12 @@ struct DisputeCategoryView: View {
     
     private var otherCalculationsGrid: some View {
         VStack(spacing: theme.spacingM) {
-            // Section Title (commented out for now, kept for future use🚨)
-            /*
+            // Section Title
             Text(viewModel.otherCalculationsTitle)
                 .font(theme.title3)
                 .fontWeight(.semibold)
                 .foregroundStyle(theme.textPrimary)
                 .frame(maxWidth: .infinity, alignment: .center)
-            */
 
             // 2x1 Grid with GlassEffectContainer for performance optimization
             GlassEffectContainer(spacing: theme.spacingM) {
@@ -137,13 +134,14 @@ struct DisputeCategoryView: View {
                     spacing: theme.spacingM
                 ) {
                     ForEach(viewModel.otherCalculations) { category in
-                        GlassCategoryButton(
-                            category: category,
-                            theme: theme,
-                            namespace: glassNamespace
-                        ) {
-                            viewModel.selectCategory(category)
-                        }
+                        CapsuleButton(
+                            systemImage: category.systemImage,
+                            iconColor: category.iconColor,
+                            text: category.displayName,
+                            textColor: theme.textPrimary,
+                            font: theme.footnote,
+                            action: { viewModel.selectCategory(category) }
+                        )
                     }
                 }
             }
@@ -151,66 +149,6 @@ struct DisputeCategoryView: View {
     }
 }
 
-// MARK: - Glass Category Button (Liquid Glass Style - Square Form)
-/// Apple native Liquid Glass button with morphing transitions
-/// Uses GlassEffectContainer for shared sampling region and performance
-/// Interactive modifier enables: scaling, bouncing, shimmer, touch illumination
-
-@available(iOS 26.0, *)
-struct GlassCategoryButton: View {
-    
-    let category: DisputeCategoryType
-    let theme: ThemeProtocol
-    let namespace: Namespace.ID
-    let action: () -> Void
-    
-    var body: some View {
-        Button {
-            // Bouncy animation for premium feel
-            withAnimation(.bouncy(duration: 0.35)) {
-                action()
-            }
-        } label: {
-            VStack(spacing: theme.spacingS) {
-                // Icon - Square background with gradient
-                ZStack {
-                    RoundedRectangle(cornerRadius: 16)
-                        .fill(
-                            LinearGradient(
-                                colors: [
-                                    category.iconColor.opacity(0.3),
-                                    category.iconColor.opacity(0.1)
-                                ],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            )
-                        )
-                        .frame(width: 60, height: 60)
-                    
-                    Image(systemName: category.systemImage)
-                        .font(.system(size: 28, weight: .semibold))
-                        .foregroundStyle(category.iconColor)
-                }
-                
-                // Text Content
-                Text(category.displayName)
-                    .font(theme.subheadline)
-                    .fontWeight(.semibold)
-                    .foregroundStyle(theme.textPrimary)
-                    .multilineTextAlignment(.center)
-                    .lineLimit(2)
-                    .minimumScaleFactor(0.8)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-            .frame(maxWidth: .infinity)
-            .frame(height: 140)
-            .padding(theme.spacingS)
-        }
-        .buttonStyle(.glass)
-        .buttonBorderShape(.roundedRectangle(radius: 24))
-        .glassEffectID(category.id, in: namespace)
-    }
-}
 
 // MARK: - Preview
 
