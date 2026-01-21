@@ -13,7 +13,7 @@ struct AttorneyFeeConstants {
 		// MARK: - Court Type Enum (for non-monetary disputes)
 		enum CourtType: String, CaseIterable, Identifiable, Codable, Equatable {
 			case civilPeace = "civil_peace"           // Sulh Hukuk
-			case firstInstance = "first_instance"     // Asliye Mahkemeleri
+			case firstInstance = "first_instance"     // Asliye Hukuk Mahkemeleri
 			case consumer = "consumer"                // Tüketici Mahkemesi
 			case intellectualProperty = "intellectual_property" // Fikri ve Sınai Haklar
 
@@ -22,10 +22,10 @@ struct AttorneyFeeConstants {
 			/// Display name (for UI, localization key can be used here)
 			var displayName: String {
 				switch self {
-				case .civilPeace: return "Sulh Hukuk Mahkemesi"
-				case .firstInstance: return "Asliye Mahkemesi"
-				case .consumer: return "Tüketici Mahkemesi"
-				case .intellectualProperty: return "Fikri ve Sınai Haklar Mahkemesi"
+				case .civilPeace: return LocalizationKeys.CourtType.civilPeace.localized
+				case .firstInstance: return LocalizationKeys.CourtType.firstInstance.localized
+				case .consumer: return LocalizationKeys.CourtType.consumer.localized
+				case .intellectualProperty: return LocalizationKeys.CourtType.intellectualProperty.localized
 				}
 			}
 

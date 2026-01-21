@@ -291,7 +291,7 @@ struct AttorneyFeeConstants {
 // MARK: - Court Type Enum
 enum CourtType: String, CaseIterable, Identifiable {
     case civilPeace = "civil_peace"           // Sulh Hukuk
-    case firstInstance = "first_instance"     // Asliye
+    case firstInstance = "first_instance"     // Asliye Hukuk
     case consumer = "consumer"                // Tüketici
     case intellectualProperty = "intellectual_property" // Fikri Sınai
     

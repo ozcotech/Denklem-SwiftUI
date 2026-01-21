@@ -425,6 +425,14 @@ struct LocalizationKeys {
     struct Calculation {
         static let typeHeader = "calculation.type_header"
     }
+
+    // MARK: - Court Types
+    struct CourtType {
+        static let civilPeace = "court_type.civil_peace"
+        static let firstInstance = "court_type.first_instance"
+        static let consumer = "court_type.consumer"
+        static let intellectualProperty = "court_type.intellectual_property"
+    }
 }
 
 // MARK: - LocalizationKeys Extension

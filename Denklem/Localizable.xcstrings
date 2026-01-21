@@ -3352,6 +3352,7 @@
         }
       }
     },
+    
     "loading.calculating" : {
       "comment" : "success message",
       "extractionState" : "manual",
@@ -3402,6 +3403,78 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lütfen bekleyin..."
+          }
+        }
+      }
+    },
+    "court_type.civil_peace": {
+      "comment": "Court type - Civil Peace Court",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Civil Peace Court"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sulh Hukuk Mahkemesi"
+          }
+        }
+      }
+    },
+    "court_type.first_instance": {
+      "comment": "Court type - First Instance Court",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "First Instance Court"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Asliye Hukuk Mahkemesi"
+          }
+        }
+      }
+    },
+    "court_type.consumer": {
+      "comment": "Court type - Consumer Court",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Consumer Court"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tüketici Mahkemesi"
+          }
+        }
+      }
+    },
+    "court_type.intellectual_property": {
+      "comment": "Court type - Intellectual Property Court",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Intellectual Property Court"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fikri ve Sınai Haklar Mahkemesi"
           }
         }
       }
