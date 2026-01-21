@@ -10,6 +10,45 @@ import Foundation
 // MARK: - Attorney Fee Constants
 /// Constants for attorney fee calculation (2026 tariff, Article 16)
 struct AttorneyFeeConstants {
+		// MARK: - Court Type Enum (for non-monetary disputes)
+		enum CourtType: String, CaseIterable, Identifiable, Codable, Equatable {
+			case civilPeace = "civil_peace"           // Sulh Hukuk
+			case firstInstance = "first_instance"     // Asliye Mahkemeleri
+			case consumer = "consumer"                // Tüketici Mahkemesi
+			case intellectualProperty = "intellectual_property" // Fikri ve Sınai Haklar
+
+			var id: String { rawValue }
+
+			/// Display name (for UI, localization key can be used here)
+			var displayName: String {
+				switch self {
+				case .civilPeace: return "Sulh Hukuk Mahkemesi"
+				case .firstInstance: return "Asliye Mahkemesi"
+				case .consumer: return "Tüketici Mahkemesi"
+				case .intellectualProperty: return "Fikri ve Sınai Haklar Mahkemesi"
+				}
+			}
+
+			/// Base fee for this court type (2026 tariff)
+			var fee: Double {
+				switch self {
+				case .civilPeace: return 30_000.0
+				case .firstInstance: return 45_000.0
+				case .consumer: return 22_500.0
+				case .intellectualProperty: return 55_000.0
+				}
+			}
+
+			/// Fee with 1/4 bonus (for agreement)
+			var feeWithBonus: Double {
+				switch self {
+				case .civilPeace: return 37_500.0
+				case .firstInstance: return 56_250.0
+				case .consumer: return 28_125.0
+				case .intellectualProperty: return 68_750.0
+				}
+			}
+		}
     
 	// MARK: - Tariff Year
 	static let availableYears = [2026] // Extendable for future years

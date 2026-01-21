@@ -1,42 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "about.supported_languages" : {
-      "comment" : "about screen - feature",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Supported Languages"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Desteklenen Diller"
-          }
-        }
-      }
-    },
-    "about.supported_languages.values" : {
-      "comment" : "about screen - feature, supported language values",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Turkish, English"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Türkçe, İngilizce"
-          }
-        }
-      }
-    },
     "" : {
       "localizations" : {
         "tr" : {
@@ -477,6 +441,42 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Serbest Meslek Makbuzu"
+          }
+        }
+      }
+    },
+    "about.supported_languages" : {
+      "comment" : "about screen - feature",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supported Languages"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desteklenen Diller"
+          }
+        }
+      }
+    },
+    "about.supported_languages.values" : {
+      "comment" : "about screen - feature, supported language values",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Turkish, English"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Türkçe, İngilizce"
           }
         }
       }
@@ -5003,6 +5003,23 @@
         }
       }
     },
+    "validation.invalid_agreement_amount" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invalid or missing agreement amount."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geçersiz veya eksik anlaşma tutarı."
+          }
+        }
+      }
+    },
     "validation.invalid_amount" : {
       "comment" : "validation message",
       "extractionState" : "manual",
@@ -5053,6 +5070,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Geçersiz taraf sayısı"
+          }
+        }
+      }
+    },
+    "validation.missing_court_type" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Court type must be selected for non-monetary agreement."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parasal olmayan anlaşma için mahkeme türü seçilmelidir."
           }
         }
       }

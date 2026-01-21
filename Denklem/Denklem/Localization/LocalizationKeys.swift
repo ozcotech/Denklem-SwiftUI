@@ -168,6 +168,8 @@ struct LocalizationKeys {
         static let requiredField = "validation.required_field"
         static let invalidAmount = "validation.invalid_amount"
         static let invalidPartyCount = "validation.invalid_party_count"
+        static let invalidAgreementAmount = "validation.invalid_agreement_amount"
+        static let missingCourtType = "validation.missing_court_type"
         static let estimatedTariff = "validation.estimated_tariff"
         static let invalidDisputeType = "validation.invalid_dispute_type"
     }
@@ -274,6 +276,9 @@ struct LocalizationKeys {
     
     // MARK: - Start Screen
     struct Start {
+        static let invalidAgreementAmount = "validation.invalid_agreement_amount"
+        static let missingCourtType = "validation.missing_court_type"
+        /* Lines 161-173 omitted */
         static let appTitle = "app.name"
         static let appSubtitle = "app.tagline"
         static let tariffYearLabel = "start.tariff_year_label"
