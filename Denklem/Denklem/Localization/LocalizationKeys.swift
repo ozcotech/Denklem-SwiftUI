@@ -85,11 +85,12 @@ struct LocalizationKeys {
         static let smmCalculation = "dispute_category.smm_calculation"
         static let smmCalculationDescription = "dispute_category.smm_calculation.description"
         
-        // Future Features (Phase 2+)
+        // Special Calculations Section
+        static let specialCalculations = "dispute_category.special_calculations"
         static let rentSpecial = "dispute_category.rent_special"
         static let rentSpecialDescription = "dispute_category.rent_special.description"
-        static let lawyerFee = "dispute_category.lawyer_fee"
-        static let lawyerFeeDescription = "dispute_category.lawyer_fee.description"
+        static let attorneyFee = "dispute_category.attorney_fee"
+        static let attorneyFeeDescription = "dispute_category.attorney_fee.description"
     }
     
     // MARK: - Agreement Status
@@ -190,7 +191,39 @@ struct LocalizationKeys {
 
     // MARK: - Attorney Fee
     struct AttorneyFee {
+        // Screen Titles
+        static let typeScreenTitle = "attorney_fee.type_screen_title"
+        static let agreementScreenTitle = "attorney_fee.agreement_screen_title"
+        static let inputScreenTitle = "attorney_fee.input_screen_title"
+        static let resultTitle = "attorney_fee.result_title"
+
+        // Type Selection
+        static let monetaryType = "attorney_fee.monetary_type"
+        static let nonMonetaryType = "attorney_fee.non_monetary_type"
+
+        // Agreement Status
+        static let agreed = "attorney_fee.agreed"
+        static let notAgreed = "attorney_fee.not_agreed"
+
+        // Input Labels
+        static let agreementAmount = "attorney_fee.agreement_amount"
+        static let selectCourt = "attorney_fee.select_court"
+
+        // Court Types
+        static let civilPeaceCourt = "attorney_fee.civil_peace_court"
+        static let firstInstanceCourt = "attorney_fee.first_instance_court"
+        static let consumerCourt = "attorney_fee.consumer_court"
+        static let intellectualPropertyCourt = "attorney_fee.intellectual_property_court"
+
+        // Result Labels
+        static let calculatedFee = "attorney_fee.calculated_fee"
+
+        // Warnings
         static let feeExceedsAmountWarning = "attorney_fee.fee_exceeds_amount_warning"
+        static let minimumFeeApplied = "attorney_fee.minimum_fee_applied"
+
+        // Legal Reference
+        static let legalReference = "attorney_fee.legal_reference"
     }
     
     // MARK: - Screen Titles

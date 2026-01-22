@@ -15,9 +15,11 @@ enum DisputeCategoryType: String, CaseIterable, Identifiable {
     case nonMonetary       // The subject is non-monetary
     case timeCalculation   // Time calculation
     case smmCalculation    // SMM calculation
+    case attorneyFee       // Attorney fee calculation (special)
+    case rentSpecial       // Tenancy (eviction/determination) (future)
     
     var id: String { rawValue }
-    
+
     /// Localized display name
     var displayName: String {
         switch self {
@@ -29,6 +31,10 @@ enum DisputeCategoryType: String, CaseIterable, Identifiable {
             return LocalizationKeys.DisputeCategory.timeCalculation.localized
         case .smmCalculation:
             return LocalizationKeys.DisputeCategory.smmCalculation.localized
+        case .attorneyFee:
+            return LocalizationKeys.DisputeCategory.attorneyFee.localized
+        case .rentSpecial:
+            return LocalizationKeys.DisputeCategory.rentSpecial.localized
         }
     }
 
@@ -43,9 +49,13 @@ enum DisputeCategoryType: String, CaseIterable, Identifiable {
             return LocalizationKeys.DisputeCategory.timeCalculationDescription.localized
         case .smmCalculation:
             return LocalizationKeys.DisputeCategory.smmCalculationDescription.localized
+        case .attorneyFee:
+            return LocalizationKeys.DisputeCategory.attorneyFeeDescription.localized
+        case .rentSpecial:
+            return LocalizationKeys.DisputeCategory.rentSpecialDescription.localized
         }
     }
-    
+
     /// System image name
     var systemImage: String {
         switch self {
@@ -57,9 +67,13 @@ enum DisputeCategoryType: String, CaseIterable, Identifiable {
             return "clock.circle.fill"
         case .smmCalculation:
             return "newspaper.circle.fill"
+        case .attorneyFee:
+            return "person.circle.fill"
+        case .rentSpecial:
+            return "building.2.crop.circle.fill"
         }
     }
-    
+
     /// Icon color
     var iconColor: Color {
         switch self {
@@ -71,6 +85,10 @@ enum DisputeCategoryType: String, CaseIterable, Identifiable {
             return .orange
         case .smmCalculation:
             return .purple
+        case .attorneyFee:
+            return .indigo
+        case .rentSpecial:
+            return .teal
         }
     }
 }
@@ -80,6 +98,17 @@ enum DisputeCategoryType: String, CaseIterable, Identifiable {
 @available(iOS 26.0, *)
 @MainActor
 final class DisputeCategoryViewModel: ObservableObject {
+
+        // MARK: - Special Calculations Section
+        @Published var navigateToAttorneyFee: Bool = false
+
+        var specialCalculations: [DisputeCategoryType] {
+            return [.rentSpecial, .attorneyFee] // .rentSpecial can be added in the future
+        }
+
+        var specialCalculationsTitle: String {
+            LocalizationKeys.DisputeCategory.specialCalculations.localized
+        }
     
     // MARK: - Published Properties
     
@@ -141,7 +170,7 @@ final class DisputeCategoryViewModel: ObservableObject {
     /// - Parameter category: The selected dispute category
     func selectCategory(_ category: DisputeCategoryType) {
         selectedCategory = category
-        
+
         switch category {
         case .monetary:
             // Monetary disputes go to DisputeType where user will select agreement status
@@ -159,6 +188,11 @@ final class DisputeCategoryViewModel: ObservableObject {
             
         case .smmCalculation:
             navigateToSMMCalculation = true
+        case .attorneyFee:
+            navigateToAttorneyFee = true
+        case .rentSpecial:
+            // Future: implement navigation
+            break
         }
     }
     

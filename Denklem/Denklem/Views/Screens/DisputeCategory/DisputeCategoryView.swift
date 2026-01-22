@@ -44,12 +44,9 @@ struct DisputeCategoryView: View {
 
             ScrollView {
                 VStack(spacing: theme.spacingXL) {
-                    // Main Categories Grid (2x2)
                     mainCategoriesGrid
-
-                    // Other Calculations Grid (2x1)
+                    specialCalculationsGrid
                     otherCalculationsGrid
-
                     Spacer()
                         .frame(height: theme.spacingXL)
                 }
@@ -76,7 +73,41 @@ struct DisputeCategoryView: View {
         .navigationDestination(isPresented: $viewModel.navigateToSMMCalculation) {
             SMMCalculationView()
         }
+        .navigationDestination(isPresented: $viewModel.navigateToAttorneyFee) {
+            AttorneyFeeTypeView()
+        }
     }
+        // MARK: - Special Calculations Grid (Attorney Fee, etc.)
+        private var specialCalculationsGrid: some View {
+            VStack(spacing: theme.spacingM) {
+                // Section Title
+                Text(viewModel.specialCalculationsTitle)
+                    .font(theme.title3)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(theme.textPrimary)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                GlassEffectContainer(spacing: theme.spacingM) {
+                    LazyVGrid(
+                        columns: [
+                            GridItem(.flexible(), spacing: theme.spacingM),
+                            GridItem(.flexible(), spacing: theme.spacingM)
+                        ],
+                        spacing: theme.spacingM
+                    ) {
+                        ForEach(viewModel.specialCalculations) { category in
+                            CapsuleButton(
+                                systemImage: category.systemImage,
+                                iconColor: category.iconColor,
+                                text: category.displayName,
+                                textColor: theme.textPrimary,
+                                font: theme.footnote,
+                                action: { viewModel.selectCategory(category) }
+                            )
+                        }
+                    }
+                }
+            }
+        }
     
     // MARK: - Main Categories Grid (2x2)
     
