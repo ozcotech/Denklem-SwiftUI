@@ -5253,6 +5253,24 @@
           }
         }
       }
+    },
+    "attorney_fee.fee_exceeds_amount_warning" : {
+      "comment" : "Warning: fee cannot exceed the principal claim (attorney fee calculation)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This fee cannot exceed the principal claim."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu ücret asıl alacağı geçemez."
+          }
+        }
+      }
     }
   },
   "version" : "1.1"

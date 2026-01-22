@@ -181,9 +181,16 @@ struct LocalizationKeys {
         static let networkError = "error.network_error"
         static let fileError = "error.file_error"
         static let unknownError = "error.unknown_error"
+        /// Type-safe alias for unknown error (for compatibility)
+        static let unknown = "error.unknown_error"
         static let tryAgain = "error.try_again"
         static let unsupportedYear = "error.unsupported_year"
         static let tariffCreationFailed = "error.tariff_creation_failed"
+    }
+
+    // MARK: - Attorney Fee
+    struct AttorneyFee {
+        static let feeExceedsAmountWarning = "attorney_fee.fee_exceeds_amount_warning"
     }
     
     // MARK: - Screen Titles
