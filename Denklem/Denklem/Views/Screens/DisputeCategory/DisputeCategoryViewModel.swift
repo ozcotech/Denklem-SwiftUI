@@ -192,7 +192,8 @@ final class DisputeCategoryViewModel: ObservableObject {
             navigateToAttorneyFee = true
         case .rentSpecial:
             // Future: implement navigation
-            break
+            // TODO: Temporary path - replace with proper navigation later
+            navigateToAttorneyFee = true
         }
     }
     
