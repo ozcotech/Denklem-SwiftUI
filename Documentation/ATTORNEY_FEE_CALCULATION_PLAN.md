@@ -130,60 +130,80 @@ DisputeCategoryView (Mevcut Ekran)
                                                                    ▼
                     ┌──────────────────────────────────────────────┐
                     │     AttorneyFeeTypeView (YENİ EKRAN)        │
-                    │  "Uyuşmazlık parasal mı, değil mi?"          │
+                    │  "Uyuşmazlık türü ve anlaşma durumu seçin"   │
                     │                                              │
-                    │  ┌─────────────┐    ┌──────────────────┐    │
-                    │  │   Parasal   │    │ Parasal Olmayan  │    │
-                    │  └──────┬──────┘    └────────┬─────────┘    │
-                    └─────────┼────────────────────┼───────────────┘
-                              │                    │
-                              ▼                    ▼
-                    ┌──────────────────────────────────────────────┐
-                    │  AttorneyFeeAgreementView (YENİ EKRAN)      │
-                    │  "Anlaşma durumu nedir?"                     │
-                    │                                              │
-                    │  ┌─────────────┐    ┌──────────────────┐    │
-                    │  │   Anlaşma   │    │    Anlaşmama     │    │
-                    │  └──────┬──────┘    └────────┬─────────┘    │
-                    └─────────┼────────────────────┼───────────────┘
-                              │                    │
-              ┌───────────────┴───────┐            │
-              │                       │            │
-              ▼                       ▼            ▼
-    ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-    │ PARASAL ANLAŞMA │    │ PARASAL OLMAYAN │    │    ANLAŞMAMA    │
-    │     GİRİŞ       │    │     ANLAŞMA     │    │    (Sabit)      │
-    │                 │    │                 │    │                 │
-    │ Anlaşma Miktarı │    │ Mahkeme Seçimi  │    │ Sonuç: 8.000 TL │
-    │ [___________]   │    │ ○ Sulh Hukuk    │    │                 │
-    │                 │    │ ○ Asliye        │    │ ⚠️ Uyarı:       │
-    │ [Hesapla]       │    │ ○ Tüketici      │    │ "Bu ücret asıl  │
-    └────────┬────────┘    │ ○ Fikri Sınai   │    │ alacağı geçemez"│
-             │             │                 │    └─────────────────┘
-             │             │ [Hesapla]       │
-             │             └────────┬────────┘
-             │                      │
-             └──────────┬───────────┘
-                        ▼
-            ┌─────────────────────────────┐
-            │   AttorneyFeeResultSheet   │
-            │       (SONUÇ SHEET)         │
-            │                             │
-            │  Avukatlık Ücreti           │
-            │  ═══════════════════        │
-            │  ₺20.000,00                 │
-            │                             │
-            │  ────────────────────       │
-            │  Detaylar:                  │
-            │  • Anlaşma Miktarı: ...     │
-            │  • Hesaplama Yöntemi: ...   │
-            │                             │
-            │  ⚠️ Bu ücret asıl alacağı   │
-            │     geçemez (uyarı)         │
-            │                             │
-            │  [Kapat] [Paylaş]           │
-            └─────────────────────────────┘
+                    │  ┌─────────────────────────────────────────┐ │
+                    │  │         Uyuşmazlık Türü                 │ │
+                    │  │ ┌─────────────┐ ┌──────────────────┐   │ │
+                    │  │ │   Parasal   │ │ Parasal Olmayan  │   │ │
+                    │  │ └──────┬──────┘ └────────┬─────────┘   │ │
+                    │  └────────┼─────────────────┼─────────────┘ │
+                    │           │                 │               │
+                    │  ┌─────────────────────────────────────────┐ │
+                    │  │         Anlaşma Durumu                  │ │
+                    │  │ ┌─────────────┐ ┌──────────────────┐   │ │
+                    │  │ │   Anlaşma   │ │    Anlaşmama     │   │ │
+                    │  │ └──────┬──────┘ └────────┬─────────┘   │ │
+                    │  └────────┼─────────────────┼─────────────┘ │
+                    └───────────┼─────────────────┼───────────────┘
+                                │                 │
+                                │                 │
+              ┌─────────────────┼─────────────────┼─────────────────┐
+              │                 │                 │                 │
+              ▼                 ▼                 ▼                 ▼
+    ┌─────────────────┐ ┌─────────────────┐ ┌─────────────────┐ ┌─────────────────┐
+    │ PARASAL         │ │ PARASAL         │ │ PARASAL OLMAYAN │ │ PARASAL OLMAYAN │
+    │ ANLAŞMA         │ │ ANLAŞMAMA       │ │ ANLAŞMA         │ │ ANLAŞMAMA       │
+    │ (GİRİŞ)         │ │ (SABİT)         │ │ (GİRİŞ)         │ │ (SABİT)         │
+    │                 │ │                 │ │                 │ │                 │
+    │ Anlaşma Miktarı │ │ Sonuç: 8.000 TL │ │ Mahkeme Seçimi  │ │ Sonuç: 8.000 TL │
+    │ [___________]   │ │                 │ │ ○ Sulh Hukuk    │ │                 │
+    │                 │ │ ⚠️ Uyarı:       │ │ ○ Asliye        │ │ ⚠️ Uyarı:       │
+    │ [Hesapla]       │ │ "Bu ücret asıl  │ │ ○ Tüketici      │ │ "Bu ücret asıl  │
+    └────────┬────────┘ │ alacağı geçemez"│ │ ○ Fikri Sınai   │ │ alacağı geçemez"│
+             │          └─────────────────┘ │                 │ └─────────────────┘
+             │                              │ [Hesapla]       │
+             │                              └────────┬────────┘
+             │                                       │
+             └───────────────────────────────────────┼───────────────┘
+                                                     ▼
+                                    ┌─────────────────────────────┐
+                                    │   AttorneyFeeResultSheet   │
+                                    │       (SONUÇ SHEET)         │
+                                    │                             │
+                                    │  Avukatlık Ücreti           │
+                                    │  ═══════════════════        │
+                                    │  ₺20.000,00                 │
+                                    │                             │
+                                    │  ────────────────────       │
+                                    │  Detaylar:                  │
+                                    │  • Anlaşma Miktarı: ...     │
+                                    │  • Hesaplama Yöntemi: ...   │
+                                    │  • Mahkeme Türü: ...        │
+                                    │                             │
+                                    │  ⚠️ Bu ücret asıl alacağı   │
+                                    │     geçemez (uyarı)         │
+                                    │                             │
+                                    │  [Kapat]           │
+                                    └─────────────────────────────┘
 ```
+
+**Akış Açıklaması:**
+
+1. **AttorneyFeeTypeView (Tek Ekran):** Kullanıcı hem uyuşmazlık türünü (Parasal/Parasal Olmayan) hem de anlaşma durumunu (Anlaşma/Anlaşmama) aynı ekranda seçer.
+
+2. **Parasal + Anlaşma:** `AttorneyFeeInputView` ekranına yönlendirilir. Kullanıcı anlaşma miktarını girer, hesapla butonuna basar, sonuç sheet açılır.
+
+3. **Parasal + Anlaşmama:** Doğrudan `AttorneyFeeResultSheet` açılır, sabit 8.000 TL ücreti gösterilir.
+
+4. **Parasal Olmayan + Anlaşma:** `AttorneyFeeInputView` ekranına yönlendirilir. Kullanıcı mahkeme türünü seçer, hesapla butonuna basar, sonuç sheet açılır.
+
+5. **Parasal Olmayan + Anlaşmama:** Doğrudan `AttorneyFeeResultSheet` açılır, sabit 8.000 TL ücreti gösterilir.
+
+**UI Davranışları:**
+- Seçimler yapıldıktan sonra "Devam Et" butonu aktif olur
+- Geçersiz kombinasyonlar için validasyon mesajları gösterilir
+- Her adımda geri dönüş imkanı vardır
 
 ---
 
@@ -217,8 +237,6 @@ Denklem/
         └── AttorneyFee/                       [YENİ KLASÖR]
             ├── AttorneyFeeTypeView.swift      [YENİ]
             ├── AttorneyFeeTypeViewModel.swift [YENİ]
-            ├── AttorneyFeeAgreementView.swift [YENİ]
-            ├── AttorneyFeeAgreementViewModel.swift [YENİ]
             ├── AttorneyFeeInputView.swift     [YENİ]
             ├── AttorneyFeeInputViewModel.swift [YENİ]
             └── AttorneyFeeResultSheet.swift   [YENİ]
@@ -379,14 +397,12 @@ struct AttorneyFeeTariff2026 {
 }
 ```
 
-### 5-11. Views/Screens/AttorneyFee/ Klasörü
+### 5-9. Views/Screens/AttorneyFee/ Klasörü
 
 | Dosya | Amaç |
 |-------|------|
-| `AttorneyFeeTypeView.swift` | Parasal/Parasal Olmayan seçim ekranı |
+| `AttorneyFeeTypeView.swift` | Uyuşmazlık türü ve anlaşma durumu seçim ekranı (tek ekran) |
 | `AttorneyFeeTypeViewModel.swift` | Type view için ViewModel |
-| `AttorneyFeeAgreementView.swift` | Anlaşma/Anlaşmama seçim ekranı |
-| `AttorneyFeeAgreementViewModel.swift` | Agreement view için ViewModel |
 | `AttorneyFeeInputView.swift` | Miktar veya mahkeme girişi ekranı |
 | `AttorneyFeeInputViewModel.swift` | Input view için ViewModel |
 | `AttorneyFeeResultSheet.swift` | Sonuç sheet komponenti |
@@ -602,25 +618,20 @@ struct AttorneyFee {
 
 ### Aşama 4: Yeni Ekranlar - Type Selection
 
-9. ✅ `AttorneyFeeTypeView.swift` oluştur
+9. ✅ `AttorneyFeeTypeView.swift` oluştur (uyuşmazlık türü ve anlaşma durumu seçimi)
 10. ✅ `AttorneyFeeTypeViewModel.swift` oluştur
 
-### Aşama 5: Yeni Ekranlar - Agreement Selection
+### Aşama 5: Yeni Ekranlar - Input & Result
 
-11. ✅ `AttorneyFeeAgreementView.swift` oluştur
-12. ✅ `AttorneyFeeAgreementViewModel.swift` oluştur
+11. ✅ `AttorneyFeeInputView.swift` oluştur
+12. ✅ `AttorneyFeeInputViewModel.swift` oluştur
+13. ✅ `AttorneyFeeResultSheet.swift` oluştur
 
-### Aşama 6: Yeni Ekranlar - Input & Result
+### Aşama 6: Test & Validasyon
 
-13. ✅ `AttorneyFeeInputView.swift` oluştur
-14. ✅ `AttorneyFeeInputViewModel.swift` oluştur
-15. ✅ `AttorneyFeeResultSheet.swift` oluştur
-
-### Aşama 7: Test & Validasyon
-
-16. ✅ Unit testler yaz (Calculator testleri)
-17. ✅ UI testleri (flow testi)
-18. ✅ Edge case'leri kontrol et
+14. ✅ Unit testler yaz (Calculator testleri)
+15. ✅ UI testleri (flow testi)
+16. ✅ Edge case'leri kontrol et
 
 ---
 
