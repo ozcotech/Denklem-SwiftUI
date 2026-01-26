@@ -6,10 +6,8 @@ import SwiftUI
 struct AttorneyFeeTypeView: View {
 	var body: some View {
 		VStack(spacing: 24) {
-			Text("Attorney Fee Type View")
-				.font(.title)
-				.foregroundColor(.secondary)
-			Text("Bu ekran yakında eklenecek.")
+			// TODO: Implement actual UI for dispute type and agreement status selection
+			Text("Bu özellik Şubat 2026 güncellemesiyle aktif olacaktır.\nGüncelleme geldiğinde otomatik olarak kullanıma açılacaktır.")
 				.font(.body)
 				.foregroundColor(.gray)
 		}
