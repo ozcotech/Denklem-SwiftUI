@@ -125,6 +125,12 @@ Temporary Items
 *.swo
 *~
 
+# GitHub workflows and configurations
+.github/
+
+# Project planning documents
+Documentation/ATTORNEY_FEE_CALCULATION_PLAN.md
+
 # Temporary files
 *.tmp
 *.temp

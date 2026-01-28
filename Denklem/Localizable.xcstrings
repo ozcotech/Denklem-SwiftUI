@@ -1432,7 +1432,7 @@
         },
         "tr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Kira\n(Tahliye/Tespit)"
           }
         }
