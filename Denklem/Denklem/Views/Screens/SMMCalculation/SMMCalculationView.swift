@@ -97,106 +97,75 @@ struct SMMCalculationView: View {
     }
     
     // MARK: - Amount Input Field
-    
+
     private var amountInputField: some View {
-        GeometryReader { geometry in
-            HStack {
-                Spacer()
-                VStack(alignment: .leading, spacing: theme.spacingS) {
-                    Text(viewModel.amountLabel)
-                        .font(theme.subheadline)
-                        .fontWeight(.medium)
-                        .foregroundStyle(theme.textSecondary)
-                    
-                    TextField(LocalizationKeys.Input.Placeholder.amount.localized, text: $viewModel.amountText)
-                        .font(theme.body)
-                        .fontWeight(.medium)
-                        .foregroundStyle(theme.textPrimary)
-                        .keyboardType(.decimalPad)
-                        .textFieldStyle(.plain)
-                        .multilineTextAlignment(.center)
-                        .padding(theme.spacingM)
-                        .frame(height: 50)
-                        .background {
-                            RoundedRectangle(cornerRadius: 16)
-                                .fill(theme.surfaceElevated)
-                                .overlay {
-                                    RoundedRectangle(cornerRadius: 16)
-                                        .fill(Color.primary.opacity(0.03))
-                                }
-                        }
-                        .overlay {
-                            RoundedRectangle(cornerRadius: 16)
-                                .stroke(theme.outline.opacity(0.15), lineWidth: 1)
-                        }
-                        .glassEffectID("smmAmountInput", in: glassNamespace)
-                        .onChange(of: viewModel.amountText) { _, _ in
-                            viewModel.formatAmountInput()
-                        }
+        VStack(alignment: .leading, spacing: theme.spacingS) {
+            Text(viewModel.amountLabel)
+                .font(theme.subheadline)
+                .fontWeight(.medium)
+                .foregroundStyle(theme.textSecondary)
+
+            TextField(LocalizationKeys.Input.Placeholder.amount.localized, text: $viewModel.amountText)
+                .font(theme.body)
+                .fontWeight(.medium)
+                .foregroundStyle(theme.textPrimary)
+                .keyboardType(.decimalPad)
+                .textFieldStyle(.plain)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, theme.spacingL)
+                .frame(height: 50)
+                .glassEffect()
+                .glassEffectID("smmAmountInput", in: glassNamespace)
+                .onChange(of: viewModel.amountText) { _, _ in
+                    viewModel.formatAmountInput()
                 }
-                .frame(width: geometry.size.width * 0.9)
-                Spacer()
-            }
         }
-        .frame(height: 90)
+        .padding(.horizontal, theme.spacingL)
     }
     
     // MARK: - Calculation Type Picker
-    
+
     private var calculationTypePicker: some View {
-        GeometryReader { geometry in
-            HStack {
-                Spacer()
-                VStack(alignment: .leading, spacing: theme.spacingS) {
-                    Text(viewModel.calculationTypeLabel)
-                        .font(theme.subheadline)
-                        .fontWeight(.medium)
-                        .foregroundStyle(theme.textSecondary)
-                    
-                    Menu {
-                        ForEach(SMMCalculationType.allCases, id: \.self) { type in
-                            Button {
-                                viewModel.selectedCalculationType = type
-                            } label: {
-                                HStack {
-                                    Text(type.displayName)
-                                    if viewModel.selectedCalculationType == type {
-                                        Image(systemName: "checkmark")
-                                    }
-                                }
-                            }
-                        }
+        VStack(alignment: .leading, spacing: theme.spacingS) {
+            Text(viewModel.calculationTypeLabel)
+                .font(theme.subheadline)
+                .fontWeight(.medium)
+                .foregroundStyle(theme.textSecondary)
+
+            Menu {
+                ForEach(SMMCalculationType.allCases, id: \.self) { type in
+                    Button {
+                        viewModel.selectedCalculationType = type
                     } label: {
                         HStack {
-                            Text(viewModel.selectedCalculationType.displayName)
-                                .font(theme.body)
-                                .fontWeight(.medium)
-                                .foregroundStyle(theme.textPrimary)
-                            
-                            Spacer()
-                            
-                            Image(systemName: "chevron.down")
-                                .font(.caption)
-                                .foregroundStyle(theme.textSecondary)
-                        }
-                        .padding(theme.spacingM)
-                        .background {
-                            RoundedRectangle(cornerRadius: theme.cornerRadiusM)
-                                .fill(theme.surface)
-                        }
-                        .overlay {
-                            RoundedRectangle(cornerRadius: theme.cornerRadiusM)
-                                .stroke(theme.border, lineWidth: theme.borderWidth)
+                            Text(type.displayName)
+                            if viewModel.selectedCalculationType == type {
+                                Image(systemName: "checkmark")
+                            }
                         }
                     }
                 }
-                .frame(width: geometry.size.width * 0.9)
-                Spacer()
+            } label: {
+                HStack {
+                    Text(viewModel.selectedCalculationType.displayName)
+                        .font(theme.body)
+                        .fontWeight(.medium)
+                        .foregroundStyle(theme.textPrimary)
+
+                    Spacer()
+
+                    Image(systemName: "chevron.down")
+                        .font(.caption)
+                        .foregroundStyle(theme.textSecondary)
+                }
+                .padding(.horizontal, theme.spacingL)
+                .frame(height: 50)
+                .glassEffect()
             }
         }
-        .frame(height: 90)
+        .padding(.horizontal, theme.spacingL)
     }
-    
+
     // MARK: - Error Message View
     
     private func errorMessageView(_ message: String) -> some View {
@@ -221,43 +190,36 @@ struct SMMCalculationView: View {
     }
     
     // MARK: - Calculate Button
-    
-    private var calculateButton: some View {
-        GeometryReader { geometry in
-            HStack {
-                Spacer()
-                Button {
-                    hideKeyboard()
-                    viewModel.calculate()
-                } label: {
-                    HStack(spacing: theme.spacingM) {
-                        Text(viewModel.calculateButtonText)
-                            .font(theme.body)
-                            .fontWeight(.semibold)
 
-                        if viewModel.isCalculating {
-                            ProgressView()
-                                .tint(theme.textPrimary)
-                        } else {
-                            Image(systemName: "arrow.right.circle.fill")
-                                .font(theme.body)
-                                .fontWeight(.semibold)
-                        }
-                    }
-                    .foregroundStyle(theme.textPrimary)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 50)
+    private var calculateButton: some View {
+        Button {
+            hideKeyboard()
+            viewModel.calculate()
+        } label: {
+            HStack(spacing: theme.spacingM) {
+                Text(viewModel.calculateButtonText)
+                    .font(theme.body)
+                    .fontWeight(.semibold)
+
+                if viewModel.isCalculating {
+                    ProgressView()
+                        .tint(theme.textPrimary)
+                } else {
+                    Image(systemName: "arrow.right.circle.fill")
+                        .font(theme.body)
+                        .fontWeight(.semibold)
                 }
-                .buttonStyle(.glass)
-                .tint(theme.primary)
-                .frame(width: geometry.size.width * 0.9)
-                .glassEffectID("calculate", in: glassNamespace)
-                .disabled(!viewModel.isCalculateButtonEnabled || viewModel.isCalculating)
-                .opacity(viewModel.isCalculateButtonEnabled ? 1.0 : 0.5)
-                Spacer()
             }
+            .foregroundStyle(theme.textPrimary)
+            .frame(maxWidth: .infinity)
+            .frame(height: 50)
         }
-        .frame(height: 50)
+        .buttonStyle(.glass)
+        .tint(theme.primary)
+        .glassEffectID("calculate", in: glassNamespace)
+        .disabled(!viewModel.isCalculateButtonEnabled || viewModel.isCalculating)
+        .opacity(viewModel.isCalculateButtonEnabled ? 1.0 : 0.5)
+        .padding(.horizontal, theme.spacingL)
     }
     
     // MARK: - Helper Methods
