@@ -101,6 +101,7 @@ final class DisputeCategoryViewModel: ObservableObject {
 
         // MARK: - Special Calculations Section
         @Published var navigateToAttorneyFee: Bool = false
+        @Published var showComingSoonPopover: Bool = false
 
         var specialCalculations: [DisputeCategoryType] {
             return [.rentSpecial, .attorneyFee] // .rentSpecial can be added in the future
@@ -150,7 +151,7 @@ final class DisputeCategoryViewModel: ObservableObject {
 
     /// Main categories section title
     var mainCategoriesTitle: String {
-        LocalizationKeys.DisputeCategory.mainCategories.localized
+        LocalizationKeys.General.disputeSubject.localized
     }
 
     /// Other calculations section title
@@ -191,9 +192,10 @@ final class DisputeCategoryViewModel: ObservableObject {
         case .attorneyFee:
             navigateToAttorneyFee = true
         case .rentSpecial:
-            // Future: implement navigation
-            // TODO: Temporary path - replace with proper navigation later
-            navigateToAttorneyFee = true
+            // Show coming soon popover - feature will be available in March 2026
+            withAnimation(.spring(response: 0.4, dampingFraction: 0.75)) {
+                showComingSoonPopover = true
+            }
         }
     }
     

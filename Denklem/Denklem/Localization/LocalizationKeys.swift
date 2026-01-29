@@ -34,6 +34,9 @@ struct LocalizationKeys {
         static let warning = "general.warning"
         static let info = "general.info"
         static let success = "general.success"
+        static let comingSoon = "general.coming_soon"
+        static let comingSoonMessage = "general.coming_soon_message"
+        static let disputeSubject = "general.dispute_subject"
     }
     
     // MARK: - Dispute Types
@@ -217,6 +220,10 @@ struct LocalizationKeys {
 
         // Result Labels
         static let calculatedFee = "attorney_fee.calculated_fee"
+
+        // Breakdown Labels
+        static let thirdPartFee = "attorney_fee.third_part_fee"
+        static let bonusAmount = "attorney_fee.bonus_amount"
 
         // Warnings
         static let feeExceedsAmountWarning = "attorney_fee.fee_exceeds_amount_warning"

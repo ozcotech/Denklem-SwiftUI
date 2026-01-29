@@ -14,6 +14,7 @@ struct StartScreenView: View {
     @StateObject private var viewModel = StartScreenViewModel()
     @ObservedObject private var localeManager = LocaleManager.shared
     @Environment(\.theme) var theme
+    @Environment(\.colorScheme) var colorScheme
     
     // MARK: - Animation Properties
     
@@ -24,43 +25,50 @@ struct StartScreenView: View {
     var body: some View {
         // Observe language changes to trigger view refresh
         let _ = localeManager.refreshID
-        
-        ZStack {
-            // Background Image
-            Image("AppStartBackground")
-                .resizable()
-                .scaledToFill()
-                .ignoresSafeArea()
-                //.blur(radius: 12) // Modern iOS blur effect
-            
-            // Gradient Overlay for readability
-            LinearGradient(
-                colors: [
-                    Color.black.opacity(0.4),
-                    Color.black.opacity(0.6)
-                ],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            .ignoresSafeArea()
-            
-            // Content
-            VStack(spacing: theme.spacingXXL) {
-                
-                // Header Section at top
-                headerSection
-                
-                // Spacer pushes content to bottom
-                Spacer()
-                
-                // Year Selection
-                yearSelectionSection
-                
-                // Primary Action Button
-                primaryActionButton
+
+        // Content
+        GeometryReader { geometry in
+            ScrollView {
+                VStack(spacing: theme.spacingXXL) {
+
+                    // Header Section at top
+                    headerSection
+
+                    // Spacer pushes content to bottom
+                    Spacer(minLength: 0)
+
+                    // Year Selection
+                    yearSelectionSection
+
+                    // Primary Action Button
+                    primaryActionButton
+                }
+                .padding(.horizontal, theme.spacingL)
+                .padding(.bottom, theme.spacingXXL)
+                .frame(minHeight: geometry.size.height)
+                .frame(maxWidth: .infinity)
             }
-            .padding(.horizontal, theme.spacingXL)
-            .padding(.bottom, theme.spacingXXL)
+            .scrollDisabled(true)
+        }
+        .background {
+            // Background: Image first, then Gradient overlay on top
+            ZStack {
+                // Background Image
+                Image("AppStartBackground")
+                    .resizable()
+                    .scaledToFill()
+
+                // Gradient Overlay for readability
+                LinearGradient(
+                    colors: [
+                        Color.black.opacity(0.4),
+                        Color.black.opacity(0.6)
+                    ],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+            }
+            .ignoresSafeArea()
         }
         .navigationTitle("")
         .navigationBarTitleDisplayMode(.inline)
@@ -90,28 +98,24 @@ struct StartScreenView: View {
     }
     
     // MARK: - Year Selection Section
-    
+
     private var yearSelectionSection: some View {
         Picker("", selection: $viewModel.selectedYear) {
             ForEach(TariffYear.allCases, id: \.self) { year in
                 // If TariffYear has a displayName property that is already localized, use it. Otherwise, localize here if needed.
                 Text(year.displayName)
-                    .font(.system(size: 18, weight: .regular))
                     .tag(year)
             }
         }
         .pickerStyle(.segmented)
-        .tint(theme.primary)
-        .scaleEffect(y: 1.2)
-        .padding(.horizontal, theme.spacingXL)
-        .frame(height: 50)
+        .controlSize(.large)
         .onChange(of: viewModel.selectedYear) { _, newYear in
             viewModel.selectYear(newYear)
         }
     }
     
     // MARK: - Primary Action Button
-    
+
     private var primaryActionButton: some View {
         Button {
             viewModel.proceedToDisputeCategory()
@@ -120,7 +124,7 @@ struct StartScreenView: View {
                 Text(String(format: LocalizationKeys.Start.enterButtonWithYear.localized, viewModel.selectedYear.displayName))
                     .font(theme.headline)
                     .foregroundColor(.white)
-                
+
                 Image(systemName: "arrow.right")
                     .font(.system(size: 18, weight: .semibold))
                     .foregroundColor(.white)
@@ -130,7 +134,7 @@ struct StartScreenView: View {
             .frame(height: 50)
         }
         .buttonStyle(.glass)
-        .padding(.horizontal, theme.spacingXL)
+        .id(colorScheme) // Force re-render when theme changes
         .onAppear {
             startButtonAnimations()
         }

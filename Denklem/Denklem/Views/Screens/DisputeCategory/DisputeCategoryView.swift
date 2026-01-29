@@ -76,6 +76,64 @@ struct DisputeCategoryView: View {
         .navigationDestination(isPresented: $viewModel.navigateToAttorneyFee) {
             AttorneyFeeTypeView()
         }
+        .overlay {
+            // Coming Soon Popover
+            if viewModel.showComingSoonPopover {
+                comingSoonOverlay
+            }
+        }
+        .onChange(of: viewModel.showComingSoonPopover) { _, newValue in
+            if newValue {
+                // Auto-dismiss after 2 seconds
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                    withAnimation(.easeOut(duration: 0.2)) {
+                        viewModel.showComingSoonPopover = false
+                    }
+                }
+            }
+        }
+    }
+
+    // MARK: - Coming Soon Overlay
+
+    private var comingSoonOverlay: some View {
+        ZStack {
+            // Tap outside to dismiss
+            Color.black.opacity(0.4)
+                .ignoresSafeArea()
+                .onTapGesture {
+                    withAnimation(.easeOut(duration: 0.2)) {
+                        viewModel.showComingSoonPopover = false
+                    }
+                }
+
+            // Coming Soon Content
+            VStack(spacing: theme.spacingM) {
+                Image(systemName: "hammer.fill")
+                    .font(.system(size: 40))
+                    .foregroundStyle(theme.primary)
+
+                Text(LocalizationKeys.General.comingSoon.localized)
+                    .font(theme.headline)
+                    .fontWeight(.bold)
+                    .foregroundStyle(theme.textPrimary)
+
+                Text(LocalizationKeys.General.comingSoonMessage.localized)
+                    .font(theme.body)
+                    .fontWeight(.medium)
+                    .foregroundStyle(theme.textSecondary)
+                    .multilineTextAlignment(.center)
+            }
+            .padding(theme.spacingXL)
+            .frame(maxWidth: 300)
+            .background(.clear)
+            .glassEffect(theme.glassClear, in: RoundedRectangle(cornerRadius: 24))
+            .transition(
+                .blurReplace
+                .combined(with: .scale(0.85))
+            )
+        }
+        .animation(.spring(response: 0.4, dampingFraction: 0.75), value: viewModel.showComingSoonPopover)
     }
         // MARK: - Special Calculations Grid (Attorney Fee, etc.)
         private var specialCalculationsGrid: some View {
@@ -187,18 +245,20 @@ struct DisputeCategoryView: View {
 struct DisputeCategoryView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
+            // Light Mode
             NavigationStack {
                 DisputeCategoryView(selectedYear: .year2025)
             }
             .injectTheme(LightTheme())
-            .previewDisplayName("Light Mode - 2025")
-            
+            .previewDisplayName("Light Mode")
+
+            // Dark Mode
             NavigationStack {
-                DisputeCategoryView(selectedYear: .year2026)
+                DisputeCategoryView(selectedYear: .year2025)
             }
             .injectTheme(DarkTheme())
             .preferredColorScheme(.dark)
-            .previewDisplayName("Dark Mode - 2026")
+            .previewDisplayName("Dark Mode")
         }
     }
 }

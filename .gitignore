@@ -126,10 +126,10 @@ Temporary Items
 *~
 
 # GitHub workflows and configurations
-.github/
+# .github/
 
 # Project planning documents
-Documentation/ATTORNEY_FEE_CALCULATION_PLAN.md
+# Documentation/ATTORNEY_FEE_CALCULATION_PLAN.md
 
 # Temporary files
 *.tmp
