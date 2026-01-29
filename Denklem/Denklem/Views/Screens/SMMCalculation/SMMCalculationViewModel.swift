@@ -139,46 +139,39 @@ final class SMMCalculationViewModel: ObservableObject {
         let groupingSeparator = locale.groupingSeparator ?? "."
 
         // Step 1: Keep only digits, dots, and commas
-        var cleaned = String(amountText.unicodeScalars.filter { 
+        var cleaned = String(amountText.unicodeScalars.filter {
             CharacterSet.decimalDigits.contains($0) || $0 == "." || $0 == ","
         })
-        
-        // Step 2: Find the last separator (dot or comma) - this is likely the decimal separator
-        let lastDotIndex = cleaned.lastIndex(of: ".")
-        let lastCommaIndex = cleaned.lastIndex(of: ",")
-        
-        // Determine which is the last separator
-        var lastSepIndex: String.Index? = nil
-        
-        if let dot = lastDotIndex, let comma = lastCommaIndex {
-            lastSepIndex = dot > comma ? dot : comma
-        } else {
-            lastSepIndex = lastDotIndex ?? lastCommaIndex
-        }
-        
-        // Step 3: Check if last separator looks like a decimal (0-2 digits after it)
+
+        // Step 2: Find ONLY the locale's decimal separator - not just any separator
+        // This fixes the bug where grouping separator was being treated as decimal
+        let decimalSepChar = Character(decimalSeparator)
+        let decimalSepIndex = cleaned.lastIndex(of: decimalSepChar)
+
+        // Step 3: Check if the locale's decimal separator exists and has 0-2 digits after it
         var integerPart = ""
         var decimalPart = ""
         var hasDecimal = false
-        
-        if let sepIndex = lastSepIndex {
+
+        if let sepIndex = decimalSepIndex {
             let afterSep = String(cleaned[cleaned.index(after: sepIndex)...])
-            // If 0-2 digits after separator OR it's at the end, treat as decimal
+            // Only treat as decimal if there are 0-2 digits after the LOCALE's decimal separator
             if afterSep.count <= 2 {
                 hasDecimal = true
                 integerPart = String(cleaned[..<sepIndex])
                 decimalPart = afterSep
+            } else {
+                // More than 2 digits - this is not a decimal separator
+                integerPart = cleaned
             }
-        }
-        
-        if !hasDecimal {
+        } else {
             integerPart = cleaned
         }
-        
-        // Step 4: Remove all separators from integer part (these are grouping separators we added)
+
+        // Step 4: Remove ALL separators from integer part (both are grouping separators now)
         integerPart = integerPart.replacingOccurrences(of: ".", with: "")
         integerPart = integerPart.replacingOccurrences(of: ",", with: "")
-        
+
         // Step 5: Rebuild cleaned string
         if hasDecimal {
             cleaned = integerPart + decimalSeparator + decimalPart
