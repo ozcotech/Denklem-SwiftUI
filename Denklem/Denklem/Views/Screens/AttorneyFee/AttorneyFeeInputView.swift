@@ -153,18 +153,7 @@ struct AttorneyFeeInputView: View {
             .multilineTextAlignment(.center)
             .padding(theme.spacingM)
             .frame(height: 50)
-            .background {
-                RoundedRectangle(cornerRadius: 16)
-                    .fill(theme.surfaceElevated)
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 16)
-                            .fill(Color.primary.opacity(0.03))
-                    }
-            }
-            .overlay {
-                RoundedRectangle(cornerRadius: 16)
-                    .stroke(theme.outline.opacity(0.15), lineWidth: 1)
-            }
+            .glassEffect()
             .glassEffectID("amountInput", in: glassNamespace)
             .onChange(of: viewModel.amountText) { _, _ in
                 viewModel.formatAmountInput()
@@ -277,16 +266,10 @@ struct CourtTypeButton: View {
             }
             .padding(theme.spacingM)
             .frame(maxWidth: .infinity)
-            .background {
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(isSelected ? theme.primary.opacity(0.1) : theme.surfaceElevated)
-            }
-            .overlay {
-                RoundedRectangle(cornerRadius: 12)
-                    .stroke(isSelected ? theme.primary : theme.outline.opacity(0.15), lineWidth: isSelected ? 2 : 1)
-            }
+            .glassEffect()
         }
         .buttonStyle(.plain)
+        .tint(isSelected ? theme.primary : nil)
         .animation(.easeInOut(duration: 0.2), value: isSelected)
     }
 }
