@@ -423,8 +423,7 @@ This project is currently managed by a single developer. Please contact for sugg
 
 **Özkan Cömert**
 
-- 📧 Email: info@ozco.studio
-- 🌐 Website: [https://ozco.studio](https://ozco.studio)
+- 📧 Email: info@denklem.org
 - 🌐 Denklem: [https://denklem.org](https://denklem.org)
 
 ---
