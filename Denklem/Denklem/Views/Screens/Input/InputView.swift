@@ -142,18 +142,7 @@ struct InputView: View {
             .multilineTextAlignment(.center)
             .padding(theme.spacingM)
             .frame(height: 50)
-            .background {
-                RoundedRectangle(cornerRadius: 16)
-                    .fill(theme.surfaceElevated)
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 16)
-                            .fill(Color.primary.opacity(0.03))
-                    }
-            }
-            .overlay {
-                RoundedRectangle(cornerRadius: 16)
-                    .stroke(theme.outline.opacity(0.15), lineWidth: 1)
-            }
+            .glassEffect()
             .glassEffectID("amountInput", in: glassNamespace)
             .onChange(of: viewModel.amountText) { _, _ in
                 viewModel.formatAmountInput()
@@ -172,18 +161,7 @@ struct InputView: View {
             .multilineTextAlignment(.center)
             .padding(theme.spacingM)
             .frame(height: 50)
-            .background {
-                RoundedRectangle(cornerRadius: 16)
-                    .fill(theme.surfaceElevated)
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 16)
-                            .fill(Color.primary.opacity(0.03))
-                    }
-            }
-            .overlay {
-                RoundedRectangle(cornerRadius: 16)
-                    .stroke(theme.outline.opacity(0.15), lineWidth: 1)
-            }
+            .glassEffect()
             .glassEffectID("partyCountInput", in: glassNamespace)
             .onChange(of: viewModel.partyCountText) { _, _ in
                 viewModel.formatPartyCountInput()
