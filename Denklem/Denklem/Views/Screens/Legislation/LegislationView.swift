@@ -344,7 +344,7 @@ struct DocumentDetailSheet: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: { dismiss() }) {
-                        Image(systemName: "checkmark.circle.fill")
+                        Image(systemName: "checkmark")
                             .font(.title2)
                             .foregroundStyle(theme.textSecondary)
                     }

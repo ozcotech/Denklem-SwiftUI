@@ -199,7 +199,7 @@ struct InputView: View {
         } label: {
             HStack(spacing: theme.spacingM) {
                 Text(viewModel.calculateButtonText)
-                    .font(theme.body)
+                    .font(.title2)
                     .fontWeight(.semibold)
                 
                 if viewModel.isCalculating {
@@ -207,7 +207,7 @@ struct InputView: View {
                         .tint(theme.textPrimary)
                 } else {
                     Image(systemName: "arrow.right.circle.fill")
-                        .font(theme.body)
+                        .font(.title2)
                         .fontWeight(.semibold)
                 }
             }
@@ -266,7 +266,7 @@ struct ResultSheet: View {
                         dismiss()
                     } label: {
                         Image(systemName: "checkmark")
-                            .font(theme.body)
+                            .font(.title2)
                             .foregroundStyle(theme.textSecondary)
                     }
                 }
