@@ -135,42 +135,48 @@ struct DisputeCategoryView: View {
         }
         .animation(.spring(response: 0.4, dampingFraction: 0.75), value: viewModel.showComingSoonPopover)
     }
-        // MARK: - Special Calculations Grid (Attorney Fee, etc.)
-        private var specialCalculationsGrid: some View {
-            VStack(spacing: theme.spacingM) {
-                // Section Title
-                Text(viewModel.specialCalculationsTitle)
-                    .font(theme.title3)
-                    .fontWeight(.semibold)
-                    .foregroundStyle(theme.textPrimary)
-                    .frame(maxWidth: .infinity, alignment: .center)
-                GlassEffectContainer(spacing: theme.spacingM) {
-                    LazyVGrid(
-                        columns: [
-                            GridItem(.flexible(), spacing: theme.spacingM),
-                            GridItem(.flexible(), spacing: theme.spacingM)
-                        ],
-                        spacing: theme.spacingM
-                    ) {
-                        ForEach(viewModel.specialCalculations) { category in
-                            CapsuleButton(
-                                systemImage: category.systemImage,
-                                iconColor: category.iconColor,
-                                text: category.displayName,
-                                textColor: theme.textPrimary,
-                                font: theme.footnote,
-                                action: { viewModel.selectCategory(category) }
-                            )
-                        }
-                    }
+    // MARK: - Special Calculations Card (Özel Hesaplamalar)
+
+    private var specialCalculationsGrid: some View {
+        VStack(spacing: theme.spacingS) {
+            // Section Title
+            Text(viewModel.specialCalculationsTitle)
+                .font(theme.title3)
+                .fontWeight(.semibold)
+                .foregroundStyle(theme.textPrimary)
+                .frame(maxWidth: .infinity, alignment: .center)
+
+            // 2x2 Grid
+            LazyVGrid(
+                columns: [
+                    GridItem(.flexible(), spacing: theme.spacingS),
+                    GridItem(.flexible(), spacing: theme.spacingS)
+                ],
+                spacing: theme.spacingS
+            ) {
+                ForEach(viewModel.specialCalculations) { category in
+                    RectangleButton(
+                        systemImage: category.systemImage,
+                        iconColor: category.iconColor,
+                        text: category.displayName,
+                        textColor: theme.textPrimary,
+                        font: theme.footnote,
+                        cornerRadius: theme.cornerRadiusM,
+                        action: { viewModel.selectCategory(category) }
+                    )
                 }
             }
         }
-    
-    // MARK: - Main Categories Grid (2x2)
-    
+        .padding(.horizontal, theme.spacingS)
+        .padding(.top, theme.spacingS)
+        .padding(.bottom, theme.spacingL)
+        .glassEffect(in: RoundedRectangle(cornerRadius: theme.cornerRadiusL))
+    }
+
+    // MARK: - Main Categories Card (Uyuşmazlık Konusu)
+
     private var mainCategoriesGrid: some View {
-        VStack(spacing: theme.spacingM) {
+        VStack(spacing: theme.spacingS) {
             // Section Title
             Text(viewModel.mainCategoriesTitle)
                 .font(theme.title3)
@@ -178,34 +184,37 @@ struct DisputeCategoryView: View {
                 .foregroundStyle(theme.textPrimary)
                 .frame(maxWidth: .infinity, alignment: .center)
 
-            // 2x2 Grid with GlassEffectContainer for performance optimization
-            GlassEffectContainer(spacing: theme.spacingM) {
-                LazyVGrid(
-                    columns: [
-                        GridItem(.flexible(), spacing: theme.spacingM),
-                        GridItem(.flexible(), spacing: theme.spacingM)
-                    ],
-                    spacing: theme.spacingM
-                ) {
-                    ForEach(viewModel.mainCategories) { category in
-                        CapsuleButton(
-                            systemImage: category.systemImage,
-                            iconColor: category.iconColor,
-                            text: category.displayName,
-                            textColor: theme.textPrimary,
-                            font: theme.footnote,
-                            action: { viewModel.selectCategory(category) }
-                        )
-                    }
+            // 2x2 Grid
+            LazyVGrid(
+                columns: [
+                    GridItem(.flexible(), spacing: theme.spacingS),
+                    GridItem(.flexible(), spacing: theme.spacingS)
+                ],
+                spacing: theme.spacingS
+            ) {
+                ForEach(viewModel.mainCategories) { category in
+                    RectangleButton(
+                        systemImage: category.systemImage,
+                        iconColor: category.iconColor,
+                        text: category.displayName,
+                        textColor: theme.textPrimary,
+                        font: theme.footnote,
+                        cornerRadius: theme.cornerRadiusM,
+                        action: { viewModel.selectCategory(category) }
+                    )
                 }
             }
         }
+        .padding(.horizontal, theme.spacingS)
+        .padding(.top, theme.spacingS)
+        .padding(.bottom, theme.spacingL)
+        .glassEffect(in: RoundedRectangle(cornerRadius: theme.cornerRadiusL))
     }
-    
-    // MARK: - Other Calculations Grid (2x1)
-    
+
+    // MARK: - Other Calculations Card (Diğer Hesaplamalar)
+
     private var otherCalculationsGrid: some View {
-        VStack(spacing: theme.spacingM) {
+        VStack(spacing: theme.spacingS) {
             // Section Title
             Text(viewModel.otherCalculationsTitle)
                 .font(theme.title3)
@@ -213,28 +222,31 @@ struct DisputeCategoryView: View {
                 .foregroundStyle(theme.textPrimary)
                 .frame(maxWidth: .infinity, alignment: .center)
 
-            // 2x1 Grid with GlassEffectContainer for performance optimization
-            GlassEffectContainer(spacing: theme.spacingM) {
-                LazyVGrid(
-                    columns: [
-                        GridItem(.flexible(), spacing: theme.spacingM),
-                        GridItem(.flexible(), spacing: theme.spacingM)
-                    ],
-                    spacing: theme.spacingM
-                ) {
-                    ForEach(viewModel.otherCalculations) { category in
-                        CapsuleButton(
-                            systemImage: category.systemImage,
-                            iconColor: category.iconColor,
-                            text: category.displayName,
-                            textColor: theme.textPrimary,
-                            font: theme.footnote,
-                            action: { viewModel.selectCategory(category) }
-                        )
-                    }
+            // 2x2 Grid
+            LazyVGrid(
+                columns: [
+                    GridItem(.flexible(), spacing: theme.spacingS),
+                    GridItem(.flexible(), spacing: theme.spacingS)
+                ],
+                spacing: theme.spacingS
+            ) {
+                ForEach(viewModel.otherCalculations) { category in
+                    RectangleButton(
+                        systemImage: category.systemImage,
+                        iconColor: category.iconColor,
+                        text: category.displayName,
+                        textColor: theme.textPrimary,
+                        font: theme.footnote,
+                        cornerRadius: theme.cornerRadiusM,
+                        action: { viewModel.selectCategory(category) }
+                    )
                 }
             }
         }
+        .padding(.horizontal, theme.spacingS)
+        .padding(.top, theme.spacingS)
+        .padding(.bottom, theme.spacingL)
+        .glassEffect(in: RoundedRectangle(cornerRadius: theme.cornerRadiusL))
     }
 }
 
