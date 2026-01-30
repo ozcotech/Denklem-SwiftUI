@@ -15,10 +15,15 @@ struct AppConstants {
     // MARK: - App Information
     static let appName = "DENKLEM"
     static let appDisplayName = "Denklem - Arabuluculuk Ücreti Hesaplama"
-    static let appVersion = "2.1.0"
-    static let buildNumber = "1"
+    static var appVersion: String {
+        Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0"
+    }
+
+    static var buildNumber: String {
+        Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "1"
+    }
     static var bundleIdentifier: String {
-    return Bundle.main.bundleIdentifier ?? "unknown"
+        Bundle.main.bundleIdentifier ?? "unknown"
     }
     
     // MARK: - App Store Information
