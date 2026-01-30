@@ -114,6 +114,8 @@ struct SMMCalculationView: View {
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, theme.spacingL)
                 .frame(height: theme.buttonHeight)
+                .frame(maxWidth: .infinity)
+                .contentShape(Rectangle())
                 .glassEffect()
                 .glassEffectID("smmAmountInput", in: glassNamespace)
                 .onChange(of: viewModel.amountText) { _, _ in

@@ -155,6 +155,8 @@ struct AttorneyFeeInputView: View {
             .multilineTextAlignment(.center)
             .padding(theme.spacingM)
             .frame(height: theme.buttonHeight)
+            .frame(maxWidth: .infinity)
+            .contentShape(Rectangle())
             .glassEffect()
             .glassEffectID("amountInput", in: glassNamespace)
             .onChange(of: viewModel.amountText) { _, _ in
