@@ -20,6 +20,7 @@ struct AppConstants {
     static var appDisplayName: String {
         Bundle.main.infoDictionary?["CFBundleDisplayName"] as? String ?? appName
     }
+
     static var appVersion: String {
         Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0"
     }
@@ -27,6 +28,7 @@ struct AppConstants {
     static var buildNumber: String {
         Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "1"
     }
+
     static var bundleIdentifier: String {
         Bundle.main.bundleIdentifier ?? "unknown"
     }
@@ -45,13 +47,14 @@ struct AppConstants {
     // MARK: - Legal Information
     static let legislationTitle = "Arabuluculuk Ücret Tarifesi"
     static let availableYears = [2025, 2026]
-    static let currentYear = 2025
+    static var currentYear: Int {
+        Calendar.current.component(.year, from: Date())
+    }
     static let defaultYear = 2025
     static let legislationSource = "Adalet Bakanlığı"
     static let legislationURL = "https://www.adalet.gov.tr"
     
     // MARK: - Feature Flags
-    static let isDebugMode = true
     static let enableAnalytics = false
     static let enableCrashReporting = false
     static let enableBetaFeatures = false
@@ -99,6 +102,7 @@ struct AppConstants {
     struct ErrorCodes {
         static let invalidInput = 1001
         static let calculationError = 1002
+        static let networkError = 1003
         static let fileError = 1004
         static let validationError = 1005
     }
@@ -113,10 +117,12 @@ struct AppConstants {
     
     // MARK: - Debug & Development
     #if DEBUG
+    static let isDebugMode = true
     static let isProductionBuild = false
     static let showDebugInfo = true
     static let enableTestData = true
     #else
+    static let isDebugMode = false
     static let isProductionBuild = true
     static let showDebugInfo = false
     static let enableTestData = false
@@ -128,12 +134,12 @@ extension AppConstants {
     
     /// Returns the current app version with build number
     static var fullVersion: String {
-        return "\(appVersion) (\(buildNumber))"
+        "\(appVersion) (\(buildNumber))"
     }
-    
+
     /// Returns the app display name with version
     static var appNameWithVersion: String {
-        return "\(appDisplayName) v\(appVersion)"
+        "\(appDisplayName) v\(appVersion)"
     }
     
     /// Returns the copyright string using LocalizationKeys
@@ -152,17 +158,17 @@ extension AppConstants {
     
     /// Returns localized app name using LocalizationKeys
     static var localizedAppName: String {
-        return NSLocalizedString(LocalizationKeys.AppInfo.name, comment: "App name")
+        NSLocalizedString(LocalizationKeys.AppInfo.name, comment: "App name")
     }
-    
+
     /// Returns localized app tagline using LocalizationKeys
     static var localizedAppTagline: String {
-        return NSLocalizedString(LocalizationKeys.AppInfo.tagline, comment: "App tagline")
+        NSLocalizedString(LocalizationKeys.AppInfo.tagline, comment: "App tagline")
     }
-    
+
     /// Returns localized app description using LocalizationKeys
     static var localizedAppDescription: String {
-        return NSLocalizedString(LocalizationKeys.AppInfo.description, comment: "App description")
+        NSLocalizedString(LocalizationKeys.AppInfo.description, comment: "App description")
     }
     
     /// Returns localized contact info using LocalizationKeys
@@ -174,7 +180,7 @@ extension AppConstants {
     
     /// Returns the contact information (legacy support)
     static var contactInfo: String {
-        return "İletişim: \(developerEmail)\nWeb: \(companyWebsite)"
+        "İletişim: \(developerEmail)\nWeb: \(companyWebsite)"
     }
 }
 

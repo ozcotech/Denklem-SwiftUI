@@ -23,7 +23,7 @@ enum TariffYear: Int, CaseIterable, Identifiable, Hashable {
     /// Current active tariff year (automatically determined based on current date)
     static var current: TariffYear {
         let currentYear = Calendar.current.component(.year, from: Date())
-        return TariffYear(rawValue: currentYear) ?? .year2026
+        return TariffYear(rawValue: currentYear) ?? TariffYear.allCases.last ?? .year2025
     }
     
     /// Default tariff year for calculations

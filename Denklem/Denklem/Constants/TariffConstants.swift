@@ -12,7 +12,7 @@ struct TariffConstants {
     
     // MARK: - Tariff Years
     static let availableYears = [2025, 2026]
-    static let currentYear = 2025
+    static let currentYear = 2026
     static let defaultYear = 2025
     
     // MARK: - Amount Limits
