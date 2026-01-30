@@ -13,8 +13,13 @@ import SwiftUI
 struct AppConstants {
     
     // MARK: - App Information
-    static let appName = "DENKLEM"
-    static let appDisplayName = "Denklem - Arabuluculuk Ücreti Hesaplama"
+    static var appName: String {
+        Bundle.main.infoDictionary?["CFBundleName"] as? String ?? "Denklem"
+    }
+
+    static var appDisplayName: String {
+        Bundle.main.infoDictionary?["CFBundleDisplayName"] as? String ?? appName
+    }
     static var appVersion: String {
         Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0"
     }
