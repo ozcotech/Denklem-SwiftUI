@@ -15,7 +15,7 @@ struct AppConstants {
     // MARK: - App Information
     static let appName = "DENKLEM"
     static let appDisplayName = "Denklem - Arabuluculuk Ücreti Hesaplama"
-    static let appVersion = "2.0.0"
+    static let appVersion = "2.1.0"
     static let buildNumber = "1"
     static var bundleIdentifier: String {
     return Bundle.main.bundleIdentifier ?? "unknown"
