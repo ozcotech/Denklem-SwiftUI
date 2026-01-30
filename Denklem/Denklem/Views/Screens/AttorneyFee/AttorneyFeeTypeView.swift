@@ -88,7 +88,8 @@ struct AttorneyFeeTypeView: View {
             if let selected = viewModel.selectedDisputeType {
                 HStack(spacing: theme.spacingXS) {
                     Image(systemName: selected.systemImage)
-                        .font(.system(size: 14, weight: .semibold))
+                        .font(theme.footnote)
+                        .fontWeight(.semibold)
                     Text(selected.displayName)
                         .font(theme.subheadline)
                         .fontWeight(.medium)
@@ -126,7 +127,8 @@ struct AttorneyFeeTypeView: View {
             if let selected = viewModel.selectedAgreementStatus {
                 HStack(spacing: theme.spacingXS) {
                     Image(systemName: selected.systemImage)
-                        .font(.system(size: 14, weight: .semibold))
+                        .font(theme.footnote)
+                        .fontWeight(.semibold)
                     Text(selected.displayName)
                         .font(theme.subheadline)
                         .fontWeight(.medium)
@@ -144,15 +146,16 @@ struct AttorneyFeeTypeView: View {
     private var continueButtonSection: some View {
         VStack(spacing: theme.spacingM) {
             // Continue Button
-            Button(action: {
+            Button {
                 viewModel.handleContinue()
-            }) {
+            } label: {
                 HStack(spacing: theme.spacingS) {
                     Text(LocalizationKeys.General.next.localized)
                         .font(theme.headline)
                         .fontWeight(.semibold)
                     Image(systemName: "arrow.right")
-                        .font(.system(size: 16, weight: .semibold))
+                        .font(theme.subheadline)
+                        .fontWeight(.semibold)
                 }
                 .foregroundStyle(viewModel.canProceed ? theme.textPrimary : theme.textSecondary)
                 .frame(maxWidth: .infinity)

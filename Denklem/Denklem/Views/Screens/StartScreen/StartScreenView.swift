@@ -126,12 +126,12 @@ struct StartScreenView: View {
                     .foregroundColor(.white)
 
                 Image(systemName: "arrow.right")
-                    .font(.system(size: 18, weight: .semibold))
+                    .font(theme.headline)
                     .foregroundColor(.white)
                     .offset(x: arrowOffset)
             }
             .frame(maxWidth: .infinity)
-            .frame(height: 50)
+            .frame(height: theme.buttonHeight)
         }
         .buttonStyle(.glass)
         .id(colorScheme) // Force re-render when theme changes

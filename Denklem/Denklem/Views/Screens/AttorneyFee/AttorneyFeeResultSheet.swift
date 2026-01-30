@@ -83,11 +83,11 @@ struct AttorneyFeeResultSheet: View {
         .frame(maxWidth: .infinity)
         .padding(theme.spacingL)
         .background {
-            RoundedRectangle(cornerRadius: 20)
+            RoundedRectangle(cornerRadius: theme.cornerRadiusXL)
                 .fill(theme.surfaceElevated)
         }
         .overlay {
-            RoundedRectangle(cornerRadius: 20)
+            RoundedRectangle(cornerRadius: theme.cornerRadiusXL)
                 .stroke(theme.primary.opacity(0.2), lineWidth: 2)
         }
     }
@@ -178,7 +178,7 @@ struct AttorneyFeeResultSheet: View {
                 HStack {
                     Image(systemName: "info.circle.fill")
                         .font(theme.footnote)
-                        .foregroundStyle(.blue)
+                        .foregroundStyle(theme.primary)
 
                     Text(LocalizationKeys.AttorneyFee.minimumFeeApplied.localized)
                         .font(theme.footnote)
@@ -196,7 +196,7 @@ struct AttorneyFeeResultSheet: View {
                 HStack {
                     Image(systemName: "exclamationmark.triangle.fill")
                         .font(theme.footnote)
-                        .foregroundStyle(.orange)
+                        .foregroundStyle(theme.warning)
 
                     Text(LocalizationKeys.AttorneyFee.feeExceedsAmountWarning.localized)
                         .font(theme.footnote)
@@ -224,7 +224,7 @@ struct AttorneyFeeResultSheet: View {
             HStack {
                 Image(systemName: "exclamationmark.triangle.fill")
                     .font(theme.headline)
-                    .foregroundStyle(.orange)
+                    .foregroundStyle(theme.warning)
 
                 Text(LocalizationKeys.General.warning.localized)
                     .font(theme.headline)
@@ -241,7 +241,7 @@ struct AttorneyFeeResultSheet: View {
                 HStack(alignment: .top, spacing: theme.spacingS) {
                     Image(systemName: "info.circle")
                         .font(theme.footnote)
-                        .foregroundStyle(.orange)
+                        .foregroundStyle(theme.warning)
 
                     Text(warning)
                         .font(theme.footnote)
@@ -255,11 +255,11 @@ struct AttorneyFeeResultSheet: View {
         .padding(theme.spacingL)
         .background {
             RoundedRectangle(cornerRadius: theme.cornerRadiusL)
-                .fill(Color.orange.opacity(0.1))
+                .fill(theme.warning.opacity(0.1))
         }
         .overlay {
             RoundedRectangle(cornerRadius: theme.cornerRadiusL)
-                .stroke(Color.orange.opacity(0.3), lineWidth: 1)
+                .stroke(theme.warning.opacity(0.3), lineWidth: 1)
         }
     }
 

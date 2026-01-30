@@ -144,19 +144,21 @@ struct FilterChip: View {
     @Environment(\.theme) var theme
     
     var body: some View {
-        Button(action: action) {
-            HStack(spacing: 4) {
+        Button {
+            action()
+        } label: {
+            HStack(spacing: theme.spacingXS) {
                 if let systemImage = systemImage {
                     Image(systemName: systemImage)
-                        .font(.caption)
+                        .font(theme.caption)
                 }
-                
+
                 Text(title)
-                    .font(.subheadline)
+                    .font(theme.subheadline)
                     .fontWeight(isSelected ? .semibold : .regular)
             }
-            .padding(.horizontal, 12)
-            .padding(.vertical, 8)
+            .padding(.horizontal, theme.spacingM)
+            .padding(.vertical, theme.spacingS)
             .background(
                 Capsule()
                     .fill(isSelected ? theme.primary.opacity(0.15) : theme.surface)
@@ -183,7 +185,7 @@ struct YearSectionHeader: View {
     var body: some View {
         HStack {
             Text(String(year))
-                .font(.headline)
+                .font(theme.headline)
                 .fontWeight(.bold)
                 .foregroundStyle(theme.textPrimary)
             
@@ -213,17 +215,17 @@ struct DocumentCard: View {
             HStack(spacing: theme.spacingM) {
                 // Document Icon
                 ZStack {
-                    RoundedRectangle(cornerRadius: 12)
+                    RoundedRectangle(cornerRadius: theme.cornerRadiusM)
                         .fill(theme.primary.opacity(0.1))
                         .frame(width: 50, height: 50)
-                    
+
                     Image(systemName: document.type.systemImage)
-                        .font(.title2)
+                        .font(theme.title2)
                         .foregroundStyle(theme.primary)
                 }
-                
+
                 // Document Info
-                VStack(alignment: .leading, spacing: 4) {
+                VStack(alignment: .leading, spacing: theme.spacingXS) {
                     Text(document.title)
                         .font(theme.headline)
                         .fontWeight(.medium)
@@ -256,16 +258,16 @@ struct DocumentCard: View {
                 
                 // Chevron
                 Image(systemName: "chevron.right")
-                    .font(.caption)
+                    .font(theme.caption)
                     .foregroundStyle(theme.textTertiary)
             }
             .padding(theme.spacingM)
             .background(
-                RoundedRectangle(cornerRadius: 16)
+                RoundedRectangle(cornerRadius: theme.cornerRadiusL)
                     .fill(theme.surface)
             )
             .overlay(
-                RoundedRectangle(cornerRadius: 16)
+                RoundedRectangle(cornerRadius: theme.cornerRadiusL)
                     .stroke(theme.border, lineWidth: 0.5)
             )
         }
@@ -295,15 +297,17 @@ struct DocumentCard: View {
 
 @available(iOS 26.0, *)
 struct DocumentTag: View {
-    
+
     let text: String
     let color: Color
-    
+
+    @Environment(\.theme) var theme
+
     var body: some View {
         Text(text)
-            .font(.caption2)
+            .font(theme.caption2)
             .fontWeight(.medium)
-            .padding(.horizontal, 6)
+            .padding(.horizontal, theme.spacingS)
             .padding(.vertical, 2)
             .background(
                 Capsule()
@@ -343,9 +347,11 @@ struct DocumentDetailSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button(action: { dismiss() }) {
+                    Button {
+                        dismiss()
+                    } label: {
                         Image(systemName: "checkmark")
-                            .font(.title2)
+                            .font(theme.title2)
                             .foregroundStyle(theme.textSecondary)
                     }
                 }
@@ -361,7 +367,7 @@ struct DocumentDetailSheet: View {
                     .frame(width: 80, height: 80)
                 
                 Image(systemName: document.type.systemImage)
-                    .font(.largeTitle)
+                    .font(theme.largeTitle)
                     .foregroundStyle(theme.primary)
             }
             
@@ -397,11 +403,11 @@ struct DocumentDetailSheet: View {
         }
         .padding(theme.spacingM)
         .background(
-            RoundedRectangle(cornerRadius: 12)
+            RoundedRectangle(cornerRadius: theme.cornerRadiusM)
                 .fill(theme.surface)
         )
     }
-    
+
     private var actionButtons: some View {
         VStack(spacing: theme.spacingM) {
             if let urlString = document.url, let url = URL(string: urlString) {

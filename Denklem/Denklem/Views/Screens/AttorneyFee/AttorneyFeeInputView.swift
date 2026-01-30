@@ -86,14 +86,15 @@ struct AttorneyFeeInputView: View {
             // Dispute Type Badge
             HStack(spacing: theme.spacingXS) {
                 Image(systemName: viewModel.isMonetary ? "turkishlirasign.circle.fill" : "doc.text.fill")
-                    .font(.system(size: 14, weight: .semibold))
+                    .font(theme.footnote)
+                    .fontWeight(.semibold)
                 Text(viewModel.isMonetary
                      ? LocalizationKeys.AttorneyFee.monetaryType.localized
                      : LocalizationKeys.AttorneyFee.nonMonetaryType.localized)
                     .font(theme.footnote)
                     .fontWeight(.semibold)
             }
-            .foregroundStyle(viewModel.isMonetary ? .green : .blue)
+            .foregroundStyle(viewModel.isMonetary ? theme.success : theme.primary)
             .padding(.horizontal, theme.spacingM)
             .padding(.vertical, theme.spacingXS)
             .background {
@@ -104,12 +105,13 @@ struct AttorneyFeeInputView: View {
             // Agreement Status Badge
             HStack(spacing: theme.spacingXS) {
                 Image(systemName: "checkmark.circle.fill")
-                    .font(.system(size: 14, weight: .semibold))
+                    .font(theme.footnote)
+                    .fontWeight(.semibold)
                 Text(LocalizationKeys.AttorneyFee.agreed.localized)
                     .font(theme.subheadline)
                     .fontWeight(.medium)
             }
-            .foregroundStyle(.green)
+            .foregroundStyle(theme.success)
 
             // Tariff Year
             Text("\(AttorneyFeeConstants.currentYear)")
@@ -152,7 +154,7 @@ struct AttorneyFeeInputView: View {
             .textFieldStyle(.plain)
             .multilineTextAlignment(.center)
             .padding(theme.spacingM)
-            .frame(height: 50)
+            .frame(height: theme.buttonHeight)
             .glassEffect()
             .glassEffectID("amountInput", in: glassNamespace)
             .onChange(of: viewModel.amountText) { _, _ in
@@ -192,7 +194,7 @@ struct AttorneyFeeInputView: View {
         .padding(theme.spacingM)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background {
-            RoundedRectangle(cornerRadius: 12)
+            RoundedRectangle(cornerRadius: theme.cornerRadiusM)
                 .fill(theme.error.opacity(0.1))
         }
     }
@@ -221,7 +223,7 @@ struct AttorneyFeeInputView: View {
             }
             .foregroundStyle(theme.textPrimary)
             .frame(maxWidth: .infinity)
-            .frame(height: 50)
+            .frame(height: theme.buttonHeight)
         }
         .buttonStyle(.glass)
         .tint(theme.primary)
@@ -243,12 +245,14 @@ struct CourtTypeButton: View {
     let action: () -> Void
 
     var body: some View {
-        Button(action: action) {
+        Button {
+            action()
+        } label: {
             HStack(spacing: theme.spacingM) {
                 // Selection indicator
                 Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
-                    .font(.system(size: 20, weight: .semibold))
-                    .foregroundStyle(isSelected ? .green : theme.textSecondary)
+                    .font(theme.title3)
+                    .foregroundStyle(isSelected ? theme.success : theme.textSecondary)
 
                 // Court type info
                 VStack(alignment: .leading, spacing: theme.spacingXS) {

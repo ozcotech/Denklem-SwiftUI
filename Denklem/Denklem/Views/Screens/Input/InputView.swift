@@ -141,7 +141,9 @@ struct InputView: View {
             .textFieldStyle(.plain)
             .multilineTextAlignment(.center)
             .padding(theme.spacingM)
-            .frame(height: 50)
+            .frame(height: theme.buttonHeight)
+            .frame(maxWidth: .infinity)
+            .contentShape(Rectangle())
             .glassEffect()
             .glassEffectID("amountInput", in: glassNamespace)
             .onChange(of: viewModel.amountText) { _, _ in
@@ -160,7 +162,9 @@ struct InputView: View {
             .textFieldStyle(.plain)
             .multilineTextAlignment(.center)
             .padding(theme.spacingM)
-            .frame(height: 50)
+            .frame(height: theme.buttonHeight)
+            .frame(maxWidth: .infinity)
+            .contentShape(Rectangle())
             .glassEffect()
             .glassEffectID("partyCountInput", in: glassNamespace)
             .onChange(of: viewModel.partyCountText) { _, _ in
@@ -184,7 +188,7 @@ struct InputView: View {
         .padding(theme.spacingM)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background {
-            RoundedRectangle(cornerRadius: 12)
+            RoundedRectangle(cornerRadius: theme.cornerRadiusM)
                 .fill(theme.error.opacity(0.1))
         }
     }
@@ -199,21 +203,21 @@ struct InputView: View {
         } label: {
             HStack(spacing: theme.spacingM) {
                 Text(viewModel.calculateButtonText)
-                    .font(.title2)
+                    .font(theme.body)
                     .fontWeight(.semibold)
-                
+
                 if viewModel.isCalculating {
                     ProgressView()
                         .tint(theme.textPrimary)
                 } else {
                     Image(systemName: "arrow.right.circle.fill")
-                        .font(.title2)
+                        .font(theme.body)
                         .fontWeight(.semibold)
                 }
             }
             .foregroundStyle(theme.textPrimary)
             .frame(maxWidth: .infinity)
-            .frame(height: 50)
+            .frame(height: theme.buttonHeight)
         }
         .buttonStyle(.glass)
         .tint(theme.primary)
@@ -266,7 +270,7 @@ struct ResultSheet: View {
                         dismiss()
                     } label: {
                         Image(systemName: "checkmark")
-                            .font(.title2)
+                            .font(theme.body)
                             .foregroundStyle(theme.textSecondary)
                     }
                 }
@@ -294,11 +298,11 @@ struct ResultSheet: View {
         .frame(maxWidth: .infinity)
         .padding(theme.spacingL)
         .background {
-            RoundedRectangle(cornerRadius: 20)
+            RoundedRectangle(cornerRadius: theme.cornerRadiusXL)
                 .fill(theme.surfaceElevated)
         }
         .overlay {
-            RoundedRectangle(cornerRadius: 20)
+            RoundedRectangle(cornerRadius: theme.cornerRadiusXL)
                 .stroke(theme.primary.opacity(0.2), lineWidth: 2)
         }
     }

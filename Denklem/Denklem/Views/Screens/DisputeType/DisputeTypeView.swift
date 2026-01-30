@@ -104,13 +104,14 @@ struct DisputeTypeView: View {
             }
             .pickerStyle(.segmented)
             .controlSize(.large)
-            .tint(viewModel.selectedAgreement == .agreed ? .green : .red)
-            
+            .tint(viewModel.selectedAgreement == .agreed ? theme.success : theme.error)
+
             // Helper text - shows selected status with color
             if let selected = viewModel.selectedAgreement {
                 HStack(spacing: theme.spacingXS) {
                     Image(systemName: selected.systemImage)
-                        .font(.system(size: 14, weight: .semibold))
+                        .font(theme.footnote)
+                        .fontWeight(.semibold)
                     Text(selected.displayName)
                         .font(theme.subheadline)
                         .fontWeight(.medium)

@@ -113,7 +113,7 @@ struct SMMCalculationView: View {
                 .textFieldStyle(.plain)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, theme.spacingL)
-                .frame(height: 50)
+                .frame(height: theme.buttonHeight)
                 .glassEffect()
                 .glassEffectID("smmAmountInput", in: glassNamespace)
                 .onChange(of: viewModel.amountText) { _, _ in
@@ -155,11 +155,11 @@ struct SMMCalculationView: View {
                     Spacer()
 
                     Image(systemName: "chevron.down")
-                        .font(.caption)
+                        .font(theme.caption)
                         .foregroundStyle(theme.textSecondary)
                 }
                 .padding(.horizontal, theme.spacingL)
-                .frame(height: 50)
+                .frame(height: theme.buttonHeight)
                 .glassEffect()
             }
         }
@@ -212,7 +212,7 @@ struct SMMCalculationView: View {
             }
             .foregroundStyle(theme.textPrimary)
             .frame(maxWidth: .infinity)
-            .frame(height: 50)
+            .frame(height: theme.buttonHeight)
         }
         .buttonStyle(.glass)
         .tint(theme.primary)
@@ -273,7 +273,7 @@ struct SMMResultSheet: View {
                         dismiss()
                     } label: {
                         Text("✓")
-                            .font(.system(size: 18, weight: .bold))
+                            .font(theme.body)
                             .foregroundStyle(theme.textPrimary)
                             .frame(width: 30, height: 30)
                     }

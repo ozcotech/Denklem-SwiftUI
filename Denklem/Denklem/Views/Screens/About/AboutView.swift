@@ -189,11 +189,11 @@ struct AboutSectionView: View {
                 }
             }
             .background(
-                RoundedRectangle(cornerRadius: 12)
+                RoundedRectangle(cornerRadius: theme.cornerRadiusM)
                     .fill(.clear)
             )
             .overlay(
-                RoundedRectangle(cornerRadius: 12)
+                RoundedRectangle(cornerRadius: theme.cornerRadiusM)
                     .stroke(theme.border, lineWidth: 0.5)
             )
         }
@@ -212,17 +212,17 @@ struct AboutItemRow: View {
     @Environment(\.theme) var theme
 
     var body: some View {
-        Button(action: {
+        Button {
             if item.action == .showDisclaimer {
                 onShowDisclaimer()
             } else {
                 action()
             }
-        }) {
+        } label: {
             HStack(spacing: theme.spacingM) {
                 if let systemImage = item.systemImage {
                     Image(systemName: systemImage)
-                        .font(.body)
+                        .font(theme.body)
                         .foregroundStyle(theme.primary)
                         .frame(width: 30)
                 }
@@ -242,7 +242,7 @@ struct AboutItemRow: View {
 
                 if item.action != nil && item.action != AboutSectionItem.AboutItemAction.none {
                     Image(systemName: "chevron.right")
-                        .font(.caption)
+                        .font(theme.caption)
                         .foregroundStyle(theme.textTertiary)
                 }
             }
@@ -288,7 +288,7 @@ struct DisclaimerPopoverContent: View {
         VStack(alignment: .leading, spacing: theme.spacingM) {
             HStack(spacing: theme.spacingS) {
                 Image(systemName: "exclamationmark.triangle.fill")
-                    .font(.title3)
+                    .font(theme.title3)
                     .foregroundStyle(theme.warning)
 
                 Text(LocalizationKeys.Legal.disclaimer.localized)

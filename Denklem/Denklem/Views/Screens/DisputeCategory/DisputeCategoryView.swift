@@ -99,7 +99,7 @@ struct DisputeCategoryView: View {
     private var comingSoonOverlay: some View {
         ZStack {
             // Tap outside to dismiss
-            Color.black.opacity(0.4)
+            theme.textPrimary.opacity(0.4)
                 .ignoresSafeArea()
                 .onTapGesture {
                     withAnimation(.easeOut(duration: 0.2)) {

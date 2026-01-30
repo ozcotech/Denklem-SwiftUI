@@ -97,21 +97,21 @@ struct TimeCalculationView: View {
                     } label: {
                         HStack {
                             Image(systemName: "calendar")
-                                .font(.title3)
+                                .font(theme.title3)
                                 .foregroundStyle(theme.primary)
-                            
+
                             Text(formattedDate)
                                 .font(theme.body)
                                 .foregroundStyle(theme.textPrimary)
-                            
+
                             Spacer()
-                            
+
                             Image(systemName: "chevron.right")
-                                .font(.caption)
+                                .font(theme.caption)
                                 .foregroundStyle(theme.textSecondary)
                         }
                         .padding(theme.spacingM)
-                        .frame(height: 50)
+                        .frame(height: theme.buttonHeight)
                     }
                     .buttonStyle(.glass)
                     .tint(theme.surface)
@@ -150,13 +150,13 @@ struct TimeCalculationView: View {
                         Text(LocalizationKeys.General.calculate.localized)
                             .font(theme.headline)
                             .fontWeight(.semibold)
-                        
+
                         Image(systemName: "arrow.right.circle.fill")
-                            .font(.title3)
+                            .font(theme.title3)
                     }
                     .foregroundStyle(theme.textPrimary)
                     .frame(maxWidth: .infinity)
-                    .frame(height: 50)
+                    .frame(height: theme.buttonHeight)
                 }
                 .buttonStyle(.glass)
                 .tint(theme.primary)
@@ -167,7 +167,7 @@ struct TimeCalculationView: View {
                 Spacer()
             }
         }
-        .frame(height: 50) // Fixed height for button
+        .frame(height: theme.buttonHeight) // Fixed height for button
     }
 }
 
@@ -216,7 +216,7 @@ struct ResultsSheet: View {
                         dismiss()
                     } label: {
                         Text("✓")
-                            .font(.system(size: 18, weight: .bold))
+                            .font(theme.body)
                             .foregroundStyle(theme.textPrimary)
                             .frame(width: 30, height: 30)
                     }
@@ -246,9 +246,9 @@ struct ResultsSheet: View {
             }
             
             Spacer()
-            
+
             Image(systemName: "clock.badge.checkmark.fill")
-                .font(.largeTitle)
+                .font(theme.largeTitle)
                 .foregroundStyle(theme.primary)
         }
         .padding(theme.spacingM)
@@ -384,7 +384,7 @@ struct DatePickerSheet: View {
                         dismiss()
                     } label: {
                         Text("✓")
-                            .font(.system(size: 18, weight: .bold))
+                            .font(theme.body)
                             .foregroundStyle(theme.primary)
                             .frame(width: 30, height: 30)
                     }

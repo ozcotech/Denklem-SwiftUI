@@ -18,7 +18,9 @@ struct CapsuleButton: View {
     let action: () -> Void
 
     var body: some View {
-        Button(action: action) {
+        Button {
+            action()
+        } label: {
             Group {
                 if systemImage.isEmpty {
                     // Centered text only (for DisputeTypeView)
