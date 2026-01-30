@@ -28,7 +28,7 @@ struct AppConstants {
     
     // MARK: - Developer Information
     static let developerName = "Özkan Cömert"
-    static let developerEmail = "info@ozco.studio"
+    static let developerEmail = "info@denklem.org"
     static let companyName = "OZCO Studio"
     static let companyWebsite = "https://denklem.org"
     
