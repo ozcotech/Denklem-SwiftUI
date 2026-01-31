@@ -429,7 +429,12 @@ struct LocalizationKeys {
         static let legislation = "tab.legislation"
         static let settings = "tab.settings"
     }
-    
+
+    // MARK: - Tools Screen
+    struct Tools {
+        static let title = "tools.title"
+    }
+
     // MARK: - Language Settings
     struct Language {
         static let title = "language.title"

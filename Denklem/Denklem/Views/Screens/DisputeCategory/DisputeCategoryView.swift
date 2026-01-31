@@ -54,9 +54,8 @@ struct DisputeCategoryView: View {
                 .padding(.top, theme.spacingXL)
             }
         }
-        // Navigation bar title for Dispute Category screen ("Uyuşmazlık Kategorileri").
-        // Do not confuse with DisputeCategory.title ("Kategori Seçin") used elsewhere.
-        .navigationTitle(LocalizationKeys.DisputeCategory.mainCategories.localized)
+        // Navigation bar title for Tools screen ("Hesaplama Araçları" / "Calculation Tools")
+        .navigationTitle(LocalizationKeys.Tools.title.localized)
         .navigationBarTitleDisplayMode(.inline)
         .navigationDestination(isPresented: $viewModel.navigateToDisputeType) {
             // Navigate to DisputeType with isMonetary flag

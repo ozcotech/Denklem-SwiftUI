@@ -5152,6 +5152,24 @@
         }
       }
     },
+    "tools.title" : {
+      "comment" : "tools screen title",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calculation Tools"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hesaplama Araçları"
+          }
+        }
+      }
+    },
     "Tarife Yılı: %@" : {
       "comment" : "A text label displaying the currently selected tariff year and a chevron icon that toggles the visibility of a dropdown menu.",
       "extractionState" : "manual",
