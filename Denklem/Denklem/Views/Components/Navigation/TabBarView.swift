@@ -31,31 +31,17 @@ enum TabItem: String, CaseIterable, Identifiable, Hashable {
         }
     }
 
-    /// SF Symbol name for the tab icon
+    /// SF Symbol name for the tab icon (filled variant for iOS 26 Liquid Glass consistency)
     var systemImage: String {
         switch self {
         case .home:
             return "house.fill"
         case .tools:
-            return "wrench.and.screwdriver.fill"
+            return "arrowshape.forward.circle.fill"
         case .legislation:
             return "books.vertical.fill"
         case .settings:
-            return "gearshape.circle.fill"
-        }
-    }
-
-    /// SF Symbol name for unselected state
-    var systemImageUnselected: String {
-        switch self {
-        case .home:
-            return "house"
-        case .tools:
-            return "wrench.and.screwdriver"
-        case .legislation:
-            return "books.vertical"
-        case .settings:
-            return "gearshape.circle"
+            return "gear.circle.fill"
         }
     }
 
@@ -94,7 +80,7 @@ struct TabBarView: View {
                     StartScreenView()
                 }
             } label: {
-                Label(TabItem.home.title(currentLanguage: localeManager.currentLanguage), systemImage: selectedTab == .home ? TabItem.home.systemImage : TabItem.home.systemImageUnselected)
+                Label(TabItem.home.title(currentLanguage: localeManager.currentLanguage), systemImage: TabItem.home.systemImage)
             }
 
             // MARK: - Tools Tab
@@ -103,7 +89,7 @@ struct TabBarView: View {
                     DisputeCategoryView(selectedYear: selectedYear)
                 }
             } label: {
-                Label(TabItem.tools.title(currentLanguage: localeManager.currentLanguage), systemImage: selectedTab == .tools ? TabItem.tools.systemImage : TabItem.tools.systemImageUnselected)
+                Label(TabItem.tools.title(currentLanguage: localeManager.currentLanguage), systemImage: TabItem.tools.systemImage)
             }
 
             // MARK: - Legislation Tab
@@ -112,16 +98,16 @@ struct TabBarView: View {
                     LegislationView()
                 }
             } label: {
-                Label(TabItem.legislation.title(currentLanguage: localeManager.currentLanguage), systemImage: selectedTab == .legislation ? TabItem.legislation.systemImage : TabItem.legislation.systemImageUnselected)
+                Label(TabItem.legislation.title(currentLanguage: localeManager.currentLanguage), systemImage: TabItem.legislation.systemImage)
             }
-            
+
             // MARK: - Settings Tab
             Tab(value: .settings) {
                 NavigationStack {
                     AboutView()
                 }
             } label: {
-                Label(TabItem.settings.title(currentLanguage: localeManager.currentLanguage), systemImage: selectedTab == .settings ? TabItem.settings.systemImage : TabItem.settings.systemImageUnselected)
+                Label(TabItem.settings.title(currentLanguage: localeManager.currentLanguage), systemImage: TabItem.settings.systemImage)
             }
         }
         .tint(theme.primary)
