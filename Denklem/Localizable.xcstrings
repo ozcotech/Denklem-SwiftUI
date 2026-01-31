@@ -5141,13 +5141,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tools"
+            "value" : "Calculations"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Araçlar"
+            "value" : "Hesaplamalar"
           }
         }
       }
@@ -5159,13 +5159,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Calculation Tools"
+            "value" : "Calculations"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hesaplama Araçları"
+            "value" : "Hesaplamalar"
           }
         }
       }

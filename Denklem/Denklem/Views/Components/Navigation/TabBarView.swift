@@ -37,7 +37,7 @@ enum TabItem: String, CaseIterable, Identifiable, Hashable {
         case .home:
             return "house.fill"
         case .tools:
-            return "arrowshape.forward.circle.fill"
+            return "plus.forwardslash.minus"
         case .legislation:
             return "books.vertical.fill"
         case .settings:

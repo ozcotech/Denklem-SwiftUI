@@ -159,7 +159,7 @@ struct AttorneyFeeTypeView: View {
                 }
                 .foregroundStyle(viewModel.canProceed ? theme.textPrimary : theme.textSecondary)
                 .frame(maxWidth: .infinity)
-                .padding(.vertical, theme.spacingM)
+                .frame(height: theme.buttonHeight)
             }
             .buttonStyle(.glass)
             .disabled(!viewModel.canProceed)
