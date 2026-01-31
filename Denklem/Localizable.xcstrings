@@ -5080,20 +5080,20 @@
         }
       }
     },
-    "tab.about" : {
+    "tab.settings" : {
       "comment" : "tab bar",
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "About"
+            "value" : "Settings"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hakkında"
+            "value" : "Ayarlar"
           }
         }
       }
@@ -5112,24 +5112,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ana Sayfa"
-          }
-        }
-      }
-    },
-    "tab.language" : {
-      "comment" : "tab bar",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "EN"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "TR"
           }
         }
       }

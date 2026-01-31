@@ -59,7 +59,7 @@ struct AboutView: View {
         }
         .coordinateSpace(name: "about.scroll")
         .background(theme.background)
-        .navigationTitle(LocalizationKeys.ScreenTitle.about.localized)
+        .navigationTitle(LocalizationKeys.Settings.title.localized)
         .navigationBarTitleDisplayMode(.large)
         .onChange(of: localeManager.refreshID) { _, _ in
             viewModel.loadSections()
@@ -228,7 +228,7 @@ struct AboutView: View {
         VStack(alignment: .leading, spacing: theme.spacingS) {
             // Label row
             HStack(spacing: theme.spacingM) {
-                Image(systemName: "paintbrush")
+                Image(systemName: "wand.and.sparkles")
                     .font(theme.body)
                     .foregroundStyle(theme.primary)
                     .frame(width: 30)

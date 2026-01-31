@@ -214,13 +214,11 @@ final class AboutViewModel: ObservableObject {
                 ),
                 AboutSectionItem(
                     title: LocalizationKeys.Contact.email.localized,
-                    value: AboutData.developerEmail,
                     systemImage: "envelope",
                     action: .sendEmail(AboutData.developerEmail)
                 ),
                 AboutSectionItem(
                     title: LocalizationKeys.Contact.website.localized,
-                    value: AboutData.companyWebsite,
                     systemImage: "globe",
                     action: .openURL(AboutData.companyWebsite)
                 )
