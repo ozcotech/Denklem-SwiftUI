@@ -16,12 +16,12 @@ import Combine
 class StartScreenViewModel: ObservableObject {
     
     // MARK: - Published Properties
-    
+
     /// Currently selected tariff year
     @Published var selectedYear: TariffYear = .current
-    
-    /// Navigation flag for DisputeCategoryView
-    @Published var navigateToDisputeCategory: Bool = false
+
+    /// Navigation flag for DisputeTypeView (quick access to monetary disputes)
+    @Published var navigateToDisputeType: Bool = false
     
     // MARK: - Private Properties
     
@@ -44,18 +44,18 @@ class StartScreenViewModel: ObservableObject {
         lastUsedYear = year.rawValue
     }
     
-    /// Triggers navigation to DisputeCategoryView
-    func proceedToDisputeCategory() {
+    /// Triggers navigation to DisputeTypeView (quick access to monetary disputes)
+    func proceedToDisputeType() {
         // Validate year selection before navigation
         guard validateYearSelection() else {
             return
         }
-        
+
         // Save selected year
         lastUsedYear = selectedYear.rawValue
-        
+
         // Trigger navigation
-        navigateToDisputeCategory = true
+        navigateToDisputeType = true
     }
     
     // MARK: - Private Methods

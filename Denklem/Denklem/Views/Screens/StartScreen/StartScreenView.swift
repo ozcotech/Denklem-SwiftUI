@@ -72,8 +72,9 @@ struct StartScreenView: View {
         }
         .navigationTitle("")
         .navigationBarTitleDisplayMode(.inline)
-        .navigationDestination(isPresented: $viewModel.navigateToDisputeCategory) {
-            DisputeCategoryView(selectedYear: viewModel.selectedYear)
+        .navigationDestination(isPresented: $viewModel.navigateToDisputeType) {
+            // Quick access: Navigate directly to DisputeTypeView with monetary dispute selected
+            DisputeTypeView(selectedYear: viewModel.selectedYear, isMonetary: true)
         }
     }
     
@@ -118,7 +119,7 @@ struct StartScreenView: View {
 
     private var primaryActionButton: some View {
         Button {
-            viewModel.proceedToDisputeCategory()
+            viewModel.proceedToDisputeType()
         } label: {
             HStack(spacing: theme.spacingM) {
                 Text(String(format: LocalizationKeys.Start.enterButtonWithYear.localized, viewModel.selectedYear.displayName))
