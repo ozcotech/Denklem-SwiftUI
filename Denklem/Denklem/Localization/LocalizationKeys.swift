@@ -94,6 +94,10 @@ struct LocalizationKeys {
         static let rentSpecialDescription = "dispute_category.rent_special.description"
         static let attorneyFee = "dispute_category.attorney_fee"
         static let attorneyFeeDescription = "dispute_category.attorney_fee.description"
+        static let reinstatement = "dispute_category.reinstatement"
+        static let reinstatementDescription = "dispute_category.reinstatement.description"
+        static let serialDisputes = "dispute_category.serial_disputes"
+        static let serialDisputesDescription = "dispute_category.serial_disputes.description"
     }
     
     // MARK: - Agreement Status

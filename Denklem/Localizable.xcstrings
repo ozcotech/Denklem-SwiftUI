@@ -1769,13 +1769,85 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Calculate attorney’s fees for tenancy disputes"
+            "value" : "Calculate attorney's fees for tenancy disputes"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kira uyuşmazlıkları için vekalet ücreti hesapla"
+          }
+        }
+      }
+    },
+    "dispute_category.reinstatement" : {
+      "comment" : "Reinstatement calculation button label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reinstate\nEmployee"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İşe İade"
+          }
+        }
+      }
+    },
+    "dispute_category.reinstatement.description" : {
+      "comment" : "Reinstatement calculation button description",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calculate fees for reinstatement disputes"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İşe iade uyuşmazlıkları için ücret hesapla"
+          }
+        }
+      }
+    },
+    "dispute_category.serial_disputes" : {
+      "comment" : "Serial dispute calculation button label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Serial\nDisputes"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seri\nUyuşmazlık"
+          }
+        }
+      }
+    },
+    "dispute_category.serial_disputes.description" : {
+      "comment" : "Serial disputes calculation button description",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calculate fees for serial disputes"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seri uyuşmazlıklar için ücret hesapla"
           }
         }
       }

@@ -17,6 +17,8 @@ enum DisputeCategoryType: String, CaseIterable, Identifiable {
     case smmCalculation    // SMM calculation
     case attorneyFee       // Attorney fee calculation (special)
     case rentSpecial       // Tenancy (eviction/determination) (future)
+    case reinstatement     // Reinstate Employee (İşe İade) (future)
+    case serialDisputes    // Serial disputes (Seri Uyuşmazlıklar) (future)
     
     var id: String { rawValue }
 
@@ -35,6 +37,10 @@ enum DisputeCategoryType: String, CaseIterable, Identifiable {
             return LocalizationKeys.DisputeCategory.attorneyFee.localized
         case .rentSpecial:
             return LocalizationKeys.DisputeCategory.rentSpecial.localized
+        case .reinstatement:
+            return LocalizationKeys.DisputeCategory.reinstatement.localized
+        case .serialDisputes:
+            return LocalizationKeys.DisputeCategory.serialDisputes.localized
         }
     }
 
@@ -53,6 +59,10 @@ enum DisputeCategoryType: String, CaseIterable, Identifiable {
             return LocalizationKeys.DisputeCategory.attorneyFeeDescription.localized
         case .rentSpecial:
             return LocalizationKeys.DisputeCategory.rentSpecialDescription.localized
+        case .reinstatement:
+            return LocalizationKeys.DisputeCategory.reinstatementDescription.localized
+        case .serialDisputes:
+            return LocalizationKeys.DisputeCategory.serialDisputesDescription.localized
         }
     }
 
@@ -71,6 +81,10 @@ enum DisputeCategoryType: String, CaseIterable, Identifiable {
             return "person.circle.fill"
         case .rentSpecial:
             return "building.2.crop.circle.fill"
+        case .reinstatement:
+            return "arrow.trianglehead.2.clockwise.rotate.90.circle"
+        case .serialDisputes:
+            return "rectangle.stack.fill"
         }
     }
 
@@ -89,6 +103,10 @@ enum DisputeCategoryType: String, CaseIterable, Identifiable {
             return .indigo
         case .rentSpecial:
             return .teal
+        case .reinstatement:
+            return .yellow
+        case .serialDisputes:
+            return .pink
         }
     }
 }
@@ -104,8 +122,8 @@ final class DisputeCategoryViewModel: ObservableObject {
         @Published var showComingSoonPopover: Bool = false
 
         var specialCalculations: [DisputeCategoryType] {
-            return [.rentSpecial, .attorneyFee] // .rentSpecial can be added in the future
-        }
+            return [.rentSpecial, .attorneyFee, .reinstatement, .serialDisputes]
+        }// .rentSpecial, reinstatement, serialDisputes can be added in the future
 
         var specialCalculationsTitle: String {
             LocalizationKeys.DisputeCategory.specialCalculations.localized
@@ -191,8 +209,8 @@ final class DisputeCategoryViewModel: ObservableObject {
             navigateToSMMCalculation = true
         case .attorneyFee:
             navigateToAttorneyFee = true
-        case .rentSpecial:
-            // Show coming soon popover - feature will be available in March 2026
+        case .rentSpecial, .reinstatement, .serialDisputes:
+            // Show coming soon popover - features will be available in future updates
             withAnimation(.spring(response: 0.4, dampingFraction: 0.75)) {
                 showComingSoonPopover = true
             }
