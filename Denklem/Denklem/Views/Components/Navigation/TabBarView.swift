@@ -11,6 +11,7 @@ import SwiftUI
 /// Enum representing available tabs in the app
 enum TabItem: String, CaseIterable, Identifiable, Hashable {
     case home
+    case tools
     case legislation
     case settings
 
@@ -21,6 +22,8 @@ enum TabItem: String, CaseIterable, Identifiable, Hashable {
         switch self {
         case .home:
             return NSLocalizedString(LocalizationKeys.TabBar.home, tableName: nil, bundle: Bundle.localizedBundle, value: "", comment: "Home tab")
+        case .tools:
+            return NSLocalizedString(LocalizationKeys.TabBar.tools, tableName: nil, bundle: Bundle.localizedBundle, value: "", comment: "Tools tab")
         case .legislation:
             return NSLocalizedString(LocalizationKeys.TabBar.legislation, tableName: nil, bundle: Bundle.localizedBundle, value: "", comment: "Legislation tab")
         case .settings:
@@ -33,6 +36,8 @@ enum TabItem: String, CaseIterable, Identifiable, Hashable {
         switch self {
         case .home:
             return "house.fill"
+        case .tools:
+            return "wrench.and.screwdriver.fill"
         case .legislation:
             return "books.vertical.fill"
         case .settings:
@@ -45,6 +50,8 @@ enum TabItem: String, CaseIterable, Identifiable, Hashable {
         switch self {
         case .home:
             return "house"
+        case .tools:
+            return "wrench.and.screwdriver"
         case .legislation:
             return "books.vertical"
         case .settings:
@@ -89,7 +96,16 @@ struct TabBarView: View {
             } label: {
                 Label(TabItem.home.title(currentLanguage: localeManager.currentLanguage), systemImage: selectedTab == .home ? TabItem.home.systemImage : TabItem.home.systemImageUnselected)
             }
-            
+
+            // MARK: - Tools Tab
+            Tab(value: .tools) {
+                NavigationStack {
+                    DisputeCategoryView(selectedYear: selectedYear)
+                }
+            } label: {
+                Label(TabItem.tools.title(currentLanguage: localeManager.currentLanguage), systemImage: selectedTab == .tools ? TabItem.tools.systemImage : TabItem.tools.systemImageUnselected)
+            }
+
             // MARK: - Legislation Tab
             Tab(value: .legislation) {
                 NavigationStack {

@@ -425,6 +425,7 @@ struct LocalizationKeys {
     // MARK: - Tab Bar
     struct TabBar {
         static let home = "tab.home"
+        static let tools = "tab.tools"
         static let legislation = "tab.legislation"
         static let settings = "tab.settings"
     }

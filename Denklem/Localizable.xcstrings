@@ -5134,6 +5134,24 @@
         }
       }
     },
+    "tab.tools" : {
+      "comment" : "tab bar",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tools"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Araçlar"
+          }
+        }
+      }
+    },
     "Tarife Yılı: %@" : {
       "comment" : "A text label displaying the currently selected tariff year and a chevron icon that toggles the visibility of a dropdown menu.",
       "extractionState" : "manual",
