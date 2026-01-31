@@ -24,6 +24,7 @@ struct AboutView: View {
     // MARK: - Properties
 
     @StateObject private var viewModel = AboutViewModel()
+    @ObservedObject private var themeManager = ThemeManager.shared
     @ObservedObject private var localeManager = LocaleManager.shared
     @Environment(\.theme) var theme
 
@@ -38,6 +39,9 @@ struct AboutView: View {
         ScrollView {
             VStack(spacing: theme.spacingL) {
                 appHeaderSection
+
+                // Settings Section (Language & Theme)
+                settingsSection
 
                 ForEach(viewModel.sections) { section in
                     AboutSectionView(
@@ -152,6 +156,103 @@ struct AboutView: View {
         }
         .multilineTextAlignment(.center)
         .padding(.top, theme.spacingL)
+    }
+
+    // MARK: - Settings Section
+
+    private var settingsSection: some View {
+        VStack(alignment: .leading, spacing: theme.spacingS) {
+            Text(LocalizationKeys.Settings.title.localized)
+                .font(theme.headline)
+                .fontWeight(.semibold)
+                .foregroundStyle(theme.textSecondary)
+                .padding(.leading, theme.spacingXS)
+
+            VStack(spacing: 0) {
+                // Language Toggle Row
+                languageToggleRow
+
+                Divider()
+                    .padding(.leading, 50)
+
+                // Theme Picker Row
+                themePickerRow
+            }
+            .background(
+                RoundedRectangle(cornerRadius: theme.cornerRadiusM)
+                    .fill(.clear)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: theme.cornerRadiusM)
+                    .stroke(theme.border, lineWidth: 0.5)
+            )
+        }
+    }
+
+    // MARK: - Language Toggle Row
+
+    private var languageToggleRow: some View {
+        HStack(spacing: theme.spacingM) {
+            Image(systemName: "globe")
+                .font(theme.body)
+                .foregroundStyle(theme.primary)
+                .frame(width: 30)
+
+            Text(LocalizationKeys.Settings.language.localized)
+                .font(theme.body)
+                .foregroundStyle(theme.textPrimary)
+
+            Spacer()
+
+            // Language indicator
+            Text(localeManager.currentLanguageShortName)
+                .font(theme.footnote)
+                .fontWeight(.medium)
+                .foregroundStyle(theme.textSecondary)
+                .padding(.trailing, theme.spacingXS)
+
+            Toggle("", isOn: Binding(
+                get: { localeManager.currentLanguage == .english },
+                set: { _ in localeManager.toggleLanguage() }
+            ))
+            .labelsHidden()
+            .tint(theme.primary)
+        }
+        .padding(.horizontal, theme.spacingM)
+        .padding(.vertical, theme.spacingM)
+    }
+
+    // MARK: - Theme Picker Row
+
+    private var themePickerRow: some View {
+        VStack(alignment: .leading, spacing: theme.spacingS) {
+            // Label row
+            HStack(spacing: theme.spacingM) {
+                Image(systemName: "paintbrush")
+                    .font(theme.body)
+                    .foregroundStyle(theme.primary)
+                    .frame(width: 30)
+
+                Text(LocalizationKeys.Settings.appearance.localized)
+                    .font(theme.body)
+                    .foregroundStyle(theme.textPrimary)
+
+                Spacer()
+            }
+
+            // Segmented picker (full width, centered)
+            Picker("", selection: Binding(
+                get: { themeManager.currentAppearanceMode },
+                set: { themeManager.setAppearanceMode($0) }
+            )) {
+                Text(LocalizationKeys.Settings.light.localized).tag(AppearanceMode.light)
+                Text(LocalizationKeys.Settings.dark.localized).tag(AppearanceMode.dark)
+                Text(LocalizationKeys.Settings.system.localized).tag(AppearanceMode.system)
+            }
+            .pickerStyle(.segmented)
+        }
+        .padding(.horizontal, theme.spacingM)
+        .padding(.vertical, theme.spacingM)
     }
 }
 

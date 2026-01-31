@@ -16,9 +16,14 @@ import Combine
 @available(iOS 26.0, *)
 @MainActor
 class ThemeManager: ObservableObject {
-    
+
+    // MARK: - Singleton
+
+    /// Shared instance for app-wide access
+    static let shared = ThemeManager()
+
     // MARK: - Published Properties
-    
+
     /// Current theme type (light or dark)
     @Published var currentThemeType: ThemeType = .light
     
@@ -49,7 +54,16 @@ class ThemeManager: ObservableObject {
     var isFollowingSystem: Bool {
         followSystemTheme
     }
-    
+
+    /// Current appearance mode (light, dark, or system)
+    var currentAppearanceMode: AppearanceMode {
+        if followSystemTheme {
+            return .system
+        } else {
+            return currentThemeType == .light ? .light : .dark
+        }
+    }
+
     // MARK: - Initialization
     
     init() {
@@ -114,7 +128,20 @@ class ThemeManager: ObservableObject {
         followSystemTheme = true
         updateThemeIfFollowingSystem()
     }
-    
+
+    /// Set appearance mode (light, dark, or system)
+    /// - Parameter mode: The appearance mode to apply
+    func setAppearanceMode(_ mode: AppearanceMode) {
+        switch mode {
+        case .light:
+            setTheme(.light)
+        case .dark:
+            setTheme(.dark)
+        case .system:
+            enableFollowSystemTheme()
+        }
+    }
+
     /// Apply system theme preference
     /// - Parameter colorScheme: The system color scheme
     func applySystemTheme(_ colorScheme: ColorScheme) {

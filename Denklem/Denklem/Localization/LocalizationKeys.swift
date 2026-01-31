@@ -480,6 +480,16 @@ struct LocalizationKeys {
         static let consumer = "court_type.consumer"
         static let intellectualProperty = "court_type.intellectual_property"
     }
+
+    // MARK: - Settings
+    struct Settings {
+        static let title = "settings.title"
+        static let language = "settings.language"
+        static let appearance = "settings.appearance"
+        static let light = "settings.light"
+        static let dark = "settings.dark"
+        static let system = "settings.system"
+    }
 }
 
 // MARK: - LocalizationKeys Extension

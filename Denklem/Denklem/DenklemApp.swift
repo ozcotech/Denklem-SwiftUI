@@ -12,8 +12,8 @@ import SwiftUI
 struct DenklemApp: App {
     
     // MARK: - State Objects
-    
-    @StateObject private var themeManager = ThemeManager()
+
+    @StateObject private var themeManager = ThemeManager.shared
     @StateObject private var localeManager = LocaleManager.shared
     
     /// System color scheme to detect appearance changes

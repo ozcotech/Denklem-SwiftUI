@@ -203,7 +203,7 @@ enum CornerRadiusSize {
 enum ThemeType: String, CaseIterable {
     case light = "Light"
     case dark = "Dark"
-    
+
     /// Returns the corresponding theme instance
     @available(iOS 26.0, *)
     var theme: ThemeProtocol {
@@ -214,9 +214,18 @@ enum ThemeType: String, CaseIterable {
             return DarkTheme()
         }
     }
-    
+
     /// Display name for the theme
     var displayName: String {
         return rawValue
     }
+}
+
+// MARK: - Appearance Mode Enum
+
+/// User-selectable appearance modes including system option
+enum AppearanceMode: String, CaseIterable {
+    case light = "light"
+    case dark = "dark"
+    case system = "system"
 }
