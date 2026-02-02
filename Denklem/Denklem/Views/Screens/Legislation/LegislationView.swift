@@ -215,7 +215,7 @@ struct DocumentCard: View {
             HStack(spacing: theme.spacingM) {
                 // Document Icon
                 ZStack {
-                    RoundedRectangle(cornerRadius: theme.cornerRadiusM)
+                    Circle()
                         .fill(theme.primary.opacity(0.1))
                         .frame(width: 50, height: 50)
 
@@ -263,11 +263,11 @@ struct DocumentCard: View {
             }
             .padding(theme.spacingM)
             .background(
-                RoundedRectangle(cornerRadius: theme.cornerRadiusL)
-                    .fill(theme.surface)
+                RoundedRectangle(cornerRadius: theme.cornerRadiusXL)
+                    .fill(theme.surfaceElevated)
             )
             .overlay(
-                RoundedRectangle(cornerRadius: theme.cornerRadiusL)
+                RoundedRectangle(cornerRadius: theme.cornerRadiusXL)
                     .stroke(theme.border, lineWidth: 0.5)
             )
         }
@@ -351,7 +351,7 @@ struct DocumentDetailSheet: View {
                         dismiss()
                     } label: {
                         Image(systemName: "checkmark")
-                            .font(theme.title2)
+                            .font(theme.body)
                             .foregroundStyle(theme.textSecondary)
                     }
                 }
@@ -364,7 +364,7 @@ struct DocumentDetailSheet: View {
             ZStack {
                 Circle()
                     .fill(theme.primary.opacity(0.1))
-                    .frame(width: 80, height: 80)
+                    .frame(width: 70, height: 70)
                 
                 Image(systemName: document.type.systemImage)
                     .font(theme.largeTitle)

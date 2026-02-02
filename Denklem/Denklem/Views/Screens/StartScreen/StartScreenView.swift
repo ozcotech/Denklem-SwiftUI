@@ -103,7 +103,7 @@ struct StartScreenView: View {
     private var yearSelectionSection: some View {
         Picker("", selection: $viewModel.selectedYear) {
             ForEach(TariffYear.allCases, id: \.self) { year in
-                // If TariffYear has a displayName property that is already localized, use it. Otherwise, localize here if needed.
+            // If TariffYear has a displayName property that is already localized, use it. Otherwise, localize here if needed.
                 Text(year.displayName)
                     .tag(year)
             }
@@ -113,7 +113,7 @@ struct StartScreenView: View {
         .onChange(of: viewModel.selectedYear) { _, newYear in
             viewModel.selectYear(newYear)
         }
-    }
+}
     
     // MARK: - Primary Action Button
 

@@ -39,10 +39,24 @@ struct ValidationConstants {
         static let minimum = 2
         static let maximum = 1000
         static let defaultValue = 2
-        
+
         // Regex pattern for party count
         static let pattern = "^[0-9]{1,4}$"  // 1-4 digits
-        
+
+        // Error codes
+        static let invalidInputErrorCode = 1001
+        static let validationErrorCode = 1005
+    }
+
+    // MARK: - File Count Validation (Serial Disputes)
+    struct FileCount {
+        static let minimum = 1
+        static let maximum = 1000
+        static let defaultValue = 10
+
+        // Regex pattern for file count
+        static let pattern = "^[0-9]{1,4}$"  // 1-4 digits
+
         // Error codes
         static let invalidInputErrorCode = 1001
         static let validationErrorCode = 1005
@@ -302,7 +316,40 @@ extension ValidationConstants {
                 message: LocalizationHelper.localizedString(for: LocalizationKeys.Validation.invalidPartyCount)
             )
         }
-        
+
+        return .success
+    }
+
+    // MARK: - File Count Validation Methods (Serial Disputes)
+
+    /// Validates if file count is within allowed range
+    static func validateFileCount(_ count: Int) -> ValidationResult {
+        if count < FileCount.minimum {
+            return .failure(
+                code: FileCount.validationErrorCode,
+                message: LocalizationHelper.localizedString(for: LocalizationKeys.Validation.FileCount.min)
+            )
+        }
+
+        if count > FileCount.maximum {
+            return .failure(
+                code: FileCount.validationErrorCode,
+                message: LocalizationHelper.localizedString(for: LocalizationKeys.Validation.FileCount.max)
+            )
+        }
+
+        return .success
+    }
+
+    /// Validates file count string format
+    static func validateFileCountFormat(_ countString: String) -> ValidationResult {
+        if !countString.matches(pattern: FileCount.pattern) {
+            return .failure(
+                code: FileCount.invalidInputErrorCode,
+                message: LocalizationHelper.localizedString(for: LocalizationKeys.Validation.invalidFileCount)
+            )
+        }
+
         return .success
     }
     

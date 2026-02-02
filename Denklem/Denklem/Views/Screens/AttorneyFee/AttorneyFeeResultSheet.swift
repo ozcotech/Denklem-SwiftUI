@@ -77,7 +77,7 @@ struct AttorneyFeeResultSheet: View {
                 .foregroundStyle(theme.textSecondary)
 
             Text(result.formattedFee)
-                .font(.system(size: 48, weight: .bold, design: .rounded))
+                .font(.system(size: 40, weight: .bold, design: .rounded))
                 .foregroundStyle(theme.primary)
         }
         .frame(maxWidth: .infinity)

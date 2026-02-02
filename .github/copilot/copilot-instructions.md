@@ -114,6 +114,24 @@ Located in `Theme/LiquidGlass/LiquidGlassStyles.swift`:
 - Always provide fallback for non-iOS 26 devices
 - Use `theme.*` properties for consistency
 
+### Liquid Glass Button Customization (iOS 26.0+)
+To customize Liquid Glass buttons (color AND shape) while preserving the glass effect:
+```swift
+// ✅ Correct: Pass GlassEffectStyle with tint inside .glass()
+.buttonStyle(.glass(.regular.tint(theme.primary)))
+.buttonBorderShape(.roundedRectangle(radius: cornerRadius))
+
+// ❌ Wrong: .tint() alone does NOT work with .glass style
+.buttonStyle(.glass)
+.tint(theme.primary)  // This has no effect on glass background
+```
+
+**Key Points:**
+- `.tint()` modifier alone does NOT change glass button background color
+- Pass `GlassEffectStyle` directly: `.glass(.regular.tint(color))`
+- Use `.buttonBorderShape()` to control button shape (capsule, roundedRectangle, etc.)
+- This pattern preserves the native Liquid Glass effect while allowing full customization
+
 ### Component Hierarchy
 - **Common Components** (`Views/Components/Common/`): `ThemedButton`, `ThemedCard`, `ScreenHeader`
 - **Specialized Components** (`Views/Components/Specialized/`): `CurrencyInputField`, `PartyCountStepper`

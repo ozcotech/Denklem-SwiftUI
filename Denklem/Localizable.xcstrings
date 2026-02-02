@@ -1744,42 +1744,6 @@
         }
       }
     },
-    "dispute_category.rent_special" : {
-      "comment" : "Rent special calculation button label",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tenancy\n(Eviction/Adjustment)"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kira\n(Tahliye/Tespit)"
-          }
-        }
-      }
-    },
-    "dispute_category.rent_special.description" : {
-      "comment" : "Tenancy special calculation button description",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Calculate attorney's fees for tenancy disputes"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kira uyuşmazlıkları için vekalet ücreti hesapla"
-          }
-        }
-      }
-    },
     "dispute_category.reinstatement" : {
       "comment" : "Reinstatement calculation button label",
       "extractionState" : "manual",
@@ -1812,6 +1776,42 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "İşe iade uyuşmazlıkları için ücret hesapla"
+          }
+        }
+      }
+    },
+    "dispute_category.rent_special" : {
+      "comment" : "Rent special calculation button label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tenancy\n(Eviction/Adjustment)"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kira\n(Tahliye/Tespit)"
+          }
+        }
+      }
+    },
+    "dispute_category.rent_special.description" : {
+      "comment" : "Tenancy special calculation button description",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calculate attorney's fees for tenancy disputes"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kira uyuşmazlıkları için vekalet ücreti hesapla"
           }
         }
       }
@@ -2743,6 +2743,24 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tamam"
+          }
+        }
+      }
+    },
+    "general.recalculate" : {
+      "comment" : "general term",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recalculate"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yeniden Hesapla"
           }
         }
       }
@@ -4468,6 +4486,312 @@
         }
       }
     },
+    "serial_disputes.calculation_breakdown" : {
+      "comment" : "Serial disputes result - calculation breakdown section title",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calculation Details"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hesaplama Detayları"
+          }
+        }
+      }
+    },
+    "serial_disputes.commercial_dispute" : {
+      "comment" : "Serial disputes - commercial dispute type",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Commercial Disputes"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ticari Uyuşmazlıklar"
+          }
+        }
+      }
+    },
+    "serial_disputes.dispute_type_label" : {
+      "comment" : "Serial disputes result - dispute type label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dispute Type"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uyuşmazlık Türü"
+          }
+        }
+      }
+    },
+    "serial_disputes.fee_per_file" : {
+      "comment" : "Serial disputes result - fee per file label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fee Per File"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dosya Başı Ücret"
+          }
+        }
+      }
+    },
+    "serial_disputes.file_count" : {
+      "comment" : "Serial disputes input - file count label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "File Count"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dosya Sayısı"
+          }
+        }
+      }
+    },
+    "serial_disputes.file_count_hint" : {
+      "comment" : "Serial disputes input - file count hint text",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter number of dispute files"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uyuşmazlık dosya sayısını girin"
+          }
+        }
+      }
+    },
+    "serial_disputes.file_count_label" : {
+      "comment" : "Serial disputes result - file count label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "File Count"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dosya Sayısı"
+          }
+        }
+      }
+    },
+    "serial_disputes.file_count_placeholder" : {
+      "comment" : "Serial disputes input - file count placeholder",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter file count"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dosya sayısını girin"
+          }
+        }
+      }
+    },
+    "serial_disputes.legal_article" : {
+      "comment" : "Serial disputes - legal article reference",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Article 7/4"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Madde 7/4"
+          }
+        }
+      }
+    },
+    "serial_disputes.legal_reference" : {
+      "comment" : "Serial disputes result - legal reference section title",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Legal Reference"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yasal Dayanak"
+          }
+        }
+      }
+    },
+    "serial_disputes.tariff_name" : {
+      "comment" : "Serial disputes - mediation fee tariff name",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mediation Fee Tariff"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arabuluculuk Ücret Tarifesi"
+          }
+        }
+      }
+    },
+    "serial_disputes.non_commercial_dispute" : {
+      "comment" : "Serial disputes - non-commercial dispute type",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non-Commercial Disputes"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ticari Harici Uyuşmazlıklar"
+          }
+        }
+      }
+    },
+    "serial_disputes.result_title" : {
+      "comment" : "Serial disputes result screen title",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calculation Result"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hesaplama Sonucu"
+          }
+        }
+      }
+    },
+    "serial_disputes.screen_title" : {
+      "comment" : "Serial disputes main screen title",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Serial Dispute"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seri Uyuşmazlık"
+          }
+        }
+      }
+    },
+    "serial_disputes.select_dispute_type" : {
+      "comment" : "Serial disputes input - dispute type selection label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select Dispute Type"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uyuşmazlık Türünü Seçin"
+          }
+        }
+      }
+    },
+    "serial_disputes.tariff_year_label" : {
+      "comment" : "Serial disputes result - tariff year label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tariff Year"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tarife Yılı"
+          }
+        }
+      }
+    },
+    "serial_disputes.total_fee" : {
+      "comment" : "Serial disputes result - total fee label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total Fee"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toplam Ücret"
+          }
+        }
+      }
+    },
     "settings.appearance" : {
       "comment" : "settings screen - appearance picker label",
       "extractionState" : "manual",
@@ -5152,24 +5476,6 @@
         }
       }
     },
-    "tab.settings" : {
-      "comment" : "tab bar",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Settings"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ayarlar"
-          }
-        }
-      }
-    },
     "tab.home" : {
       "comment" : "tab bar",
       "extractionState" : "manual",
@@ -5206,26 +5512,26 @@
         }
       }
     },
-    "tab.tools" : {
+    "tab.settings" : {
       "comment" : "tab bar",
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Calculations"
+            "value" : "Settings"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hesaplamalar"
+            "value" : "Ayarlar"
           }
         }
       }
     },
-    "tools.title" : {
-      "comment" : "tools screen title",
+    "tab.tools" : {
+      "comment" : "tab bar",
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
@@ -5693,6 +5999,24 @@
         }
       }
     },
+    "tools.title" : {
+      "comment" : "tools screen title",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calculations"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hesaplamalar"
+          }
+        }
+      }
+    },
     "v%@" : {
       "comment" : "A badge displaying the current version of the app. The text inside the badge is the app's version number.",
       "isCommentAutoGenerated" : true,
@@ -5777,6 +6101,42 @@
         }
       }
     },
+    "validation.file_count.max" : {
+      "comment" : "validation message for serial disputes",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Maximum file count must be 1000"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Maksimum dosya sayısı 1000 olmalıdır"
+          }
+        }
+      }
+    },
+    "validation.file_count.min" : {
+      "comment" : "validation message for serial disputes",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Minimum file count must be 1"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Minimum dosya sayısı 1 olmalıdır"
+          }
+        }
+      }
+    },
     "validation.invalid_agreement_amount" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -5830,6 +6190,24 @@
         }
       }
     },
+    "validation.invalid_file_count" : {
+      "comment" : "validation message for serial disputes",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please enter a valid file count"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lütfen geçerli bir dosya sayısı girin"
+          }
+        }
+      }
+    },
     "validation.invalid_party_count" : {
       "comment" : "validation message",
       "extractionState" : "manual",
@@ -5844,6 +6222,24 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Geçersiz taraf sayısı"
+          }
+        }
+      }
+    },
+    "validation.invalid_year" : {
+      "comment" : "validation message for unsupported tariff year",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selected year is not supported"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seçilen yıl desteklenmiyor"
           }
         }
       }

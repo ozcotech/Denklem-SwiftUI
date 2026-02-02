@@ -37,6 +37,7 @@ struct LocalizationKeys {
         static let comingSoon = "general.coming_soon"
         static let comingSoonMessage = "general.coming_soon_message"
         static let disputeSubject = "general.dispute_subject"
+        static let recalculate = "general.recalculate"
     }
     
     // MARK: - Dispute Types
@@ -167,19 +168,26 @@ struct LocalizationKeys {
             static let min = "validation.amount.min"
             static let max = "validation.amount.max"
         }
-        
+
         struct PartyCount {
             static let min = "validation.party_count.min"
             static let max = "validation.party_count.max"
         }
-        
+
+        struct FileCount {
+            static let min = "validation.file_count.min"
+            static let max = "validation.file_count.max"
+        }
+
         static let requiredField = "validation.required_field"
         static let invalidAmount = "validation.invalid_amount"
         static let invalidPartyCount = "validation.invalid_party_count"
+        static let invalidFileCount = "validation.invalid_file_count"
         static let invalidAgreementAmount = "validation.invalid_agreement_amount"
         static let missingCourtType = "validation.missing_court_type"
         static let estimatedTariff = "validation.estimated_tariff"
         static let invalidDisputeType = "validation.invalid_dispute_type"
+        static let invalidYear = "validation.invalid_year"
     }
     
     // MARK: - Error Messages
@@ -236,7 +244,37 @@ struct LocalizationKeys {
         // Legal Reference
         static let legalReference = "attorney_fee.legal_reference"
     }
-    
+
+    // MARK: - Serial Disputes
+    struct SerialDisputes {
+        // Screen Titles
+        static let screenTitle = "serial_disputes.screen_title"
+        static let resultTitle = "serial_disputes.result_title"
+
+        // Dispute Types
+        static let selectDisputeType = "serial_disputes.select_dispute_type"
+        static let commercialDispute = "serial_disputes.commercial_dispute"
+        static let nonCommercialDispute = "serial_disputes.non_commercial_dispute"
+
+        // Input Labels
+        static let fileCount = "serial_disputes.file_count"
+        static let fileCountPlaceholder = "serial_disputes.file_count_placeholder"
+        static let fileCountHint = "serial_disputes.file_count_hint"
+
+        // Result Labels
+        static let totalFee = "serial_disputes.total_fee"
+        static let feePerFile = "serial_disputes.fee_per_file"
+        static let calculationBreakdown = "serial_disputes.calculation_breakdown"
+        static let disputeTypeLabel = "serial_disputes.dispute_type_label"
+        static let fileCountLabel = "serial_disputes.file_count_label"
+        static let tariffYearLabel = "serial_disputes.tariff_year_label"
+
+        // Legal Reference
+        static let legalReference = "serial_disputes.legal_reference"
+        static let legalArticle = "serial_disputes.legal_article"
+        static let tariffName = "serial_disputes.tariff_name"
+    }
+
     // MARK: - Screen Titles
     struct ScreenTitle {
         static let home = "screen.title.home"

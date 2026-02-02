@@ -215,10 +215,9 @@ struct ResultsSheet: View {
                     Button {
                         dismiss()
                     } label: {
-                        Text("✓")
+                        Image(systemName: "checkmark")
                             .font(theme.body)
-                            .foregroundStyle(theme.textPrimary)
-                            .frame(width: 30, height: 30)
+                            .foregroundStyle(theme.textSecondary)
                     }
                     .buttonStyle(.plain)
                     .accessibilityLabel(LocalizationKeys.General.done.localized)

@@ -11,6 +11,8 @@ import SwiftUI
 /// Similar to CapsuleButton but with rounded rectangle shape for better text fitting.
 @available(iOS 26.0, *)
 struct RectangleButton: View {
+    @Environment(\.theme) var theme
+
     let systemImage: String
     let iconColor: Color
     let text: String
@@ -36,7 +38,7 @@ struct RectangleButton: View {
             }
             .frame(maxWidth: .infinity, minHeight: 56, alignment: .leading)
         }
-        .buttonStyle(.glass)
+        .buttonStyle(.glass(.clear.tint(theme.surface)))
         .buttonBorderShape(.roundedRectangle(radius: cornerRadius))
     }
 }

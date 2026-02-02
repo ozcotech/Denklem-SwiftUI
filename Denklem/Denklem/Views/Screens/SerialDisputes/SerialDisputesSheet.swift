@@ -1,0 +1,305 @@
+//
+//  SerialDisputesSheet.swift
+//  Denklem
+//
+//  Created by ozkan on 31.01.2026.
+//
+
+import SwiftUI
+
+// MARK: - Serial Disputes Sheet
+/// Sheet view for serial disputes calculation
+/// Displays year picker, dispute type picker, file count input, and calculation result
+@available(iOS 26.0, *)
+struct SerialDisputesSheet: View {
+
+    // MARK: - Properties
+
+    @StateObject private var viewModel: SerialDisputesViewModel
+    @ObservedObject private var localeManager = LocaleManager.shared
+    @Environment(\.theme) var theme
+    @Environment(\.dismiss) private var dismiss
+
+    // MARK: - Namespace for Morphing Transitions
+
+    @Namespace private var glassNamespace
+
+    // MARK: - Initialization
+
+    init(selectedYear: TariffYear) {
+        _viewModel = StateObject(wrappedValue: SerialDisputesViewModel(selectedYear: selectedYear))
+    }
+
+    // MARK: - Body
+
+    var body: some View {
+        // Observe language changes to trigger view refresh
+        let _ = localeManager.refreshID
+
+        NavigationStack {
+            ZStack {
+                // Background
+                theme.background
+                    .ignoresSafeArea()
+
+                // Content
+                if viewModel.showResult, let result = viewModel.calculationResult {
+                    // Result View
+                    SerialDisputesResultView(
+                        result: result,
+                        theme: theme,
+                        onDismiss: { dismiss() },
+                        onRecalculate: {
+                            withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+                                viewModel.reset()
+                            }
+                        }
+                    )
+                } else {
+                    // Input View
+                    inputView
+                }
+            }
+            .navigationTitle(viewModel.screenTitle)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "checkmark")
+                            .font(theme.body)
+                            .foregroundStyle(theme.textSecondary)
+                    }
+                }
+            }
+        }
+        .onTapGesture {
+            // Dismiss keyboard when tapping outside
+            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+        }
+    }
+
+    // MARK: - Input View
+
+    private var inputView: some View {
+        ScrollView {
+            VStack(spacing: theme.spacingL) {
+
+                // Year Picker Section
+                yearPickerSection
+
+                // Dispute Type Picker Section
+                disputeTypePickerSection
+
+                // File Count Section
+                fileCountSection
+
+                // Error Message
+                if let errorMessage = viewModel.errorMessage {
+                    errorMessageView(errorMessage)
+                }
+
+                // Calculate Button
+                calculateButton
+            }
+            .padding(.horizontal, theme.spacingL)
+            .padding(.bottom, theme.spacingXXL)
+        }
+    }
+
+    // MARK: - Year Picker Section
+
+    private var yearPickerSection: some View {
+        VStack(spacing: theme.spacingS) {
+            // Legal Reference
+            Text(LocalizationKeys.SerialDisputes.legalArticle.localized)
+                .font(theme.caption)
+                .foregroundStyle(theme.textSecondary)
+
+            // Year Dropdown
+            Menu {
+                ForEach(viewModel.availableYears) { year in
+                    Button {
+                        viewModel.selectedYear = year
+                    } label: {
+                        HStack {
+                            Text(year.displayName)
+                            if viewModel.selectedYear == year {
+                                Image(systemName: "checkmark")
+                            }
+                        }
+                    }
+                }
+            } label: {
+                HStack(spacing: theme.spacingXS) {
+                    Text(viewModel.currentYearDisplay)
+                        .font(theme.subheadline)
+                        .fontWeight(.medium)
+                        .foregroundStyle(theme.primary)
+
+                    Image(systemName: "chevron.down")
+                        .font(.caption2)
+                        .foregroundStyle(theme.primary)
+                }
+                .padding(.horizontal, theme.spacingS)
+                .padding(.vertical, theme.spacingXS)
+                .background {
+                    Capsule()
+                        .fill(theme.surfaceElevated.opacity(0.6))
+                }
+            }
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.top, theme.spacingL)
+    }
+
+    // MARK: - Dispute Type Picker Section
+
+    private var disputeTypePickerSection: some View {
+        VStack(alignment: .leading, spacing: theme.spacingS) {
+            // Section Title
+            Text(viewModel.disputeTypeSectionTitle)
+                .font(theme.subheadline)
+                .fontWeight(.medium)
+                .foregroundStyle(theme.textSecondary)
+
+            // Dispute Type Dropdown
+            Menu {
+                ForEach(viewModel.availableDisputeTypes) { disputeType in
+                    Button {
+                        viewModel.selectedDisputeType = disputeType
+                    } label: {
+                        HStack {
+                            Text(disputeType.displayName)
+                            if viewModel.selectedDisputeType == disputeType {
+                                Image(systemName: "checkmark")
+                            }
+                        }
+                    }
+                }
+            } label: {
+                HStack {
+                    Text(viewModel.selectedDisputeType.displayName)
+                        .font(theme.body)
+                        .fontWeight(.medium)
+                        .foregroundStyle(theme.textPrimary)
+
+                    Spacer()
+
+                    Image(systemName: "chevron.down")
+                        .font(theme.caption)
+                        .foregroundStyle(theme.textSecondary)
+                }
+                .padding(.horizontal, theme.spacingL)
+                .frame(height: theme.buttonHeight)
+                .glassEffect()
+            }
+        }
+    }
+
+    // MARK: - File Count Section
+
+    private var fileCountSection: some View {
+        VStack(alignment: .leading, spacing: theme.spacingS) {
+            // Section Title
+            Text(viewModel.fileCountSectionTitle)
+                .font(theme.subheadline)
+                .fontWeight(.medium)
+                .foregroundStyle(theme.textSecondary)
+
+            // File Count Input
+            TextField(viewModel.fileCountPlaceholder, text: $viewModel.fileCountText)
+                .font(theme.body)
+                .fontWeight(.medium)
+                .foregroundStyle(theme.textPrimary)
+                .keyboardType(.numberPad)
+                .textFieldStyle(.plain)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, theme.spacingL)
+                .frame(height: theme.buttonHeight)
+                .frame(maxWidth: .infinity)
+                .contentShape(Rectangle())
+                .glassEffect()
+                .glassEffectID("fileCountInput", in: glassNamespace)
+                .onChange(of: viewModel.fileCountText) { _, _ in
+                    viewModel.formatFileCountInput()
+                }
+        }
+    }
+
+    // MARK: - Error Message View
+
+    private func errorMessageView(_ message: String) -> some View {
+        HStack(spacing: theme.spacingS) {
+            Image(systemName: "exclamationmark.triangle.fill")
+                .font(theme.caption)
+                .foregroundStyle(theme.error)
+
+            Text(message)
+                .font(theme.footnote)
+                .foregroundStyle(theme.textPrimary)
+                .multilineTextAlignment(.leading)
+        }
+        .padding(theme.spacingM)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background {
+            RoundedRectangle(cornerRadius: theme.cornerRadiusM)
+                .fill(theme.error.opacity(0.1))
+        }
+    }
+
+    // MARK: - Calculate Button
+
+    private var calculateButton: some View {
+        Button {
+            // Dismiss keyboard before calculating
+            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+            withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+                viewModel.calculate()
+            }
+        } label: {
+            HStack(spacing: theme.spacingM) {
+                Text(viewModel.calculateButtonText)
+                    .font(theme.body)
+                    .fontWeight(.semibold)
+
+                if viewModel.isCalculating {
+                    ProgressView()
+                        .tint(theme.textPrimary)
+                } else {
+                    Image(systemName: "arrow.right.circle.fill")
+                        .font(theme.body)
+                        .fontWeight(.semibold)
+                }
+            }
+            .foregroundStyle(theme.textPrimary)
+            .frame(maxWidth: .infinity)
+            .frame(height: theme.buttonHeight)
+        }
+        .buttonStyle(.glass)
+        .tint(theme.primary)
+        .glassEffectID("calculate", in: glassNamespace)
+        .disabled(!viewModel.isCalculateButtonEnabled || viewModel.isCalculating)
+        .opacity(viewModel.isCalculateButtonEnabled ? 1.0 : 0.5)
+        .padding(.top, theme.spacingL)
+    }
+}
+
+// MARK: - Preview
+
+@available(iOS 26.0, *)
+struct SerialDisputesSheet_Previews: PreviewProvider {
+    static var previews: some View {
+        Group {
+            SerialDisputesSheet(selectedYear: .year2026)
+                .injectTheme(LightTheme())
+                .previewDisplayName("2026 - Light Mode")
+
+            SerialDisputesSheet(selectedYear: .year2025)
+                .injectTheme(DarkTheme())
+                .preferredColorScheme(.dark)
+                .previewDisplayName("2025 - Dark Mode")
+        }
+    }
+}

@@ -292,7 +292,7 @@ struct ResultSheet: View {
                 .foregroundStyle(theme.textSecondary)
             
             Text(LocalizationHelper.formatCurrency(result.amount))
-                .font(.system(size: 48, weight: .bold, design: .rounded))
+                .font(.system(size: 40, weight: .bold, design: .rounded))
                 .foregroundStyle(theme.primary)
         }
         .frame(maxWidth: .infinity)

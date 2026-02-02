@@ -75,6 +75,9 @@ struct DisputeCategoryView: View {
         .navigationDestination(isPresented: $viewModel.navigateToAttorneyFee) {
             AttorneyFeeTypeView()
         }
+        .sheet(isPresented: $viewModel.showSerialDisputesSheet) {
+            SerialDisputesSheet(selectedYear: viewModel.selectedYear)
+        }
         .overlay {
             // Coming Soon Popover
             if viewModel.showComingSoonPopover {
