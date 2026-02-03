@@ -82,7 +82,7 @@ struct AttorneyFeeTypeView: View {
                 }
             }
             .pickerStyle(.segmented)
-            .controlSize(.large)
+            .controlSize(.regular)
 
             // Selected type indicator
             if let selected = viewModel.selectedDisputeType {
@@ -121,7 +121,7 @@ struct AttorneyFeeTypeView: View {
                 }
             }
             .pickerStyle(.segmented)
-            .controlSize(.large)
+            .controlSize(.regular)
 
             // Selected status indicator
             if let selected = viewModel.selectedAgreementStatus {

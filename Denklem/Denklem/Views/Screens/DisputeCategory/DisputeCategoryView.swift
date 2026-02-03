@@ -78,6 +78,9 @@ struct DisputeCategoryView: View {
         .sheet(isPresented: $viewModel.showSerialDisputesSheet) {
             SerialDisputesSheet(selectedYear: viewModel.selectedYear)
         }
+        .sheet(isPresented: $viewModel.showReinstatementSheet) {
+            ReinstatementSheet(selectedYear: viewModel.selectedYear)
+        }
         .overlay {
             // Coming Soon Popover
             if viewModel.showComingSoonPopover {

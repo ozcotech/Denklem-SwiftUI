@@ -120,6 +120,7 @@ final class DisputeCategoryViewModel: ObservableObject {
         // MARK: - Special Calculations Section
         @Published var navigateToAttorneyFee: Bool = false
         @Published var showSerialDisputesSheet: Bool = false
+        @Published var showReinstatementSheet: Bool = false
         @Published var showComingSoonPopover: Bool = false
 
         var specialCalculations: [DisputeCategoryType] {
@@ -212,8 +213,10 @@ final class DisputeCategoryViewModel: ObservableObject {
             navigateToAttorneyFee = true
         case .serialDisputes:
             showSerialDisputesSheet = true
-        case .rentSpecial, .reinstatement:
-            // Show coming soon popover - features will be available in future updates
+        case .reinstatement:
+            showReinstatementSheet = true
+        case .rentSpecial:
+            // Show coming soon popover - feature will be available in future updates
             withAnimation(.spring(response: 0.4, dampingFraction: 0.75)) {
                 showComingSoonPopover = true
             }
@@ -235,6 +238,7 @@ final class DisputeCategoryViewModel: ObservableObject {
         navigateToSMMCalculation = false
         navigateToAttorneyFee = false
         showSerialDisputesSheet = false
+        showReinstatementSheet = false
         selectedCategory = nil
     }
 }

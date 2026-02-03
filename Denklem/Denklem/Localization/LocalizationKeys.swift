@@ -292,6 +292,7 @@ struct LocalizationKeys {
         static let idlePeriodWage = "reinstatement.idle_period_wage"
         static let idlePeriodWageHint = "reinstatement.idle_period_wage_hint"
         static let otherRights = "reinstatement.other_rights"
+        static let otherRightsTotal = "reinstatement.other_rights_total"
         static let otherRightsHint = "reinstatement.other_rights_hint"
         static let partyCount = "reinstatement.party_count"
         static let partyCountHint = "reinstatement.party_count_hint"
@@ -308,7 +309,10 @@ struct LocalizationKeys {
         static let legalNoAgreementArticle = "reinstatement.legal_no_agreement_article"
         static let legalLaborLawArticle = "reinstatement.legal_labor_law_article"
         static let tariffSection = "reinstatement.tariff_section"
-        
+
+        // Warning Messages
+        static let noAgreementWarning = "reinstatement.no_agreement_warning"
+
         // Info/Description
         static let description = "reinstatement.description"
         static let agreementDescription = "reinstatement.agreement_description"

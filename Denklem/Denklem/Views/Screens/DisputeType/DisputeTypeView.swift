@@ -103,7 +103,7 @@ struct DisputeTypeView: View {
                 }
             }
             .pickerStyle(.segmented)
-            .controlSize(.large)
+            .controlSize(.regular)
             .tint(viewModel.selectedAgreement == .agreed ? theme.success : theme.error)
 
             // Helper text - shows selected status with color

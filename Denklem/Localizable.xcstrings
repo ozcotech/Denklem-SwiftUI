@@ -3670,6 +3670,24 @@
         }
       }
     },
+    "legislation.ministry_source" : {
+      "comment" : "Ministry of Justice as source - used in AppConstants",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ministry of Justice"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adalet Bakanlığı"
+          }
+        }
+      }
+    },
     "legislation.regulation.subtitle" : {
       "comment" : "Subtitle of a regulation legislation document.",
       "extractionState" : "extracted_with_value",
@@ -3798,42 +3816,6 @@
         }
       }
     },
-    "legislation.tariff_name" : {
-      "comment" : "Name of the mediation fee tariff - used in AppConstants",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mediation Fee Tariff"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Arabuluculuk Ücret Tarifesi"
-          }
-        }
-      }
-    },
-    "legislation.ministry_source" : {
-      "comment" : "Ministry of Justice as source - used in AppConstants",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ministry of Justice"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Adalet Bakanlığı"
-          }
-        }
-      }
-    },
     "legislation.tag.official" : {
       "comment" : "legislation official tag",
       "extractionState" : "manual",
@@ -3848,6 +3830,24 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Resmi"
+          }
+        }
+      }
+    },
+    "legislation.tariff_name" : {
+      "comment" : "Name of the mediation fee tariff - used in AppConstants",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mediation Fee Tariff"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arabuluculuk Ücret Tarifesi"
           }
         }
       }
@@ -4104,6 +4104,492 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lütfen bekleyin..."
+          }
+        }
+      }
+    },
+    "reinstatement.agreed" : {
+      "comment" : "Reinstatement - agreed status",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Agreement Reached"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anlaşma Sağlandı"
+          }
+        }
+      }
+    },
+    "reinstatement.agreement_description" : {
+      "comment" : "Reinstatement - agreement case description",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calculation based on non-reinstatement compensation, idle period wages, and other rights"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İşe başlatılmama tazminatı, boşta geçen süre ücreti ve diğer haklar üzerinden hesaplama"
+          }
+        }
+      }
+    },
+    "reinstatement.bracket_calculation" : {
+      "comment" : "Reinstatement result - bracket calculation label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bracket Calculation"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dilim Hesaplaması"
+          }
+        }
+      }
+    },
+    "reinstatement.calculation_breakdown" : {
+      "comment" : "Reinstatement result - calculation breakdown section",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calculation Breakdown"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hesaplama Detayı"
+          }
+        }
+      }
+    },
+    "reinstatement.description" : {
+      "comment" : "Reinstatement - feature description",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calculate mediation fees for reinstatement disputes"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İşe iade uyuşmazlıklarında arabuluculuk ücreti hesaplama"
+          }
+        }
+      }
+    },
+    "reinstatement.idle_period_wage" : {
+      "comment" : "Reinstatement input - idle period wage label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Idle Period Wage"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Boşta Geçen Süre Ücreti"
+          }
+        }
+      }
+    },
+    "reinstatement.idle_period_wage_hint" : {
+      "comment" : "Reinstatement input - idle period wage hint",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wages for the period the employee was not employed"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Çalıştırılmadığı süre için ödenecek ücret"
+          }
+        }
+      }
+    },
+    "reinstatement.legal_agreement_article" : {
+      "comment" : "Reinstatement - legal reference for agreement case",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Labor Courts Law Art. 3/13-2"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İş Mahkemeleri Kanunu m.3/13-2"
+          }
+        }
+      }
+    },
+    "reinstatement.legal_labor_law_article" : {
+      "comment" : "Reinstatement - additional legal reference",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Labor Law Art. 21/7"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İş Kanunu m.21/7"
+          }
+        }
+      }
+    },
+    "reinstatement.legal_no_agreement_article" : {
+      "comment" : "Reinstatement - legal reference for no agreement case",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Labor Law Art. 20-2"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İş Kanunu m.20-2"
+          }
+        }
+      }
+    },
+    "reinstatement.minimum_fee_applied" : {
+      "comment" : "Reinstatement result - minimum fee applied note",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Minimum fee applied"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Minimum ücret uygulandı"
+          }
+        }
+      }
+    },
+    "reinstatement.no_agreement_description" : {
+      "comment" : "Reinstatement - no agreement case description",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fixed fee calculation based on number of parties"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Taraf sayısına göre sabit ücret hesaplama"
+          }
+        }
+      }
+    },
+    "reinstatement.non_reinstatement_compensation" : {
+      "comment" : "Reinstatement input - non-reinstatement compensation label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non-Reinstatement Compensation"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İşe Başlatılmama Tazminatı"
+          }
+        }
+      }
+    },
+    "reinstatement.non_reinstatement_compensation_hint" : {
+      "comment" : "Reinstatement input - non-reinstatement compensation hint",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compensation to be paid if the employee is not reinstated"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İşçinin işe başlatılmaması halinde ödenecek tazminat"
+          }
+        }
+      }
+    },
+    "reinstatement.not_agreed" : {
+      "comment" : "Reinstatement - not agreed status",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Agreement"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anlaşma Sağlanamadı"
+          }
+        }
+      }
+    },
+    "reinstatement.other_rights" : {
+      "comment" : "Reinstatement input - other rights label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Other Rights (Optional)"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diğer Haklar (Opsiyonel)"
+          }
+        }
+      }
+    },
+    "reinstatement.other_rights_hint" : {
+      "comment" : "Reinstatement input - other rights hint",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leave pay, bonuses, and other rights if any"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Varsa izin ücreti, ikramiye ve diğer haklar"
+          }
+        }
+      }
+    },
+    "reinstatement.other_rights_total" : {
+      "comment" : "Reinstatement input - total other rights label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total Other Rights (Optional)"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diğer Haklar Toplamı (Opsiyonel)"
+          }
+        }
+      }
+    },
+    "reinstatement.party_count" : {
+      "comment" : "Reinstatement input - party count label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Number of Parties"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Taraf Sayısı"
+          }
+        }
+      }
+    },
+    "reinstatement.party_count_hint" : {
+      "comment" : "Reinstatement input - party count hint",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Minimum 2 (employee + employer)"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Minimum 2 (işçi + işveren)"
+          }
+        }
+      }
+    },
+    "reinstatement.result_title" : {
+      "comment" : "Reinstatement result screen title",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calculation Result"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hesaplama Sonucu"
+          }
+        }
+      }
+    },
+    "reinstatement.screen_title" : {
+      "comment" : "Reinstatement main screen title",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reinstatement"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İşe İade"
+          }
+        }
+      }
+    },
+    "reinstatement.select_agreement_status" : {
+      "comment" : "Reinstatement - agreement status selection label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select Agreement Status"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anlaşma Durumunu Seçin"
+          }
+        }
+      }
+    },
+    "reinstatement.tariff_section" : {
+      "comment" : "Reinstatement - tariff section reference",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tariff Second Part"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tarife İkinci Kısım"
+          }
+        }
+      }
+    },
+    "reinstatement.no_agreement_warning" : {
+      "comment" : "Reinstatement - no agreement warning about filing lawsuit",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "If the mediation process ends without settlement, an action may be filed before the Labour Court within two weeks from the date on which the final record is drawn up."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arabuluculuk faaliyeti sonunda anlaşmaya varılamaması halinde, son tutanağın düzenlendiği tarihten itibaren iki hafta içinde iş mahkemesinde dava açılabilir."
+          }
+        }
+      }
+    },
+    "reinstatement.total_amount" : {
+      "comment" : "Reinstatement result - total amount label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total Agreement Amount"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toplam Anlaşma Miktarı"
+          }
+        }
+      }
+    },
+    "reinstatement.total_fee" : {
+      "comment" : "Reinstatement result - total fee label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mediation Fee"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arabuluculuk Ücreti"
           }
         }
       }
@@ -4824,456 +5310,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Toplam Ücret"
-          }
-        }
-      }
-    },
-    "reinstatement.screen_title" : {
-      "comment" : "Reinstatement main screen title",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Reinstatement"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "İşe İade"
-          }
-        }
-      }
-    },
-    "reinstatement.result_title" : {
-      "comment" : "Reinstatement result screen title",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Calculation Result"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hesaplama Sonucu"
-          }
-        }
-      }
-    },
-    "reinstatement.select_agreement_status" : {
-      "comment" : "Reinstatement - agreement status selection label",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Select Agreement Status"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Anlaşma Durumunu Seçin"
-          }
-        }
-      }
-    },
-    "reinstatement.agreed" : {
-      "comment" : "Reinstatement - agreed status",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Agreement Reached"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Anlaşma Sağlandı"
-          }
-        }
-      }
-    },
-    "reinstatement.not_agreed" : {
-      "comment" : "Reinstatement - not agreed status",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No Agreement"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Anlaşma Sağlanamadı"
-          }
-        }
-      }
-    },
-    "reinstatement.non_reinstatement_compensation" : {
-      "comment" : "Reinstatement input - non-reinstatement compensation label",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Non-Reinstatement Compensation"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "İşe Başlatılmama Tazminatı"
-          }
-        }
-      }
-    },
-    "reinstatement.non_reinstatement_compensation_hint" : {
-      "comment" : "Reinstatement input - non-reinstatement compensation hint",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Compensation to be paid if the employee is not reinstated"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "İşçinin işe başlatılmaması halinde ödenecek tazminat"
-          }
-        }
-      }
-    },
-    "reinstatement.idle_period_wage" : {
-      "comment" : "Reinstatement input - idle period wage label",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Idle Period Wage"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Boşta Geçen Süre Ücreti"
-          }
-        }
-      }
-    },
-    "reinstatement.idle_period_wage_hint" : {
-      "comment" : "Reinstatement input - idle period wage hint",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wages for the period the employee was not employed"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Çalıştırılmadığı süre için ödenecek ücret"
-          }
-        }
-      }
-    },
-    "reinstatement.other_rights" : {
-      "comment" : "Reinstatement input - other rights label",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Other Rights (Optional)"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Diğer Haklar (Opsiyonel)"
-          }
-        }
-      }
-    },
-    "reinstatement.other_rights_hint" : {
-      "comment" : "Reinstatement input - other rights hint",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Leave pay, bonuses, and other rights if any"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Varsa izin ücreti, ikramiye ve diğer haklar"
-          }
-        }
-      }
-    },
-    "reinstatement.party_count" : {
-      "comment" : "Reinstatement input - party count label",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Number of Parties"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Taraf Sayısı"
-          }
-        }
-      }
-    },
-    "reinstatement.party_count_hint" : {
-      "comment" : "Reinstatement input - party count hint",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Minimum 2 (employee + employer)"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Minimum 2 (işçi + işveren)"
-          }
-        }
-      }
-    },
-    "reinstatement.total_fee" : {
-      "comment" : "Reinstatement result - total fee label",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mediation Fee"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Arabuluculuk Ücreti"
-          }
-        }
-      }
-    },
-    "reinstatement.total_amount" : {
-      "comment" : "Reinstatement result - total amount label",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Total Agreement Amount"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Toplam Anlaşma Miktarı"
-          }
-        }
-      }
-    },
-    "reinstatement.calculation_breakdown" : {
-      "comment" : "Reinstatement result - calculation breakdown section",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Calculation Breakdown"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hesaplama Detayı"
-          }
-        }
-      }
-    },
-    "reinstatement.minimum_fee_applied" : {
-      "comment" : "Reinstatement result - minimum fee applied note",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Minimum fee applied"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Minimum ücret uygulandı"
-          }
-        }
-      }
-    },
-    "reinstatement.bracket_calculation" : {
-      "comment" : "Reinstatement result - bracket calculation label",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bracket Calculation"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dilim Hesaplaması"
-          }
-        }
-      }
-    },
-    "reinstatement.legal_agreement_article" : {
-      "comment" : "Reinstatement - legal reference for agreement case",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Labor Courts Law Art. 3/13-2"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "İş Mahkemeleri Kanunu m.3/13-2"
-          }
-        }
-      }
-    },
-    "reinstatement.legal_no_agreement_article" : {
-      "comment" : "Reinstatement - legal reference for no agreement case",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Labor Law Art. 20-2"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "İş Kanunu m.20-2"
-          }
-        }
-      }
-    },
-    "reinstatement.legal_labor_law_article" : {
-      "comment" : "Reinstatement - additional legal reference",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Labor Law Art. 21/7"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "İş Kanunu m.21/7"
-          }
-        }
-      }
-    },
-    "reinstatement.tariff_section" : {
-      "comment" : "Reinstatement - tariff section reference",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tariff Second Part"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tarife İkinci Kısım"
-          }
-        }
-      }
-    },
-    "reinstatement.description" : {
-      "comment" : "Reinstatement - feature description",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Calculate mediation fees for reinstatement disputes"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "İşe iade uyuşmazlıklarında arabuluculuk ücreti hesaplama"
-          }
-        }
-      }
-    },
-    "reinstatement.agreement_description" : {
-      "comment" : "Reinstatement - agreement case description",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Calculation based on non-reinstatement compensation, idle period wages, and other rights"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "İşe başlatılmama tazminatı, boşta geçen süre ücreti ve diğer haklar üzerinden hesaplama"
-          }
-        }
-      }
-    },
-    "reinstatement.no_agreement_description" : {
-      "comment" : "Reinstatement - no agreement case description",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fixed fee calculation based on number of parties"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Taraf sayısına göre sabit ücret hesaplama"
           }
         }
       }
