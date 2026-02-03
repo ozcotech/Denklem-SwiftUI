@@ -86,8 +86,10 @@ struct SerialDisputesConstants {
     static let showTariffReference = true
 
     // MARK: - Legal Reference
-    static let legalArticle = "Madde 7/4"
-    static let legalArticleEN = "Article 7/4"
+    /// Returns localized legal article reference
+    static var legalArticle: String {
+        LocalizationKeys.SerialDisputes.legalArticle.localized
+    }
 }
 
 // MARK: - Fee Retrieval Extension

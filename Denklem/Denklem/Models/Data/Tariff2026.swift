@@ -65,20 +65,32 @@ struct Tariff2026: TariffProtocol {
     ]
     
     // MARK: - Calculation Brackets
-    
-    /// Progressive calculation brackets for agreement cases
-    /// Format: (upper limit, percentage rate)
-    let brackets: [(limit: Double, rate: Double)] = [
-        (600000.0, 0.06),       
-        (1560000.0, 0.05),       
-        (3120000.0, 0.04),      
-        (6240000.0, 0.03),      
-        (15600000.0, 0.02),      
-        (28080000.0, 0.015),    
-        (53040000.0, 0.01),     
-        (Double.infinity, 0.005) 
-    ]
-    
+
+/// Progressive calculation brackets for agreement cases
+/// Format: (cumulative upper limit, percentage rate)
+///
+/// Official Tariff → Code Conversion:
+/// | Official (Tier Amount) | Cumulative Limit |
+/// |------------------------|------------------|
+/// | First 600,000          | 600,000          |
+/// | Next 960,000           | 1,560,000        |
+/// | Next 1,560,000         | 3,120,000        |
+/// | Next 3,120,000         | 6,240,000        |
+/// | Next 9,360,000         | 15,600,000       |
+/// | Next 12,480,000        | 28,080,000       |
+/// | Next 24,960,000        | 53,040,000       |
+/// | Above                  | ∞                |
+let brackets: [(limit: Double, rate: Double)] = [
+    (600000.0, 0.06),       // First 600,000 TL: 6%
+    (1560000.0, 0.05),      // 600,001 - 1,560,000 TL: 5%
+    (3120000.0, 0.04),      // 1,560,001 - 3,120,000 TL: 4%
+    (6240000.0, 0.03),      // 3,120,001 - 6,240,000 TL: 3%
+    (15600000.0, 0.02),     // 6,240,001 - 15,600,000 TL: 2%
+    (28080000.0, 0.015),    // 15,600,001 - 28,080,000 TL: 1.5%
+    (53040000.0, 0.01),     // 28,080,001 - 53,040,000 TL: 1%
+    (Double.infinity, 0.005) // 53,040,001+ TL: 0.5%
+]
+
     // MARK: - Validation & Support Methods
     
     func supportsDisputeType(_ disputeType: String) -> Bool {

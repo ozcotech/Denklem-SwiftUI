@@ -45,13 +45,19 @@ struct AppConstants {
     static let companyWebsite = "https://denklem.org"
     
     // MARK: - Legal Information
-    static let legislationTitle = "Arabuluculuk Ücret Tarifesi"
+    /// Returns localized tariff name
+    static var legislationTitle: String {
+        LocalizationKeys.Legislation.tariffName.localized
+    }
     static let availableYears = [2025, 2026]
     static var currentYear: Int {
         Calendar.current.component(.year, from: Date())
     }
     static let defaultYear = 2025
-    static let legislationSource = "Adalet Bakanlığı"
+    /// Returns localized ministry source
+    static var legislationSource: String {
+        LocalizationKeys.Legislation.ministrySource.localized
+    }
     static let legislationURL = "https://www.adalet.gov.tr"
     
     // MARK: - Feature Flags

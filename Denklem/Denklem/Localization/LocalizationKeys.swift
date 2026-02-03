@@ -275,6 +275,46 @@ struct LocalizationKeys {
         static let tariffName = "serial_disputes.tariff_name"
     }
 
+    // MARK: - Reinstatement (İşe İade)
+    struct Reinstatement {
+        // Screen Titles
+        static let screenTitle = "reinstatement.screen_title"
+        static let resultTitle = "reinstatement.result_title"
+        
+        // Agreement Status
+        static let selectAgreementStatus = "reinstatement.select_agreement_status"
+        static let agreed = "reinstatement.agreed"
+        static let notAgreed = "reinstatement.not_agreed"
+        
+        // Input Labels - Agreement Case
+        static let nonReinstatementCompensation = "reinstatement.non_reinstatement_compensation"
+        static let nonReinstatementCompensationHint = "reinstatement.non_reinstatement_compensation_hint"
+        static let idlePeriodWage = "reinstatement.idle_period_wage"
+        static let idlePeriodWageHint = "reinstatement.idle_period_wage_hint"
+        static let otherRights = "reinstatement.other_rights"
+        static let otherRightsHint = "reinstatement.other_rights_hint"
+        static let partyCount = "reinstatement.party_count"
+        static let partyCountHint = "reinstatement.party_count_hint"
+        
+        // Result Labels
+        static let totalFee = "reinstatement.total_fee"
+        static let totalAmount = "reinstatement.total_amount"
+        static let calculationBreakdown = "reinstatement.calculation_breakdown"
+        static let minimumFeeApplied = "reinstatement.minimum_fee_applied"
+        static let bracketCalculation = "reinstatement.bracket_calculation"
+        
+        // Legal References (localized)
+        static let legalAgreementArticle = "reinstatement.legal_agreement_article"
+        static let legalNoAgreementArticle = "reinstatement.legal_no_agreement_article"
+        static let legalLaborLawArticle = "reinstatement.legal_labor_law_article"
+        static let tariffSection = "reinstatement.tariff_section"
+        
+        // Info/Description
+        static let description = "reinstatement.description"
+        static let agreementDescription = "reinstatement.agreement_description"
+        static let noAgreementDescription = "reinstatement.no_agreement_description"
+    }
+
     // MARK: - Screen Titles
     struct ScreenTitle {
         static let home = "screen.title.home"
@@ -422,6 +462,10 @@ struct LocalizationKeys {
         static let subtitle = "legislation.subtitle"
         static let year = "legislation.year"
         static let source = "legislation.source"
+        
+        // Tariff specific
+        static let tariffName = "legislation.tariff_name"
+        static let ministrySource = "legislation.ministry_source"
         static let viewDocument = "legislation.view_document"
         static let searchPrompt = "legislation.search.prompt"
         static let filterAll = "legislation.filter.all"
