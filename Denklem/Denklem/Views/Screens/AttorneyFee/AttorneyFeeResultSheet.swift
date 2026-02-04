@@ -122,7 +122,7 @@ struct AttorneyFeeResultSheet: View {
 
                 detailRow(
                     label: result.breakdown.courtType != nil
-                        ? LocalizationKeys.AttorneyFee.selectCourt.localized
+                        ? LocalizationKeys.AttorneyFee.flatFee.localized
                         : LocalizationKeys.AttorneyFee.agreementAmount.localized,
                     value: LocalizationHelper.formatCurrency(baseAmount)
                 )
@@ -134,7 +134,7 @@ struct AttorneyFeeResultSheet: View {
                     .background(theme.outline.opacity(0.2))
 
                 detailRow(
-                    label: LocalizationKeys.AttorneyFee.selectCourt.localized,
+                    label: LocalizationKeys.AttorneyFee.courtType.localized,
                     value: courtType.displayName
                 )
             }
@@ -272,7 +272,7 @@ struct AttorneyFeeResultSheet: View {
                     .font(theme.footnote)
                     .foregroundStyle(theme.textSecondary)
 
-                Text(LocalizationKeys.AttorneyFee.legalReference.localized)
+                Text(result.legalReference)
                     .font(theme.footnote)
                     .foregroundStyle(theme.textSecondary)
                     .multilineTextAlignment(.center)

@@ -7,8 +7,9 @@
 
 import Foundation
 
-/// Calculation engine for attorney fee based on 2026 tariff, dispute type, and agreement status
-/// Uses AttorneyFeeConstants, AttorneyFeeTariff2026, and AttorneyFeeResult for all logic and validation
+/// Calculation engine for attorney fee based on tariff year, dispute type, and agreement status
+/// Supports 2025 and 2026 tariffs
+/// Uses AttorneyFeeConstants, AttorneyFeeTariff2025/2026, and AttorneyFeeResult for all logic and validation
 struct AttorneyFeeCalculator {
 
 	/// Calculates attorney fee for given input
@@ -39,6 +40,9 @@ struct AttorneyFeeCalculator {
 		let year = input.tariffYear
 		var warnings: [String] = []
 
+		// Get year-specific tariff values
+		let tariff = getTariffValues(for: year)
+
 		// Calculation branches
 		if isMonetary {
 			if hasAgreement {
@@ -53,9 +57,9 @@ struct AttorneyFeeCalculator {
 					)
 				}
 
-				// 1. Lower limit check (below 50,000 TL)
-				if amount < AttorneyFeeTariff2026.minimumThreshold {
-					let minFee = AttorneyFeeTariff2026.minimumFeeWithMultiplier
+				// 1. Lower limit check (below threshold - 50,000 TL for 2026, 43,750 TL for 2025)
+				if amount < tariff.minimumThreshold {
+					let minFee = tariff.minimumFeeWithMultiplier
 					let isMaxApplied = minFee > amount
 					let finalFee = isMaxApplied ? amount : minFee
 					if isMaxApplied {
@@ -78,9 +82,9 @@ struct AttorneyFeeCalculator {
 				}
 
 				// 2. Progressive bracket calculation (third part)
-				let thirdPartFee = calculateThirdPartFee(amount: amount)
-				let bonusAmount = thirdPartFee * (AttorneyFeeTariff2026.agreementMultiplier - 1.0)
-				var calculatedFee = thirdPartFee * AttorneyFeeTariff2026.agreementMultiplier
+				let thirdPartFee = calculateThirdPartFee(amount: amount, year: year)
+				let bonusAmount = thirdPartFee * (tariff.agreementMultiplier - 1.0)
+				var calculatedFee = thirdPartFee * tariff.agreementMultiplier
 				let isMinimumApplied = false
 				var isMaximumApplied = false
 
@@ -107,7 +111,7 @@ struct AttorneyFeeCalculator {
 				)
 			} else {
 				// Monetary + No Agreement
-				let fee = AttorneyFeeTariff2026.minimumFee
+				let fee = tariff.minimumFee
 				warnings.append(LocalizationKeys.AttorneyFee.feeExceedsAmountWarning.localized)
 				return AttorneyFeeResult(
 					fee: fee,
@@ -136,9 +140,10 @@ struct AttorneyFeeCalculator {
 						tariffYear: year
 					)
 				}
-				let baseFee = court.fee
-				let bonusAmount = baseFee * (AttorneyFeeTariff2026.nonMonetaryAgreementMultiplier - 1.0)
-				let calculatedFee = baseFee * AttorneyFeeTariff2026.nonMonetaryAgreementMultiplier
+				// Use year-specific court fee
+				let baseFee = court.fee(for: year)
+				let bonusAmount = baseFee * (tariff.nonMonetaryAgreementMultiplier - 1.0)
+				let calculatedFee = baseFee * tariff.nonMonetaryAgreementMultiplier
 				return AttorneyFeeResult(
 					fee: calculatedFee,
 					calculationType: .nonMonetaryAgreement,
@@ -155,7 +160,7 @@ struct AttorneyFeeCalculator {
 				)
 			} else {
 				// Non-monetary + No Agreement
-				let fee = AttorneyFeeTariff2026.nonMonetaryBaseFee
+				let fee = tariff.nonMonetaryBaseFee
 				warnings.append(LocalizationKeys.AttorneyFee.feeExceedsAmountWarning.localized)
 				return AttorneyFeeResult(
 					fee: fee,
@@ -175,11 +180,53 @@ struct AttorneyFeeCalculator {
 		}
 	}
 
+	// MARK: - Private Helper Methods
+
+	/// Returns tariff values for specific year
+	private static func getTariffValues(for year: Int) -> TariffValues {
+		switch year {
+		case 2025:
+			return TariffValues(
+				minimumFee: AttorneyFeeTariff2025.minimumFee,
+				minimumThreshold: AttorneyFeeTariff2025.minimumThreshold,
+				minimumFeeWithMultiplier: AttorneyFeeTariff2025.minimumFeeWithMultiplier,
+				agreementMultiplier: AttorneyFeeTariff2025.agreementMultiplier,
+				nonMonetaryBaseFee: AttorneyFeeTariff2025.nonMonetaryBaseFee,
+				nonMonetaryAgreementMultiplier: AttorneyFeeTariff2025.nonMonetaryAgreementMultiplier
+			)
+		case 2026:
+			return TariffValues(
+				minimumFee: AttorneyFeeTariff2026.minimumFee,
+				minimumThreshold: AttorneyFeeTariff2026.minimumThreshold,
+				minimumFeeWithMultiplier: AttorneyFeeTariff2026.minimumFeeWithMultiplier,
+				agreementMultiplier: AttorneyFeeTariff2026.agreementMultiplier,
+				nonMonetaryBaseFee: AttorneyFeeTariff2026.nonMonetaryBaseFee,
+				nonMonetaryAgreementMultiplier: AttorneyFeeTariff2026.nonMonetaryAgreementMultiplier
+			)
+		default:
+			// Default to 2026
+			return getTariffValues(for: 2026)
+		}
+	}
+
+	/// Returns brackets for specific year
+	private static func getBrackets(for year: Int) -> [(limit: Double, rate: Double, cumulativeLimit: Double)] {
+		switch year {
+		case 2025:
+			return AttorneyFeeTariff2025.brackets
+		case 2026:
+			return AttorneyFeeTariff2026.brackets
+		default:
+			return AttorneyFeeTariff2026.brackets
+		}
+	}
+
 	/// Calculates the third part fee (progressive brackets) for monetary disputes
-	private static func calculateThirdPartFee(amount: Double) -> Double {
+	private static func calculateThirdPartFee(amount: Double, year: Int) -> Double {
 		var remaining = amount
 		var total: Double = 0
-		for bracket in AttorneyFeeTariff2026.brackets {
+		let brackets = getBrackets(for: year)
+		for bracket in brackets {
 			let take = min(remaining, bracket.limit)
 			total += take * bracket.rate
 			remaining -= take
@@ -187,4 +234,15 @@ struct AttorneyFeeCalculator {
 		}
 		return total
 	}
+}
+
+// MARK: - Tariff Values Helper Struct
+/// Helper struct to hold tariff values for a specific year
+private struct TariffValues {
+	let minimumFee: Double
+	let minimumThreshold: Double
+	let minimumFeeWithMultiplier: Double
+	let agreementMultiplier: Double
+	let nonMonetaryBaseFee: Double
+	let nonMonetaryAgreementMultiplier: Double
 }

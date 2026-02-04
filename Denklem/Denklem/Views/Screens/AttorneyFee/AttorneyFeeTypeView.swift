@@ -34,6 +34,9 @@ struct AttorneyFeeTypeView: View {
             // Content
             ScrollView {
                 VStack(spacing: theme.spacingXL) {
+                    // Year Picker Section
+                    yearPickerSection
+
                     // Dispute Type Section
                     disputeTypeSection
 
@@ -44,7 +47,7 @@ struct AttorneyFeeTypeView: View {
                     continueButtonSection
                 }
                 .padding(.horizontal, theme.spacingL)
-                .padding(.top, theme.spacingL)
+                .padding(.top, theme.spacingS)
                 .padding(.bottom, theme.spacingXXL)
             }
         }
@@ -52,6 +55,7 @@ struct AttorneyFeeTypeView: View {
         .navigationBarTitleDisplayMode(.inline)
         .navigationDestination(isPresented: $viewModel.navigateToInput) {
             AttorneyFeeInputView(
+                selectedYear: viewModel.selectedYear,
                 isMonetary: viewModel.isMonetary,
                 hasAgreement: viewModel.hasAgreement
             )
@@ -61,6 +65,46 @@ struct AttorneyFeeTypeView: View {
                 AttorneyFeeResultSheet(result: result)
             }
         }
+    }
+
+    // MARK: - Year Picker Section
+
+    private var yearPickerSection: some View {
+        VStack(spacing: theme.spacingS) {
+            // Year Dropdown
+            Menu {
+                ForEach(viewModel.availableYears) { year in
+                    Button {
+                        viewModel.selectedYear = year
+                    } label: {
+                        HStack {
+                            Text(year.displayName)
+                            if viewModel.selectedYear == year {
+                                Image(systemName: "checkmark")
+                            }
+                        }
+                    }
+                }
+            } label: {
+                HStack(spacing: theme.spacingXS) {
+                    Text("\(viewModel.selectedYear.rawValue)")
+                        .font(theme.subheadline)
+                        .fontWeight(.medium)
+                        .foregroundStyle(theme.primary)
+
+                    Image(systemName: "chevron.down")
+                        .font(.caption2)
+                        .foregroundStyle(theme.primary)
+                }
+                .padding(.horizontal, theme.spacingS)
+                .padding(.vertical, theme.spacingXS)
+                .background {
+                    Capsule()
+                        .fill(theme.surfaceElevated.opacity(0.6))
+                }
+            }
+        }
+        .frame(maxWidth: .infinity)
     }
 
     // MARK: - Dispute Type Section

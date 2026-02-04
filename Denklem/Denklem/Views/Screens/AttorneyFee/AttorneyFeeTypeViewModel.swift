@@ -94,6 +94,9 @@ final class AttorneyFeeTypeViewModel: ObservableObject {
 
     // MARK: - Published Properties
 
+    /// Selected tariff year - defaults to current year (2026)
+    @Published var selectedYear: TariffYear = .current
+
     /// Selected dispute type (Monetary/Non-Monetary) - defaults to monetary for faster user flow
     @Published var selectedDisputeType: AttorneyFeeDisputeType? = .monetary
 
@@ -106,7 +109,7 @@ final class AttorneyFeeTypeViewModel: ObservableObject {
     /// Flag to show result sheet directly (for no agreement cases)
     @Published var showResultSheet: Bool = false
 
-    /// Calculation result for no agreement cases (fixed 8.000 TL)
+    /// Calculation result for no agreement cases (year-specific fixed fee)
     @Published var noAgreementResult: AttorneyFeeResult?
 
     // MARK: - Computed Properties
@@ -114,6 +117,11 @@ final class AttorneyFeeTypeViewModel: ObservableObject {
     /// Screen title
     var screenTitle: String {
         LocalizationKeys.AttorneyFee.typeScreenTitle.localized
+    }
+
+    /// Available tariff years for selection
+    var availableYears: [TariffYear] {
+        TariffYear.allCases
     }
 
     /// Whether the continue button should be enabled
@@ -129,6 +137,11 @@ final class AttorneyFeeTypeViewModel: ObservableObject {
     /// Whether the dispute is monetary
     var isMonetary: Bool {
         selectedDisputeType == .monetary
+    }
+
+    /// Returns the tariff year as Int for calculations
+    var tariffYearInt: Int {
+        selectedYear.rawValue
     }
 
     // MARK: - Initialization
@@ -175,7 +188,7 @@ final class AttorneyFeeTypeViewModel: ObservableObject {
 
     // MARK: - Private Methods
 
-    /// Calculates the result for no agreement cases (fixed 8.000 TL)
+    /// Calculates the result for no agreement cases (year-specific fixed fee: 7.000 TL for 2025, 8.000 TL for 2026)
     private func calculateNoAgreementResult() {
         let calculationType: AttorneyFeeCalculationType = isMonetary
             ? .monetaryNoAgreement
@@ -190,12 +203,15 @@ final class AttorneyFeeTypeViewModel: ObservableObject {
             isMaximumApplied: false
         )
 
+        // Use year-specific minimum fee
+        let fee = AttorneyFeeConstants.minimumAttorneyFee(for: tariffYearInt)
+
         noAgreementResult = AttorneyFeeResult(
-            fee: AttorneyFeeConstants.minimumAttorneyFee,
+            fee: fee,
             calculationType: calculationType,
             breakdown: breakdown,
             warnings: [LocalizationKeys.AttorneyFee.feeExceedsAmountWarning.localized],
-            tariffYear: AttorneyFeeConstants.currentYear
+            tariffYear: tariffYearInt
         )
     }
 }

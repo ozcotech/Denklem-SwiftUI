@@ -232,6 +232,8 @@ struct LocalizationKeys {
 
         // Result Labels
         static let calculatedFee = "attorney_fee.calculated_fee"
+        static let flatFee = "attorney_fee.flat_fee"
+        static let courtType = "attorney_fee.court_type"
 
         // Breakdown Labels
         static let thirdPartFee = "attorney_fee.third_part_fee"
@@ -243,6 +245,7 @@ struct LocalizationKeys {
 
         // Legal Reference
         static let legalReference = "attorney_fee.legal_reference"
+        static let legalReferenceFormat = "attorney_fee.legal_reference_format"
     }
 
     // MARK: - Serial Disputes

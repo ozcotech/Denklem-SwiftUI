@@ -824,6 +824,24 @@
         }
       }
     },
+    "attorney_fee.court_type" : {
+      "comment" : "Attorney fee - label for selected court type in result",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Court"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mahkeme"
+          }
+        }
+      }
+    },
     "attorney_fee.civil_peace_court" : {
       "comment" : "Attorney fee - court type: Civil Court of Peace",
       "extractionState" : "manual",
@@ -874,6 +892,24 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bu ücret asıl alacağı geçemez."
+          }
+        }
+      }
+    },
+    "attorney_fee.flat_fee" : {
+      "comment" : "Attorney fee - label for flat fee amount in result breakdown",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flat Fee"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Maktu Ücret"
           }
         }
       }
@@ -946,6 +982,24 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Yasal Dayanak: 2026 Avukatlık Asgari Ücret Tarifesi m.16"
+          }
+        }
+      }
+    },
+    "attorney_fee.legal_reference_format" : {
+      "comment" : "Attorney fee - legal reference note with year placeholder",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Legal Reference: %d Minimum Attorney Fee Tariff Art.16"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yasal Dayanak: %d Avukatlık Asgari Ücret Tarifesi m.16"
           }
         }
       }

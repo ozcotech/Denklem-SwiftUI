@@ -63,6 +63,12 @@ struct AttorneyFeeResult: Equatable, Codable {
 		formatter.maximumFractionDigits = AttorneyFeeConstants.decimalPlaces
 		return formatter.string(from: NSNumber(value: fee)) ?? "₺\(fee)"
 	}
+
+	/// Legal reference text with dynamic tariff year
+	var legalReference: String {
+		let format = LocalizationKeys.AttorneyFee.legalReferenceFormat.localized
+		return String(format: format, tariffYear)
+	}
 }
 
 // MARK: - Attorney Fee Breakdown

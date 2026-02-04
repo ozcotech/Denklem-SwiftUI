@@ -16,6 +16,9 @@ final class AttorneyFeeInputViewModel: ObservableObject {
 
     // MARK: - Published Properties
 
+    /// Selected tariff year
+    let selectedYear: TariffYear
+
     /// Whether the dispute is monetary
     let isMonetary: Bool
 
@@ -77,7 +80,8 @@ final class AttorneyFeeInputViewModel: ObservableObject {
 
     // MARK: - Initialization
 
-    init(isMonetary: Bool, hasAgreement: Bool) {
+    init(selectedYear: TariffYear, isMonetary: Bool, hasAgreement: Bool) {
+        self.selectedYear = selectedYear
         self.isMonetary = isMonetary
         self.hasAgreement = hasAgreement
     }
@@ -131,7 +135,7 @@ final class AttorneyFeeInputViewModel: ObservableObject {
             hasAgreement: hasAgreement,
             agreementAmount: agreementAmount,
             courtType: selectedCourtType,
-            tariffYear: AttorneyFeeConstants.currentYear
+            tariffYear: selectedYear.rawValue
         )
 
         // Validate input
@@ -273,11 +277,11 @@ final class AttorneyFeeInputViewModel: ObservableObject {
 @available(iOS 26.0, *)
 extension AttorneyFeeInputViewModel {
     static var monetaryPreview: AttorneyFeeInputViewModel {
-        AttorneyFeeInputViewModel(isMonetary: true, hasAgreement: true)
+        AttorneyFeeInputViewModel(selectedYear: .year2026, isMonetary: true, hasAgreement: true)
     }
 
     static var nonMonetaryPreview: AttorneyFeeInputViewModel {
-        let vm = AttorneyFeeInputViewModel(isMonetary: false, hasAgreement: true)
+        let vm = AttorneyFeeInputViewModel(selectedYear: .year2026, isMonetary: false, hasAgreement: true)
         vm.selectedCourtType = .civilPeace
         return vm
     }

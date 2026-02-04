@@ -26,8 +26,9 @@ struct AttorneyFeeInputView: View {
 
     // MARK: - Initialization
 
-    init(isMonetary: Bool, hasAgreement: Bool) {
+    init(selectedYear: TariffYear, isMonetary: Bool, hasAgreement: Bool) {
         _viewModel = StateObject(wrappedValue: AttorneyFeeInputViewModel(
+            selectedYear: selectedYear,
             isMonetary: isMonetary,
             hasAgreement: hasAgreement
         ))
@@ -114,7 +115,7 @@ struct AttorneyFeeInputView: View {
             .foregroundStyle(theme.success)
 
             // Tariff Year
-            Text("\(AttorneyFeeConstants.currentYear)")
+            Text("\(viewModel.selectedYear.rawValue)")
                 .font(theme.caption)
                 .fontWeight(.semibold)
                 .foregroundStyle(theme.textSecondary)
@@ -172,6 +173,7 @@ struct AttorneyFeeInputView: View {
                 CourtTypeButton(
                     courtType: courtType,
                     isSelected: viewModel.selectedCourtType == courtType,
+                    selectedYear: viewModel.selectedYear,
                     theme: theme
                 ) {
                     viewModel.selectCourtType(courtType)
@@ -243,6 +245,7 @@ struct CourtTypeButton: View {
 
     let courtType: AttorneyFeeConstants.CourtType
     let isSelected: Bool
+    let selectedYear: TariffYear
     let theme: ThemeProtocol
     let action: () -> Void
 
@@ -263,7 +266,7 @@ struct CourtTypeButton: View {
                         .fontWeight(.medium)
                         .foregroundStyle(theme.textPrimary)
 
-                    Text(LocalizationHelper.formatCurrency(courtType.feeWithBonus))
+                    Text(LocalizationHelper.formatCurrency(courtType.feeWithBonus(for: selectedYear.rawValue)))
                         .font(theme.footnote)
                         .foregroundStyle(theme.textSecondary)
                 }
@@ -287,23 +290,23 @@ struct AttorneyFeeInputView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             NavigationStack {
-                AttorneyFeeInputView(isMonetary: true, hasAgreement: true)
+                AttorneyFeeInputView(selectedYear: .year2026, isMonetary: true, hasAgreement: true)
             }
             .injectTheme(LightTheme())
-            .previewDisplayName("Monetary - Light Mode")
+            .previewDisplayName("Monetary 2026 - Light Mode")
 
             NavigationStack {
-                AttorneyFeeInputView(isMonetary: false, hasAgreement: true)
+                AttorneyFeeInputView(selectedYear: .year2025, isMonetary: false, hasAgreement: true)
             }
             .injectTheme(LightTheme())
-            .previewDisplayName("Non-Monetary - Light Mode")
+            .previewDisplayName("Non-Monetary 2025 - Light Mode")
 
             NavigationStack {
-                AttorneyFeeInputView(isMonetary: true, hasAgreement: true)
+                AttorneyFeeInputView(selectedYear: .year2026, isMonetary: true, hasAgreement: true)
             }
             .injectTheme(DarkTheme())
             .preferredColorScheme(.dark)
-            .previewDisplayName("Monetary - Dark Mode")
+            .previewDisplayName("Monetary 2026 - Dark Mode")
         }
     }
 }
