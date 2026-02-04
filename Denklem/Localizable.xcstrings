@@ -2021,13 +2021,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Commercial"
+            "value" : "Commercial Dispute"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ticari"
+            "value" : "Ticari Uyuşmazlık"
           }
         }
       }
@@ -2057,13 +2057,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Condominium Law"
+            "value" : "Condominium Dispute"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kat Mülkiyeti Hukuku"
+            "value" : "Kat Mülkiyeti Uyuşmazlığı"
           }
         }
       }
@@ -2093,13 +2093,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Consumer"
+            "value" : "Consumer Dispute"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tüketici"
+            "value" : "Tüketici Uyuşmazlığı"
           }
         }
       }
@@ -2129,13 +2129,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Family"
+            "value" : "Family Law"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aile"
+            "value" : "Aile Hukuku"
           }
         }
       }
@@ -2165,13 +2165,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Neighbor Law"
+            "value" : "Neighbor Disputes"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Komşu Hukuku"
+            "value" : "Komşu Uyuşmazlıkları"
           }
         }
       }
@@ -2219,13 +2219,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Other"
+            "value" : "Other Disputes"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Diğer"
+            "value" : "Diğer Uyuşmazlıklar"
           }
         }
       }
@@ -2291,13 +2291,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tenancy"
+            "value" : "Tenancy Dispute"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kira"
+            "value" : "Kira Uyuşmazlığı"
           }
         }
       }
@@ -2333,7 +2333,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "İşçi-İşveren"
+            "value" : "İşçi-İşveren Uyuşmazlığı"
           }
         }
       }
@@ -4324,6 +4324,24 @@
         }
       }
     },
+    "reinstatement.no_agreement_warning" : {
+      "comment" : "Reinstatement - no agreement warning about filing lawsuit",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "If the mediation process ends without settlement, an action may be filed before the Labour Court within two weeks from the date on which the final record is drawn up."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arabuluculuk faaliyeti sonunda anlaşmaya varılamaması halinde, son tutanağın düzenlendiği tarihten itibaren iki hafta içinde iş mahkemesinde dava açılabilir."
+          }
+        }
+      }
+    },
     "reinstatement.non_reinstatement_compensation" : {
       "comment" : "Reinstatement input - non-reinstatement compensation label",
       "extractionState" : "manual",
@@ -4536,24 +4554,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tarife İkinci Kısım"
-          }
-        }
-      }
-    },
-    "reinstatement.no_agreement_warning" : {
-      "comment" : "Reinstatement - no agreement warning about filing lawsuit",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "If the mediation process ends without settlement, an action may be filed before the Labour Court within two weeks from the date on which the final record is drawn up."
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Arabuluculuk faaliyeti sonunda anlaşmaya varılamaması halinde, son tutanağın düzenlendiği tarihten itibaren iki hafta içinde iş mahkemesinde dava açılabilir."
           }
         }
       }
