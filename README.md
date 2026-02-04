@@ -49,6 +49,9 @@ The name "DENKLEM" reflects the concept of creating equality and balance between
 ### 🧮 **Additional Calculators**
 - **Time Calculation**: Calculate mediation process durations
 - **Freelance Receipt (SMM)**: Receipt calculations with tax deductions
+- **Attorney Fee Calculation**: Power of attorney fee calculations in mediation process
+- **Reinstatement Disputes**: Calculations for reinstatement cases
+- **Serial Disputes**: Special calculations for serial dispute cases
 - **Comprehensive Results**: Detailed explanations with tax implications
 
 ### 🔧 **Technical Features**
@@ -119,10 +122,10 @@ Comprehensive result display (as Sheet):
 
 ### **8. Tab Bar Navigation**
 Tab bar accessible from any screen:
-- 🏠 **Home**: Return to start screen
+- 🏠 **Home**: Return to start screen - Quick access with direct entry button to dispute type screen
+- 🧮 **Calculations**: Access all calculation types (General mediation fees, special calculations, and other calculators)
 - 📚 **Legislation**: View legal legislation
-- ℹ️ **About**: App information
-- 🌍 **Language**: Turkish ↔ English (TR/EN)
+- ⚙️ **Settings**: App settings, language selection (Turkish ↔ English), theme preferences (Light/Dark/Liquid Glass), and about information
 
 ---
 
@@ -240,11 +243,11 @@ Below are screenshots hosted in the separate screenshots repository: [Denklem Sc
 
 ## 📅 Version Information
 
-- **Current Version**: 2.0.0
+- **Current Version**: 2.3.0
 - **Supported Years**: 2025 and 2026 mediation tariffs
 - **Platform**: iOS 26.0+
 - **Languages**: Turkish (TR) and English (EN)
-- **Last Update**: January 2026
+- **Last Update**: February 2026
 - **Based on**: 2025 and 2026 official mediation fee tariffs
 
 ---
@@ -385,9 +388,7 @@ LocaleManager.shared.setLanguage(.english)
 ## 🚀 Upcoming Features (v2.1+)
 
 ### **Planned Features**
-- 🏢 **Attorney Fee Calculation**: Power of attorney fee calculation in mediation process
 - 🏠 **Rental Disputes**: Special calculations for eviction and rent determination
-- 👨‍⚖️ **Reinstatement Calculations**: Calculation module specific to reinstatement cases
 - 📊 **Comparison Mode**: Side-by-side comparison of different scenarios
 - 📤 **Advanced Export**: PDF reports and email sharing
 - 🔔 **Tariff Notifications**: Push notifications for new tariff updates
@@ -443,6 +444,22 @@ This project is licensed under the MIT License.
 ---
 
 ## 🔄 Version History
+
+### v2.3.0 (February 2026) - Special Calculators & Navigation Update
+- 🏢 **Attorney Fee Calculation**: New power of attorney fee calculator added for mediation process
+- 📋 **Serial Dispute Calculation**: New serial dispute calculator module added
+- 👨‍⚖️ **Reinstatement Disputes**: New calculation module for reinstatement cases
+- 📱 **Tab Bar Navigation Overhaul**:
+  - Previous tabs: Home, Legislation, About, Language button
+  - New tabs: Home, Calculations, Legislation, Settings
+  - Direct entry button on home screen for faster calculations
+  - Language and theme preferences moved to Settings
+  - About section integrated into Settings
+- 🧮 **Calculations Screen Enhancement**:
+  - General mediation fee calculations
+  - Special calculations category (Attorney Fee, Serial Disputes, Reinstatement)
+  - Other calculations category (Time Calculator, SMM Calculator)
+- ⚡ **Improved User Experience**: Direct access from home screen to dispute type selection for faster workflow
 
 ### v2.0.0 (January 2026) - SwiftUI Native Rewrite
 - ✨ Completely rewritten with SwiftUI
