@@ -37,9 +37,6 @@ struct StartScreenView: View {
                     // Spacer pushes content to bottom
                     Spacer(minLength: 0)
 
-                    // Year Selection
-                    yearSelectionSection
-
                     // Primary Action Button
                     primaryActionButton
                 }
@@ -98,23 +95,6 @@ struct StartScreenView: View {
         .padding(.top, theme.spacingXL)
     }
     
-    // MARK: - Year Selection Section
-
-    private var yearSelectionSection: some View {
-        Picker("", selection: $viewModel.selectedYear) {
-            ForEach(TariffYear.allCases, id: \.self) { year in
-            // If TariffYear has a displayName property that is already localized, use it. Otherwise, localize here if needed.
-                Text(year.displayName)
-                    .tag(year)
-            }
-        }
-        .pickerStyle(.segmented)
-        .controlSize(.large)
-        .onChange(of: viewModel.selectedYear) { _, newYear in
-            viewModel.selectYear(newYear)
-        }
-}
-    
     // MARK: - Primary Action Button
 
     private var primaryActionButton: some View {
@@ -122,7 +102,7 @@ struct StartScreenView: View {
             viewModel.proceedToDisputeType()
         } label: {
             HStack(spacing: theme.spacingM) {
-                Text(String(format: LocalizationKeys.Start.enterButtonWithYear.localized, viewModel.selectedYear.displayName))
+                Text(LocalizationKeys.Start.enterButton.localized)
                     .font(theme.headline)
                     .foregroundColor(.white)
 
