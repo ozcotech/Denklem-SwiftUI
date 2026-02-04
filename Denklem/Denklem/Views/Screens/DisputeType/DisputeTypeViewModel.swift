@@ -117,6 +117,11 @@ final class DisputeTypeViewModel: ObservableObject {
     var screenTitle: String {
         LocalizationKeys.ScreenTitle.disputeType.localized
     }
+
+    /// Available tariff years for selection
+    var availableYears: [TariffYear] {
+        TariffYear.allCases
+    }
     
     // MARK: - Initialization
     

@@ -194,7 +194,7 @@ struct ReinstatementSheet: View {
                     .tag(AgreementStatus?.some(.notAgreed))
             }
             .pickerStyle(.segmented)
-            .controlSize(.regular)
+            .controlSize(.large)
             .onChange(of: viewModel.selectedAgreementStatus) { _, newValue in
                 if let status = newValue {
                     withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {

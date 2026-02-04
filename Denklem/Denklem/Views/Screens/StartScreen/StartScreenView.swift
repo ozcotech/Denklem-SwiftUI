@@ -109,7 +109,7 @@ struct StartScreenView: View {
             }
         }
         .pickerStyle(.segmented)
-        .controlSize(.regular)
+        .controlSize(.large)
         .onChange(of: viewModel.selectedYear) { _, newYear in
             viewModel.selectYear(newYear)
         }

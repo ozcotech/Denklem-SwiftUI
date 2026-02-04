@@ -44,7 +44,10 @@ struct DisputeTypeView: View {
             // Content
             ScrollView {
                 VStack(spacing: theme.spacingS) {
-                    
+
+                    // Year Picker Section
+                    yearPickerSection
+
                     // Agreement Status Selector (always reserve space for consistent layout)
                     if viewModel.showAgreementSelector {
                         agreementSelectorSection
@@ -57,7 +60,7 @@ struct DisputeTypeView: View {
                     disputeTypeButtonsSection
                 }
                 .padding(.horizontal, theme.spacingL)
-                .padding(.top, theme.spacingL)
+                .padding(.top, theme.spacingXS)
                 .padding(.bottom, theme.spacingXXL)
             }
         }
@@ -75,8 +78,48 @@ struct DisputeTypeView: View {
         }
     }
     
+    // MARK: - Year Picker Section
+
+    private var yearPickerSection: some View {
+        VStack(spacing: theme.spacingS) {
+            // Year Dropdown
+            Menu {
+                ForEach(viewModel.availableYears) { year in
+                    Button {
+                        viewModel.selectedYear = year
+                    } label: {
+                        HStack {
+                            Text(year.displayName)
+                            if viewModel.selectedYear == year {
+                                Image(systemName: "checkmark")
+                            }
+                        }
+                    }
+                }
+            } label: {
+                HStack(spacing: theme.spacingXS) {
+                    Text("\(viewModel.selectedYear.rawValue)")
+                        .font(theme.subheadline)
+                        .fontWeight(.medium)
+                        .foregroundStyle(theme.primary)
+
+                    Image(systemName: "chevron.down")
+                        .font(.caption2)
+                        .foregroundStyle(theme.primary)
+                }
+                .padding(.horizontal, theme.spacingS)
+                .padding(.vertical, theme.spacingXS)
+                .background {
+                    Capsule()
+                        .fill(theme.surfaceElevated.opacity(0.6))
+                }
+            }
+        }
+        .frame(maxWidth: .infinity)
+    }
+
     // MARK: - Non-Monetary Info Section
-    
+
     private var nonMonetaryInfoSection: some View {
         VStack(spacing: theme.spacingS) {
             Text(LocalizationKeys.DisputeType.nonMonetaryNote.localized)
@@ -103,7 +146,7 @@ struct DisputeTypeView: View {
                 }
             }
             .pickerStyle(.segmented)
-            .controlSize(.regular)
+            .controlSize(.large)
             .tint(viewModel.selectedAgreement == .agreed ? theme.success : theme.error)
 
             // Helper text - shows selected status with color
