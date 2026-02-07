@@ -37,7 +37,7 @@ struct SMMCalculationView: View {
             
             // Main Content
             ScrollView {
-                VStack(spacing: theme.spacingXL) {
+                VStack(spacing: theme.spacingL) {
                     // Header Section
                     headerSection
                     

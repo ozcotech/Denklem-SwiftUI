@@ -261,12 +261,14 @@ struct TenancySelectionView: View {
                     Text(type.inputDescription)
                         .font(theme.footnote)
                         .foregroundStyle(theme.textSecondary)
+                        .lineLimit(2, reservesSpace: true)
                 }
 
                 Spacer()
             }
             .padding(theme.spacingM)
             .frame(maxWidth: .infinity)
+            .contentShape(Rectangle())
             .glassEffect(in: RoundedRectangle(cornerRadius: theme.cornerRadiusM))
         }
         .buttonStyle(.plain)

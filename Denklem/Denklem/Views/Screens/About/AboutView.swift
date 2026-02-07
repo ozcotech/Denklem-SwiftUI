@@ -37,7 +37,7 @@ struct AboutView: View {
         let _ = localeManager.refreshID
 
         ScrollView {
-            VStack(spacing: theme.spacingL) {
+            VStack(spacing: theme.spacingM) {
                 appHeaderSection
 
                 // Settings Section (Language & Theme)
@@ -54,7 +54,6 @@ struct AboutView: View {
                 copyrightFooter
             }
             .padding(.horizontal, theme.spacingM)
-            .padding(.top, theme.spacingM)
             .padding(.bottom, theme.spacingXXL)
         }
         .coordinateSpace(name: "about.scroll")
@@ -139,7 +138,7 @@ struct AboutView: View {
                 )
                 .foregroundStyle(theme.primary)
         }
-        .padding(.vertical, theme.spacingL)
+        .padding(.vertical, theme.spacingS)
     }
 
     // MARK: - Copyright Footer

@@ -49,18 +49,18 @@ struct InputView: View {
             // Content
             ScrollView {
                 VStack(spacing: theme.spacingL) {
-                    
+
                     // Header Section
                     headerSection
-                    
+
                     // Input Fields Section
                     inputFieldsSection
-                    
+
                     // Error Message
                     if let errorMessage = viewModel.errorMessage {
                         errorMessageView(errorMessage)
                     }
-                    
+
                     // Calculate Button
                     calculateButton
                 }

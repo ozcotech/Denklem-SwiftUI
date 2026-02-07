@@ -40,7 +40,7 @@ struct TimeCalculationView: View {
                 Spacer()
                     .frame(height: 80)
                 
-                VStack(spacing: theme.spacingXL) {
+                VStack(spacing: theme.spacingL) {
                     // Date Input Section - matches Calculate button width
                     dateInputSection
                     

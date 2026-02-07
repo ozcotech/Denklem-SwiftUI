@@ -33,7 +33,7 @@ struct AttorneyFeeTypeView: View {
 
             // Content
             ScrollView {
-                VStack(spacing: theme.spacingXL) {
+                VStack(spacing: theme.spacingL) {
                     // Year Picker Section
                     yearPickerSection
 
@@ -209,7 +209,6 @@ struct AttorneyFeeTypeView: View {
             .disabled(!viewModel.canProceed)
             .opacity(viewModel.canProceed ? 1.0 : 0.5)
         }
-        .padding(.top, theme.spacingL)
     }
 
 }
