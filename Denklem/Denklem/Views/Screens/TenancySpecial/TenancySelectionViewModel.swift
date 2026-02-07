@@ -25,7 +25,7 @@ final class TenancySelectionViewModel: ObservableObject {
     @Published var selectedFeeMode: TenancyCalculationConstants.TenancyFeeMode = .attorneyFee
 
     /// Checkbox selections
-    @Published var isEvictionSelected: Bool = true
+    @Published var isEvictionSelected: Bool = false
     @Published var isDeterminationSelected: Bool = false
 
     /// Input texts

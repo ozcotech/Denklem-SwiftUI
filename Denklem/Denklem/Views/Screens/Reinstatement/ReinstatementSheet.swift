@@ -387,7 +387,6 @@ struct ReinstatementSheet: View {
         .glassEffectID("calculate", in: glassNamespace)
         .disabled(!viewModel.isCalculateButtonEnabled || viewModel.isCalculating)
         .opacity(viewModel.isCalculateButtonEnabled ? 1.0 : 0.5)
-        .padding(.top, theme.spacingL)
     }
 }
 
