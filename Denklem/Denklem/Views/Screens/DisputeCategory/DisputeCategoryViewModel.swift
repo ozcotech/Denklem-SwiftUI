@@ -16,8 +16,8 @@ enum DisputeCategoryType: String, CaseIterable, Identifiable {
     case timeCalculation   // Time calculation
     case smmCalculation    // SMM calculation
     case attorneyFee       // Attorney fee calculation (special)
-    case rentSpecial       // Tenancy (eviction/determination) (future)
-    case reinstatement     // Reinstate Employee (İşe İade) (future)
+    case rentSpecial       // Tenancy (eviction/determination)
+    case reinstatement     // Reinstate Employee (İşe İade)
     case serialDisputes    // Serial disputes (Seri Uyuşmazlıklar) (future)
     
     var id: String { rawValue }
@@ -126,7 +126,7 @@ final class DisputeCategoryViewModel: ObservableObject {
 
         var specialCalculations: [DisputeCategoryType] {
             return [.rentSpecial, .attorneyFee, .reinstatement, .serialDisputes]
-        }// .rentSpecial, reinstatement, serialDisputes can be added in the future
+        }// .serialDisputes can be added in the future
 
         var specialCalculationsTitle: String {
             LocalizationKeys.DisputeCategory.specialCalculations.localized
