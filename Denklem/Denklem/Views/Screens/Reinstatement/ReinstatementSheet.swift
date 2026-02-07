@@ -302,25 +302,6 @@ struct ReinstatementSheet: View {
                     viewModel.otherRightsText = value
                 }
 
-            // Party Count Input (Taraf Sayısı)
-            TextField(viewModel.partyCountLabel, text: $viewModel.partyCountText)
-                .font(theme.body)
-                .fontWeight(.medium)
-                .foregroundStyle(theme.textPrimary)
-                .keyboardType(.numberPad)
-                .textFieldStyle(.plain)
-                .multilineTextAlignment(.center)
-                .padding(theme.spacingM)
-                .frame(height: theme.buttonHeight)
-                .frame(maxWidth: .infinity)
-                .contentShape(Rectangle())
-                .glassEffect()
-                .glassEffectID("partyCountInput", in: glassNamespace)
-                .focused($focusedField, equals: .partyCount)
-                .id(ReinstatementFocusedField.partyCount)
-                .onChange(of: viewModel.partyCountText) { _, _ in
-                    viewModel.formatPartyCountInput()
-                }
         }
         .transition(.opacity.combined(with: .move(edge: .top)))
     }

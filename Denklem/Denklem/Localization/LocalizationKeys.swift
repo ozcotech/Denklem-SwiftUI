@@ -579,6 +579,61 @@ struct LocalizationKeys {
         static let intellectualProperty = "court_type.intellectual_property"
     }
 
+    // MARK: - Rent Special (Tenancy - Eviction/Determination)
+    struct RentSpecial {
+        // Screen Titles
+        static let selectionScreenTitle = "rent_special.selection_screen_title"
+        static let attorneyFeeScreenTitle = "rent_special.attorney_fee_screen_title"
+        static let mediationFeeScreenTitle = "rent_special.mediation_fee_screen_title"
+
+        // Fee Mode Options
+        static let attorneyFeeOption = "rent_special.attorney_fee_option"
+        static let attorneyFeeOptionDescription = "rent_special.attorney_fee_option_description"
+        static let mediationFeeOption = "rent_special.mediation_fee_option"
+        static let mediationFeeOptionDescription = "rent_special.mediation_fee_option_description"
+
+        // Segmented Picker Labels
+        static let pickerAttorneyFee = "rent_special.picker_attorney_fee"
+        static let pickerMediationFee = "rent_special.picker_mediation_fee"
+
+        // Tenancy Types (Checkbox Labels)
+        static let eviction = "rent_special.eviction"
+        static let determination = "rent_special.determination"
+        static let evictionDescription = "rent_special.eviction_description"
+        static let determinationDescription = "rent_special.determination_description"
+        static let selectAtLeastOne = "rent_special.select_at_least_one"
+
+        // Input Labels
+        static let evictionAmountLabel = "rent_special.eviction_amount_label"
+        static let determinationAmountLabel = "rent_special.determination_amount_label"
+
+        // Result Labels - Attorney Fee
+        static let calculatedAttorneyFee = "rent_special.calculated_attorney_fee"
+        static let inputAmount = "rent_special.input_amount"
+
+        // Result Labels - Mediation Fee
+        static let evictionMediationFee = "rent_special.eviction_mediation_fee"
+        static let determinationMediationFee = "rent_special.determination_mediation_fee"
+        static let totalMediationFee = "rent_special.total_mediation_fee"
+        static let evictionCalculationBase = "rent_special.eviction_calculation_base"
+        static let evictionOriginalAmount = "rent_special.eviction_original_amount"
+
+        // Court Minimum Warnings
+        static let courtMinimumWarningFormat = "rent_special.court_minimum_warning_format"
+        static let courtMinimumWarningsTitle = "rent_special.court_minimum_warnings_title"
+        static let courtCivilPeace = "rent_special.court_civil_peace"
+        static let courtFirstInstance = "rent_special.court_first_instance"
+        static let courtEnforcement = "rent_special.court_enforcement"
+
+        // Minimum Fee Info
+        static let attorneyMinimumApplied = "rent_special.attorney_minimum_applied"
+        static let mediationMinimumApplied = "rent_special.mediation_minimum_applied"
+
+        // Legal References
+        static let attorneyFeeLegalReference = "rent_special.attorney_fee_legal_reference"
+        static let mediationFeeLegalReference = "rent_special.mediation_fee_legal_reference"
+    }
+
     // MARK: - Settings
     struct Settings {
         static let title = "settings.title"

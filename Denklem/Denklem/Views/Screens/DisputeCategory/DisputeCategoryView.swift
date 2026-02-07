@@ -75,6 +75,9 @@ struct DisputeCategoryView: View {
         .navigationDestination(isPresented: $viewModel.navigateToAttorneyFee) {
             AttorneyFeeTypeView()
         }
+        .navigationDestination(isPresented: $viewModel.navigateToTenancySpecial) {
+            TenancySelectionView(selectedYear: viewModel.selectedYear)
+        }
         .sheet(isPresented: $viewModel.showSerialDisputesSheet) {
             SerialDisputesSheet(selectedYear: viewModel.selectedYear)
         }

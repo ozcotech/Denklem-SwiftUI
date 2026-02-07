@@ -9,7 +9,7 @@ import SwiftUI
 
 // MARK: - Input View
 /// Displays input fields for calculation based on agreement status
-/// Shows amount + party count for agreement cases, only party count for non-agreement
+/// Shows amount for agreement cases, party count for non-agreement
 @available(iOS 26.0, *)
 struct InputView: View {
     
@@ -124,9 +124,11 @@ struct InputView: View {
             if viewModel.showAmountInput {
                 amountInputField
             }
-            
-            // Party Count Input
-            partyCountInputField
+
+            // Party Count Input (only for non-agreement cases)
+            if viewModel.showPartyCountInput {
+                partyCountInputField
+            }
         }
     }
     
@@ -355,15 +357,17 @@ struct ResultSheet: View {
                 value: result.input.tariffYear.displayName
             )
             
-            Divider()
-                .background(theme.outline.opacity(0.2))
-            
-            // Party Count
-            detailRow(
-                label: LocalizationKeys.Result.partyCount.localized,
-                value: "\(result.input.partyCount)"
-            )
-            
+            // Party Count (only for non-agreement cases)
+            if result.input.agreementStatus == .notAgreed {
+                Divider()
+                    .background(theme.outline.opacity(0.2))
+
+                detailRow(
+                    label: LocalizationKeys.Result.partyCount.localized,
+                    value: "\(result.input.partyCount)"
+                )
+            }
+
             // Amount (only for agreement cases with amount)
             if let amount = result.input.disputeAmount {
                 Divider()

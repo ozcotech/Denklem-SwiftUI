@@ -172,15 +172,6 @@ struct ReinstatementResultView: View {
             Divider()
                 .background(theme.outline.opacity(0.2))
 
-            // Party Count
-            detailRow(
-                label: LocalizationKeys.Reinstatement.partyCount.localized,
-                value: "\(result.partyCount)"
-            )
-
-            Divider()
-                .background(theme.outline.opacity(0.2))
-
             // Tariff Year
             detailRow(
                 label: LocalizationKeys.Result.tariffYear.localized,

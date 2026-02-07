@@ -83,10 +83,15 @@ final class InputViewModel: ObservableObject {
         hasAgreement
     }
     
+    /// Whether party count input should be visible (only for non-agreement cases)
+    var showPartyCountInput: Bool {
+        !hasAgreement
+    }
+
     /// Whether calculate button is enabled
     var isCalculateButtonEnabled: Bool {
         if hasAgreement {
-            return !amountText.isEmpty && !partyCountText.isEmpty
+            return !amountText.isEmpty
         } else {
             return !partyCountText.isEmpty
         }
@@ -109,13 +114,20 @@ final class InputViewModel: ObservableObject {
         errorMessage = nil
         isCalculating = true
         
-        // Parse inputs
-        guard let partyCount = Int(partyCountText), partyCount >= ValidationConstants.PartyCount.minimum else {
-            errorMessage = LocalizationKeys.Validation.invalidPartyCount.localized
-            isCalculating = false
-            return
+        // Parse party count (only required for non-agreement cases)
+        let partyCount: Int
+        if hasAgreement {
+            // Party count is irrelevant for agreement cases (Art. 7)
+            partyCount = ValidationConstants.PartyCount.minimum
+        } else {
+            guard let parsed = Int(partyCountText), parsed >= ValidationConstants.PartyCount.minimum else {
+                errorMessage = LocalizationKeys.Validation.invalidPartyCount.localized
+                isCalculating = false
+                return
+            }
+            partyCount = parsed
         }
-        
+
         // Parse amount for agreement cases
         let amount: Double?
         if hasAgreement {

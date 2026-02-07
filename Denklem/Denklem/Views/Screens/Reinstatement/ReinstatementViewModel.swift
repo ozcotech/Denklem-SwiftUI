@@ -125,18 +125,18 @@ final class ReinstatementViewModel: ObservableObject {
     var isCalculateButtonEnabled: Bool {
         guard let agreementStatus = selectedAgreementStatus else { return false }
 
-        // Validate party count
-        guard let partyCount = Int(partyCountText),
-              partyCount >= ReinstatementConstants.Validation.minimumPartyCount else {
-            return false
-        }
-
         if agreementStatus == .agreed {
-            // Agreement case needs compensation and idle wage
+            // Agreement case needs compensation and idle wage (party count not needed)
             guard let compensation = parseAmount(compensationText),
                   compensation >= ReinstatementConstants.Validation.minimumAmount,
                   let idleWage = parseAmount(idleWageText),
                   idleWage >= ReinstatementConstants.Validation.minimumAmount else {
+                return false
+            }
+        } else {
+            // Non-agreement case needs party count
+            guard let partyCount = Int(partyCountText),
+                  partyCount >= ReinstatementConstants.Validation.minimumPartyCount else {
                 return false
             }
         }
@@ -179,18 +179,11 @@ final class ReinstatementViewModel: ObservableObject {
             return
         }
 
-        // Parse party count
-        guard let partyCount = Int(partyCountText) else {
-            errorMessage = LocalizationKeys.Validation.invalidPartyCount.localized
-            isCalculating = false
-            return
-        }
-
         // Create input based on agreement status
         let input: ReinstatementInput
 
         if agreementStatus == .agreed {
-            // Parse amounts for agreement case
+            // Parse amounts for agreement case (party count not needed)
             guard let compensation = parseAmount(compensationText) else {
                 errorMessage = LocalizationKeys.Validation.invalidAmount.localized
                 isCalculating = false
@@ -207,13 +200,19 @@ final class ReinstatementViewModel: ObservableObject {
 
             input = ReinstatementInput.agreement(
                 tariffYear: selectedYear,
-                partyCount: partyCount,
+                partyCount: ReinstatementConstants.Validation.minimumPartyCount,
                 nonReinstatementCompensation: compensation,
                 idlePeriodWage: idleWage,
                 otherRights: otherRights
             )
         } else {
-            // No agreement case - only party count
+            // No agreement case - party count required
+            guard let partyCount = Int(partyCountText) else {
+                errorMessage = LocalizationKeys.Validation.invalidPartyCount.localized
+                isCalculating = false
+                return
+            }
+
             input = ReinstatementInput.noAgreement(
                 tariffYear: selectedYear,
                 partyCount: partyCount
