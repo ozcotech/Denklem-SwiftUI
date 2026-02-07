@@ -115,7 +115,7 @@ struct AttorneyFeeInputView: View {
             .foregroundStyle(theme.success)
 
             // Tariff Year
-            Text("\(viewModel.selectedYear.rawValue)")
+            Text(viewModel.selectedYear.displayName)
                 .font(theme.caption)
                 .fontWeight(.semibold)
                 .foregroundStyle(theme.textSecondary)

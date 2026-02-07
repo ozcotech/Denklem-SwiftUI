@@ -87,7 +87,7 @@ struct AttorneyFeeTypeView: View {
                 }
             } label: {
                 HStack(spacing: theme.spacingXS) {
-                    Text("\(viewModel.selectedYear.rawValue)")
+                    Text(viewModel.selectedYear.displayName)
                         .font(theme.subheadline)
                         .fontWeight(.medium)
                         .foregroundStyle(theme.primary)

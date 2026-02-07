@@ -89,7 +89,7 @@ final class SerialDisputesViewModel: ObservableObject {
 
     /// Current year display
     var currentYearDisplay: String {
-        "\(selectedYear.rawValue)"
+        selectedYear.displayName
     }
 
     // MARK: - Initialization
