@@ -18,7 +18,7 @@ enum DisputeCategoryType: String, CaseIterable, Identifiable {
     case attorneyFee       // Attorney fee calculation (special)
     case rentSpecial       // Tenancy (eviction/determination)
     case reinstatement     // Reinstate Employee (İşe İade)
-    case serialDisputes    // Serial disputes (Seri Uyuşmazlıklar) (future)
+    case serialDisputes    // Serial disputes (Seri Uyuşmazlıklar) 
     
     var id: String { rawValue }
 
