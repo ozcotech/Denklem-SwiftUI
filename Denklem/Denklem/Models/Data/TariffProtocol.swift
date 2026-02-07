@@ -84,6 +84,11 @@ protocol TariffProtocol {
     /// - Parameter amount: Dispute amount in Turkish Lira
     /// - Returns: Calculated fee based on progressive brackets
     func calculateBracketFee(for amount: Double) -> Double
+
+    /// Calculates fee using bracket system with detailed breakdown steps
+    /// - Parameter amount: Dispute amount in Turkish Lira
+    /// - Returns: Tuple of calculated fee and breakdown steps
+    func calculateBracketFeeWithBreakdown(for amount: Double) -> (fee: Double, steps: [BracketBreakdownStep])
     
     // MARK: - Validation & Support
     
@@ -114,6 +119,14 @@ protocol TariffProtocol {
     ///   - partyCount: Number of parties (for minimum fee comparison)
     /// - Returns: Higher of bracket calculation or minimum fee
     func calculateAgreementFee(disputeType: String, amount: Double, partyCount: Int) -> Double
+
+    /// Calculates mediation fee for monetary disputes with agreement, returning detailed breakdown
+    /// - Parameters:
+    ///   - disputeType: Type of dispute
+    ///   - amount: Dispute amount in TL
+    ///   - partyCount: Number of parties
+    /// - Returns: Tuple of final fee, bracket steps, bracket total, minimum fee threshold, and whether minimum was used
+    func calculateAgreementFeeWithBreakdown(disputeType: String, amount: Double, partyCount: Int) -> (fee: Double, bracketSteps: [BracketBreakdownStep], bracketTotal: Double, minimumFee: Double, usedMinimumFee: Bool)
     
     /// Calculates mediation fee for non-monetary disputes
     /// Uses fixed fee based on party count
@@ -176,35 +189,50 @@ extension TariffProtocol {
     }
     
     func calculateBracketFee(for amount: Double) -> Double {
+        return calculateBracketFeeWithBreakdown(for: amount).fee
+    }
+
+    func calculateBracketFeeWithBreakdown(for amount: Double) -> (fee: Double, steps: [BracketBreakdownStep]) {
         var totalFee: Double = 0.0
         var remainingAmount = amount
         var previousLimit: Double = 0.0
-        
+        var steps: [BracketBreakdownStep] = []
+
         for bracket in brackets {
             let bracketLimit = bracket.limit
             let bracketRate = bracket.rate
-            
+
             if remainingAmount <= 0 {
                 break
             }
-            
+
             let bracketAmount: Double
             if bracketLimit == Double.infinity {
                 bracketAmount = remainingAmount
             } else {
                 bracketAmount = min(remainingAmount, bracketLimit - previousLimit)
             }
-            
-            totalFee += bracketAmount * bracketRate
+
+            let fee = bracketAmount * bracketRate
+            totalFee += fee
+
+            steps.append(BracketBreakdownStep(
+                tierAmount: bracketAmount,
+                rate: bracketRate,
+                calculatedFee: fee,
+                bracketLimit: bracketLimit,
+                bracketLowerBound: previousLimit
+            ))
+
             remainingAmount -= bracketAmount
             previousLimit = bracketLimit
-            
+
             if bracketLimit == Double.infinity {
                 break
             }
         }
-        
-        return totalFee
+
+        return (totalFee, steps)
     }
     
     func supportsDisputeType(_ disputeType: String) -> Bool {
@@ -226,11 +254,15 @@ extension TariffProtocol {
     }
     
     func calculateAgreementFee(disputeType: String, amount: Double, partyCount: Int) -> Double {
-        let bracketFee = calculateBracketFee(for: amount)
+        return calculateAgreementFeeWithBreakdown(disputeType: disputeType, amount: amount, partyCount: partyCount).fee
+    }
+
+    func calculateAgreementFeeWithBreakdown(disputeType: String, amount: Double, partyCount: Int) -> (fee: Double, bracketSteps: [BracketBreakdownStep], bracketTotal: Double, minimumFee: Double, usedMinimumFee: Bool) {
+        let (bracketFee, steps) = calculateBracketFeeWithBreakdown(for: amount)
         let minimumFee = getMinimumFee(for: disputeType)
-        
-        // Return the higher of bracket calculation or minimum fee
-        return max(bracketFee, minimumFee)
+        let usedMinimum = bracketFee < minimumFee
+        let finalFee = max(bracketFee, minimumFee)
+        return (finalFee, steps, bracketFee, minimumFee, usedMinimum)
     }
     
     func calculateNonMonetaryFee(disputeType: String, partyCount: Int) -> Double {

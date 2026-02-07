@@ -129,6 +129,17 @@ struct LocalizationHelper {
         return formatter.string(from: NSNumber(value: number)) ?? String(number)
     }
     
+    /// Formats a decimal rate (e.g., 0.06) as a plain number string (e.g., "6" or "1,5")
+    /// Used for displaying bracket rates like "%6", "%1,5"
+    static func formatRate(_ rate: Double) -> String {
+        let percentage = rate * 100
+        let formatter = NumberFormatter()
+        formatter.locale = currentLocale
+        formatter.minimumFractionDigits = 0
+        formatter.maximumFractionDigits = 1
+        return formatter.string(from: NSNumber(value: percentage)) ?? "\(percentage)"
+    }
+
     /// Formats percentage values
     static func formatPercentage(_ value: Double, minimumFractionDigits: Int = 0, maximumFractionDigits: Int = 1) -> String {
         let formatter = NumberFormatter()

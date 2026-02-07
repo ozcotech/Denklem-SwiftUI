@@ -215,6 +215,21 @@ struct MediationFee {
     }
 }
 
+// MARK: - Bracket Breakdown Step
+/// Represents a single step in the bracket fee calculation
+struct BracketBreakdownStep {
+    /// The amount within this bracket tier
+    let tierAmount: Double
+    /// The rate applied to this tier (e.g., 0.06 for 6%)
+    let rate: Double
+    /// The fee calculated for this tier
+    let calculatedFee: Double
+    /// The cumulative upper limit of this bracket
+    let bracketLimit: Double
+    /// The lower bound of this bracket
+    let bracketLowerBound: Double
+}
+
 // MARK: - Calculation Breakdown
 /// Detailed breakdown of fee calculation steps
 struct CalculationBreakdown {
@@ -239,12 +254,18 @@ struct CalculationBreakdown {
     
     /// Fixed fee used (if applicable)
     let fixedFee: Double?
-    
+
     /// Minimum fee threshold (if applicable)
     let minimumFeeThreshold: Double?
-    
+
+    /// Bracket breakdown steps (for agreement cases)
+    let bracketSteps: [BracketBreakdownStep]
+
+    /// Bracket total before minimum fee comparison
+    let bracketTotal: Double?
+
     // MARK: - Initializers
-    
+
     init(steps: [String],
          finalAmount: Double,
          details: [String: Any] = [:],
@@ -252,8 +273,10 @@ struct CalculationBreakdown {
          usedBracketSystem: Bool = false,
          hourlyRate: Double? = nil,
          fixedFee: Double? = nil,
-         minimumFeeThreshold: Double? = nil) {
-        
+         minimumFeeThreshold: Double? = nil,
+         bracketSteps: [BracketBreakdownStep] = [],
+         bracketTotal: Double? = nil) {
+
         self.steps = steps
         self.finalAmount = finalAmount
         self.details = details
@@ -262,6 +285,8 @@ struct CalculationBreakdown {
         self.hourlyRate = hourlyRate
         self.fixedFee = fixedFee
         self.minimumFeeThreshold = minimumFeeThreshold
+        self.bracketSteps = bracketSteps
+        self.bracketTotal = bracketTotal
     }
     
     /// Formatted breakdown for display
@@ -453,9 +478,12 @@ extension MediationFee: Codable {
     }
 }
 
+// MARK: - BracketBreakdownStep Codable
+extension BracketBreakdownStep: Codable {}
+
 // MARK: - CalculationBreakdown Codable
 extension CalculationBreakdown: Codable {
-    
+
     private enum CodingKeys: String, CodingKey {
         case steps
         case finalAmount
@@ -464,12 +492,14 @@ extension CalculationBreakdown: Codable {
         case hourlyRate
         case fixedFee
         case minimumFeeThreshold
+        case bracketSteps
+        case bracketTotal
     }
-    
+
     // Custom encoding/decoding for details dictionary
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        
+
         steps = try container.decode([String].self, forKey: .steps)
         finalAmount = try container.decode(Double.self, forKey: .finalAmount)
         usedMinimumFee = try container.decodeIfPresent(Bool.self, forKey: .usedMinimumFee) ?? false
@@ -477,14 +507,16 @@ extension CalculationBreakdown: Codable {
         hourlyRate = try container.decodeIfPresent(Double.self, forKey: .hourlyRate)
         fixedFee = try container.decodeIfPresent(Double.self, forKey: .fixedFee)
         minimumFeeThreshold = try container.decodeIfPresent(Double.self, forKey: .minimumFeeThreshold)
-        
+        bracketSteps = try container.decodeIfPresent([BracketBreakdownStep].self, forKey: .bracketSteps) ?? []
+        bracketTotal = try container.decodeIfPresent(Double.self, forKey: .bracketTotal)
+
         // Initialize details as empty for now
         details = [:]
     }
-    
+
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        
+
         try container.encode(steps, forKey: .steps)
         try container.encode(finalAmount, forKey: .finalAmount)
         try container.encode(usedMinimumFee, forKey: .usedMinimumFee)
@@ -492,6 +524,8 @@ extension CalculationBreakdown: Codable {
         try container.encodeIfPresent(hourlyRate, forKey: .hourlyRate)
         try container.encodeIfPresent(fixedFee, forKey: .fixedFee)
         try container.encodeIfPresent(minimumFeeThreshold, forKey: .minimumFeeThreshold)
+        try container.encode(bracketSteps, forKey: .bracketSteps)
+        try container.encodeIfPresent(bracketTotal, forKey: .bracketTotal)
     }
 }
 

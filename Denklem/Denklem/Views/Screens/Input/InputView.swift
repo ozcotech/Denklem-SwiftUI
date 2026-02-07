@@ -255,7 +255,13 @@ struct ResultSheet: View {
                     
                     // Calculation Info Card
                     calculationInfoCard
-                    
+
+                    // Calculation Method Card (only for agreement cases)
+                    if result.input.agreementStatus == .agreed,
+                       !result.mediationFee.calculationBreakdown.bracketSteps.isEmpty {
+                        calculationMethodCard
+                    }
+
                     // SMM Result Card (only for non-agreement cases)
                     if result.input.agreementStatus == .notAgreed {
                         smmResultCard
@@ -390,8 +396,128 @@ struct ResultSheet: View {
         }
     }
     
+    // MARK: - Calculation Method Card
+
+    private var calculationMethodCard: some View {
+        let breakdown = result.mediationFee.calculationBreakdown
+
+        return VStack(spacing: theme.spacingM) {
+            // Card Header
+            HStack {
+                Text(LocalizationKeys.Result.calculationMethod.localized)
+                    .font(theme.headline)
+                    .fontWeight(.bold)
+                    .foregroundStyle(theme.textPrimary)
+
+                Spacer()
+            }
+
+            Divider()
+                .background(theme.border)
+
+            // Bracket Steps
+            ForEach(Array(breakdown.bracketSteps.enumerated()), id: \.offset) { index, step in
+                if index > 0 {
+                    Divider()
+                        .background(theme.outline.opacity(0.2))
+                }
+
+                bracketStepRow(step: step, index: index, isLast: step.bracketLimit == Double.infinity)
+            }
+
+            Divider()
+                .background(theme.border)
+
+            // Bracket Total
+            if let bracketTotal = breakdown.bracketTotal {
+                detailRow(
+                    label: LocalizationKeys.Result.bracketTotal.localized,
+                    value: LocalizationHelper.formatCurrency(bracketTotal)
+                )
+            }
+
+            // Minimum Fee
+            if let minimumFeeThreshold = breakdown.minimumFeeThreshold {
+                Divider()
+                    .background(theme.outline.opacity(0.2))
+
+                detailRow(
+                    label: LocalizationKeys.Result.minimumFee.localized,
+                    value: LocalizationHelper.formatCurrency(minimumFeeThreshold)
+                )
+            }
+
+            Divider()
+                .background(theme.border)
+
+            // Result explanation
+            HStack(spacing: theme.spacingXS) {
+                Image(systemName: "info.circle.fill")
+                    .font(theme.footnote)
+                    .foregroundStyle(theme.primary)
+
+                Text(breakdown.usedMinimumFee
+                     ? LocalizationKeys.Result.minimumFeeApplied.localized
+                     : LocalizationKeys.Result.bracketTotalApplied.localized)
+                    .font(theme.footnote)
+                    .foregroundStyle(theme.textSecondary)
+
+                Spacer()
+            }
+        }
+        .padding(theme.spacingL)
+        .background {
+            RoundedRectangle(cornerRadius: theme.cornerRadiusL)
+                .fill(theme.surface)
+        }
+        .overlay {
+            RoundedRectangle(cornerRadius: theme.cornerRadiusL)
+                .stroke(theme.border, lineWidth: theme.borderWidth)
+        }
+    }
+
+    // MARK: - Bracket Step Row
+
+    private func bracketStepRow(step: BracketBreakdownStep, index: Int, isLast: Bool) -> some View {
+        let tierLabel: String = {
+            if index == 0 {
+                return "\(LocalizationKeys.Result.firstTier.localized) \(LocalizationHelper.formatCurrency(step.tierAmount))"
+            } else if isLast {
+                return "\(LocalizationHelper.formatCurrency(step.bracketLowerBound)) \(LocalizationKeys.Result.aboveTier.localized)"
+            } else {
+                return "\(LocalizationKeys.Result.nextTier.localized) \(LocalizationHelper.formatCurrency(step.tierAmount))"
+            }
+        }()
+
+        return VStack(spacing: theme.spacingXS) {
+            // Tier description: "İlk 600.000,00 TL × %6"
+            HStack {
+                Text(tierLabel)
+                    .font(theme.footnote)
+                    .foregroundStyle(theme.textSecondary)
+
+                Spacer()
+
+                Text("× %\(LocalizationHelper.formatRate(step.rate))")
+                    .font(theme.footnote)
+                    .fontWeight(.medium)
+                    .foregroundStyle(theme.textSecondary)
+            }
+
+            // Calculated fee for this tier
+            HStack {
+                Spacer()
+
+                Text(LocalizationHelper.formatCurrency(step.calculatedFee))
+                    .font(theme.body)
+                    .fontWeight(.medium)
+                    .foregroundStyle(theme.textPrimary)
+            }
+        }
+    }
+
     // MARK: - SMM Result Card
-    
+
     private var smmResultCard: some View {
         VStack(spacing: theme.spacingM) {
             // Card Header

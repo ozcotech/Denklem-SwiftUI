@@ -47,6 +47,10 @@ struct TariffCalculator {
         var usedBracketCalculation = false
         var baseFee: Double = 0.0
         
+        var bracketSteps: [BracketBreakdownStep] = []
+        var bracketTotal: Double? = nil
+        var minimumFeeThreshold: Double? = nil
+
         switch calculationType {
         case .monetary:
             if agreementStatus == .agreed {
@@ -54,11 +58,14 @@ struct TariffCalculator {
                 guard let amount = disputeAmount else {
                     return CalculationResult.failure(input: input, error: NSLocalizedString(LocalizationKeys.Validation.requiredField, comment: ""))
                 }
-                fee = tariff.calculateAgreementFee(disputeType: disputeTypeKey, amount: amount, partyCount: partyCount)
-                // calculateAgreementFee already handles bracket vs minimum fee comparison
-                usedMinimumFee = false // TODO: Get this info from tariff if needed
-                usedBracketCalculation = false // TODO: Get this info from tariff if needed
-                baseFee = fee
+                let breakdown = tariff.calculateAgreementFeeWithBreakdown(disputeType: disputeTypeKey, amount: amount, partyCount: partyCount)
+                fee = breakdown.fee
+                bracketSteps = breakdown.bracketSteps
+                bracketTotal = breakdown.bracketTotal
+                minimumFeeThreshold = breakdown.minimumFee
+                usedMinimumFee = breakdown.usedMinimumFee
+                usedBracketCalculation = true
+                baseFee = breakdown.bracketTotal
                 breakdownSteps.append("Agreement case: Fee = \(fee)")
             } else {
                 // No agreement: Fixed fee calculation
@@ -92,7 +99,9 @@ struct TariffCalculator {
             usedBracketSystem: usedBracketCalculation,
             hourlyRate: nil,
             fixedFee: nil,
-            minimumFeeThreshold: nil
+            minimumFeeThreshold: minimumFeeThreshold,
+            bracketSteps: bracketSteps,
+            bracketTotal: bracketTotal
         )
         
         // Build MediationFee

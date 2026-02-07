@@ -372,6 +372,15 @@ struct LocalizationKeys {
         static let calculationSteps = "result.calculation_steps"
         static let calculationInfo = "result.calculation_info"
         static let calculationResult = "result.calculation_result"
+        static let calculationMethod = "result.calculation_method"
+        static let bracketTotal = "result.bracket_total"
+        static let minimumFee = "result.minimum_fee"
+        static let minimumFeeApplied = "result.minimum_fee_applied"
+        static let bracketTotalApplied = "result.bracket_total_applied"
+        static let firstTier = "result.first_tier"
+        static let nextTier = "result.next_tier"
+        static let aboveTier = "result.above_tier"
+        static let resultLabel = "result.result_label"
     }
     
     // MARK: - Time Calculation
