@@ -153,13 +153,15 @@ struct LocalizationHelper {
     
     // MARK: - Date Formatting
     
-    /// Formats date using locale-specific format
+    /// Formats date using app's selected language locale
     static func formatDate(_ date: Date) -> String {
         let formatter = DateFormatter()
-        formatter.locale = currentLocale
-        formatter.dateStyle = .long  // Changed from .medium to .long for full month names
+        let langCode = UserDefaults.standard.string(forKey: AppConstants.UserDefaultsKeys.selectedLanguage) ?? "tr"
+        let localeId = langCode == "en" ? "en_US" : "tr_TR"
+        formatter.locale = Locale(identifier: localeId)
+        formatter.dateStyle = .long
         formatter.timeStyle = .none
-        
+
         return formatter.string(from: date)
     }
     
