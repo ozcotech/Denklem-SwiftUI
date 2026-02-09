@@ -7,15 +7,6 @@
 
 import Foundation
 
-// MARK: - Double Extension for Precision
-extension Double {
-    /// Truncates the double to a specific number of decimal places.
-    func truncate(toPlaces places: Int) -> Double {
-        let divisor = pow(10.0, Double(places))
-        return (self * divisor).truncatingRemainder(dividingBy: Double(Int.max)) / divisor
-    }
-}
-
 // MARK: - SMM Calculator
 /// Calculator for freelance receipt (SMM) calculations
 /// Handles different VAT and withholding tax scenarios for real and legal persons
@@ -310,27 +301,27 @@ struct SMMPersonResult {
     
     /// Formatted gross fee
     var formattedBrutFee: String {
-        return LocalizationHelper.formatCurrencyForDisplay(brutFee.truncate(toPlaces: 2))
+        return LocalizationHelper.formatCurrencyForDisplay(brutFee)
     }
     
     /// Formatted withholding tax
     var formattedStopaj: String {
-        return LocalizationHelper.formatCurrencyForDisplay(stopaj.truncate(toPlaces: 2))
+        return LocalizationHelper.formatCurrencyForDisplay(stopaj)
     }
     
     /// Formatted net fee
     var formattedNetFee: String {
-        return LocalizationHelper.formatCurrencyForDisplay(netFee.truncate(toPlaces: 2))
+        return LocalizationHelper.formatCurrencyForDisplay(netFee)
     }
     
     /// Formatted VAT
     var formattedKdv: String {
-        return LocalizationHelper.formatCurrencyForDisplay(kdv.truncate(toPlaces: 2))
+        return LocalizationHelper.formatCurrencyForDisplay(kdv)
     }
     
     /// Formatted total collected amount
     var formattedTahsilEdilecekTutar: String {
-        return LocalizationHelper.formatCurrencyForDisplay(tahsilEdilecekTutar.truncate(toPlaces: 2))
+        return LocalizationHelper.formatCurrencyForDisplay(tahsilEdilecekTutar)
     }
 }
 
