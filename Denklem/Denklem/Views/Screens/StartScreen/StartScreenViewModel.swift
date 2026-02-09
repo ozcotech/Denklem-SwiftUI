@@ -22,12 +22,19 @@ class StartScreenViewModel: ObservableObject {
 
     /// Navigation flag for DisputeTypeView (quick access to monetary disputes)
     @Published var navigateToDisputeType: Bool = false
+
+    /// Navigation flag for SurveyView
+    @Published var navigateToSurvey: Bool = false
     
     // MARK: - Private Properties
     
     /// Stores last selected year in UserDefaults
-    @AppStorage(AppConstants.UserDefaultsKeys.lastUsedTariffYear) 
+    @AppStorage(AppConstants.UserDefaultsKeys.lastUsedTariffYear)
     private var lastUsedYear: Int = TariffYear.current.rawValue
+
+    /// Tracks whether the survey has been completed
+    @AppStorage(AppConstants.UserDefaultsKeys.surveyCompleted)
+    var isSurveyCompleted: Bool = false
     
     // MARK: - Initialization
     

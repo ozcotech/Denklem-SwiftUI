@@ -69,9 +69,27 @@ struct StartScreenView: View {
         }
         .navigationTitle("")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                if !viewModel.isSurveyCompleted {
+                    Button {
+                        viewModel.navigateToSurvey = true
+                    } label: {
+                        Image(systemName: "list.bullet")
+                            .font(.title3)
+                            .symbolRenderingMode(.hierarchical)
+                           .foregroundStyle(.white)
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+        }
         .navigationDestination(isPresented: $viewModel.navigateToDisputeType) {
             // Quick access: Navigate directly to DisputeTypeView with monetary dispute selected
             DisputeTypeView(selectedYear: viewModel.selectedYear, isMonetary: true)
+        }
+        .navigationDestination(isPresented: $viewModel.navigateToSurvey) {
+            SurveyView()
         }
     }
     

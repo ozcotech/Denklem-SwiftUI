@@ -88,6 +88,7 @@ struct AppConstants {
         static let hasSeenOnboarding = "hasSeenOnboarding"
         static let calculationHistory = "calculationHistory"
         static let userPreferences = "userPreferences"
+        static let surveyCompleted = "surveyCompleted"
     }
 
     // MARK: - Calculation Limits

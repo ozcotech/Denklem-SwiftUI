@@ -652,6 +652,27 @@ struct LocalizationKeys {
         static let dark = "settings.dark"
         static let system = "settings.system"
     }
+
+    // MARK: - Survey
+    struct Survey {
+        static let screenTitle = "survey.screen_title"
+        static let question1Title = "survey.question1.title"
+        static let question1OptionA = "survey.question1.option_a"
+        static let question1OptionB = "survey.question1.option_b"
+        static let question1Explanation = "survey.question1.explanation"
+        static let question2Title = "survey.question2.title"
+        static let question2OptionA = "survey.question2.option_a"
+        static let question2OptionB = "survey.question2.option_b"
+        static let question2Explanation = "survey.question2.explanation"
+        static let correctAnswer = "survey.correct_answer"
+        static let wrongAnswer = "survey.wrong_answer"
+        static let nextQuestion = "survey.next_question"
+        static let thankYouTitle = "survey.thank_you_title"
+        static let thankYouMessage = "survey.thank_you_message"
+        static let closeButton = "survey.close_button"
+        static let questionCounter = "survey.question_counter"
+        static let emailLabel = "survey.email_label"
+    }
 }
 
 // MARK: - LocalizationKeys Extension
