@@ -53,7 +53,7 @@ struct AppConstants {
     static var currentYear: Int {
         Calendar.current.component(.year, from: Date())
     }
-    static let defaultYear = 2025
+    static let defaultYear = TariffConstants.currentYear
     /// Returns localized ministry source
     static var legislationSource: String {
         LocalizationKeys.Legislation.ministrySource.localized

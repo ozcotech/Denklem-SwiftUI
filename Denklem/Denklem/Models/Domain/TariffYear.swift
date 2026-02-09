@@ -26,9 +26,9 @@ enum TariffYear: Int, CaseIterable, Identifiable, Hashable {
         return TariffYear(rawValue: currentYear) ?? TariffYear.allCases.last ?? .year2025
     }
     
-    /// Default tariff year for calculations
+    /// Default tariff year for calculations (same as current)
     static var `default`: TariffYear {
-        return .year2025
+        return .current
     }
     
     /// All available tariff years ordered chronologically
