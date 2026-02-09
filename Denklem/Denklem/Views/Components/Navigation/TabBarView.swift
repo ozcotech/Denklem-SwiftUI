@@ -61,7 +61,10 @@ struct TabBarView: View {
     @StateObject private var localeManager = LocaleManager.shared
     @Environment(\.theme) var theme
 
-    /// Currently selected tab
+    /// Tracks whether the user has opened the app before
+    @AppStorage(AppConstants.UserDefaultsKeys.hasSeenOnboarding) private var hasSeenOnboarding: Bool = false
+
+    /// Currently selected tab — first launch: home, subsequent: tools
     @State private var selectedTab: TabItem = .home
 
     /// Selected tariff year (passed from StartScreen or managed here)
@@ -111,6 +114,12 @@ struct TabBarView: View {
             }
         }
         .tint(theme.primary)
+        .onAppear {
+            if hasSeenOnboarding {
+                selectedTab = .tools
+            }
+            hasSeenOnboarding = true
+        }
     }
 }
 
