@@ -283,12 +283,6 @@ struct DocumentCard: View {
                     )
                 }
             }
-            
-            Button {
-                // Share action
-            } label: {
-                Label(LocalizationKeys.General.share.localized, systemImage: "square.and.arrow.up")
-            }
         }
     }
 }
