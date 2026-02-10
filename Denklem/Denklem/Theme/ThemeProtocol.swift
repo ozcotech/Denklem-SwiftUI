@@ -177,6 +177,71 @@ protocol ThemeProtocol {
     var springDamping: Double { get }
 }
 
+// MARK: - Default Implementations
+
+@available(iOS 26.0, *)
+extension ThemeProtocol {
+
+    // MARK: - Typography
+
+    var largeTitle: Font { .system(size: 34, weight: .bold, design: .default) }
+    var title: Font { .system(size: 28, weight: .bold, design: .default) }
+    var title2: Font { .system(size: 22, weight: .bold, design: .default) }
+    var title3: Font { .system(size: 20, weight: .semibold, design: .default) }
+    var headline: Font { .system(size: 17, weight: .semibold, design: .default) }
+    var body: Font { .system(size: 17, weight: .regular, design: .default) }
+    var callout: Font { .system(size: 16, weight: .regular, design: .default) }
+    var subheadline: Font { .system(size: 15, weight: .regular, design: .default) }
+    var footnote: Font { .system(size: 13, weight: .regular, design: .default) }
+    var caption: Font { .system(size: 12, weight: .regular, design: .default) }
+    var caption2: Font { .system(size: 11, weight: .regular, design: .default) }
+
+    // MARK: - Dimensions
+
+    var spacingXS: CGFloat { 4 }
+    var spacingS: CGFloat { 8 }
+    var spacingM: CGFloat { 16 }
+    var spacingL: CGFloat { 24 }
+    var spacingXL: CGFloat { 32 }
+    var spacingXXL: CGFloat { 48 }
+
+    var cornerRadiusS: CGFloat { 8 }
+    var cornerRadiusM: CGFloat { 12 }
+    var cornerRadiusL: CGFloat { 16 }
+    var cornerRadiusXL: CGFloat { 20 }
+
+    var borderWidth: CGFloat { 1 }
+    var borderWidthThick: CGFloat { 2 }
+
+    var iconSize: CGFloat { 24 }
+    var iconSizeLarge: CGFloat { 32 }
+
+    var buttonHeight: CGFloat { 44 }
+    var buttonHeightLarge: CGFloat { 56 }
+
+    // MARK: - Liquid Glass
+
+    var glassRegular: Glass { .regular }
+    var glassProminentEffect: Glass { .regular }
+    var glassClear: Glass { .clear }
+
+    // MARK: - Shapes
+
+    func roundedRectangle(_ size: CornerRadiusSize) -> RoundedRectangle {
+        RoundedRectangle(cornerRadius: size.value(from: self))
+    }
+
+    var capsuleShape: Capsule { Capsule() }
+
+    // MARK: - Animations
+
+    var animationDuration: Double { 0.3 }
+    var fastAnimationDuration: Double { 0.2 }
+    var slowAnimationDuration: Double { 0.5 }
+    var springResponse: Double { 0.5 }
+    var springDamping: Double { 0.7 }
+}
+
 // MARK: - Supporting Types
 
 /// Corner radius size categories
