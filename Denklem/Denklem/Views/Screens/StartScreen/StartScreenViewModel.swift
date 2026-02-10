@@ -13,7 +13,7 @@ import Combine
 /// ViewModel for StartScreen - manages tariff year selection and navigation
 @available(iOS 26.0, *)
 @MainActor
-class StartScreenViewModel: ObservableObject {
+final class StartScreenViewModel: ObservableObject {
     
     // MARK: - Published Properties
 
