@@ -306,12 +306,13 @@ enum DisputeType: String, CaseIterable, Identifiable, Hashable {
     }
     
     /// Default minimum fee if tariff data is unavailable
+    /// These are agreement minimum fees (not fixed fees)
     private func getDefaultMinimumFee() -> Double {
         switch category {
         case .commercial:
-            return 2300.0 // Higher minimum for commercial disputes
+            return 13000.0 // Commercial agreement minimum fee (2026 tariff)
         default:
-            return 1570.0 // Standard minimum
+            return 9000.0 // General agreement minimum fee (2026 tariff)
         }
     }
 }

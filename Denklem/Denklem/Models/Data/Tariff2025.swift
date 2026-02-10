@@ -41,6 +41,7 @@ struct Tariff2025: TariffProtocol {
     
     /// Fixed fees by dispute type and party count ranges
     /// Array indices: [0: 2 parties, 1: 3-5 parties, 2: 6-10 parties, 3: 11+ parties]
+    /// Threshold logic: partyCount <= 2, <= 5, <= 10, <= Int.max
     let fixedFees: [String: [Double]] = [
         DisputeConstants.DisputeTypeKeys.workerEmployer: [1570.0, 1650.0, 1750.0, 1850.0],
         DisputeConstants.DisputeTypeKeys.commercial: [2300.0, 2350.0, 2450.0, 2550.0],

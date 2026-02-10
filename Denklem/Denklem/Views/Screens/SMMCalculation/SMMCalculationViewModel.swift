@@ -122,15 +122,6 @@ final class SMMCalculationViewModel: ObservableObject {
         }
     }
     
-    /// Resets all inputs
-    func reset() {
-        amountText = ""
-        selectedCalculationType = .vatIncludedWithholdingExcluded
-        calculationResult = nil
-        errorMessage = nil
-        showResult = false
-    }
-    
     /// Formats currency input as user types
     func formatAmountInput() {
         // Get locale separators

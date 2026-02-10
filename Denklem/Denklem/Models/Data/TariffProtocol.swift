@@ -47,11 +47,11 @@ protocol TariffProtocol {
     
     /// Fixed fees by party count thresholds for different dispute types
     /// Key: DisputeTypeKeys (e.g., "worker_employer", "commercial")
-    /// Value: Array of fees for [2-4, 5-9, 10-999, 1000+] parties
+    /// Value: Array of fees for [2, 3-5, 6-10, 11+] parties
     var fixedFees: [String: [Double]] { get }
     
     /// Party count thresholds for fixed fee calculation
-    /// Default: [2, 5, 10, Int.max] representing ranges [2-4], [5-9], [10-999], [1000+]
+    /// Default: [2, 5, 10, Int.max] representing ranges [2], [3-5], [6-10], [11+]
     var partyCountThresholds: [Int] { get }
     
     /// Returns fixed fee for specific dispute type and party count
