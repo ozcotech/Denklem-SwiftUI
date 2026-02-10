@@ -199,7 +199,10 @@ struct DisputeConstants {
             "aile": DisputeTypeKeys.family,
             "ortaklık": DisputeTypeKeys.partnershipDissolution,
             "ortaklığın": DisputeTypeKeys.partnershipDissolution,
-            "giderilmesi": DisputeTypeKeys.partnershipDissolution
+            "giderilmesi": DisputeTypeKeys.partnershipDissolution,
+            "tarım": DisputeTypeKeys.agriculturalProduction,
+            "tarımsal": DisputeTypeKeys.agriculturalProduction,
+            "üretim": DisputeTypeKeys.agriculturalProduction
         ]
         
         /// English keyword mappings
@@ -222,7 +225,10 @@ struct DisputeConstants {
             "apartment": DisputeTypeKeys.condominium,
             "family": DisputeTypeKeys.family,
             "partnership": DisputeTypeKeys.partnershipDissolution,
-            "dissolution": DisputeTypeKeys.partnershipDissolution
+            "dissolution": DisputeTypeKeys.partnershipDissolution,
+            "agricultural": DisputeTypeKeys.agriculturalProduction,
+            "production": DisputeTypeKeys.agriculturalProduction,
+            "farming": DisputeTypeKeys.agriculturalProduction
         ]
         
         /// Combined keyword mappings
@@ -325,6 +331,8 @@ extension DisputeConstants {
             return NSLocalizedString(LocalizationKeys.DisputeType.family, comment: "")
         case DisputeTypeKeys.partnershipDissolution:
             return NSLocalizedString(LocalizationKeys.DisputeType.partnershipDissolution, comment: "")
+        case DisputeTypeKeys.agriculturalProduction:
+            return NSLocalizedString(LocalizationKeys.DisputeType.agriculturalProduction, comment: "")
         default:
             return NSLocalizedString(LocalizationKeys.DisputeType.other, comment: "")
         }
@@ -349,6 +357,8 @@ extension DisputeConstants {
             return NSLocalizedString(LocalizationKeys.DisputeType.Description.family, comment: "")
         case DisputeTypeKeys.partnershipDissolution:
             return NSLocalizedString(LocalizationKeys.DisputeType.Description.partnershipDissolution, comment: "")
+        case DisputeTypeKeys.agriculturalProduction:
+            return NSLocalizedString(LocalizationKeys.DisputeType.Description.agriculturalProduction, comment: "")
         default:
             return NSLocalizedString(LocalizationKeys.DisputeType.Description.other, comment: "")
         }

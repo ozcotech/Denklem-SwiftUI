@@ -170,6 +170,8 @@ extension TariffConstants {
             return NSLocalizedString(LocalizationKeys.DisputeType.family, comment: "")
         case DisputeConstants.DisputeTypeKeys.partnershipDissolution:
             return NSLocalizedString(LocalizationKeys.DisputeType.partnershipDissolution, comment: "")
+        case DisputeConstants.DisputeTypeKeys.agriculturalProduction:
+            return NSLocalizedString(LocalizationKeys.DisputeType.agriculturalProduction, comment: "")
         default:
             return NSLocalizedString(LocalizationKeys.DisputeType.other, comment: "")
         }
@@ -196,6 +198,9 @@ extension TariffConstants {
         }
         if disputeType.contains("Ortaklık") || disputeType.contains("Partnership") {
             return DisputeConstants.DisputeTypeKeys.partnershipDissolution
+        }
+        if disputeType.contains("Tarımsal") || disputeType.contains("Tarım") || disputeType.contains("Agricultural") {
+            return DisputeConstants.DisputeTypeKeys.agriculturalProduction
         }
         if disputeType.contains("İşçi") || disputeType.contains("İşveren") || disputeType.contains("Worker") || disputeType.contains("Employer") {
             return DisputeConstants.DisputeTypeKeys.workerEmployer
@@ -225,6 +230,7 @@ enum LegacyDisputeType: String, CaseIterable {
     case condominium = "condominium"
     case family = "family"
     case partnershipDissolution = "partnership_dissolution"
+    case agriculturalProduction = "agricultural_production"
     case other = "other"
     
     var displayName: String {
@@ -245,6 +251,8 @@ enum LegacyDisputeType: String, CaseIterable {
             return NSLocalizedString(LocalizationKeys.DisputeType.family, comment: "")
         case .partnershipDissolution:
             return NSLocalizedString(LocalizationKeys.DisputeType.partnershipDissolution, comment: "")
+        case .agriculturalProduction:
+            return NSLocalizedString(LocalizationKeys.DisputeType.agriculturalProduction, comment: "")
         case .other:
             return NSLocalizedString(LocalizationKeys.DisputeType.other, comment: "")
         }
@@ -268,6 +276,8 @@ enum LegacyDisputeType: String, CaseIterable {
             return NSLocalizedString(LocalizationKeys.DisputeType.Description.family, comment: "")
         case .partnershipDissolution:
             return NSLocalizedString(LocalizationKeys.DisputeType.Description.partnershipDissolution, comment: "")
+        case .agriculturalProduction:
+            return NSLocalizedString(LocalizationKeys.DisputeType.Description.agriculturalProduction, comment: "")
         case .other:
             return NSLocalizedString(LocalizationKeys.DisputeType.Description.other, comment: "")
         }
