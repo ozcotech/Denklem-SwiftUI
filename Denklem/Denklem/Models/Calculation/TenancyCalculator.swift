@@ -152,18 +152,7 @@ struct TenancyCalculator {
     ///   - year: Tariff year (2025 or 2026)
     /// - Returns: Calculated fee
     private static func calculateThirdPartFee(amount: Double, year: Int) -> Double {
-        let brackets = getBrackets(for: year)
-        var remaining = amount
-        var total: Double = 0
-
-        for bracket in brackets {
-            let take = min(remaining, bracket.limit)
-            total += take * bracket.rate
-            remaining -= take
-            if remaining <= 0 { break }
-        }
-
-        return total
+        return BracketCalculator.calculateFee(amount: amount, brackets: getBrackets(for: year))
     }
 
     /// Returns brackets for specific year from AttorneyFeeConstants

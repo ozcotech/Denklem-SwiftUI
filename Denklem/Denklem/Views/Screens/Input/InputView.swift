@@ -177,55 +177,21 @@ struct InputView: View {
     // MARK: - Error Message View
     
     private func errorMessageView(_ message: String) -> some View {
-        HStack(spacing: theme.spacingS) {
-            Image(systemName: "exclamationmark.triangle.fill")
-                .font(theme.caption)
-                .foregroundStyle(theme.error)
-            
-            Text(message)
-                .font(theme.footnote)
-                .foregroundStyle(theme.textPrimary)
-                .multilineTextAlignment(.leading)
-        }
-        .padding(theme.spacingM)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background {
-            RoundedRectangle(cornerRadius: theme.cornerRadiusM)
-                .fill(theme.error.opacity(0.1))
-        }
+        ErrorBannerView(message: message)
     }
     
     // MARK: - Calculate Button
     
     private var calculateButton: some View {
-        Button {
-            // Dismiss keyboard before calculating
+        CalculateButton(
+            buttonText: viewModel.calculateButtonText,
+            isCalculating: viewModel.isCalculating,
+            isEnabled: viewModel.isCalculateButtonEnabled
+        ) {
             UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
             viewModel.calculate()
-        } label: {
-            HStack(spacing: theme.spacingM) {
-                Text(viewModel.calculateButtonText)
-                    .font(theme.body)
-                    .fontWeight(.semibold)
-
-                if viewModel.isCalculating {
-                    ProgressView()
-                        .tint(theme.textPrimary)
-                } else {
-                    Image(systemName: "arrow.right.circle.fill")
-                        .font(theme.body)
-                        .fontWeight(.semibold)
-                }
-            }
-            .foregroundStyle(theme.textPrimary)
-            .frame(maxWidth: .infinity)
-            .frame(height: theme.buttonHeight)
         }
-        .buttonStyle(.glass)
-        .tint(theme.primary)
         .glassEffectID("calculate", in: glassNamespace)
-        .disabled(!viewModel.isCalculateButtonEnabled || viewModel.isCalculating)
-        .opacity(viewModel.isCalculateButtonEnabled ? 1.0 : 0.5)
     }
 }
 
@@ -585,18 +551,7 @@ struct ResultSheet: View {
     // MARK: - Detail Row
     
     private func detailRow(label: String, value: String) -> some View {
-        HStack {
-            Text(label)
-                .font(theme.footnote)
-                .foregroundStyle(theme.textSecondary)
-            
-            Spacer()
-            
-            Text(value)
-                .font(theme.body)
-                .fontWeight(.medium)
-                .foregroundStyle(theme.textPrimary)
-        }
+        DetailRow(label: label, value: value)
     }
     
     // MARK: - Private Methods (for future use)

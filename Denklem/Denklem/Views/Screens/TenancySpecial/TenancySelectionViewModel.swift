@@ -177,39 +177,7 @@ final class TenancySelectionViewModel: ObservableObject {
 
     /// Format amount input with locale-aware thousand separators
     func formatAmountInput(_ text: inout String) {
-        let locale = LocaleManager.shared.currentLocale
-        let decimalSeparator = locale.decimalSeparator ?? ","
-        let groupingSeparator = locale.groupingSeparator ?? "."
-
-        // Allow only digits, dots, and commas
-        let filtered = text.filter { $0.isNumber || $0 == "." || $0 == "," }
-
-        // Split by decimal separator
-        let parts = filtered.components(separatedBy: decimalSeparator)
-        var integerPart = parts[0]
-        let decimalPart = parts.count > 1 ? String(parts[1].prefix(2)) : nil
-
-        // Remove all separators from integer part
-        integerPart = integerPart.replacingOccurrences(of: groupingSeparator, with: "")
-        integerPart = integerPart.replacingOccurrences(of: decimalSeparator, with: "")
-
-        // Format integer part with grouping
-        if let number = Int(integerPart) {
-            let formatter = NumberFormatter()
-            formatter.numberStyle = .decimal
-            formatter.locale = locale
-            formatter.maximumFractionDigits = 0
-            integerPart = formatter.string(from: NSNumber(value: number)) ?? integerPart
-        }
-
-        // Rebuild
-        if let decimal = decimalPart {
-            text = integerPart + decimalSeparator + decimal
-        } else if filtered.hasSuffix(decimalSeparator) {
-            text = integerPart + decimalSeparator
-        } else {
-            text = integerPart
-        }
+        AmountFormatter.format(&text)
     }
 
     // MARK: - Private Methods

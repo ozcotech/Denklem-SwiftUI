@@ -233,16 +233,7 @@ struct AttorneyFeeCalculator {
 
 	/// Calculates the third part fee (progressive brackets) for monetary disputes
 	private static func calculateThirdPartFee(amount: Double, year: Int) -> Double {
-		var remaining = amount
-		var total: Double = 0
-		let brackets = getBrackets(for: year)
-		for bracket in brackets {
-			let take = min(remaining, bracket.limit)
-			total += take * bracket.rate
-			remaining -= take
-			if remaining <= 0 { break }
-		}
-		return total
+		return BracketCalculator.calculateFee(amount: amount, brackets: getBrackets(for: year))
 	}
 }
 

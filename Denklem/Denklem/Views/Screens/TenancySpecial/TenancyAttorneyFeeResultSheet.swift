@@ -248,18 +248,7 @@ struct TenancyAttorneyFeeResultSheet: View {
     // MARK: - Detail Row
 
     private func detailRow(label: String, value: String) -> some View {
-        HStack {
-            Text(label)
-                .font(theme.footnote)
-                .foregroundStyle(theme.textSecondary)
-
-            Spacer()
-
-            Text(value)
-                .font(theme.body)
-                .fontWeight(.medium)
-                .foregroundStyle(theme.textPrimary)
-        }
+        DetailRow(label: label, value: value)
     }
 }
 

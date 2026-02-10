@@ -181,8 +181,9 @@ extension TariffProtocol {
     }
     
     func getMinimumFee(for disputeType: String) -> Double {
-        // Commercial disputes have higher minimum fee
-        if disputeType == DisputeConstants.DisputeTypeKeys.commercial {
+        // Commercial and partnership dissolution disputes have higher minimum fee
+        if disputeType == DisputeConstants.DisputeTypeKeys.commercial ||
+           disputeType == DisputeConstants.DisputeTypeKeys.partnershipDissolution {
             return minimumFees["commercial"] ?? 13000.0
         }
         return minimumFees["general"] ?? 9000.0
@@ -303,6 +304,10 @@ protocol TariffValidationProtocol {
     ///   - partyCount: Number of parties
     /// - Returns: Validation result with success or error details
     func validateCalculationInput(disputeType: String, amount: Double?, partyCount: Int) -> ValidationResult
+    
+    /// Validates the tariff year is supported
+    /// - Returns: ValidationResult for year
+    func validateYear() -> ValidationResult
 }
 
 // MARK: - Tariff Factory Protocol
@@ -402,5 +407,159 @@ enum TariffFactoryError: Error, LocalizedError {
         case .creationFailed(let year):
             return NSLocalizedString(LocalizationKeys.ErrorMessage.tariffCreationFailed, comment: "Tariff creation failed") + ": \(year)"
         }
+    }
+}
+
+// MARK: - Default TariffValidationProtocol Implementation
+/// Provides default validation implementations for types conforming to both TariffValidationProtocol and TariffProtocol
+extension TariffValidationProtocol where Self: TariffProtocol {
+    
+    func validateTariffData() -> ValidationResult {
+        let hourlyValidation = validateHourlyRates()
+        if !hourlyValidation.isValid { return hourlyValidation }
+        
+        let fixedValidation = validateFixedFees()
+        if !fixedValidation.isValid { return fixedValidation }
+        
+        let minimumValidation = validateMinimumFees()
+        if !minimumValidation.isValid { return minimumValidation }
+        
+        let bracketsValidation = validateBrackets()
+        if !bracketsValidation.isValid { return bracketsValidation }
+        
+        return .success
+    }
+    
+    func validateHourlyRates() -> ValidationResult {
+        for (disputeType, rate) in hourlyRates {
+            guard rate > 0 else {
+                return .failure(
+                    code: ValidationConstants.Amount.invalidInputErrorCode,
+                    message: "Invalid hourly rate for \(disputeType): \(rate)"
+                )
+            }
+        }
+        return .success
+    }
+    
+    func validateFixedFees() -> ValidationResult {
+        for (disputeType, fees) in fixedFees {
+            for (index, fee) in fees.enumerated() {
+                guard fee > 0 else {
+                    return .failure(
+                        code: ValidationConstants.Amount.invalidInputErrorCode,
+                        message: "Invalid fixed fee for \(disputeType) at index \(index): \(fee)"
+                    )
+                }
+            }
+        }
+        return .success
+    }
+    
+    func validateMinimumFees() -> ValidationResult {
+        for (category, fee) in minimumFees {
+            guard fee > 0 else {
+                return .failure(
+                    code: ValidationConstants.Amount.invalidInputErrorCode,
+                    message: "Invalid minimum fee for \(category): \(fee)"
+                )
+            }
+        }
+        return .success
+    }
+    
+    func validateBrackets() -> ValidationResult {
+        var previousLimit: Double = 0.0
+        for bracket in brackets {
+            if bracket.limit <= previousLimit && bracket.limit != Double.infinity {
+                return .failure(
+                    code: ValidationConstants.Amount.validationErrorCode,
+                    message: "Invalid bracket order: \(bracket.limit) <= \(previousLimit)"
+                )
+            }
+            guard bracket.rate > 0 else {
+                return .failure(
+                    code: ValidationConstants.Amount.invalidInputErrorCode,
+                    message: "Invalid bracket rate: \(bracket.rate)"
+                )
+            }
+            previousLimit = bracket.limit
+        }
+        return .success
+    }
+    
+    func validateCalculationInput(disputeType: String, amount: Double?, partyCount: Int) -> ValidationResult {
+        guard supportsDisputeType(disputeType) else {
+            return .failure(
+                code: ValidationConstants.DisputeType.invalidTypeErrorCode,
+                message: NSLocalizedString(LocalizationKeys.Validation.invalidDisputeType, comment: "")
+            )
+        }
+        
+        let partyValidation = ValidationConstants.validatePartyCount(partyCount)
+        if !partyValidation.isValid {
+            return partyValidation
+        }
+        
+        if let amount = amount {
+            let amountValidation = ValidationConstants.validateAmount(amount)
+            if !amountValidation.isValid {
+                return amountValidation
+            }
+        }
+        
+        return .success
+    }
+    
+    func validateYear() -> ValidationResult {
+        guard TariffConstants.availableYears.contains(year) else {
+            return .failure(
+                code: ValidationConstants.Year.invalidYearErrorCode,
+                message: "Year \(year) is not supported"
+            )
+        }
+        return .success
+    }
+}
+
+// MARK: - TariffProtocol Convenience Methods
+extension TariffProtocol {
+    
+    /// Validates the tariff data integrity
+    func validateData() -> Bool {
+        let disputeTypes = DisputeConstants.DisputeTypeKeys.allKeys
+        
+        for disputeType in disputeTypes {
+            guard hourlyRates[disputeType] != nil,
+                  fixedFees[disputeType] != nil else {
+                return false
+            }
+        }
+        
+        var previousLimit: Double = 0.0
+        for bracket in brackets {
+            if bracket.limit <= previousLimit {
+                return false
+            }
+            previousLimit = bracket.limit
+        }
+        
+        return true
+    }
+    
+    /// Returns a summary of the tariff data
+    func getSummary() -> String {
+        let supportedTypes = getSupportedDisputeTypes().count
+        let minGeneralFee = minimumFees["general"] ?? 0.0
+        let minCommercialFee = minimumFees["commercial"] ?? 0.0
+        
+        return """
+        Tariff Year: \(year)
+        Supported Dispute Types: \(supportedTypes)
+        General Minimum Fee: \(LocalizationHelper.formatCurrency(minGeneralFee))
+        Commercial Minimum Fee: \(LocalizationHelper.formatCurrency(minCommercialFee))
+        Bracket Count: \(brackets.count)
+        Data Status: \(isFinalized ? "Finalized" : "Draft")
+        """
     }
 }

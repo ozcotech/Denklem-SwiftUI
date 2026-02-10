@@ -81,41 +81,11 @@ struct DisputeTypeView: View {
     // MARK: - Year Picker Section
 
     private var yearPickerSection: some View {
-        VStack(spacing: theme.spacingS) {
-            // Year Dropdown
-            Menu {
-                ForEach(viewModel.availableYears) { year in
-                    Button {
-                        viewModel.selectedYear = year
-                    } label: {
-                        HStack {
-                            Text(year.displayName)
-                            if viewModel.selectedYear == year {
-                                Image(systemName: "checkmark")
-                            }
-                        }
-                    }
-                }
-            } label: {
-                HStack(spacing: theme.spacingXS) {
-                    Text(viewModel.selectedYear.displayName)
-                        .font(theme.subheadline)
-                        .fontWeight(.medium)
-                        .foregroundStyle(theme.primary)
-
-                    Image(systemName: "chevron.down")
-                        .font(.caption2)
-                        .foregroundStyle(theme.primary)
-                }
-                .padding(.horizontal, theme.spacingS)
-                .padding(.vertical, theme.spacingXS)
-                .background {
-                    Capsule()
-                        .fill(theme.surfaceElevated.opacity(0.6))
-                }
-            }
-        }
-        .frame(maxWidth: .infinity)
+        YearPickerSection(
+            availableYears: viewModel.availableYears,
+            selectedYear: viewModel.selectedYear,
+            onYearSelected: { viewModel.selectedYear = $0 }
+        )
     }
 
     // MARK: - Non-Monetary Info Section

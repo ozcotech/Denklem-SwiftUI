@@ -171,56 +171,21 @@ struct SMMCalculationView: View {
     // MARK: - Error Message View
     
     private func errorMessageView(_ message: String) -> some View {
-        HStack(spacing: theme.spacingS) {
-            Image(systemName: "exclamationmark.triangle.fill")
-                .foregroundStyle(theme.error)
-            
-            Text(message)
-                .font(theme.footnote)
-                .foregroundStyle(theme.error)
-        }
-        .padding(theme.spacingM)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background {
-            RoundedRectangle(cornerRadius: theme.cornerRadiusM)
-                .fill(theme.error.opacity(0.1))
-        }
-        .overlay {
-            RoundedRectangle(cornerRadius: theme.cornerRadiusM)
-                .stroke(theme.error, lineWidth: theme.borderWidth)
-        }
+        ErrorBannerView(message: message, showBorder: true)
     }
     
     // MARK: - Calculate Button
 
     private var calculateButton: some View {
-        Button {
+        CalculateButton(
+            buttonText: viewModel.calculateButtonText,
+            isCalculating: viewModel.isCalculating,
+            isEnabled: viewModel.isCalculateButtonEnabled
+        ) {
             hideKeyboard()
             viewModel.calculate()
-        } label: {
-            HStack(spacing: theme.spacingM) {
-                Text(viewModel.calculateButtonText)
-                    .font(theme.body)
-                    .fontWeight(.semibold)
-
-                if viewModel.isCalculating {
-                    ProgressView()
-                        .tint(theme.textPrimary)
-                } else {
-                    Image(systemName: "arrow.right.circle.fill")
-                        .font(theme.body)
-                        .fontWeight(.semibold)
-                }
-            }
-            .foregroundStyle(theme.textPrimary)
-            .frame(maxWidth: .infinity)
-            .frame(height: theme.buttonHeight)
         }
-        .buttonStyle(.glass)
-        .tint(theme.primary)
         .glassEffectID("calculate", in: glassNamespace)
-        .disabled(!viewModel.isCalculateButtonEnabled || viewModel.isCalculating)
-        .opacity(viewModel.isCalculateButtonEnabled ? 1.0 : 0.5)
         .padding(.horizontal, theme.spacingL)
     }
     

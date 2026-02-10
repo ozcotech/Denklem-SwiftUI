@@ -111,47 +111,14 @@ struct SerialDisputesSheet: View {
     // MARK: - Year Picker Section
 
     private var yearPickerSection: some View {
-        VStack(spacing: theme.spacingS) {
-            // Legal Reference
-            Text(LocalizationKeys.SerialDisputes.legalArticle.localized)
-                .font(theme.caption)
-                .foregroundStyle(theme.textSecondary)
-
-            // Year Dropdown
-            Menu {
-                ForEach(viewModel.availableYears) { year in
-                    Button {
-                        viewModel.selectedYear = year
-                    } label: {
-                        HStack {
-                            Text(year.displayName)
-                            if viewModel.selectedYear == year {
-                                Image(systemName: "checkmark")
-                            }
-                        }
-                    }
-                }
-            } label: {
-                HStack(spacing: theme.spacingXS) {
-                    Text(viewModel.currentYearDisplay)
-                        .font(theme.subheadline)
-                        .fontWeight(.medium)
-                        .foregroundStyle(theme.primary)
-
-                    Image(systemName: "chevron.down")
-                        .font(.caption2)
-                        .foregroundStyle(theme.primary)
-                }
-                .padding(.horizontal, theme.spacingS)
-                .padding(.vertical, theme.spacingXS)
-                .background {
-                    Capsule()
-                        .fill(theme.surfaceElevated.opacity(0.6))
-                }
-            }
-        }
-        .frame(maxWidth: .infinity)
-        .padding(.top, theme.spacingL)
+        YearPickerSection(
+            availableYears: viewModel.availableYears,
+            selectedYear: viewModel.selectedYear,
+            selectedDisplayText: viewModel.currentYearDisplay,
+            legalReferenceText: LocalizationKeys.SerialDisputes.legalArticle.localized,
+            showTopPadding: true,
+            onYearSelected: { viewModel.selectedYear = $0 }
+        )
     }
 
     // MARK: - Dispute Type Picker Section
@@ -231,57 +198,23 @@ struct SerialDisputesSheet: View {
     // MARK: - Error Message View
 
     private func errorMessageView(_ message: String) -> some View {
-        HStack(spacing: theme.spacingS) {
-            Image(systemName: "exclamationmark.triangle.fill")
-                .font(theme.caption)
-                .foregroundStyle(theme.error)
-
-            Text(message)
-                .font(theme.footnote)
-                .foregroundStyle(theme.textPrimary)
-                .multilineTextAlignment(.leading)
-        }
-        .padding(theme.spacingM)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background {
-            RoundedRectangle(cornerRadius: theme.cornerRadiusM)
-                .fill(theme.error.opacity(0.1))
-        }
+        ErrorBannerView(message: message)
     }
 
     // MARK: - Calculate Button
 
     private var calculateButton: some View {
-        Button {
-            // Dismiss keyboard before calculating
+        CalculateButton(
+            buttonText: viewModel.calculateButtonText,
+            isCalculating: viewModel.isCalculating,
+            isEnabled: viewModel.isCalculateButtonEnabled
+        ) {
             UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
             withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
                 viewModel.calculate()
             }
-        } label: {
-            HStack(spacing: theme.spacingM) {
-                Text(viewModel.calculateButtonText)
-                    .font(theme.body)
-                    .fontWeight(.semibold)
-
-                if viewModel.isCalculating {
-                    ProgressView()
-                        .tint(theme.textPrimary)
-                } else {
-                    Image(systemName: "arrow.right.circle.fill")
-                        .font(theme.body)
-                        .fontWeight(.semibold)
-                }
-            }
-            .foregroundStyle(theme.textPrimary)
-            .frame(maxWidth: .infinity)
-            .frame(height: theme.buttonHeight)
         }
-        .buttonStyle(.glass)
-        .tint(theme.primary)
         .glassEffectID("calculate", in: glassNamespace)
-        .disabled(!viewModel.isCalculateButtonEnabled || viewModel.isCalculating)
-        .opacity(viewModel.isCalculateButtonEnabled ? 1.0 : 0.5)
     }
 }
 

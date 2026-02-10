@@ -170,40 +170,13 @@ struct SerialDisputesResultView: View {
     // MARK: - Recalculate Button
 
     private var recalculateButton: some View {
-        Button {
-            onRecalculate()
-        } label: {
-            HStack(spacing: theme.spacingS) {
-                Image(systemName: "arrow.counterclockwise")
-                    .font(theme.body)
-                    .fontWeight(.semibold)
-                Text(LocalizationKeys.General.recalculate.localized)
-                    .font(theme.body)
-                    .fontWeight(.semibold)
-            }
-            .foregroundStyle(theme.textPrimary)
-            .frame(maxWidth: .infinity)
-            .frame(height: theme.buttonHeight)
-        }
-        .buttonStyle(.glass)
-        .padding(.top, theme.spacingM)
+        RecalculateButton(action: onRecalculate)
     }
 
     // MARK: - Detail Row
 
     private func detailRow(label: String, value: String) -> some View {
-        HStack {
-            Text(label)
-                .font(theme.footnote)
-                .foregroundStyle(theme.textSecondary)
-
-            Spacer()
-
-            Text(value)
-                .font(theme.body)
-                .fontWeight(.medium)
-                .foregroundStyle(theme.textPrimary)
-        }
+        DetailRow(label: label, value: value)
     }
 }
 
