@@ -63,8 +63,8 @@ struct TariffConstants {
     // MARK: - Export Settings
     static let exportCurrency = currencyCode
     static var exportDateFormat: String {
-        let locale = Locale.current
-        if locale.identifier.hasPrefix("en") {
+        let langCode = UserDefaults.standard.string(forKey: AppConstants.UserDefaultsKeys.selectedLanguage) ?? "tr"
+        if langCode == "en" {
             return "MM/dd/yyyy"  // American format: 07/15/2025
         } else {
             return "dd.MM.yyyy"  // European/Turkish format: 15.07.2025

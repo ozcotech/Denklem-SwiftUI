@@ -54,6 +54,10 @@ final class LocaleManager: ObservableObject {
         self.currentLanguage = savedLanguage
         self.currentLocale = Locale(identifier: savedLanguage.localeIdentifier)
         
+        // Ensure language is persisted to UserDefaults on first launch
+        // (didSet is NOT called during init, so we save explicitly)
+        saveLanguagePreference()
+        
         setupBindings()
     }
     
@@ -128,9 +132,6 @@ final class LocaleManager: ObservableObject {
     private func saveLanguagePreference() {
         UserDefaults.standard.set(currentLanguage.rawValue, forKey: languagePreferenceKey)
         UserDefaults.standard.synchronize()
-        
-        // Also update Apple's preferred language array
-        UserDefaults.standard.set([currentLanguage.rawValue], forKey: "AppleLanguages")
     }
     
     /// Updates the current locale based on selected language

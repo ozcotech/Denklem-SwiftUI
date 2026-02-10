@@ -13,27 +13,27 @@ struct LocalizationHelper {
     
     // MARK: - Current Locale Properties
     
-    /// Current locale
+    /// Selected language code from UserDefaults (app's language, not device)
+    /// Reads directly from UserDefaults to avoid MainActor requirement
+    private static var selectedLanguageCode: String {
+        return UserDefaults.standard.string(forKey: AppConstants.UserDefaultsKeys.selectedLanguage) ?? "tr"
+    }
+    
+    /// Current locale based on app's selected language (not device locale)
     static var currentLocale: Locale {
-        return Locale.current
+        let langCode = selectedLanguageCode
+        let localeId = langCode == "en" ? "en_US" : "tr_TR"
+        return Locale(identifier: localeId)
     }
     
-    /// Current language code (e.g., "tr", "en")
+    /// Current language code (e.g., "tr", "en") — based on app's selected language
     static var currentLanguageCode: String {
-        if #available(iOS 16.0, *) {
-            return currentLocale.language.languageCode?.identifier ?? "tr"
-        } else {
-            return currentLocale.languageCode ?? "tr"
-        }
+        return selectedLanguageCode
     }
     
-    /// Current region code (e.g., "TR", "US")
+    /// Current region code (e.g., "TR", "US") — based on app's selected language
     static var currentRegionCode: String {
-        if #available(iOS 16.0, *) {
-            return currentLocale.region?.identifier ?? "TR"
-        } else {
-            return currentLocale.regionCode ?? "TR"
-        }
+        return selectedLanguageCode == "en" ? "US" : "TR"
     }
     
     /// Is current language right-to-left
