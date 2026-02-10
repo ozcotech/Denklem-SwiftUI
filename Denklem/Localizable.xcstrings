@@ -794,6 +794,24 @@
         }
       }
     },
+    "attorney_fee.claim_amount" : {
+      "comment" : "Attorney fee - input label for claim amount (no agreement case)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Claim Amount"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Asıl Alacak Tutarı"
+          }
+        }
+      }
+    },
     "attorney_fee.agreement_screen_title" : {
       "comment" : "Attorney fee - agreement status screen title",
       "extractionState" : "manual",
@@ -3271,13 +3289,31 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Enter Amount"
+            "value" : "Enter Agreement Amount"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Anlaşma Tutarı Girin"
+          }
+        }
+      }
+    },
+    "input.placeholder.claim_amount" : {
+      "comment" : "input placeholder for claim amount (no agreement case)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter Claim Amount"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Asıl Alacak Tutarı Girin"
           }
         }
       }

@@ -71,10 +71,21 @@ final class AttorneyFeeInputViewModel: ObservableObject {
 
     /// Input section title
     var inputSectionTitle: String {
-        if isMonetary {
+        if isMonetary && !hasAgreement {
+            return LocalizationKeys.AttorneyFee.claimAmount.localized
+        } else if isMonetary {
             return LocalizationKeys.AttorneyFee.agreementAmount.localized
         } else {
             return LocalizationKeys.AttorneyFee.selectCourt.localized
+        }
+    }
+
+    /// Amount input placeholder text
+    var amountPlaceholder: String {
+        if hasAgreement {
+            return LocalizationKeys.Input.Placeholder.amount.localized
+        } else {
+            return LocalizationKeys.Input.Placeholder.claimAmount.localized
         }
     }
 

@@ -163,15 +163,20 @@ final class AttorneyFeeTypeViewModel: ObservableObject {
     }
 
     /// Handles the continue button action
-    /// Navigates to input view if agreement, shows result sheet if no agreement
+    /// Navigates to input view for agreement cases and monetary no-agreement cases
+    /// Shows result sheet directly only for non-monetary no-agreement cases
     func handleContinue() {
         guard canProceed else { return }
 
         if hasAgreement {
             // Navigate to input view for amount/court selection
             navigateToInput = true
+        } else if isMonetary {
+            // Monetary + No Agreement: navigate to input view for claim amount
+            // Per tariff Art.16/c: fee cannot exceed the claim amount
+            navigateToInput = true
         } else {
-            // Show result sheet directly with fixed 8.000 TL fee
+            // Non-monetary + No Agreement: show fixed fee directly
             calculateNoAgreementResult()
             showResultSheet = true
         }
@@ -188,18 +193,15 @@ final class AttorneyFeeTypeViewModel: ObservableObject {
 
     // MARK: - Private Methods
 
-    /// Calculates the result for no agreement cases (year-specific fixed fee: 7.000 TL for 2025, 8.000 TL for 2026)
+    /// Calculates the result for non-monetary no agreement cases (year-specific fixed fee: 7.000 TL for 2025, 8.000 TL for 2026)
+    /// Monetary no-agreement cases are now handled via InputView + AttorneyFeeCalculator
     private func calculateNoAgreementResult() {
-        let calculationType: AttorneyFeeCalculationType = isMonetary
-            ? .monetaryNoAgreement
-            : .nonMonetaryNoAgreement
-
         let breakdown = AttorneyFeeBreakdown(
             baseAmount: nil,
             thirdPartFee: nil,
             bonusAmount: nil,
             courtType: nil,
-            isMinimumApplied: false,
+            isMinimumApplied: true,
             isMaximumApplied: false
         )
 
@@ -208,9 +210,9 @@ final class AttorneyFeeTypeViewModel: ObservableObject {
 
         noAgreementResult = AttorneyFeeResult(
             fee: fee,
-            calculationType: calculationType,
+            calculationType: .nonMonetaryNoAgreement,
             breakdown: breakdown,
-            warnings: [LocalizationKeys.AttorneyFee.feeExceedsAmountWarning.localized],
+            warnings: [],
             tariffYear: tariffYearInt
         )
     }

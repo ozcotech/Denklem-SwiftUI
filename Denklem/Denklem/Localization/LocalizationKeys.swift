@@ -222,6 +222,7 @@ struct LocalizationKeys {
 
         // Input Labels
         static let agreementAmount = "attorney_fee.agreement_amount"
+        static let claimAmount = "attorney_fee.claim_amount"
         static let selectCourt = "attorney_fee.select_court"
 
         // Court Types
@@ -347,6 +348,7 @@ struct LocalizationKeys {
         
         struct Placeholder {
             static let amount = "input.placeholder.amount"
+            static let claimAmount = "input.placeholder.claim_amount"
             static let partyCount = "input.placeholder.party_count"
             static let mediationFee = "input.placeholder.mediation_fee"
         }

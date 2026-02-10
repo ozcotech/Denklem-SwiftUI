@@ -111,18 +111,28 @@ struct AttorneyFeeCalculator {
 				)
 			} else {
 				// Monetary + No Agreement
-				let fee = tariff.minimumFee
-				warnings.append(LocalizationKeys.AttorneyFee.feeExceedsAmountWarning.localized)
+				// Per tariff Art.16/c: fixed fee applies, but cannot exceed the claim amount
+				var fee = tariff.minimumFee
+				var isMinimumApplied = true
+				var isMaximumApplied = false
+
+				if let amount = agreementAmount, fee > amount {
+					fee = amount
+					isMinimumApplied = false
+					isMaximumApplied = true
+					warnings.append(LocalizationKeys.AttorneyFee.feeExceedsAmountWarning.localized)
+				}
+
 				return AttorneyFeeResult(
 					fee: fee,
 					calculationType: .monetaryNoAgreement,
 					breakdown: AttorneyFeeBreakdown(
-						baseAmount: nil,
+						baseAmount: agreementAmount,
 						thirdPartFee: nil,
 						bonusAmount: nil,
 						courtType: nil,
-						isMinimumApplied: true,
-						isMaximumApplied: false
+						isMinimumApplied: isMinimumApplied,
+						isMaximumApplied: isMaximumApplied
 					),
 					warnings: warnings,
 					tariffYear: year
@@ -160,8 +170,8 @@ struct AttorneyFeeCalculator {
 				)
 			} else {
 				// Non-monetary + No Agreement
+				// Per tariff Art.16/c: fixed fee applies (no amount to compare)
 				let fee = tariff.nonMonetaryBaseFee
-				warnings.append(LocalizationKeys.AttorneyFee.feeExceedsAmountWarning.localized)
 				return AttorneyFeeResult(
 					fee: fee,
 					calculationType: .nonMonetaryNoAgreement,

@@ -105,14 +105,16 @@ struct AttorneyFeeInputView: View {
 
             // Agreement Status Badge
             HStack(spacing: theme.spacingXS) {
-                Image(systemName: "checkmark.circle.fill")
+                Image(systemName: viewModel.hasAgreement ? "checkmark.circle.fill" : "xmark.circle.fill")
                     .font(theme.footnote)
                     .fontWeight(.semibold)
-                Text(LocalizationKeys.AttorneyFee.agreed.localized)
+                Text(viewModel.hasAgreement
+                     ? LocalizationKeys.AttorneyFee.agreed.localized
+                     : LocalizationKeys.AttorneyFee.notAgreed.localized)
                     .font(theme.subheadline)
                     .fontWeight(.medium)
             }
-            .foregroundStyle(theme.success)
+            .foregroundStyle(viewModel.hasAgreement ? theme.success : theme.warning)
 
             // Tariff Year
             Text(viewModel.selectedYear.displayName)
@@ -147,7 +149,7 @@ struct AttorneyFeeInputView: View {
     // MARK: - Amount Input Field
 
     private var amountInputField: some View {
-        TextField(LocalizationKeys.Input.Placeholder.amount.localized, text: $viewModel.amountText)
+        TextField(viewModel.amountPlaceholder, text: $viewModel.amountText)
             .font(theme.body)
             .fontWeight(.medium)
             .foregroundStyle(theme.textPrimary)

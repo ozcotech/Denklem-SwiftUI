@@ -66,7 +66,7 @@ class ThemeManager: ObservableObject {
 
     // MARK: - Initialization
     
-    init() {
+    private init() {
         // If following system, detect current system appearance
         if followSystemTheme {
             let systemIsDark = UITraitCollection.current.userInterfaceStyle == .dark

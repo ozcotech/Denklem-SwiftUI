@@ -121,9 +121,7 @@ struct AttorneyFeeResultSheet: View {
                     .background(theme.outline.opacity(0.2))
 
                 detailRow(
-                    label: result.breakdown.courtType != nil
-                        ? LocalizationKeys.AttorneyFee.flatFee.localized
-                        : LocalizationKeys.AttorneyFee.agreementAmount.localized,
+                    label: baseAmountLabel,
                     value: LocalizationHelper.formatCurrency(baseAmount)
                 )
             }
@@ -181,24 +179,6 @@ struct AttorneyFeeResultSheet: View {
                         .foregroundStyle(theme.primary)
 
                     Text(LocalizationKeys.AttorneyFee.minimumFeeApplied.localized)
-                        .font(theme.footnote)
-                        .foregroundStyle(theme.textSecondary)
-
-                    Spacer()
-                }
-            }
-
-            // Maximum Fee Applied indicator
-            if result.breakdown.isMaximumApplied {
-                Divider()
-                    .background(theme.outline.opacity(0.2))
-
-                HStack {
-                    Image(systemName: "exclamationmark.triangle.fill")
-                        .font(theme.footnote)
-                        .foregroundStyle(theme.warning)
-
-                    Text(LocalizationKeys.AttorneyFee.feeExceedsAmountWarning.localized)
                         .font(theme.footnote)
                         .foregroundStyle(theme.textSecondary)
 
@@ -315,6 +295,18 @@ struct AttorneyFeeResultSheet: View {
             return "\(LocalizationKeys.AttorneyFee.nonMonetaryType.localized) + \(LocalizationKeys.AttorneyFee.agreed.localized)"
         case .nonMonetaryNoAgreement:
             return "\(LocalizationKeys.AttorneyFee.nonMonetaryType.localized) + \(LocalizationKeys.AttorneyFee.notAgreed.localized)"
+        }
+    }
+
+    /// Label for base amount row — changes based on calculation type
+    private var baseAmountLabel: String {
+        switch result.calculationType {
+        case .monetaryNoAgreement:
+            return LocalizationKeys.AttorneyFee.claimAmount.localized
+        case .nonMonetaryAgreement, .nonMonetaryNoAgreement:
+            return LocalizationKeys.AttorneyFee.flatFee.localized
+        default:
+            return LocalizationKeys.AttorneyFee.agreementAmount.localized
         }
     }
 }
