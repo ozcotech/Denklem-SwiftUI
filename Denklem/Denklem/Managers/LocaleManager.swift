@@ -69,6 +69,7 @@ final class LocaleManager: ObservableObject {
         guard language != currentLanguage else { return }
         
         currentLanguage = language
+        Bundle.invalidateLocalizedBundleCache()  // Clear cached bundle for new language
         refreshID = UUID()  // Force view refresh
         requiresRestart = true
     }
