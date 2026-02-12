@@ -70,7 +70,7 @@ struct DisputeCategoryView: View {
             SMMCalculationView()
         }
         .navigationDestination(isPresented: $viewModel.navigateToAttorneyFee) {
-            AttorneyFeeTypeView()
+            AttorneyFeeView()
         }
         .navigationDestination(isPresented: $viewModel.navigateToTenancySpecial) {
             TenancySelectionView(selectedYear: viewModel.selectedYear)

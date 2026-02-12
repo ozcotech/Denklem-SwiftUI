@@ -84,10 +84,7 @@ struct MediationFeeView: View {
                         }
 
                         // Calculate Button
-                        if viewModel.selectedDisputeType != nil {
-                            calculateButton
-                                .transition(.opacity.combined(with: .move(edge: .bottom)))
-                        }
+                        calculateButton
                     }
                     .padding(.horizontal, theme.spacingL)
                     .padding(.top, theme.spacingXS)
