@@ -53,7 +53,8 @@ struct LocalizationKeys {
         static let agriculturalProduction = "dispute_type.agricultural_production"
         static let other = "dispute_type.other"
         static let nonMonetaryNote = "dispute_type.non_monetary_note"
-        
+        static let selectPrompt = "dispute_type.select_prompt"
+
         // Descriptions
         struct Description {
             static let workerEmployer = "dispute_type.worker_employer.description"

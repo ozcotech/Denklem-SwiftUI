@@ -52,6 +52,7 @@ The name "DENKLEM" reflects the concept of creating equality and balance between
 - **Attorney Fee Calculation**: Power of attorney fee calculations in mediation process
 - **Reinstatement Disputes**: Calculations for reinstatement cases
 - **Serial Disputes**: Special calculations for serial dispute cases
+- **Tenancy Disputes**: Special calculations for eviction and rent determination disputes (attorney + mediation fees)
 - **Comprehensive Results**: Detailed explanations with tax implications
 
 ### 🔧 **Technical Features**
@@ -86,29 +87,15 @@ Calculation type selection:
   - ⏰ **Time Calculation**: Mediation process durations
   - 📝 **SMM Calculation**: Freelance receipt calculator
 
-### **3. AgreementStatusScreen (Agreement Status)**
-Parties' agreement status:
-- **Agreement**: Redirects to different calculation method
-- **No Agreement**: Alternative calculation approach
+### **3. MediationFeeScreen (Unified Calculation)**
+Single-screen mediation fee calculation combining dispute type selection and input:
+- **Year Selection**: Dropdown picker for 2025/2026 tariff
+- **Agreement Status**: Segmented picker (monetary disputes only)
+- **Dispute Type**: Dropdown menu with 10 dispute types
+- **Input Fields**: Agreement amount (agreed) or party count (not agreed)
+- **Calculate**: Instant calculation with result sheet
 
-### **4. DisputeTypeScreen (Dispute Type)**
-Specific dispute type selection based on previous choices:
-- Labor-Employer
-- Commercial
-- Consumer
-- Rental
-- Neighbor
-- Condominium
-- Family
-- Partnership Dissolution
-- Other
-
-### **5. InputScreen (Information Entry)**
-Enter required information:
-- **In Agreement Case**: Agreement amount + number of parties
-- **In Non-Agreement Case**: Only number of parties
-
-### **6. ResultScreen (Result Screen)**
+### **4. ResultScreen (Result Screen)**
 Comprehensive result display (as Sheet):
 - **Main Fee**: Calculated mediation fee
 - **Tax Information**: Withholding tax calculations when applicable
@@ -200,13 +187,18 @@ Below are screenshots hosted in the separate screenshots repository: [Denklem Sc
 ## 🎯 How It Works
 
 ### **Monetary Dispute - With Agreement:**
-1. "Monetary" → "Agreement" → Select dispute type
-2. Enter agreement amount and number of parties
-3. Get calculated mediation fee + optional SMM receipt calculation
+1. "Monetary" → Select year → "Agreement" → Select dispute type from dropdown
+2. Enter agreement amount
+3. Get calculated mediation fee + bracket breakdown
 
-### **Non-Monetary or No Agreement:**
-1. Select category → "No Agreement"
-2. Enter only number of parties
+### **Monetary Dispute - No Agreement:**
+1. "Monetary" → Select year → "No Agreement" → Select dispute type from dropdown
+2. Enter number of parties
+3. Get fee calculation with SMM breakdown
+
+### **Non-Monetary Dispute:**
+1. "Non-Monetary" → Select year → Select dispute type from dropdown
+2. Enter number of parties
 3. Get fee calculation with automatic tax deductions
 
 ### **Additional Features:**
@@ -243,7 +235,7 @@ Below are screenshots hosted in the separate screenshots repository: [Denklem Sc
 
 ## 📅 Version Information
 
-- **Current Version**: 2.3.0
+- **Current Version**: 2.4.3
 - **Supported Years**: 2025 and 2026 mediation tariffs
 - **Platform**: iOS 26.0+
 - **Languages**: Turkish (TR) and English (EN)
@@ -309,11 +301,14 @@ Denklem/
 │   ├── Screens/                  # Screen views and ViewModels
 │   │   ├── StartScreen/
 │   │   ├── DisputeCategory/
-│   │   ├── AgreementStatus/
-│   │   ├── DisputeType/
-│   │   ├── Input/
+│   │   ├── MediationFee/         # Unified mediation fee calculation
+│   │   ├── AttorneyFee/
+│   │   ├── Reinstatement/
+│   │   ├── SerialDisputes/
+│   │   ├── TenancySpecial/
 │   │   ├── TimeCalculation/
 │   │   ├── SMMCalculation/
+│   │   ├── Survey/
 │   │   ├── About/
 │   │   └── Legislation/
 │   ├── Components/               # Reusable components
@@ -385,10 +380,9 @@ LocaleManager.shared.setLanguage(.english)
 
 ---
 
-## 🚀 Upcoming Features (v2.1+)
+## 🚀 Upcoming Features
 
 ### **Planned Features**
-- 🏠 **Rental Disputes**: Special calculations for eviction and rent determination
 - 📊 **Comparison Mode**: Side-by-side comparison of different scenarios
 - 📤 **Advanced Export**: PDF reports and email sharing
 - 🔔 **Tariff Notifications**: Push notifications for new tariff updates
@@ -411,6 +405,10 @@ See the `Documentation/` folder for detailed documentation:
 - ✨ [FEATURES_BREAKDOWN.md](Documentation/FEATURES_BREAKDOWN.md) - Feature details
 - 💻 [CODING_STANDARDS.md](Documentation/CODING_STANDARDS.md) - Coding standards
 - 🧑‍⚖️ [ATTORNEY_FEE_CALCULATION_PLAN.md](Documentation/ATTORNEY_FEE_CALCULATION_PLAN.md) - Attorney fee planning
+- 🏠 [TENANCY_CALCULATION_PLAN.md](Documentation/TENANCY_CALCULATION_PLAN.md) - Tenancy fee planning
+- 👨‍⚖️ [REINSTATEMENT_CALCULATION_PLAN.md](Documentation/REINSTATEMENT_CALCULATION_PLAN.md) - Reinstatement planning
+- 📝 [SERIAL_DISPUTES_CALCULATION_PLAN.md](Documentation/SERIAL_DISPUTES_CALCULATION_PLAN.md) - Serial disputes planning
+- 📊 [SURVEY_PLAN.md](Documentation/SURVEY_PLAN.md) - Survey feature planning
 
 ---
 
@@ -444,6 +442,18 @@ This project is licensed under the MIT License.
 ---
 
 ## 🔄 Version History
+
+### v2.4.3 (February 2026) - Tenancy & Unified Mediation Fee Screen
+- 🏠 **Tenancy Disputes (Kira Tahliye/Tespit)**: Special calculation module for eviction and rent determination disputes
+  - Attorney fee calculation with Sulh Hukuk minimum enforcement
+  - Mediation fee calculation with Art. 7/7 minimum enforcement
+  - Unified screen with segmented picker (Attorney | Mediation)
+- 🔄 **Unified Mediation Fee Screen**: Merged DisputeTypeView + InputView into single MediationFeeView
+  - Dropdown menu for dispute type selection (replaces 10-button grid)
+  - Year picker, agreement selector, and input fields in one screen
+  - Streamlined 2-step flow (DisputeCategoryView → MediationFeeView)
+- 📊 **Survey Feature**: 2-question legal mini quiz with thank you card
+- ⚡ **Performance**: Cached Bundle.localizedBundle, removed dead code, shared theme defaults
 
 ### v2.3.0 (February 2026) - Special Calculators & Navigation Update
 - 🏢 **Attorney Fee Calculation**: New power of attorney fee calculator added for mediation process

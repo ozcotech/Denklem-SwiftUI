@@ -22,7 +22,7 @@ final class TenancySelectionViewModel: ObservableObject {
     @Published var selectedYear: TariffYear
 
     /// Selected fee mode (segmented picker)
-    @Published var selectedFeeMode: TenancyCalculationConstants.TenancyFeeMode = .attorneyFee
+    @Published var selectedFeeMode: TenancyCalculationConstants.TenancyFeeMode = .mediationFee
 
     /// Checkbox selections
     @Published var isEvictionSelected: Bool = false

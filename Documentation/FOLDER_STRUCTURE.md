@@ -75,18 +75,31 @@ Views/
 │   ├── DisputeCategory/
 │   │   ├── DisputeCategoryView.swift       # Category selection UI
 │   │   └── DisputeCategoryViewModel.swift  # Category logic
-│   ├── AgreementStatus/
-│   │   ├── AgreementStatusView.swift       # Agreement status UI
-│   │   └── AgreementStatusViewModel.swift  # Agreement logic
-│   ├── DisputeType/
-│   │   ├── DisputeTypeView.swift           # Dispute type selection
-│   │   └── DisputeTypeViewModel.swift      # Dispute type logic
-│   ├── Input/
-│   │   ├── InputView.swift                 # Input form UI
-│   │   └── InputViewModel.swift            # Input validation logic
-│   ├── Result/
-│   │   ├── ResultView.swift                # Calculation result display
-│   │   └── ResultViewModel.swift           # Result formatting logic
+│   ├── MediationFee/
+│   │   ├── MediationFeeView.swift          # Unified mediation fee screen
+│   │   ├── MediationFeeViewModel.swift     # Mediation fee logic
+│   │   └── MediationFeeResultSheet.swift   # Result sheet
+│   ├── AttorneyFee/
+│   │   ├── AttorneyFeeTypeView.swift       # Attorney fee type selection
+│   │   ├── AttorneyFeeTypeViewModel.swift  # Attorney fee type logic
+│   │   ├── AttorneyFeeInputView.swift      # Attorney fee input
+│   │   ├── AttorneyFeeInputViewModel.swift # Attorney fee input logic
+│   │   └── AttorneyFeeResultSheet.swift    # Attorney fee result
+│   ├── Reinstatement/
+│   │   ├── ReinstatementSheet.swift        # Reinstatement modal
+│   │   ├── ReinstatementViewModel.swift    # Reinstatement logic
+│   │   └── ReinstatementResultView.swift   # Reinstatement result
+│   ├── SerialDisputes/
+│   │   ├── SerialDisputesSheet.swift       # Serial disputes modal
+│   │   └── SerialDisputesViewModel.swift   # Serial disputes logic
+│   ├── TenancySpecial/
+│   │   ├── TenancySelectionView.swift      # Tenancy unified screen
+│   │   ├── TenancySelectionViewModel.swift # Tenancy logic
+│   │   ├── TenancyAttorneyFeeResultSheet.swift  # Attorney result
+│   │   └── TenancyMediationFeeResultSheet.swift # Mediation result
+│   ├── Survey/
+│   │   ├── SurveyView.swift               # Mini quiz UI
+│   │   └── SurveyViewModel.swift          # Survey logic
 │   ├── TimeCalculation/
 │   │   ├── TimeCalculationView.swift       # Time calculation UI
 │   │   └── TimeCalculationViewModel.swift  # Time calc logic
@@ -94,8 +107,7 @@ Views/
 │   │   ├── SMMCalculationView.swift        # SMM calculation UI
 │   │   └── SMMCalculationViewModel.swift   # SMM calc logic
 │   ├── About/
-│   │   ├── AboutView.swift                 # About screen UI
-│   │   └── AboutViewModel.swift            # About screen logic
+│   │   └── AboutView.swift                 # About screen UI
 │   └── Legislation/
 │       ├── LegislationView.swift           # Legislation viewer
 │       └── LegislationViewModel.swift      # Legislation logic
@@ -456,8 +468,8 @@ Usage: Include preview and usage examples"
 
 ---
 
-**Folder Structure Version:** 1.0  
-**Last Updated:** July 2025  
-**Project:** DENKLEM - Mediation Calculator SwiftUI  
+**Folder Structure Version:** 2.0
+**Last Updated:** February 2026
+**Project:** DENKLEM - Mediation Calculator SwiftUI
 **Architecture:** Practical SwiftUI Structure for Single Developer + AI-Assisted Development
 

@@ -2332,6 +2332,24 @@
         }
       }
     },
+    "dispute_type.select_prompt" : {
+      "comment" : "Dropdown placeholder for dispute type selection",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select Dispute Type"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uyuşmazlık Türü Seçiniz"
+          }
+        }
+      }
+    },
     "dispute_type.other" : {
       "comment" : "dispute type",
       "extractionState" : "manual",

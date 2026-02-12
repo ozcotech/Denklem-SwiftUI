@@ -1,224 +1,36 @@
 //
-//  InputView.swift
+//  MediationFeeResultSheet.swift
 //  Denklem
 //
-//  Created by ozkan on 06.01.2026.
+//  Created by ozkan on 12.02.2026.
 //
 
 import SwiftUI
 
-// MARK: - Input View
-/// Displays input fields for calculation based on agreement status
-/// Shows amount for agreement cases, party count for non-agreement
+// MARK: - Mediation Fee Result Sheet
+/// Full screen sheet displaying mediation fee calculation result
 @available(iOS 26.0, *)
-struct InputView: View {
-    
-    // MARK: - Properties
-    
-    @StateObject private var viewModel: InputViewModel
-    @ObservedObject private var localeManager = LocaleManager.shared
-    @Environment(\.theme) var theme
-    @Environment(\.dismiss) private var dismiss
-    
-    // MARK: - Namespace for Morphing Transitions
-    
-    @Namespace private var glassNamespace
-    
-    // MARK: - Initialization
-    
-    init(selectedYear: TariffYear, isMonetary: Bool, hasAgreement: Bool, selectedDisputeType: DisputeType) {
-        _viewModel = StateObject(wrappedValue: InputViewModel(
-            selectedYear: selectedYear,
-            isMonetary: isMonetary,
-            hasAgreement: hasAgreement,
-            selectedDisputeType: selectedDisputeType
-        ))
-    }
-    
-    // MARK: - Body
-    
-    var body: some View {
-        // Observe language changes to trigger view refresh
-        let _ = localeManager.refreshID
-        
-        ZStack {
-            // Background
-            theme.background
-                .ignoresSafeArea()
-            
-            // Content
-            ScrollView {
-                VStack(spacing: theme.spacingL) {
+struct MediationFeeResultSheet: View {
 
-                    // Header Section
-                    headerSection
-
-                    // Input Fields Section
-                    inputFieldsSection
-
-                    // Error Message
-                    if let errorMessage = viewModel.errorMessage {
-                        errorMessageView(errorMessage)
-                    }
-
-                    // Calculate Button
-                    calculateButton
-                }
-                .padding(.horizontal, theme.spacingL)
-                .padding(.bottom, theme.spacingXXL)
-            }
-        }
-        .onTapGesture {
-            // Dismiss keyboard when tapping outside
-            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-        }
-        .navigationTitle(viewModel.screenTitle)
-        .navigationBarTitleDisplayMode(.inline)
-        .sheet(isPresented: $viewModel.showResult) {
-            if let result = viewModel.calculationResult {
-                ResultSheet(result: result, theme: theme, isMonetary: viewModel.isMonetary)
-            }
-        }
-    }
-    
-    // MARK: - Header Section
-    
-    private var headerSection: some View {
-        VStack(spacing: theme.spacingS) {
-            // Dispute Type Badge
-            Text(viewModel.selectedDisputeType.displayName)
-                .font(theme.footnote)
-                .fontWeight(.semibold)
-                .foregroundStyle(theme.textSecondary)
-                .padding(.horizontal, theme.spacingM)
-                .padding(.vertical, theme.spacingXS)
-                .background {
-                    Capsule()
-                        .fill(theme.surfaceElevated.opacity(0.6))
-                }
-            
-            // Agreement Status (only for monetary disputes)
-            if viewModel.isMonetary {
-                Text(viewModel.agreementStatusText)
-                    .font(theme.title3)
-                    .fontWeight(.semibold)
-                    .foregroundStyle(theme.textSecondary)
-            }
-            
-            // Selected Year
-            Text(viewModel.selectedYearText)
-                .font(theme.caption)
-                .fontWeight(.semibold)
-                .foregroundStyle(theme.textPrimary)
-                .multilineTextAlignment(.center)
-        }
-        .frame(maxWidth: .infinity)
-        .padding(.top, theme.spacingL)
-    }
-    
-    // MARK: - Input Fields Section
-    
-    private var inputFieldsSection: some View {
-        VStack(spacing: theme.spacingM) {
-            // Amount Input (only for agreement cases)
-            if viewModel.showAmountInput {
-                amountInputField
-            }
-
-            // Party Count Input (only for non-agreement cases)
-            if viewModel.showPartyCountInput {
-                partyCountInputField
-            }
-        }
-    }
-    
-    // MARK: - Amount Input Field
-    
-    private var amountInputField: some View {
-        TextField(LocalizationKeys.Input.Placeholder.amount.localized, text: $viewModel.amountText)
-            .font(theme.body)
-            .fontWeight(.medium)
-            .foregroundStyle(theme.textPrimary)
-            .keyboardType(.decimalPad)
-            .textFieldStyle(.plain)
-            .multilineTextAlignment(.center)
-            .padding(theme.spacingM)
-            .frame(height: theme.buttonHeight)
-            .frame(maxWidth: .infinity)
-            .contentShape(Rectangle())
-            .glassEffect()
-            .glassEffectID("amountInput", in: glassNamespace)
-            .onChange(of: viewModel.amountText) { _, _ in
-                viewModel.formatAmountInput()
-            }
-    }
-    
-    // MARK: - Party Count Input Field
-    
-    private var partyCountInputField: some View {
-        TextField(LocalizationKeys.Input.Placeholder.partyCount.localized, text: $viewModel.partyCountText)
-            .font(theme.body)
-            .fontWeight(.medium)
-            .foregroundStyle(theme.textPrimary)
-            .keyboardType(.numberPad)
-            .textFieldStyle(.plain)
-            .multilineTextAlignment(.center)
-            .padding(theme.spacingM)
-            .frame(height: theme.buttonHeight)
-            .frame(maxWidth: .infinity)
-            .contentShape(Rectangle())
-            .glassEffect()
-            .glassEffectID("partyCountInput", in: glassNamespace)
-            .onChange(of: viewModel.partyCountText) { _, _ in
-                viewModel.formatPartyCountInput()
-            }
-    }
-    
-    // MARK: - Error Message View
-    
-    private func errorMessageView(_ message: String) -> some View {
-        ErrorBannerView(message: message)
-    }
-    
-    // MARK: - Calculate Button
-    
-    private var calculateButton: some View {
-        CalculateButton(
-            buttonText: viewModel.calculateButtonText,
-            isCalculating: viewModel.isCalculating,
-            isEnabled: viewModel.isCalculateButtonEnabled
-        ) {
-            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-            viewModel.calculate()
-        }
-        .glassEffectID("calculate", in: glassNamespace)
-    }
-}
-
-// MARK: - Result Sheet
-/// Full screen sheet displaying calculation result
-@available(iOS 26.0, *)
-struct ResultSheet: View {
-    
     let result: CalculationResult
     let theme: ThemeProtocol
     let isMonetary: Bool
-    
+
     @Environment(\.dismiss) private var dismiss
 
     private var smmLegalPersonResultForFee: SMMPersonResult {
         let input = SMMCalculationInput(amount: result.amount, calculationType: .vatIncludedWithholdingIncluded)
         return SMMCalculator.calculateSMM(input: input).legalPersonResult
     }
-    
+
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: theme.spacingL) {
-                    
+
                     // Main Fee Card
                     mainFeeCard
-                    
+
                     // Calculation Info Card
                     calculationInfoCard
 
@@ -255,16 +67,16 @@ struct ResultSheet: View {
         .presentationDetents([.large])
         .presentationDragIndicator(.visible)
     }
-    
+
     // MARK: - Main Fee Card
-    
+
     private var mainFeeCard: some View {
         VStack(spacing: theme.spacingM) {
             Text(LocalizationKeys.Result.mediationFee.localized)
                 .font(theme.footnote)
                 .fontWeight(.medium)
                 .foregroundStyle(theme.textSecondary)
-            
+
             Text(LocalizationHelper.formatCurrency(result.amount))
                 .font(.system(size: 40, weight: .bold, design: .rounded))
                 .foregroundStyle(theme.primary)
@@ -280,9 +92,9 @@ struct ResultSheet: View {
                 .stroke(theme.primary.opacity(0.2), lineWidth: 2)
         }
     }
-    
+
     // MARK: - Calculation Info Card
-    
+
     private var calculationInfoCard: some View {
         VStack(spacing: theme.spacingM) {
             // Card Header
@@ -291,13 +103,13 @@ struct ResultSheet: View {
                     .font(theme.headline)
                     .fontWeight(.bold)
                     .foregroundStyle(theme.textPrimary)
-                
+
                 Spacer()
             }
-            
+
             Divider()
                 .background(theme.border)
-            
+
             // Agreement Status - special text for non-monetary disputes
             if !isMonetary {
                 detailRow(
@@ -310,25 +122,25 @@ struct ResultSheet: View {
                     value: result.input.agreementStatus == .agreed ? LocalizationKeys.AgreementStatus.agreed.localized : LocalizationKeys.AgreementStatus.notAgreed.localized
                 )
             }
-            
+
             Divider()
                 .background(theme.outline.opacity(0.2))
-            
+
             // Dispute Type
             detailRow(
                 label: LocalizationKeys.Result.disputeType.localized,
                 value: result.disputeType.displayName
             )
-            
+
             Divider()
                 .background(theme.outline.opacity(0.2))
-            
+
             // Tariff Year
             detailRow(
                 label: LocalizationKeys.Result.tariffYear.localized,
                 value: result.input.tariffYear.displayName
             )
-            
+
             // Party Count (only for non-agreement cases)
             if result.input.agreementStatus == .notAgreed {
                 Divider()
@@ -344,7 +156,7 @@ struct ResultSheet: View {
             if let amount = result.input.disputeAmount {
                 Divider()
                     .background(theme.outline.opacity(0.2))
-                
+
                 detailRow(
                     label: LocalizationKeys.Input.agreementAmount.localized,
                     value: LocalizationHelper.formatCurrency(amount)
@@ -361,7 +173,7 @@ struct ResultSheet: View {
                 .stroke(theme.border, lineWidth: theme.borderWidth)
         }
     }
-    
+
     // MARK: - Calculation Method Card
 
     private var calculationMethodCard: some View {
@@ -456,7 +268,7 @@ struct ResultSheet: View {
         }()
 
         return VStack(spacing: theme.spacingXS) {
-            // Tier description: "İlk 600.000,00 TL × %6"
+            // Tier description
             HStack {
                 Text(tierLabel)
                     .font(theme.footnote)
@@ -492,13 +304,13 @@ struct ResultSheet: View {
                     .font(theme.headline)
                     .fontWeight(.bold)
                     .foregroundStyle(theme.textPrimary)
-                
+
                 Spacer()
             }
-            
+
             Divider()
                 .background(theme.border)
-            
+
             // SMM breakdown rows
             detailRow(
                 label: LocalizationKeys.SMMResult.grossFee.localized,
@@ -547,59 +359,10 @@ struct ResultSheet: View {
                 .stroke(theme.border, lineWidth: theme.borderWidth)
         }
     }
-    
+
     // MARK: - Detail Row
-    
+
     private func detailRow(label: String, value: String) -> some View {
         DetailRow(label: label, value: value)
-    }
-    
-    // MARK: - Private Methods (for future use)
-    
-    private func shareResult() {
-        let text = """
-        \(LocalizationKeys.Result.mediationFee.localized): \(LocalizationHelper.formatCurrency(result.amount))
-        \(LocalizationKeys.Result.disputeType.localized): \(result.disputeType.displayName)
-        \(LocalizationKeys.Result.tariffYear.localized): \(result.input.tariffYear.displayName)
-        """
-        
-        let activityVC = UIActivityViewController(activityItems: [text], applicationActivities: nil)
-        
-        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-           let rootVC = windowScene.windows.first?.rootViewController {
-            rootVC.present(activityVC, animated: true)
-        }
-    }
-}
-
-// MARK: - Preview
-
-@available(iOS 26.0, *)
-struct InputView_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            NavigationStack {
-                InputView(
-                    selectedYear: .year2025,
-                    isMonetary: true,
-                    hasAgreement: true,
-                    selectedDisputeType: .workerEmployer
-                )
-            }
-            .injectTheme(LightTheme())
-            .previewDisplayName("Agreement - Light Mode")
-            
-            NavigationStack {
-                InputView(
-                    selectedYear: .year2025,
-                    isMonetary: true,
-                    hasAgreement: false,
-                    selectedDisputeType: .commercial
-                )
-            }
-            .injectTheme(DarkTheme())
-            .preferredColorScheme(.dark)
-            .previewDisplayName("Non-Agreement - Dark Mode")
-        }
     }
 }

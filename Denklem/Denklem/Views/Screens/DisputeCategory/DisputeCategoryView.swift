@@ -58,10 +58,7 @@ struct DisputeCategoryView: View {
         .navigationTitle(LocalizationKeys.Tools.title.localized)
         .navigationBarTitleDisplayMode(.inline)
         .navigationDestination(isPresented: $viewModel.navigateToDisputeType) {
-            // Navigate to DisputeType with isMonetary flag
-            // For monetary disputes, agreement selector will show in DisputeType
-            // For non-monetary, hasAgreement = false per Tariff Article 7, Paragraph 1
-            DisputeTypeView(
+            MediationFeeView(
                 selectedYear: viewModel.selectedYear,
                 isMonetary: viewModel.isMonetary
             )
