@@ -141,10 +141,9 @@ final class SerialDisputesViewModel: ObservableObject {
         selectedDisputeType = disputeType
     }
 
-    /// Resets all inputs
+    /// Resets all inputs while preserving the selected dispute type
     func reset() {
         fileCountText = ""
-        selectedDisputeType = .commercial
         calculationResult = nil
         errorMessage = nil
         showResult = false

@@ -69,8 +69,8 @@ final class MediationFeeViewModel: ObservableObject {
     /// Whether the dispute is monetary
     @Published var isMonetary: Bool
 
-    /// Selected agreement status (nil until user makes a selection for monetary disputes)
-    @Published var selectedAgreement: AgreementSelectionType?
+    /// Selected agreement status (defaults to agreed for monetary disputes)
+    @Published var selectedAgreement: AgreementSelectionType? = .agreed
 
     /// Selected dispute type from dropdown
     @Published var selectedDisputeType: DisputeType?

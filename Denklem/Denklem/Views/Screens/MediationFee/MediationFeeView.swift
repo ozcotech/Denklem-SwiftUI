@@ -163,12 +163,6 @@ struct MediationFeeView: View {
             }
         }
         .id(localeManager.refreshID)
-        .onAppear {
-            // Auto-select first option if none selected
-            if viewModel.selectedAgreement == nil {
-                viewModel.selectAgreement(.agreed)
-            }
-        }
     }
 
     // MARK: - Non-Monetary Info Section
