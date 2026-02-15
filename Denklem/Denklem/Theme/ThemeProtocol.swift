@@ -54,6 +54,15 @@ protocol ThemeProtocol {
     
     /// Fill color for subtle backgrounds
     var fill: Color { get }
+
+    /// Main category card background color
+    var cardMain: Color { get }
+
+    /// Special calculations card background color
+    var cardSpecial: Color { get }
+
+    /// Other calculations card background color
+    var cardOther: Color { get }
     
     // MARK: - Typography
     
@@ -181,6 +190,12 @@ protocol ThemeProtocol {
 
 @available(iOS 26.0, *)
 extension ThemeProtocol {
+
+    // MARK: - Card Colors
+
+    var cardMain: Color { primary.opacity(0.12) }
+    var cardSpecial: Color { secondary.opacity(0.12) }
+    var cardOther: Color { fill.opacity(0.5) }
 
     // MARK: - Typography
 

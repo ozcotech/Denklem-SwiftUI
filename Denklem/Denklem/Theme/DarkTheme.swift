@@ -28,4 +28,8 @@ struct DarkTheme: ThemeProtocol {
     var error: Color { Color("AppError") }
     var outline: Color { Color("AppOutline") }
     var fill: Color { Color("AppFill") }
+
+    var cardMain: Color { Color("AppCardMain") }
+    var cardSpecial: Color { Color("AppCardSpecial") }
+    var cardOther: Color { Color("AppCardOther") }
 }
