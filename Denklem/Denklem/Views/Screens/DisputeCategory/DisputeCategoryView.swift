@@ -69,7 +69,7 @@ struct DisputeCategoryView: View {
                         .frame(height: theme.spacingXL)
                 }
                 .padding(.horizontal, theme.spacingL)
-                .padding(.top, theme.spacingXL)
+                .padding(.top, theme.spacingM)
             }
         }
         // Navigation bar title for Tools screen ("Hesaplama Araçları" / "Calculation Tools")

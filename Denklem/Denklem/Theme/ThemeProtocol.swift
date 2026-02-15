@@ -130,7 +130,10 @@ protocol ThemeProtocol {
     
     /// Extra large corner radius (20pt)
     var cornerRadiusXL: CGFloat { get }
-    
+
+    /// Extra extra large corner radius (26pt)
+    var cornerRadiusXXL: CGFloat { get }
+
     /// Standard border width (1pt)
     var borderWidth: CGFloat { get }
     
@@ -224,6 +227,7 @@ extension ThemeProtocol {
     var cornerRadiusM: CGFloat { 12 }
     var cornerRadiusL: CGFloat { 16 }
     var cornerRadiusXL: CGFloat { 20 }
+    var cornerRadiusXXL: CGFloat { 26 }
 
     var borderWidth: CGFloat { 1 }
     var borderWidthThick: CGFloat { 2 }
@@ -265,7 +269,8 @@ enum CornerRadiusSize {
     case medium     // 12pt
     case large      // 16pt
     case extraLarge // 20pt
-    
+    case extraExtraLarge // 26pt
+
     @available(iOS 26.0, *)
     func value(from theme: ThemeProtocol) -> CGFloat {
         switch self {
@@ -273,6 +278,7 @@ enum CornerRadiusSize {
         case .medium: return theme.cornerRadiusM
         case .large: return theme.cornerRadiusL
         case .extraLarge: return theme.cornerRadiusXL
+        case .extraExtraLarge: return theme.cornerRadiusXXL
         }
     }
 }

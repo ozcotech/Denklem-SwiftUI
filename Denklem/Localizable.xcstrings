@@ -2205,6 +2205,54 @@
         }
       }
     },
+    "dispute_category.ai_chat" : {
+      "comment" : "AI Chat button title",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Denklem AI"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Denklem AI"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Denklem AI"
+          }
+        }
+      }
+    },
+    "dispute_category.ai_chat.description" : {
+      "comment" : "AI Chat button description",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI-powered legal assistant"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI-driven juridisk assistent"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yapay zeka destekli hukuk asistanı"
+          }
+        }
+      }
+    },
     "dispute_category.attorney_fee" : {
       "comment" : "Attorney fee calculation button label",
       "extractionState" : "manual",
@@ -3720,19 +3768,19 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "This feature is still under development.\nIt will be available in March 2026."
+            "value" : "This feature is still under development.\nIt will be available in April 2026."
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Denna funktion är fortfarande under utveckling.\nDen kommer att vara tillgänglig i mars 2026."
+            "value" : "Denna funktion är fortfarande under utveckling.\nDen kommer att vara tillgänglig i april 2026."
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Henüz geliştirme aşamasındadır.\n2026 Mart ayında aktif hale gelecektir."
+            "value" : "Henüz geliştirme aşamasındadır.\n2026 Nisan ayında aktif hale gelecektir."
           }
         }
       }

@@ -18,8 +18,9 @@ enum DisputeCategoryType: String, CaseIterable, Identifiable {
     case attorneyFee       // Attorney fee calculation (special)
     case rentSpecial       // Tenancy (eviction/determination)
     case reinstatement     // Reinstate Employee (İşe İade)
-    case serialDisputes    // Serial disputes (Seri Uyuşmazlıklar) 
-    
+    case serialDisputes    // Serial disputes (Seri Uyuşmazlıklar)
+    case aiChat            // AI Chat (Aktif Zeka)
+
     var id: String { rawValue }
 
     /// Localized display name
@@ -41,6 +42,8 @@ enum DisputeCategoryType: String, CaseIterable, Identifiable {
             return LocalizationKeys.DisputeCategory.reinstatement.localized
         case .serialDisputes:
             return LocalizationKeys.DisputeCategory.serialDisputes.localized
+        case .aiChat:
+            return LocalizationKeys.DisputeCategory.aiChat.localized
         }
     }
 
@@ -63,6 +66,8 @@ enum DisputeCategoryType: String, CaseIterable, Identifiable {
             return LocalizationKeys.DisputeCategory.reinstatementDescription.localized
         case .serialDisputes:
             return LocalizationKeys.DisputeCategory.serialDisputesDescription.localized
+        case .aiChat:
+            return LocalizationKeys.DisputeCategory.aiChatDescription.localized
         }
     }
 
@@ -85,6 +90,8 @@ enum DisputeCategoryType: String, CaseIterable, Identifiable {
             return "arrow.trianglehead.2.clockwise.rotate.90.circle"
         case .serialDisputes:
             return "rectangle.stack.fill"
+        case .aiChat:
+            return "plus.circle"
         }
     }
 
@@ -107,6 +114,8 @@ enum DisputeCategoryType: String, CaseIterable, Identifiable {
             return .yellow
         case .serialDisputes:
             return .pink
+        case .aiChat:
+            return .cyan
         }
     }
 }
@@ -157,7 +166,7 @@ final class DisputeCategoryViewModel: ObservableObject {
     
     /// Other calculations (time and SMM)
     var otherCalculations: [DisputeCategoryType] {
-        return [.smmCalculation, .timeCalculation]
+        return [.smmCalculation, .timeCalculation, .aiChat]
     }
     
     /// Screen title
@@ -218,6 +227,8 @@ final class DisputeCategoryViewModel: ObservableObject {
             showReinstatementSheet = true
         case .rentSpecial:
             navigateToTenancySpecial = true
+        case .aiChat:
+            showComingSoonPopover = true
         }
     }
     

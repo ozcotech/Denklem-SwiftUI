@@ -100,6 +100,10 @@ struct LocalizationKeys {
         static let reinstatementDescription = "dispute_category.reinstatement.description"
         static let serialDisputes = "dispute_category.serial_disputes"
         static let serialDisputesDescription = "dispute_category.serial_disputes.description"
+
+        // AI Chat
+        static let aiChat = "dispute_category.ai_chat"
+        static let aiChatDescription = "dispute_category.ai_chat.description"
     }
     
     // MARK: - Agreement Status
