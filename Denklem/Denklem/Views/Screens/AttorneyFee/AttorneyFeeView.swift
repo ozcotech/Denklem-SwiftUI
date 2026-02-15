@@ -116,15 +116,13 @@ struct AttorneyFeeView: View {
 
     private var disputeTypeSection: some View {
         VStack(spacing: theme.spacingM) {
-            // Dispute Type Segmented Picker
-            Picker("", selection: $viewModel.selectedDisputeType) {
-                ForEach(AttorneyFeeDisputeType.allCases) { type in
-                    Text(type.displayName)
-                        .tag(type as AttorneyFeeDisputeType?)
-                }
+            // Uses CommonSegmentedPicker with optional enum selection.
+            CommonSegmentedPicker(
+                selection: .optional($viewModel.selectedDisputeType),
+                options: AttorneyFeeDisputeType.allCases
+            ) { type in
+                Text(type.displayName)
             }
-            .pickerStyle(.segmented)
-            .controlSize(.large)
 
             // Selected type indicator
             if let selected = viewModel.selectedDisputeType {
@@ -147,15 +145,13 @@ struct AttorneyFeeView: View {
 
     private var agreementStatusSection: some View {
         VStack(spacing: theme.spacingM) {
-            // Agreement Status Segmented Picker
-            Picker("", selection: $viewModel.selectedAgreementStatus) {
-                ForEach(AttorneyFeeAgreementStatus.allCases) { status in
-                    Text(status.displayName)
-                        .tag(status as AttorneyFeeAgreementStatus?)
-                }
+            // Uses CommonSegmentedPicker with optional enum selection.
+            CommonSegmentedPicker(
+                selection: .optional($viewModel.selectedAgreementStatus),
+                options: AttorneyFeeAgreementStatus.allCases
+            ) { status in
+                Text(status.displayName)
             }
-            .pickerStyle(.segmented)
-            .controlSize(.large)
 
             // Selected status indicator
             if let selected = viewModel.selectedAgreementStatus {

@@ -17,7 +17,18 @@ struct DenklemApp: App {
         // UIKit Appearance: Customize the selected segment tint color
         // SwiftUI's .pickerStyle(.segmented) lacks native customization options,
         // so UIKit appearance API is used. This is a global setting affecting all segmented controls.
-        UISegmentedControl.appearance().selectedSegmentTintColor = UIColor.white.withAlphaComponent(0.6)
+        let segmentedControlAppearance = UISegmentedControl.appearance()
+        segmentedControlAppearance.selectedSegmentTintColor = UIColor.white.withAlphaComponent(0.6)
+
+        let normalAttributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont.systemFont(ofSize: 14, weight: .medium)
+        ]
+        let selectedAttributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont.systemFont(ofSize: 14, weight: .semibold)
+        ]
+
+        segmentedControlAppearance.setTitleTextAttributes(normalAttributes, for: .normal)
+        segmentedControlAppearance.setTitleTextAttributes(selectedAttributes, for: .selected)
     }
     
     // MARK: - State Objects

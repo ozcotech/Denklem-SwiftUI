@@ -152,15 +152,13 @@ struct ReinstatementSheet: View {
 
     private var agreementStatusSection: some View {
         VStack(spacing: theme.spacingM) {
-            // Segmented Picker - Native style like DisputeTypeView
-            Picker("", selection: $viewModel.selectedAgreementStatus) {
-                Text(LocalizationKeys.AgreementStatus.agreed.localized)
-                    .tag(AgreementStatus?.some(.agreed))
-                Text(LocalizationKeys.AgreementStatus.notAgreed.localized)
-                    .tag(AgreementStatus?.some(.notAgreed))
+            // Uses CommonSegmentedPicker with optional enum selection.
+            CommonSegmentedPicker(
+                selection: .optional($viewModel.selectedAgreementStatus),
+                options: [.agreed, .notAgreed]
+            ) { status in
+                Text(status.displayName)
             }
-            .pickerStyle(.segmented)
-            .controlSize(.large)
             .onChange(of: viewModel.selectedAgreementStatus) { _, newValue in
                 if let status = newValue {
                     withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {

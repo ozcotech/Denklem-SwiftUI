@@ -115,14 +115,18 @@ struct TenancySelectionView: View {
     // MARK: - Fee Mode Segmented Picker
 
     private var feeModePicker: some View {
-        Picker("", selection: $viewModel.selectedFeeMode) {
-            Text(LocalizationKeys.RentSpecial.pickerAttorneyFee.localized)
-                .tag(TenancyCalculationConstants.TenancyFeeMode.attorneyFee)
-            Text(LocalizationKeys.RentSpecial.pickerMediationFee.localized)
-                .tag(TenancyCalculationConstants.TenancyFeeMode.mediationFee)
+        // Uses CommonSegmentedPicker with required enum selection.
+        CommonSegmentedPicker(
+            selection: .required($viewModel.selectedFeeMode),
+            options: [
+                TenancyCalculationConstants.TenancyFeeMode.attorneyFee,
+                TenancyCalculationConstants.TenancyFeeMode.mediationFee
+            ]
+        ) { mode in
+            Text(mode == .attorneyFee
+                 ? LocalizationKeys.RentSpecial.pickerAttorneyFee.localized
+                 : LocalizationKeys.RentSpecial.pickerMediationFee.localized)
         }
-        .pickerStyle(.segmented)
-        .controlSize(.large)
         .onChange(of: viewModel.selectedFeeMode) { _, newValue in
             viewModel.switchFeeMode(newValue)
         }

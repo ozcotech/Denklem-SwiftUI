@@ -132,16 +132,14 @@ struct MediationFeeView: View {
 
     private var agreementSelectorSection: some View {
         VStack(spacing: theme.spacingM) {
-            // Agreement Segmented Picker
-            Picker("", selection: $viewModel.selectedAgreement) {
-                ForEach(AgreementSelectionType.allCases) { agreement in
-                    Text(agreement.displayName)
-                        .tag(agreement as AgreementSelectionType?)
-                }
+            // Uses CommonSegmentedPicker with optional enum selection and dynamic tint.
+            CommonSegmentedPicker(
+                selection: .optional($viewModel.selectedAgreement),
+                options: AgreementSelectionType.allCases,
+                tint: viewModel.selectedAgreement == .agreed ? theme.success : theme.error
+            ) { agreement in
+                Text(agreement.displayName)
             }
-            .pickerStyle(.segmented)
-            .controlSize(.large)
-            .tint(viewModel.selectedAgreement == .agreed ? theme.success : theme.error)
 
             // Helper text - shows selected status with color
             if let selected = viewModel.selectedAgreement {
