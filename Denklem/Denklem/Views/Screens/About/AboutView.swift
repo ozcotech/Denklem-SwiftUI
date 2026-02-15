@@ -17,6 +17,14 @@ private struct DisclaimerAnchorKey: PreferenceKey {
     }
 }
 
+@available(iOS 26.0, *)
+private struct SupportedLanguagesAnchorKey: PreferenceKey {
+    static var defaultValue: Anchor<CGRect>? = nil
+    static func reduce(value: inout Anchor<CGRect>?, nextValue: () -> Anchor<CGRect>?) {
+        value = value ?? nextValue()
+    }
+}
+
 // MARK: - About View
 @available(iOS 26.0, *)
 struct AboutView: View {
@@ -29,6 +37,7 @@ struct AboutView: View {
     @Environment(\.theme) var theme
 
     @State private var showingDisclaimerPopover: Bool = false
+    @State private var showingSupportedLanguagesPopover: Bool = false
 
     // MARK: - Body
 
@@ -46,7 +55,14 @@ struct AboutView: View {
                 ForEach(viewModel.sections) { section in
                     AboutSectionView(
                         section: section,
-                        onShowDisclaimer: { showingDisclaimerPopover = true },
+                        onShowDisclaimer: {
+                            showingSupportedLanguagesPopover = false
+                            showingDisclaimerPopover = true
+                        },
+                        onShowSupportedLanguages: {
+                            showingDisclaimerPopover = false
+                            showingSupportedLanguagesPopover = true
+                        },
                         onItemTap: { item in viewModel.handleAction(for: item) }
                     )
                 }
@@ -89,6 +105,32 @@ struct AboutView: View {
                             .transition(.opacity.combined(with: .scale(scale: 0.98, anchor: .bottom)))
                     }
                     .animation(.easeInOut(duration: theme.fastAnimationDuration), value: showingDisclaimerPopover)
+                }
+            }
+        }
+        .overlayPreferenceValue(SupportedLanguagesAnchorKey.self) { anchor in
+            GeometryReader { proxy in
+                if let anchor, showingSupportedLanguagesPopover {
+                    let rect = proxy[anchor]
+                    let maxWidth = max(240, min(360, proxy.size.width - (theme.spacingM * 2)))
+
+                    ZStack {
+                        Color.clear
+                            .contentShape(Rectangle())
+                            .onTapGesture { showingSupportedLanguagesPopover = false }
+
+                        SupportedLanguagesPopoverContent()
+                            .frame(width: maxWidth)
+                            .fixedSize(horizontal: false, vertical: true)
+                            .position(
+                                x: min(max(rect.midX, maxWidth / 2 + theme.spacingM),
+                                       proxy.size.width - maxWidth / 2 - theme.spacingM),
+                                y: max(theme.spacingM + 20, rect.minY - 72)
+                            )
+                            .onTapGesture { /* swallow taps */ }
+                            .transition(.opacity.combined(with: .scale(scale: 0.98, anchor: .bottom)))
+                    }
+                    .animation(.easeInOut(duration: theme.fastAnimationDuration), value: showingSupportedLanguagesPopover)
                 }
             }
         }
@@ -188,34 +230,32 @@ struct AboutView: View {
         }
     }
 
-    // MARK: - Language Toggle Row
+    // MARK: - Language Picker Row
 
     private var languageToggleRow: some View {
-        HStack(spacing: theme.spacingM) {
-            Image(systemName: "globe")
-                .font(theme.body)
-                .foregroundStyle(theme.primary)
-                .frame(width: 30)
+        VStack(alignment: .leading, spacing: theme.spacingS) {
+            HStack(spacing: theme.spacingM) {
+                Image(systemName: "globe")
+                    .font(theme.body)
+                    .foregroundStyle(theme.primary)
+                    .frame(width: 30)
 
-            Text(LocalizationKeys.Settings.language.localized)
-                .font(theme.body)
-                .foregroundStyle(theme.textPrimary)
+                Text(LocalizationKeys.Settings.language.localized)
+                    .font(theme.body)
+                    .foregroundStyle(theme.textPrimary)
 
-            Spacer()
+                Spacer()
+            }
 
-            // Language indicator
-            Text(localeManager.currentLanguageShortName)
-                .font(theme.footnote)
-                .fontWeight(.medium)
-                .foregroundStyle(theme.textSecondary)
-                .padding(.trailing, theme.spacingXS)
-
-            Toggle("", isOn: Binding(
-                get: { localeManager.currentLanguage == .english },
-                set: { _ in localeManager.toggleLanguage() }
-            ))
-            .labelsHidden()
-            .tint(theme.primary)
+            Picker("", selection: Binding(
+                get: { localeManager.currentLanguage },
+                set: { localeManager.setLanguage($0) }
+            )) {
+                Text(LocalizationKeys.Language.turkish.localized).tag(SupportedLanguage.turkish)
+                Text(LocalizationKeys.Language.english.localized).tag(SupportedLanguage.english)
+                Text(LocalizationKeys.Language.swedish.localized).tag(SupportedLanguage.swedish)
+            }
+            .pickerStyle(.segmented)
         }
         .padding(.horizontal, theme.spacingM)
         .padding(.vertical, theme.spacingM)
@@ -262,6 +302,7 @@ struct AboutSectionView: View {
 
     let section: AboutScreenSection
     let onShowDisclaimer: () -> Void
+    let onShowSupportedLanguages: () -> Void
     let onItemTap: (AboutSectionItem) -> Void
 
     @Environment(\.theme) var theme
@@ -279,6 +320,7 @@ struct AboutSectionView: View {
                     AboutItemRow(
                         item: item,
                         onShowDisclaimer: onShowDisclaimer,
+                        onShowSupportedLanguages: onShowSupportedLanguages,
                         action: { onItemTap(item) }
                     )
 
@@ -307,6 +349,7 @@ struct AboutItemRow: View {
 
     let item: AboutSectionItem
     let onShowDisclaimer: () -> Void
+    let onShowSupportedLanguages: () -> Void
     let action: () -> Void
 
     @Environment(\.theme) var theme
@@ -315,6 +358,8 @@ struct AboutItemRow: View {
         Button {
             if item.action == .showDisclaimer {
                 onShowDisclaimer()
+            } else if item.action == .showSupportedLanguages {
+                onShowSupportedLanguages()
             } else {
                 action()
             }
@@ -358,6 +403,12 @@ struct AboutItemRow: View {
             value: .bounds
         ) { anchor in
             (item.action == .showDisclaimer) ? anchor : nil
+        }
+        .anchorPreference(
+            key: SupportedLanguagesAnchorKey.self,
+            value: .bounds
+        ) { anchor in
+            (item.action == .showSupportedLanguages) ? anchor : nil
         }
     }
 }
@@ -410,6 +461,39 @@ struct DisclaimerPopoverContent: View {
         .background(.clear)
         // Use theme glass; system popover removed so this is now the only "background"
         .glassEffect(theme.glassClear, in: RoundedRectangle(cornerRadius: 28))
+    }
+}
+
+@available(iOS 26.0, *)
+struct SupportedLanguagesPopoverContent: View {
+
+    @Environment(\.theme) var theme
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: theme.spacingM) {
+            HStack(spacing: theme.spacingS) {
+                Image(systemName: "globe")
+                    .font(theme.title3)
+                    .foregroundStyle(theme.primary)
+
+                Text(LocalizationKeys.About.supportedLanguages.localized)
+                    .font(theme.headline)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(theme.textPrimary)
+            }
+
+            VStack(alignment: .leading, spacing: theme.spacingS) {
+                ForEach(SupportedLanguage.allCases, id: \.self) { language in
+                    Text("\(language.flagEmoji)  \(language.displayName) (\(language.shortName))")
+                        .font(theme.body)
+                        .foregroundStyle(theme.textPrimary)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+            }
+        }
+        .padding(theme.spacingL)
+        .background(.clear)
+        .glassEffect(theme.glassClear, in: RoundedRectangle(cornerRadius: 24))
     }
 }
 

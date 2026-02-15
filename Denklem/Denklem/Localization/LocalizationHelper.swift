@@ -21,9 +21,10 @@ struct LocalizationHelper {
     
     /// Current locale based on app's selected language (not device locale)
     static var currentLocale: Locale {
-        let langCode = selectedLanguageCode
-        let localeId = langCode == "en" ? "en_US" : "tr_TR"
-        return Locale(identifier: localeId)
+        if let language = SupportedLanguage(rawValue: selectedLanguageCode) {
+            return Locale(identifier: language.localeIdentifier)
+        }
+        return Locale(identifier: SupportedLanguage.turkish.localeIdentifier)
     }
     
     /// Current language code (e.g., "tr", "en") — based on app's selected language
@@ -33,7 +34,8 @@ struct LocalizationHelper {
     
     /// Current region code (e.g., "TR", "US") — based on app's selected language
     static var currentRegionCode: String {
-        return selectedLanguageCode == "en" ? "US" : "TR"
+        let region = currentLocale.region?.identifier
+        return region ?? "TR"
     }
     
     /// Is current language right-to-left
@@ -156,9 +158,7 @@ struct LocalizationHelper {
     /// Formats date using app's selected language locale
     static func formatDate(_ date: Date) -> String {
         let formatter = DateFormatter()
-        let langCode = UserDefaults.standard.string(forKey: AppConstants.UserDefaultsKeys.selectedLanguage) ?? "tr"
-        let localeId = langCode == "en" ? "en_US" : "tr_TR"
-        formatter.locale = Locale(identifier: localeId)
+        formatter.locale = currentLocale
         formatter.dateStyle = .long
         formatter.timeStyle = .none
 
@@ -181,7 +181,7 @@ struct LocalizationHelper {
         formatter.locale = currentLocale
         
         // Use TariffConstants export format logic
-        if currentLanguageCode == "en" {
+        if currentLanguageCode == SupportedLanguage.english.rawValue {
             formatter.dateFormat = "MM/dd/yyyy"  // American format
         } else {
             formatter.dateFormat = "dd.MM.yyyy"  // European/Turkish format

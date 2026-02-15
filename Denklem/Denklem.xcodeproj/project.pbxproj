@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		D51727F52F156E710088A669 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D51727F42F156E710088A669 /* Launch Screen.storyboard */; };
+		D54C84D32F417A130059103E /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = D54C84D22F417A130059103E /* InfoPlist.xcstrings */; };
 		D56B14B32E3B9DA800D5826E /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = D56B14B22E3B9DA800D5826E /* Localizable.xcstrings */; };
 /* End PBXBuildFile section */
 
@@ -30,6 +31,7 @@
 
 /* Begin PBXFileReference section */
 		D51727F42F156E710088A669 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		D54C84D22F417A130059103E /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 		D55873642E25A8E8007A45F1 /* Denklem.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Denklem.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D55873712E25A8EA007A45F1 /* DenklemTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DenklemTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D558737B2E25A8EA007A45F1 /* DenklemUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DenklemUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -97,6 +99,7 @@
 			children = (
 				D51727F42F156E710088A669 /* Launch Screen.storyboard */,
 				D56B14B22E3B9DA800D5826E /* Localizable.xcstrings */,
+				D54C84D22F417A130059103E /* InfoPlist.xcstrings */,
 				D55873662E25A8E8007A45F1 /* Denklem */,
 				D55873742E25A8EA007A45F1 /* DenklemTests */,
 				D558737E2E25A8EA007A45F1 /* DenklemUITests */,
@@ -215,6 +218,7 @@
 				en,
 				Base,
 				tr,
+				sv,
 			);
 			mainGroup = D558735B2E25A8E8007A45F1;
 			minimizedProjectReferenceProxies = 1;
@@ -236,6 +240,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D51727F52F156E710088A669 /* Launch Screen.storyboard in Resources */,
+				D54C84D32F417A130059103E /* InfoPlist.xcstrings in Resources */,
 				D56B14B32E3B9DA800D5826E /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -430,7 +435,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = NVS5GU2AHJ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -468,7 +473,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = NVS5GU2AHJ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;

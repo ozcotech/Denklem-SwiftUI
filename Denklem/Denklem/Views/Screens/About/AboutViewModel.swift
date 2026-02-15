@@ -23,6 +23,7 @@ struct AboutSectionItem: Identifiable, Hashable {
         case shareApp
         case rateApp
         case showDisclaimer
+        case showSupportedLanguages
         case none
     }
     
@@ -127,6 +128,8 @@ final class AboutViewModel: ObservableObject {
             openAppStore()
         case .showDisclaimer:
             break
+        case .showSupportedLanguages:
+            break
         case .none:
             break
         }
@@ -196,7 +199,8 @@ final class AboutViewModel: ObservableObject {
                 AboutSectionItem(
                     title: LocalizationKeys.About.supportedLanguages.localized,
                     value: "about.supported_languages.values".localized,
-                    systemImage: "globe"
+                    systemImage: "globe",
+                    action: .showSupportedLanguages
                 )
             ]
         )

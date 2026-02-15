@@ -547,6 +547,7 @@ struct LocalizationKeys {
         static let select = "language.select"
         static let turkish = "language.turkish"
         static let english = "language.english"
+        static let swedish = "language.swedish"
         static let changeSuccess = "language.change_success"
         static let restartRequired = "language.restart_required"
     }

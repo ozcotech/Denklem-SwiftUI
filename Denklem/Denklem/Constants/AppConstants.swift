@@ -196,6 +196,7 @@ extension AppConstants {
 enum SupportedLanguage: String, CaseIterable, Identifiable, Hashable, Sendable {
     case turkish = "tr"
     case english = "en"
+    case swedish = "sv"
     
     var id: String { rawValue }
     
@@ -206,6 +207,8 @@ enum SupportedLanguage: String, CaseIterable, Identifiable, Hashable, Sendable {
             return NSLocalizedString(LocalizationKeys.Language.turkish, tableName: nil, bundle: Bundle.localizedBundle, value: "", comment: "Turkish language")
         case .english: 
             return NSLocalizedString(LocalizationKeys.Language.english, tableName: nil, bundle: Bundle.localizedBundle, value: "", comment: "English language")
+        case .swedish:
+            return NSLocalizedString(LocalizationKeys.Language.swedish, tableName: nil, bundle: Bundle.localizedBundle, value: "Svenska", comment: "Swedish language")
         }
     }
     
@@ -219,6 +222,7 @@ enum SupportedLanguage: String, CaseIterable, Identifiable, Hashable, Sendable {
         switch self {
         case .turkish: return "🇹🇷"
         case .english: return "🇺🇸"
+        case .swedish: return "🇸🇪"
         }
     }
     
@@ -227,6 +231,7 @@ enum SupportedLanguage: String, CaseIterable, Identifiable, Hashable, Sendable {
         switch self {
         case .turkish: return "tr_TR"
         case .english: return "en_US"
+        case .swedish: return "sv_SE"
         }
     }
     
@@ -244,7 +249,8 @@ enum SupportedLanguage: String, CaseIterable, Identifiable, Hashable, Sendable {
     var toggled: SupportedLanguage {
         switch self {
         case .turkish: return .english
-        case .english: return .turkish
+        case .english: return .swedish
+        case .swedish: return .turkish
         }
     }
     
