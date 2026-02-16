@@ -79,7 +79,7 @@ enum DisputeCategoryType: String, CaseIterable, Identifiable {
         case .nonMonetary:
             return "document.circle.fill"
         case .timeCalculation:
-            return "clock.circle.fill"
+            return "calendar.circle.fill"
         case .smmCalculation:
             return "newspaper.circle.fill"
         case .attorneyFee:
