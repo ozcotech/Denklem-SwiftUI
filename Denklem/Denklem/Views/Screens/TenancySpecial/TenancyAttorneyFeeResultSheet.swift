@@ -31,8 +31,8 @@ struct TenancyAttorneyFeeResultSheet: View {
             ScrollView {
                 VStack(spacing: theme.spacingL) {
 
-                    // Main Fee Card
-                    mainFeeCard
+                    // Main Fee Cards
+                    mainFeeCards
 
                     // Calculation Info Card
                     calculationInfoCard
@@ -68,17 +68,42 @@ struct TenancyAttorneyFeeResultSheet: View {
         .presentationDragIndicator(.visible)
     }
 
-    // MARK: - Main Fee Card
+    // MARK: - Main Fee Cards
 
-    private var mainFeeCard: some View {
+    private var mainFeeCards: some View {
         VStack(spacing: theme.spacingM) {
-            Text(LocalizationKeys.RentSpecial.calculatedAttorneyFee.localized)
+            if let evictionFee = result.evictionFee {
+                mainFeeCard(
+                    title: "\(LocalizationKeys.RentSpecial.eviction.localized) \(LocalizationKeys.RentSpecial.calculatedAttorneyFee.localized)",
+                    amount: LocalizationHelper.formatCurrency(evictionFee)
+                )
+            }
+
+            if let determinationFee = result.determinationFee {
+                mainFeeCard(
+                    title: "\(LocalizationKeys.RentSpecial.determination.localized) \(LocalizationKeys.RentSpecial.calculatedAttorneyFee.localized)",
+                    amount: LocalizationHelper.formatCurrency(determinationFee)
+                )
+            }
+
+            if result.evictionFee == nil && result.determinationFee == nil {
+                mainFeeCard(
+                    title: LocalizationKeys.RentSpecial.calculatedAttorneyFee.localized,
+                    amount: result.formattedFee
+                )
+            }
+        }
+    }
+
+    private func mainFeeCard(title: String, amount: String) -> some View {
+        VStack(spacing: theme.spacingM) {
+            Text(title)
                 .font(theme.footnote)
                 .fontWeight(.medium)
                 .foregroundStyle(theme.textSecondary)
 
-            Text(result.formattedFee)
-                .font(.system(size: 40, weight: .bold, design: .rounded))
+            Text(amount)
+                .font(.system(size: 36, weight: .bold, design: .rounded))
                 .foregroundStyle(theme.primary)
         }
         .frame(maxWidth: .infinity)
@@ -260,7 +285,9 @@ struct TenancyAttorneyFeeResultSheet_Previews: PreviewProvider {
         Group {
             // Both types selected
             TenancyAttorneyFeeResultSheet(result: TenancyAttorneyFeeResult(
-                fee: 186_000,
+                fee: 188_000,
+                evictionFee: 156_000,
+                determinationFee: 32_000,
                 originalCalculatedFee: nil,
                 isMinimumApplied: false,
                 totalInputAmount: 1_200_000,
@@ -291,6 +318,8 @@ struct TenancyAttorneyFeeResultSheet_Previews: PreviewProvider {
             // Eviction only - minimum applied (88.90 TL → 30,000 TL)
             TenancyAttorneyFeeResultSheet(result: TenancyAttorneyFeeResult(
                 fee: 30_000,
+                evictionFee: 30_000,
+                determinationFee: nil,
                 originalCalculatedFee: 88.90,
                 isMinimumApplied: true,
                 totalInputAmount: 555,

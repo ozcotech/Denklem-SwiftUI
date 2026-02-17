@@ -26,7 +26,8 @@ struct LegislationDocument: Identifiable, Hashable {
         case regulation = "regulation"
         case law = "law"
         case circular = "circular"
-        
+        case attorneyTariff = "attorney_tariff"
+
         var displayName: String {
             switch self {
             case .tariff:
@@ -37,9 +38,11 @@ struct LegislationDocument: Identifiable, Hashable {
                 return LocalizationKeys.Legislation.typeLaw.localized
             case .circular:
                 return LocalizationKeys.Legislation.typeCircular.localized
+            case .attorneyTariff:
+                return LocalizationKeys.Legislation.typeAttorneyTariff.localized
             }
         }
-        
+
         var systemImage: String {
             switch self {
             case .tariff:
@@ -50,10 +53,15 @@ struct LegislationDocument: Identifiable, Hashable {
                 return "building.columns.fill"
             case .circular:
                 return "envelope.fill"
+            case .attorneyTariff:
+                return "doc.text.fill"
             }
         }
     }
     
+    /// Optional content identifier for documents with in-app content (law number, gazette number, etc.)
+    let contentId: Int?
+
     /// Default initializer
     init(
         id: UUID = UUID(),
@@ -64,7 +72,8 @@ struct LegislationDocument: Identifiable, Hashable {
         url: String? = nil,
         pdfFileName: String? = nil,
         isOfficial: Bool = true,
-        lastUpdated: Date = Date()
+        lastUpdated: Date = Date(),
+        contentId: Int? = nil
     ) {
         self.id = id
         self.title = title
@@ -75,6 +84,7 @@ struct LegislationDocument: Identifiable, Hashable {
         self.pdfFileName = pdfFileName
         self.isOfficial = isOfficial
         self.lastUpdated = lastUpdated
+        self.contentId = contentId
     }
 }
 
@@ -197,10 +207,19 @@ final class LegislationViewModel: ObservableObject {
     /// Creates default legislation documents
     private static func createDefaultDocuments() -> [LegislationDocument] {
         return [
-            // 2026 Tarifesi
+            // 2026 Avukatlık Asgari Ücret Tarifesi
+            LegislationDocument(
+                title: NSLocalizedString(LocalizationKeys.Legislation.attorneyTariff2026Title, value: "2026 Yılı Avukatlık Asgari Ücret Tarifesi", comment: ""),
+                subtitle: NSLocalizedString(LocalizationKeys.Legislation.attorneyTariff2026Subtitle, value: "Resmî Gazete: 4 Kasım 2025, Sayı: 33067", comment: ""),
+                year: 2026,
+                type: .attorneyTariff,
+                url: "https://www.resmigazete.gov.tr/eskiler/2025/11/20251104-9.htm",
+                isOfficial: true
+            ),
+            // 2026 Arabuluculuk Tarifesi
             LegislationDocument(
                 title: NSLocalizedString("legislation.tariff.2026.title", value: "2026 Yılı Arabuluculuk Asgari Ücret Tarifesi", comment: ""),
-                subtitle: NSLocalizedString("legislation.tariff.2026.subtitle", value: "Resmi Gazete: 31 Aralık 2025", comment: ""),
+                subtitle: NSLocalizedString("legislation.tariff.2026.subtitle", value: "Resmi Gazete: 26 Aralık 2025", comment: ""),
                 year: 2026,
                 type: .tariff,
                 url: "https://www.resmigazete.gov.tr/eskiler/2025/12/20251226-3.htm",
@@ -210,7 +229,7 @@ final class LegislationViewModel: ObservableObject {
             // 2025 Tarifesi
             LegislationDocument(
                 title: NSLocalizedString("legislation.tariff.2025.title", value: "2025 Yılı Arabuluculuk Asgari Ücret Tarifesi", comment: ""),
-                subtitle: NSLocalizedString("legislation.tariff.2025.subtitle", value: "Resmi Gazete: 31 Aralık 2024", comment: ""),
+                subtitle: NSLocalizedString("legislation.tariff.2025.subtitle", value: "Resmi Gazete: 25 Aralık 2024", comment: ""),
                 year: 2025,
                 type: .tariff,
                 url: "https://adb.adalet.gov.tr/Resimler/SayfaDokuman/251220241628282024.pdf",
@@ -224,16 +243,18 @@ final class LegislationViewModel: ObservableObject {
                 year: 2012,
                 type: .law,
                 url: "https://adb.adalet.gov.tr/Resimler/SayfaDokuman/11120231556551.5.6325.pdf",
-                isOfficial: true
+                isOfficial: true,
+                contentId: 6325
             ),
             // Yönetmelik
             LegislationDocument(
                 title: NSLocalizedString("legislation.regulation.title", value: "Hukuk Uyuşmazlıklarında Arabuluculuk Kanunu Yönetmeliği", comment: ""),
-                subtitle: NSLocalizedString("legislation.regulation.subtitle", value: "Resmi Gazete: 26.01.2013", comment: ""),
-                year: 2013,
+                subtitle: NSLocalizedString("legislation.regulation.subtitle", value: "Resmi Gazete: 02.06.2018", comment: ""),
+                year: 2018,
                 type: .regulation,
                 url: "https://adb.adalet.gov.tr/Resimler/SayfaDokuman/30120221536271.pdf",
-                isOfficial: true
+                isOfficial: true,
+                contentId: 30439
             ),
             // İş Mahkemeleri Kanunu
             LegislationDocument(
@@ -242,7 +263,8 @@ final class LegislationViewModel: ObservableObject {
                 year: 2017,
                 type: .law,
                 url: "https://adb.adalet.gov.tr/Resimler/SayfaDokuman/15120210744381.5.7036.pdf",
-                isOfficial: true
+                isOfficial: true,
+                contentId: 7036
             )
         ]
     }

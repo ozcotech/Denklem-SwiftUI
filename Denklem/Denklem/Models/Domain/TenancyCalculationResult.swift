@@ -78,6 +78,10 @@ struct TenancyCalculationInput: Equatable {
 struct TenancyAttorneyFeeResult: Equatable {
     /// Final attorney fee (after minimum enforcement)
     let fee: Double
+    /// Eviction attorney fee (after minimum enforcement, nil if not selected)
+    let evictionFee: Double?
+    /// Determination attorney fee (after minimum enforcement, nil if not selected)
+    let determinationFee: Double?
     /// Original calculated fee before minimum enforcement (nil if no minimum applied)
     let originalCalculatedFee: Double?
     /// Whether court minimum (Sulh Hukuk) was applied

@@ -18,29 +18,52 @@ struct TenancyCalculator {
 
     /// Calculate attorney fee for tenancy disputes
     /// Uses AttorneyFeeConstants.MonetaryBrackets (Third Part) brackets
-    /// - When both eviction and determination selected: SUM amounts, calculate ONCE
+    /// - When both eviction and determination selected: calculate each separately, then SUM
     /// - Parameter input: TenancyCalculationInput with feeMode = .attorneyFee
     /// - Returns: TenancyAttorneyFeeResult
     static func calculateAttorneyFee(input: TenancyCalculationInput) -> TenancyAttorneyFeeResult {
         let year = input.tariffYear.rawValue
+        let sulhMinimum = TenancyCalculationConstants.TenancyCourtType.civilPeace.minimumFee(for: year)
 
-        // Calculate total input amount (sum if both selected)
-        var totalAmount: Double = 0
+        // Calculate total input amount
+        var totalInputAmount: Double = 0
         if input.selectedTypes.contains(.eviction), let eviction = input.evictionAmount {
-            totalAmount += eviction
+            totalInputAmount += eviction
         }
         if input.selectedTypes.contains(.determination), let determination = input.determinationAmount {
-            totalAmount += determination
+            totalInputAmount += determination
         }
 
-        // Calculate fee using Third Part brackets (progressive bracket calculation)
-        let calculatedFee = calculateThirdPartFee(amount: totalAmount, year: year)
+        // Calculate each selected claim separately (conservative interpretation)
+        var evictionFee: Double?
+        var determinationFee: Double?
+        var evictionRawFee: Double?
+        var determinationRawFee: Double?
+        var isMinimumApplied = false
 
-        // Apply Sulh Hukuk Mahkemesi minimum (Art. 9 last sentence)
-        // Tenancy cases are typically heard in Sulh Hukuk Mahkemesi
-        let sulhMinimum = TenancyCalculationConstants.TenancyCourtType.civilPeace.minimumFee(for: year)
-        let isMinimumApplied = calculatedFee < sulhMinimum
-        let finalFee = max(calculatedFee, sulhMinimum)
+        if input.selectedTypes.contains(.eviction), let evictionAmount = input.evictionAmount {
+            let raw = calculateThirdPartFee(amount: evictionAmount, year: year)
+            let final = max(raw, sulhMinimum)
+            evictionRawFee = raw
+            evictionFee = final
+            if final > raw { isMinimumApplied = true }
+        }
+
+        if input.selectedTypes.contains(.determination), let determinationAmount = input.determinationAmount {
+            let raw = calculateThirdPartFee(amount: determinationAmount, year: year)
+            let final = max(raw, sulhMinimum)
+            determinationRawFee = raw
+            determinationFee = final
+            if final > raw { isMinimumApplied = true }
+        }
+
+        let finalFee = (evictionFee ?? 0) + (determinationFee ?? 0)
+        let originalCalculatedFee: Double?
+        if isMinimumApplied {
+            originalCalculatedFee = (evictionRawFee ?? evictionFee ?? 0) + (determinationRawFee ?? determinationFee ?? 0)
+        } else {
+            originalCalculatedFee = nil
+        }
 
         // Generate court minimum warnings
         let courtMinimumWarnings = TenancyCalculationConstants.TenancyCourtType.allCases.map { courtType in
@@ -53,9 +76,11 @@ struct TenancyCalculator {
 
         return TenancyAttorneyFeeResult(
             fee: finalFee,
-            originalCalculatedFee: isMinimumApplied ? calculatedFee : nil,
+            evictionFee: evictionFee,
+            determinationFee: determinationFee,
+            originalCalculatedFee: originalCalculatedFee,
             isMinimumApplied: isMinimumApplied,
-            totalInputAmount: totalAmount,
+            totalInputAmount: totalInputAmount,
             evictionAmount: input.selectedTypes.contains(.eviction) ? input.evictionAmount : nil,
             determinationAmount: input.selectedTypes.contains(.determination) ? input.determinationAmount : nil,
             courtMinimumWarnings: courtMinimumWarnings,
@@ -225,7 +250,7 @@ extension TenancyCalculator {
             calculateAttorneyFee(tariffYear: .year2026, evictionAmount: 1_000_000),
             // Test 3: Determination only, 2026, 500K → 80,000 TL
             calculateAttorneyFee(tariffYear: .year2026, determinationAmount: 500_000),
-            // Test 4: Both, 2026, 1M + 200K → 186,000 TL
+            // Test 4: Both, 2026, separate calculation: 1M→156,000 + 200K→32,000 = 188,000 TL
             calculateAttorneyFee(tariffYear: .year2026, evictionAmount: 1_000_000, determinationAmount: 200_000),
             // Test 5: Eviction only, 2025, 1M → 152,000 TL
             calculateAttorneyFee(tariffYear: .year2025, evictionAmount: 1_000_000)
@@ -263,9 +288,9 @@ extension TenancyCalculator {
         let atty3 = calculateAttorneyFee(tariffYear: .year2026, determinationAmount: 500_000)
         results.append(("Attorney: Determination 500K 2026 = 80,000", abs(atty3.fee - 80_000) < 1))
 
-        // Test 4: Both, 2026, 1M + 200K = 1.2M → 186,000 TL
+        // Test 4: Both, 2026, separate calculation: 1M→156,000 + 200K→32,000 = 188,000 TL
         let atty4 = calculateAttorneyFee(tariffYear: .year2026, evictionAmount: 1_000_000, determinationAmount: 200_000)
-        results.append(("Attorney: Both 1M+200K 2026 = 186,000", abs(atty4.fee - 186_000) < 1))
+        results.append(("Attorney: Both 1M+200K 2026 = 188,000", abs(atty4.fee - 188_000) < 1))
 
         // Test 5: Eviction only, 2025, 1M → 152,000 TL
         let atty5 = calculateAttorneyFee(tariffYear: .year2025, evictionAmount: 1_000_000)

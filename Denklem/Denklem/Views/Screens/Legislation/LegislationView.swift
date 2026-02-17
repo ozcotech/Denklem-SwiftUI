@@ -315,31 +315,93 @@ struct DocumentTag: View {
 
 @available(iOS 26.0, *)
 struct DocumentDetailSheet: View {
-    
+
     let document: LegislationDocument
-    
+
     @Environment(\.theme) var theme
     @Environment(\.dismiss) private var dismiss
-    
+    @State private var showShareSheet = false
+    @State private var searchText = ""
+
+    /// Tariff content for arabuluculuk tariff-type documents
+    private var tariffContent: TariffDocumentContent? {
+        guard document.type == .tariff else { return nil }
+        return TariffDocumentContent.content(for: document.year)
+    }
+
+    /// Attorney fee tariff content
+    private var attorneyFeeTariffContent: AttorneyFeeTariffContent? {
+        guard document.type == .attorneyTariff else { return nil }
+        return AttorneyFeeTariffContent.content(for: document.year)
+    }
+
+    /// Law/regulation content for documents with in-app content
+    private var lawContent: LawDocumentContent? {
+        guard let contentId = document.contentId else { return nil }
+        return LawDocumentContent.content(for: contentId)
+    }
+
+    /// Whether the document has in-app content (tariff or law)
+    private var hasInAppContent: Bool {
+        tariffContent != nil || attorneyFeeTariffContent != nil || lawContent != nil
+    }
+
+    /// Plain text for sharing
+    private var shareText: String? {
+        if let content = tariffContent {
+            return content.toPlainText()
+        } else if let content = attorneyFeeTariffContent {
+            return content.toPlainText()
+        } else if let content = lawContent {
+            return content.toPlainText()
+        }
+        return nil
+    }
+
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: theme.spacingL) {
                     // Document Header
                     documentHeader
-                    
-                    // Document Info
-                    documentInfo
-                    
+
+                    // In-app Content or Document Info
+                    if let content = tariffContent {
+                        TariffDocumentView(content: content, searchText: searchText)
+                    } else if let content = attorneyFeeTariffContent {
+                        AttorneyFeeTariffView(content: content, searchText: searchText)
+                    } else if let content = lawContent {
+                        LawDocumentView(content: content, searchText: searchText)
+                    } else {
+                        documentInfo
+                    }
+
                     // Actions
                     actionButtons
                 }
-                .padding(theme.spacingM)
+                .padding(.horizontal, theme.spacingM)
+                .padding(.bottom, theme.spacingXXL)
             }
             .background(theme.background)
             .navigationTitle(document.type.displayName)
             .navigationBarTitleDisplayMode(.inline)
+            .searchable(
+                text: $searchText,
+                prompt: Text("legislation.document.search.prompt".localized)
+            )
+            .searchPresentationToolbarBehavior(.avoidHidingContent)
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    if hasInAppContent {
+                        Button {
+                            showShareSheet = true
+                        } label: {
+                            Image(systemName: "square.and.arrow.up")
+                                .font(theme.body)
+                                .foregroundStyle(theme.textSecondary)
+                        }
+                    }
+                }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         dismiss()
@@ -350,34 +412,41 @@ struct DocumentDetailSheet: View {
                     }
                 }
             }
+            .sheet(isPresented: $showShareSheet) {
+                if let text = shareText {
+                    ShareSheet(items: [text])
+                }
+            }
         }
     }
-    
+
     private var documentHeader: some View {
         VStack(spacing: theme.spacingM) {
             ZStack {
                 Circle()
                     .fill(theme.primary.opacity(0.1))
                     .frame(width: 70, height: 70)
-                
+
                 Image(systemName: document.type.systemImage)
                     .font(theme.largeTitle)
                     .foregroundStyle(theme.primary)
             }
-            
+
             Text(document.title)
                 .font(theme.title3)
                 .fontWeight(.bold)
                 .foregroundStyle(theme.textPrimary)
                 .multilineTextAlignment(.center)
-            
-            Text(document.subtitle)
-                .font(theme.body)
-                .foregroundStyle(theme.textSecondary)
+
+            if !hasInAppContent {
+                Text(document.subtitle)
+                    .font(theme.body)
+                    .foregroundStyle(theme.textSecondary)
+            }
         }
         .padding(.vertical, theme.spacingM)
     }
-    
+
     private var documentInfo: some View {
         VStack(spacing: theme.spacingS) {
             InfoRow(
@@ -390,7 +459,7 @@ struct DocumentDetailSheet: View {
             )
             InfoRow(
                 label: LocalizationKeys.Legislation.infoStatus.localized,
-                value: document.isOfficial ? 
+                value: document.isOfficial ?
                     LocalizationKeys.Legislation.statusOfficial.localized :
                     LocalizationKeys.Legislation.statusDraft.localized
             )
@@ -410,7 +479,7 @@ struct DocumentDetailSheet: View {
                 } label: {
                     Label(
                         LocalizationKeys.Legislation.openDocument.localized,
-                        systemImage: "doc.text"
+                        systemImage: "safari"
                     )
                     .frame(maxWidth: .infinity)
                     .padding()
@@ -419,6 +488,7 @@ struct DocumentDetailSheet: View {
             }
         }
     }
+
 }
 
 // MARK: - Info Row
