@@ -209,8 +209,8 @@ final class LegislationViewModel: ObservableObject {
         return [
             // 2026 Avukatlık Asgari Ücret Tarifesi
             LegislationDocument(
-                title: NSLocalizedString(LocalizationKeys.Legislation.attorneyTariff2026Title, value: "2026 Yılı Avukatlık Asgari Ücret Tarifesi", comment: ""),
-                subtitle: NSLocalizedString(LocalizationKeys.Legislation.attorneyTariff2026Subtitle, value: "Resmî Gazete: 4 Kasım 2025, Sayı: 33067", comment: ""),
+                title: NSLocalizedString("legislation.attorney_tariff.2026.title", value: "2026 Yılı Avukatlık Asgari Ücret Tarifesi", comment: ""),
+                subtitle: NSLocalizedString("legislation.attorney_tariff.2026.subtitle", value: "Resmî Gazete: 4 Kasım 2025, Sayı: 33067", comment: ""),
                 year: 2026,
                 type: .attorneyTariff,
                 url: "https://www.resmigazete.gov.tr/eskiler/2025/11/20251104-9.htm",

@@ -113,18 +113,12 @@ struct LegislationView: View {
     // MARK: - Documents Section
     
     private var documentsSection: some View {
-        LazyVStack(spacing: theme.spacingM, pinnedViews: [.sectionHeaders]) {
-            ForEach(viewModel.sortedYears, id: \.self) { year in
-                Section {
-                    ForEach(viewModel.documentsByYear[year] ?? []) { document in
-                        DocumentCard(document: document) {
-                            viewModel.selectDocument(document)
-                        } onOpenInSafari: {
-                            viewModel.openInSafari(document)
-                        }
-                    }
-                } header: {
-                    YearSectionHeader(year: year)
+        LazyVStack(spacing: theme.spacingM) {
+            ForEach(viewModel.filteredDocuments) { document in
+                DocumentCard(document: document) {
+                    viewModel.selectDocument(document)
+                } onOpenInSafari: {
+                    viewModel.openInSafari(document)
                 }
             }
         }
@@ -263,11 +257,11 @@ struct DocumentCard: View {
             }
             .padding(theme.spacingM)
             .background(
-                RoundedRectangle(cornerRadius: theme.cornerRadiusXL)
+                RoundedRectangle(cornerRadius: theme.cornerRadiusXXL)
                     .fill(theme.surfaceElevated)
             )
             .overlay(
-                RoundedRectangle(cornerRadius: theme.cornerRadiusXL)
+                RoundedRectangle(cornerRadius: theme.cornerRadiusXXL)
                     .stroke(theme.border, lineWidth: 0.5)
             )
         }

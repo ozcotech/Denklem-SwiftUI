@@ -505,8 +505,6 @@ struct LocalizationKeys {
         static let typeLaw = "legislation.type.law"
         static let typeCircular = "legislation.type.circular"
         static let typeAttorneyTariff = "legislation.type.attorney_tariff"
-        static let attorneyTariff2026Title = "legislation.attorney_tariff.2026.title"
-        static let attorneyTariff2026Subtitle = "legislation.attorney_tariff.2026.subtitle"
     }
     
     // MARK: - Error Messages
