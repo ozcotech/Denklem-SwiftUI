@@ -172,9 +172,20 @@ final class MediationFeeViewModel: ObservableObject {
 
     // MARK: - Initialization
 
-    init(selectedYear: TariffYear, isMonetary: Bool) {
+    init(selectedYear: TariffYear, isMonetary: Bool = true) {
         self.selectedYear = selectedYear
         self.isMonetary = isMonetary
+    }
+
+    /// Resets form fields when monetary/non-monetary mode changes
+    func resetFormForModeChange() {
+        selectedAgreement = isMonetary ? .agreed : nil
+        selectedDisputeType = nil
+        amountText = ""
+        partyCountText = ""
+        errorMessage = nil
+        calculationResult = nil
+        showResult = false
     }
 
     // MARK: - Public Methods
@@ -303,12 +314,8 @@ final class MediationFeeViewModel: ObservableObject {
 #if DEBUG
 @available(iOS 26.0, *)
 extension MediationFeeViewModel {
-    static var previewMonetary: MediationFeeViewModel {
-        MediationFeeViewModel(selectedYear: .year2026, isMonetary: true)
-    }
-
-    static var previewNonMonetary: MediationFeeViewModel {
-        MediationFeeViewModel(selectedYear: .year2026, isMonetary: false)
+    static var preview: MediationFeeViewModel {
+        MediationFeeViewModel(selectedYear: .year2026)
     }
 }
 #endif

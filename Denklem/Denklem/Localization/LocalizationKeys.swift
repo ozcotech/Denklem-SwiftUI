@@ -82,6 +82,8 @@ struct LocalizationKeys {
         static let monetaryDescription = "dispute_category.monetary.description"
         static let nonMonetary = "dispute_category.non_monetary"
         static let nonMonetaryDescription = "dispute_category.non_monetary.description"
+        static let mediationFee = "dispute_category.mediation_fee"
+        static let mediationFeeDescription = "dispute_category.mediation_fee.description"
         
         // Other Calculations
         static let otherCalculations = "dispute_category.other_calculations"
@@ -333,6 +335,7 @@ struct LocalizationKeys {
         static let home = "screen.title.home"
         static let disputeCategory = "screen.title.dispute_category"
         static let disputeCategoryComingSoon = "screen.dispute_category.coming_soon"
+        static let subjectSelection = "screen.title.subject_selection"
         static let agreementStatus = "screen.title.agreement_status"
         static let disputeType = "screen.title.dispute_type"
         static let input = "screen.title.input"

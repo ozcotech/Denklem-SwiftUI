@@ -11,8 +11,9 @@ import Combine
 // MARK: - Dispute Category Enum
 /// Main dispute categories for calculation routing
 enum DisputeCategoryType: String, CaseIterable, Identifiable {
-    case monetary          // The subject is monetary
-    case nonMonetary       // The subject is non-monetary
+    case monetary          // The subject is monetary (legacy, used in result sheets)
+    case nonMonetary       // The subject is non-monetary (legacy, used in result sheets)
+    case mediationFee      // Unified mediation fee button
     case timeCalculation   // Time calculation
     case smmCalculation    // SMM calculation
     case attorneyFee       // Attorney fee calculation (special)
@@ -30,6 +31,8 @@ enum DisputeCategoryType: String, CaseIterable, Identifiable {
             return LocalizationKeys.DisputeCategory.monetary.localized
         case .nonMonetary:
             return LocalizationKeys.DisputeCategory.nonMonetary.localized
+        case .mediationFee:
+            return LocalizationKeys.DisputeCategory.mediationFee.localized
         case .timeCalculation:
             return LocalizationKeys.DisputeCategory.timeCalculation.localized
         case .smmCalculation:
@@ -54,6 +57,8 @@ enum DisputeCategoryType: String, CaseIterable, Identifiable {
             return LocalizationKeys.DisputeCategory.monetaryDescription.localized
         case .nonMonetary:
             return LocalizationKeys.DisputeCategory.nonMonetaryDescription.localized
+        case .mediationFee:
+            return LocalizationKeys.DisputeCategory.mediationFeeDescription.localized
         case .timeCalculation:
             return LocalizationKeys.DisputeCategory.timeCalculationDescription.localized
         case .smmCalculation:
@@ -78,6 +83,8 @@ enum DisputeCategoryType: String, CaseIterable, Identifiable {
             return "turkishlirasign.circle.fill"
         case .nonMonetary:
             return "document.circle.fill"
+        case .mediationFee:
+            return "plusminus.circle.fill"
         case .timeCalculation:
             return "calendar.circle.fill"
         case .smmCalculation:
@@ -101,6 +108,8 @@ enum DisputeCategoryType: String, CaseIterable, Identifiable {
         case .monetary:
             return .green
         case .nonMonetary:
+            return .blue
+        case .mediationFee:
             return .blue
         case .timeCalculation:
             return .orange
@@ -159,9 +168,9 @@ final class DisputeCategoryViewModel: ObservableObject {
     
     // MARK: - Computed Properties
     
-    /// Main categories (monetary and non-monetary)
+    /// Main categories (unified mediation fee)
     var mainCategories: [DisputeCategoryType] {
-        return [.nonMonetary, .monetary]
+        return [.mediationFee]
     }
     
     /// Other calculations (time and SMM)
@@ -181,7 +190,7 @@ final class DisputeCategoryViewModel: ObservableObject {
 
     /// Main categories section title
     var mainCategoriesTitle: String {
-        LocalizationKeys.General.disputeSubject.localized
+        LocalizationKeys.DisputeCategory.mediationFeeDescription.localized
     }
 
     /// Other calculations section title
@@ -203,17 +212,20 @@ final class DisputeCategoryViewModel: ObservableObject {
         selectedCategory = category
 
         switch category {
+        case .mediationFee:
+            // Unified mediation fee - defaults to monetary, user picks via segmented picker
+            navigateToDisputeType = true
+
         case .monetary:
-            // Monetary disputes go to DisputeType where user will select agreement status
+            // Legacy - kept for compatibility
             isMonetary = true
             navigateToDisputeType = true
-            
+
         case .nonMonetary:
-            // Non-monetary disputes go directly to DisputeType
-            // They are treated as non-agreement cases per Tariff Article 7, Paragraph 1
+            // Legacy - kept for compatibility
             isMonetary = false
             navigateToDisputeType = true
-            
+
         case .timeCalculation:
             navigateToTimeCalculation = true
             

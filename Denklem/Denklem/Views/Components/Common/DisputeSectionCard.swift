@@ -17,14 +17,17 @@ struct DisputeSectionCard: View {
     let cardColor: Color
     let onCategoryTap: (DisputeCategoryType) -> Void
 
+    /// Full-width category types
+    private static let fullWidthTypes: Set<DisputeCategoryType> = [.aiChat, .mediationFee]
+
     /// Categories that go in the 2-column grid (excludes full-width items)
     private var gridCategories: [DisputeCategoryType] {
-        categories.filter { $0 != .aiChat }
+        categories.filter { !Self.fullWidthTypes.contains($0) }
     }
 
-    /// Full-width category (AI Chat)
-    private var fullWidthCategory: DisputeCategoryType? {
-        categories.first { $0 == .aiChat }
+    /// Full-width categories (AI Chat, Mediation Fee)
+    private var fullWidthCategories: [DisputeCategoryType] {
+        categories.filter { Self.fullWidthTypes.contains($0) }
     }
 
     var body: some View {
@@ -55,15 +58,15 @@ struct DisputeSectionCard: View {
                 }
             }
 
-            if let aiChat = fullWidthCategory {
+            ForEach(fullWidthCategories) { category in
                 Button {
-                    onCategoryTap(aiChat)
+                    onCategoryTap(category)
                 } label: {
                     VStack(spacing: 4) {
-                        Image(systemName: aiChat.systemImage)
+                        Image(systemName: category.systemImage)
                             .font(.system(size: 40, weight: .semibold))
-                            .foregroundStyle(aiChat.iconColor)
-                        Text(aiChat.displayName)
+                            .foregroundStyle(category.iconColor)
+                        Text(category.displayName)
                             .font(theme.footnote)
                             .fontWeight(.semibold)
                             .foregroundStyle(theme.textPrimary)

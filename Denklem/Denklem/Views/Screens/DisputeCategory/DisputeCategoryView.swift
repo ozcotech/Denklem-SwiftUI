@@ -43,7 +43,7 @@ struct DisputeCategoryView: View {
                 .ignoresSafeArea()
 
             ScrollView {
-                VStack(spacing: theme.spacingXL) {
+                VStack(spacing: theme.spacingM) {
                     DisputeSectionCard(
                         title: viewModel.mainCategoriesTitle,
                         categories: viewModel.mainCategories,
@@ -66,20 +66,17 @@ struct DisputeCategoryView: View {
                     )
 
                     Spacer()
-                        .frame(height: theme.spacingXL)
+                        .frame(height: theme.spacingM)
                 }
                 .padding(.horizontal, theme.spacingL)
-                .padding(.top, theme.spacingM)
+                .padding(.top, theme.spacingXS)
             }
         }
         // Navigation bar title for Tools screen ("Hesaplama Araçları" / "Calculation Tools")
         .navigationTitle(LocalizationKeys.Tools.title.localized)
         .navigationBarTitleDisplayMode(.inline)
         .navigationDestination(isPresented: $viewModel.navigateToDisputeType) {
-            MediationFeeView(
-                selectedYear: viewModel.selectedYear,
-                isMonetary: viewModel.isMonetary
-            )
+            MediationFeeView(selectedYear: viewModel.selectedYear)
         }
         .navigationDestination(isPresented: $viewModel.navigateToTimeCalculation) {
             TimeCalculationView()

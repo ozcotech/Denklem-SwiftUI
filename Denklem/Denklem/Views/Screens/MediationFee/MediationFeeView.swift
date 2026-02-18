@@ -28,10 +28,9 @@ struct MediationFeeView: View {
 
     // MARK: - Initialization
 
-    init(selectedYear: TariffYear, isMonetary: Bool) {
+    init(selectedYear: TariffYear) {
         _viewModel = StateObject(wrappedValue: MediationFeeViewModel(
-            selectedYear: selectedYear,
-            isMonetary: isMonetary
+            selectedYear: selectedYear
         ))
     }
 
@@ -49,7 +48,10 @@ struct MediationFeeView: View {
             // Content
             ScrollViewReader { proxy in
                 ScrollView {
-                    VStack(spacing: theme.spacingL) {
+                    VStack(spacing: theme.spacingM) {
+
+                        // Monetary / Non-Monetary Segmented Picker
+                        monetaryPickerSection
 
                         // Year Picker
                         yearPickerSection
@@ -118,6 +120,29 @@ struct MediationFeeView: View {
         }
     }
 
+    // MARK: - Monetary Picker Section
+
+    private var monetaryPickerSection: some View {
+        VStack(alignment: .leading, spacing: theme.spacingXS) {
+            Text(LocalizationKeys.ScreenTitle.subjectSelection.localized)
+                .font(theme.footnote)
+                .fontWeight(.medium)
+                .foregroundStyle(theme.textSecondary)
+
+            Picker("", selection: $viewModel.isMonetary) {
+                Text(LocalizationKeys.CalculationType.monetary.localized)
+                    .tag(true)
+                Text(LocalizationKeys.CalculationType.nonMonetary.localized)
+                    .tag(false)
+            }
+            .pickerStyle(.segmented)
+            .controlSize(.large)
+            .onChange(of: viewModel.isMonetary) { _, _ in
+                viewModel.resetFormForModeChange()
+            }
+        }
+    }
+
     // MARK: - Year Picker Section
 
     private var yearPickerSection: some View {
@@ -131,7 +156,13 @@ struct MediationFeeView: View {
     // MARK: - Agreement Selector Section
 
     private var agreementSelectorSection: some View {
-        VStack(spacing: theme.spacingM) {
+        VStack(spacing: theme.spacingXS) {
+            Text(LocalizationKeys.ScreenTitle.agreementStatus.localized)
+                .font(theme.footnote)
+                .fontWeight(.medium)
+                .foregroundStyle(theme.textSecondary)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
             // Uses CommonSegmentedPicker with optional enum selection and dynamic tint.
             CommonSegmentedPicker(
                 selection: .optional($viewModel.selectedAgreement),
@@ -177,6 +208,12 @@ struct MediationFeeView: View {
     // MARK: - Dispute Type Menu Section
 
     private var disputeTypeMenuSection: some View {
+        VStack(alignment: .leading, spacing: theme.spacingXS) {
+            Text(LocalizationKeys.ScreenTitle.disputeType.localized)
+                .font(theme.footnote)
+                .fontWeight(.medium)
+                .foregroundStyle(theme.textSecondary)
+
         Menu {
             ForEach(viewModel.availableDisputeTypes) { disputeType in
                 Button {
@@ -211,6 +248,7 @@ struct MediationFeeView: View {
             .frame(height: theme.buttonHeight)
             .contentShape(Rectangle())
             .glassEffect()
+        }
         }
     }
 
@@ -280,23 +318,17 @@ struct MediationFeeView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             NavigationStack {
-                MediationFeeView(selectedYear: .year2026, isMonetary: true)
+                MediationFeeView(selectedYear: .year2026)
             }
             .injectTheme(LightTheme())
-            .previewDisplayName("Monetary - Light")
+            .previewDisplayName("Light")
 
             NavigationStack {
-                MediationFeeView(selectedYear: .year2026, isMonetary: false)
-            }
-            .injectTheme(LightTheme())
-            .previewDisplayName("Non-Monetary - Light")
-
-            NavigationStack {
-                MediationFeeView(selectedYear: .year2026, isMonetary: true)
+                MediationFeeView(selectedYear: .year2026)
             }
             .injectTheme(DarkTheme())
             .preferredColorScheme(.dark)
-            .previewDisplayName("Monetary - Dark")
+            .previewDisplayName("Dark")
         }
     }
 }

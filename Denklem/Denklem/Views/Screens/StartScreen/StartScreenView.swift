@@ -85,8 +85,8 @@ struct StartScreenView: View {
             }
         }
         .navigationDestination(isPresented: $viewModel.navigateToDisputeType) {
-            // Quick access: Navigate directly to MediationFeeView with monetary dispute selected
-            MediationFeeView(selectedYear: viewModel.selectedYear, isMonetary: true)
+            // Quick access: Navigate directly to MediationFeeView
+            MediationFeeView(selectedYear: viewModel.selectedYear)
         }
         .navigationDestination(isPresented: $viewModel.navigateToSurvey) {
             SurveyView()
