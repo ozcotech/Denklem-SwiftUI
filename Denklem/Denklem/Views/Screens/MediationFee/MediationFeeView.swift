@@ -48,13 +48,13 @@ struct MediationFeeView: View {
             // Content
             ScrollViewReader { proxy in
                 ScrollView {
-                    VStack(spacing: theme.spacingM) {
-
-                        // Monetary / Non-Monetary Segmented Picker
-                        monetaryPickerSection
+                    VStack(spacing: theme.spacingS) {
 
                         // Year Picker
                         yearPickerSection
+
+                        // Monetary / Non-Monetary Segmented Picker
+                        monetaryPickerSection
 
                         // Agreement Selector (monetary only)
                         if viewModel.showAgreementSelector {
