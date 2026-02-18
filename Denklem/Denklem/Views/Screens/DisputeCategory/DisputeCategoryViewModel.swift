@@ -168,11 +168,6 @@ final class DisputeCategoryViewModel: ObservableObject {
     
     // MARK: - Computed Properties
     
-    /// Main categories (unified mediation fee)
-    var mainCategories: [DisputeCategoryType] {
-        return [.mediationFee]
-    }
-    
     /// Other calculations (time and SMM)
     var otherCalculations: [DisputeCategoryType] {
         return [.smmCalculation, .timeCalculation, .aiChat]
@@ -188,12 +183,7 @@ final class DisputeCategoryViewModel: ObservableObject {
         LocalizationKeys.DisputeCategory.subtitle.localized
     }
 
-    /// Main categories section title
-    var mainCategoriesTitle: String {
-        LocalizationKeys.DisputeCategory.mediationFeeDescription.localized
-    }
-
-    /// Other calculations section title
+/// Other calculations section title
     var otherCalculationsTitle: String {
         LocalizationKeys.DisputeCategory.otherCalculations.localized
     }

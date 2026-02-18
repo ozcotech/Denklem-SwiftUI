@@ -44,12 +44,23 @@ struct DisputeCategoryView: View {
 
             ScrollView {
                 VStack(spacing: theme.spacingM) {
-                    DisputeSectionCard(
-                        title: viewModel.mainCategoriesTitle,
-                        categories: viewModel.mainCategories,
-                        cardColor: theme.cardMain,
-                        onCategoryTap: viewModel.selectCategory
-                    )
+                    Button {
+                        viewModel.selectCategory(.mediationFee)
+                    } label: {
+                        VStack(spacing: 4) {
+                            Image(systemName: DisputeCategoryType.mediationFee.systemImage)
+                                .font(.system(size: 40, weight: .semibold))
+                                .foregroundStyle(DisputeCategoryType.mediationFee.iconColor)
+                            Text(DisputeCategoryType.mediationFee.displayName)
+                                .font(theme.footnote)
+                                .fontWeight(.semibold)
+                                .foregroundStyle(theme.textPrimary)
+                        }
+                        .frame(maxWidth: .infinity, minHeight: 56)
+                        .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.glass(.clear.tint(theme.surface)))
+                    .buttonBorderShape(.roundedRectangle(radius: theme.cornerRadiusXL))
 
                     DisputeSectionCard(
                         title: viewModel.specialCalculationsTitle,
