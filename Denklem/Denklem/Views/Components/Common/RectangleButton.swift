@@ -36,7 +36,7 @@ struct RectangleButton: View {
                     .multilineTextAlignment(.leading)
                     .lineLimit(3)
             }
-            .frame(maxWidth: .infinity, minHeight: 56, alignment: .leading)
+            .frame(maxWidth: .infinity, minHeight: 72, alignment: .leading)
         }
         .buttonStyle(.glass(.clear.tint(theme.surface)))
         .buttonBorderShape(.roundedRectangle(radius: cornerRadius))

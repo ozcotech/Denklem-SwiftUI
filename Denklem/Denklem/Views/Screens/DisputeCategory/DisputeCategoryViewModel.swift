@@ -143,8 +143,8 @@ final class DisputeCategoryViewModel: ObservableObject {
         @Published var showComingSoonPopover: Bool = false
 
         var specialCalculations: [DisputeCategoryType] {
-            return [.rentSpecial, .attorneyFee, .reinstatement, .serialDisputes]
-        }// .serialDisputes can be added in the future
+            return [.rentSpecial, .attorneyFee, .reinstatement, .serialDisputes, .smmCalculation, .timeCalculation]
+        }
 
         var specialCalculationsTitle: String {
             LocalizationKeys.DisputeCategory.specialCalculations.localized
@@ -168,11 +168,6 @@ final class DisputeCategoryViewModel: ObservableObject {
     
     // MARK: - Computed Properties
     
-    /// Other calculations (time and SMM)
-    var otherCalculations: [DisputeCategoryType] {
-        return [.smmCalculation, .timeCalculation, .aiChat]
-    }
-    
     /// Screen title
     var screenTitle: String {
         LocalizationKeys.DisputeCategory.title.localized
@@ -183,10 +178,6 @@ final class DisputeCategoryViewModel: ObservableObject {
         LocalizationKeys.DisputeCategory.subtitle.localized
     }
 
-/// Other calculations section title
-    var otherCalculationsTitle: String {
-        LocalizationKeys.DisputeCategory.otherCalculations.localized
-    }
     
     // MARK: - Initialization
     

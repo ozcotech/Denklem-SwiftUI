@@ -31,19 +31,13 @@ struct DisputeSectionCard: View {
     }
 
     var body: some View {
-        VStack(spacing: theme.spacingS) {
-            Text(title)
-                .font(theme.title3)
-                .fontWeight(.semibold)
-                .foregroundStyle(theme.textPrimary)
-                .frame(maxWidth: .infinity, alignment: .center)
-
+        VStack(spacing: theme.spacingM) {
             LazyVGrid(
                 columns: [
                     GridItem(.flexible(), spacing: theme.spacingS),
                     GridItem(.flexible(), spacing: theme.spacingS)
                 ],
-                spacing: theme.spacingS
+                spacing: theme.spacingM
             ) {
                 ForEach(gridCategories) { category in
                     RectangleButton(
@@ -78,9 +72,8 @@ struct DisputeSectionCard: View {
                 .buttonBorderShape(.roundedRectangle(radius: theme.cornerRadiusXL))
             }
         }
-        .padding(.horizontal, theme.spacingS)
-        .padding(.top, theme.spacingS)
-        .padding(.bottom, theme.spacingL)
+        .padding(.horizontal, theme.spacingXS)
+        .padding(.vertical, theme.spacingS)
         .background(
             RoundedRectangle(cornerRadius: theme.cornerRadiusL)
                 .fill(cardColor)

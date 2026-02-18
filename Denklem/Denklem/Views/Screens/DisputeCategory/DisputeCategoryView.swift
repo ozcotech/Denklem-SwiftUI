@@ -42,45 +42,53 @@ struct DisputeCategoryView: View {
             theme.background
                 .ignoresSafeArea()
 
-            ScrollView {
-                VStack(spacing: theme.spacingM) {
-                    Button {
-                        viewModel.selectCategory(.mediationFee)
-                    } label: {
-                        VStack(spacing: 4) {
-                            Image(systemName: DisputeCategoryType.mediationFee.systemImage)
-                                .font(.system(size: 40, weight: .semibold))
-                                .foregroundStyle(DisputeCategoryType.mediationFee.iconColor)
-                            Text(DisputeCategoryType.mediationFee.displayName)
-                                .font(theme.footnote)
-                                .fontWeight(.semibold)
-                                .foregroundStyle(theme.textPrimary)
+            GeometryReader { geometry in
+                ScrollView {
+                    VStack(spacing: theme.spacingM) {
+                        Button {
+                            viewModel.selectCategory(.mediationFee)
+                        } label: {
+                            VStack(spacing: 4) {
+                                Image(systemName: DisputeCategoryType.mediationFee.systemImage)
+                                    .font(.system(size: 40, weight: .semibold))
+                                    .foregroundStyle(DisputeCategoryType.mediationFee.iconColor)
+                                Text(DisputeCategoryType.mediationFee.displayName)
+                                    .font(theme.footnote)
+                                    .fontWeight(.semibold)
+                                    .foregroundStyle(theme.textPrimary)
+                            }
+                            .frame(maxWidth: .infinity, minHeight: 56)
+                            .contentShape(Rectangle())
                         }
-                        .frame(maxWidth: .infinity, minHeight: 56)
-                        .contentShape(Rectangle())
+                        .buttonStyle(.glass(.clear.tint(theme.surface)))
+
+                        DisputeSectionCard(
+                            title: viewModel.specialCalculationsTitle,
+                            categories: viewModel.specialCalculations,
+                            cardColor: theme.cardSpecial,
+                            onCategoryTap: viewModel.selectCategory
+                        )
+
+                        Button {
+                            viewModel.selectCategory(.aiChat)
+                        } label: {
+                            VStack(spacing: 4) {
+                                Image(systemName: DisputeCategoryType.aiChat.systemImage)
+                                    .font(.system(size: 40, weight: .semibold))
+                                    .foregroundStyle(DisputeCategoryType.aiChat.iconColor)
+                                Text(DisputeCategoryType.aiChat.displayName)
+                                    .font(theme.footnote)
+                                    .fontWeight(.semibold)
+                                    .foregroundStyle(theme.textPrimary)
+                            }
+                            .frame(maxWidth: .infinity, minHeight: 56)
+                            .contentShape(Rectangle())
+                        }
+                        .buttonStyle(.glass(.clear.tint(theme.surface)))
                     }
-                    .buttonStyle(.glass(.clear.tint(theme.surface)))
-                    .buttonBorderShape(.roundedRectangle(radius: theme.cornerRadiusXL))
-
-                    DisputeSectionCard(
-                        title: viewModel.specialCalculationsTitle,
-                        categories: viewModel.specialCalculations,
-                        cardColor: theme.cardSpecial,
-                        onCategoryTap: viewModel.selectCategory
-                    )
-
-                    DisputeSectionCard(
-                        title: viewModel.otherCalculationsTitle,
-                        categories: viewModel.otherCalculations,
-                        cardColor: theme.cardOther,
-                        onCategoryTap: viewModel.selectCategory
-                    )
-
-                    Spacer()
-                        .frame(height: theme.spacingM)
+                    .padding(.horizontal, theme.spacingS)
+                    .frame(minHeight: geometry.size.height)
                 }
-                .padding(.horizontal, theme.spacingL)
-                .padding(.top, theme.spacingXS)
             }
         }
         // Navigation bar title for Tools screen ("Hesaplama Araçları" / "Calculation Tools")
