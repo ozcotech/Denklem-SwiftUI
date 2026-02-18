@@ -98,7 +98,7 @@ enum DisputeCategoryType: String, CaseIterable, Identifiable {
         case .serialDisputes:
             return "rectangle.stack.fill"
         case .aiChat:
-            return "plus.circle"
+            return "lock.fill" // Placeholder - using lock to indicate "coming soon" status, as AI Chat is not yet available. Before icon was plus.circle.
         }
     }
 
@@ -124,7 +124,7 @@ enum DisputeCategoryType: String, CaseIterable, Identifiable {
         case .serialDisputes:
             return .pink
         case .aiChat:
-            return .cyan
+            return .red // Coming soon - using red for attention, before color was cyan.
         }
     }
 }

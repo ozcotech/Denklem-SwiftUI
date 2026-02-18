@@ -2753,7 +2753,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hyresförhållande\n(Avhysning/Justering)"
+            "value" : "Hyrestvist\n(Avhysning/Justering)"
           }
         },
         "tr" : {
@@ -8520,30 +8520,6 @@
         }
       }
     },
-    "screen.title.subject_selection" : {
-      "comment" : "Section label for monetary/non-monetary subject picker",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Subject Selection"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ämnesval"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Konu Seçimi"
-          }
-        }
-      }
-    },
     "screen.title.smm_calculation" : {
       "comment" : "screen title",
       "extractionState" : "manual",
@@ -8564,6 +8540,30 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "SMM Hesaplama"
+          }
+        }
+      }
+    },
+    "screen.title.subject_selection" : {
+      "comment" : "Section label for monetary/non-monetary subject picker",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Subject Selection"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ämnesval"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Konu Seçimi"
           }
         }
       }
