@@ -76,7 +76,7 @@ struct AttorneyFeeResultSheet: View {
                 .fontWeight(.medium)
                 .foregroundStyle(theme.textSecondary)
 
-            Text(result.formattedFee)
+            Text(LocalizationHelper.formatCurrency(result.fee))
                 .font(.system(size: 40, weight: .bold, design: .rounded))
                 .foregroundStyle(theme.primary)
         }

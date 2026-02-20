@@ -53,17 +53,6 @@ struct AttorneyFeeResult: Equatable, Codable {
 	/// Tariff year used
 	let tariffYear: Int
 
-	/// Formatted fee string (e.g., ₺20,000.00)
-	var formattedFee: String {
-		let formatter = NumberFormatter()
-		formatter.numberStyle = .currency
-		formatter.currencyCode = AttorneyFeeConstants.currencyCode
-		formatter.currencySymbol = AttorneyFeeConstants.currencySymbol
-		formatter.minimumFractionDigits = AttorneyFeeConstants.decimalPlaces
-		formatter.maximumFractionDigits = AttorneyFeeConstants.decimalPlaces
-		return formatter.string(from: NSNumber(value: fee)) ?? "₺\(fee)"
-	}
-
 	/// Legal reference text with dynamic tariff year
 	var legalReference: String {
 		let format = LocalizationKeys.AttorneyFee.legalReferenceFormat.localized
