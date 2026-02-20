@@ -107,10 +107,10 @@ extension TariffDocumentContent {
 // MARK: - Shared Party Tier Labels
 
 private enum PartyTierLabels {
-    static let twoPerson = "2 kişinin taraf olması durumunda, taraf başına"
-    static let threeToFive = "3-5 kişinin taraf olması durumunda, taraf sayısı gözetmeksizin"
-    static let sixToTen = "6-10 kişinin taraf olması durumunda, taraf sayısı gözetmeksizin"
-    static let elevenPlus = "11 ve daha fazla kişinin taraf olması durumunda, taraf sayısı gözetmeksizin"
+    static let twoPerson = "Bir saati; 2 kişinin taraf olması durumunda, taraf başına"
+    static let threeToFive = "Bir saati; 3-5 kişinin taraf olması durumunda, taraf sayısı gözetmeksizin"
+    static let sixToTen = "Bir saati; 6-10 kişinin taraf olması durumunda, taraf sayısı gözetmeksizin"
+    static let elevenPlus = "Bir saati; 11 ve daha fazla kişinin taraf olması durumunda, taraf sayısı gözetmeksizin"
 }
 
 // MARK: - 2025 Content
