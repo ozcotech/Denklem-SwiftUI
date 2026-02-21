@@ -86,8 +86,7 @@ struct ReinstatementSheet: View {
                 }
             }
         }
-        .onTapGesture {
-            // Dismiss keyboard when tapping outside
+        .onDisappear {
             focusedField = nil
         }
     }

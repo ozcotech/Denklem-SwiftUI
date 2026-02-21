@@ -77,7 +77,7 @@ struct AttorneyFeeView: View {
                     }
                     .padding(.horizontal, theme.spacingM)
                     .padding(.top, theme.spacingXS)
-                    .padding(.bottom, theme.spacingXXL)
+                    .padding(.bottom, theme.spacingXXL * 1.5)
                 }
                 .scrollDismissesKeyboard(.interactively)
                 .onChange(of: focusedField) { _, newValue in
@@ -88,17 +88,19 @@ struct AttorneyFeeView: View {
                 }
             }
         }
-        .onTapGesture {
-            focusedField = nil
-        }
         .animation(.easeInOut(duration: 0.2), value: viewModel.selectedDisputeType)
         .animation(.easeInOut(duration: 0.2), value: viewModel.selectedAgreementStatus)
         .navigationTitle(viewModel.screenTitle)
         .navigationBarTitleDisplayMode(.inline)
-        .sheet(isPresented: $viewModel.showResult) {
+        .sheet(isPresented: $viewModel.showResult, onDismiss: {
+            focusedField = nil
+        }) {
             if let result = viewModel.calculationResult {
                 AttorneyFeeResultSheet(result: result)
             }
+        }
+        .onDisappear {
+            focusedField = nil
         }
     }
 

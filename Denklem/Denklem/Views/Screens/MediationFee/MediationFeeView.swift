@@ -106,17 +106,19 @@ struct MediationFeeView: View {
                 }
             }
         }
-        .onTapGesture {
-            focusedField = nil
-        }
         .animation(.easeInOut(duration: 0.2), value: viewModel.selectedDisputeType != nil)
         .animation(.easeInOut(duration: 0.2), value: viewModel.hasAgreement)
         .navigationTitle(viewModel.screenTitle)
         .navigationBarTitleDisplayMode(.inline)
-        .sheet(isPresented: $viewModel.showResult) {
+        .sheet(isPresented: $viewModel.showResult, onDismiss: {
+            focusedField = nil
+        }) {
             if let result = viewModel.calculationResult {
                 MediationFeeResultSheet(result: result, theme: theme, isMonetary: viewModel.isMonetary)
             }
+        }
+        .onDisappear {
+            focusedField = nil
         }
     }
 

@@ -83,21 +83,32 @@ struct TenancySelectionView: View {
                         proxy.scrollTo(field, anchor: .center)
                     }
                 }
+                .onChange(of: viewModel.isEvictionSelected) { _, isSelected in
+                    if isSelected {
+                        withAnimation(.easeInOut(duration: 0.3)) {
+                            proxy.scrollTo(TenancySelectionFocusedField.evictionAmount, anchor: .center)
+                        }
+                    }
+                }
             }
         }
         .navigationTitle(viewModel.screenTitle)
         .navigationBarTitleDisplayMode(.inline)
-        .sheet(isPresented: $viewModel.showAttorneyResultSheet) {
+        .sheet(isPresented: $viewModel.showAttorneyResultSheet, onDismiss: {
+            focusedField = nil
+        }) {
             if let result = viewModel.attorneyCalculationResult {
                 TenancyAttorneyFeeResultSheet(result: result)
             }
         }
-        .sheet(isPresented: $viewModel.showMediationResultSheet) {
+        .sheet(isPresented: $viewModel.showMediationResultSheet, onDismiss: {
+            focusedField = nil
+        }) {
             if let result = viewModel.mediationCalculationResult {
                 TenancyMediationFeeResultSheet(result: result)
             }
         }
-        .onTapGesture {
+        .onDisappear {
             focusedField = nil
         }
     }

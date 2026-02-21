@@ -74,10 +74,6 @@ struct SerialDisputesSheet: View {
                 }
             }
         }
-        .onTapGesture {
-            // Dismiss keyboard when tapping outside
-            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-        }
     }
 
     // MARK: - Input View
@@ -106,6 +102,7 @@ struct SerialDisputesSheet: View {
             .padding(.horizontal, theme.spacingM)
             .padding(.bottom, theme.spacingXXL)
         }
+        .scrollDismissesKeyboard(.interactively)
     }
 
     // MARK: - Year Picker Section
