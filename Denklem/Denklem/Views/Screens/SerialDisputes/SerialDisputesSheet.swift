@@ -103,7 +103,7 @@ struct SerialDisputesSheet: View {
                 // Calculate Button
                 calculateButton
             }
-            .padding(.horizontal, theme.spacingL)
+            .padding(.horizontal, theme.spacingM)
             .padding(.bottom, theme.spacingXXL)
         }
     }

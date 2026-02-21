@@ -40,7 +40,7 @@ struct StartScreenView: View {
                     // Primary Action Button
                     primaryActionButton
                 }
-                .padding(.horizontal, theme.spacingL)
+                .padding(.horizontal, theme.spacingM)
                 .padding(.bottom, theme.spacingXXL * 1.6)
                 .frame(minHeight: geometry.size.height)
                 .frame(maxWidth: .infinity)

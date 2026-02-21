@@ -123,7 +123,7 @@ struct ReinstatementSheet: View {
                             .id("calculateButton")
                     }
                 }
-                .padding(.horizontal, theme.spacingL)
+                .padding(.horizontal, theme.spacingM)
                 .padding(.bottom, theme.spacingXXL)
             }
             .scrollDismissesKeyboard(.interactively)

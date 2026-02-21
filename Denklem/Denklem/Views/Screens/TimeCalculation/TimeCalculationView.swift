@@ -205,7 +205,7 @@ struct ResultsSheet: View {
                     Spacer()
                         .frame(height: theme.spacingXXL)
                 }
-                .padding(.horizontal, theme.spacingL)
+                .padding(.horizontal, theme.spacingM)
                 .padding(.top, theme.spacingM)
             }
             .navigationTitle(LocalizationKeys.TimeCalculation.Result.processEndDates.localized)
@@ -373,7 +373,7 @@ struct DatePickerSheet: View {
                 
                 Spacer()
             }
-            .padding(.horizontal, theme.spacingL)
+            .padding(.horizontal, theme.spacingM)
             .padding(.top, theme.spacingM)
             .navigationTitle(LocalizationKeys.Input.assignmentDate.localized)
             .navigationBarTitleDisplayMode(.inline)

@@ -72,7 +72,7 @@ struct TenancySelectionView: View {
                         calculateButton
                             .id("calculateButton")
                     }
-                    .padding(.horizontal, theme.spacingL)
+                    .padding(.horizontal, theme.spacingM)
                     .padding(.top, theme.spacingS)
                     .padding(.bottom, theme.spacingXXL)
                 }

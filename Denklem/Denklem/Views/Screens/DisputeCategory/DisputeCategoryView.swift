@@ -86,7 +86,7 @@ struct DisputeCategoryView: View {
                         }
                         .buttonStyle(.glass(.clear.tint(theme.surface)))
                     }
-                    .padding(.horizontal, theme.spacingS)
+                    .padding(.horizontal, theme.spacingM)
                     .frame(minHeight: geometry.size.height)
                 }
             }

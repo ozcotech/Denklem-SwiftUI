@@ -44,7 +44,7 @@ struct AttorneyFeeResultSheet: View {
                     // Legal Reference Card
                     legalReferenceCard
                 }
-                .padding(.horizontal, theme.spacingL)
+                .padding(.horizontal, theme.spacingM)
                 .padding(.bottom, theme.spacingXXL)
             }
             .navigationTitle("")

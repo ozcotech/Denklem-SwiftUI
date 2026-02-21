@@ -88,7 +88,7 @@ struct MediationFeeView: View {
                         // Calculate Button
                         calculateButton
                     }
-                    .padding(.horizontal, theme.spacingL)
+                    .padding(.horizontal, theme.spacingM)
                     .padding(.top, theme.spacingXS)
                     .padding(.bottom, theme.spacingXXL)
                 }

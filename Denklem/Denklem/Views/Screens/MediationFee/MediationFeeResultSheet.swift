@@ -45,7 +45,7 @@ struct MediationFeeResultSheet: View {
                         smmResultCard
                     }
                 }
-                .padding(.horizontal, theme.spacingL)
+                .padding(.horizontal, theme.spacingM)
                 .padding(.bottom, theme.spacingXXL)
             }
             .navigationTitle("")

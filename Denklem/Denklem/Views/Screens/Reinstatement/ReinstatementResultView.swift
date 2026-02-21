@@ -52,7 +52,7 @@ struct ReinstatementResultView: View {
                 // Recalculate Button
                 recalculateButton
             }
-            .padding(.horizontal, theme.spacingL)
+            .padding(.horizontal, theme.spacingM)
             .padding(.bottom, theme.spacingXXL)
         }
     }

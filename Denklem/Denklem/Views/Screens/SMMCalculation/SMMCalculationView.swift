@@ -47,7 +47,7 @@ struct SMMCalculationView: View {
                     // Error Message
                     if let errorMessage = viewModel.errorMessage {
                         errorMessageView(errorMessage)
-                            .padding(.horizontal, theme.spacingL)
+                            .padding(.horizontal, theme.spacingM)
                     }
                     
                     // Calculate Button
@@ -122,9 +122,9 @@ struct SMMCalculationView: View {
                     viewModel.formatAmountInput()
                 }
         }
-        .padding(.horizontal, theme.spacingL)
+        .padding(.horizontal, theme.spacingM)
     }
-    
+
     // MARK: - Calculation Type Picker
 
     private var calculationTypePicker: some View {
@@ -165,7 +165,7 @@ struct SMMCalculationView: View {
                 .glassEffect()
             }
         }
-        .padding(.horizontal, theme.spacingL)
+        .padding(.horizontal, theme.spacingM)
     }
 
     // MARK: - Error Message View
@@ -186,7 +186,7 @@ struct SMMCalculationView: View {
             viewModel.calculate()
         }
         .glassEffectID("calculate", in: glassNamespace)
-        .padding(.horizontal, theme.spacingL)
+        .padding(.horizontal, theme.spacingM)
     }
     
     // MARK: - Helper Methods
@@ -228,7 +228,7 @@ struct SMMResultSheet: View {
                     Spacer()
                         .frame(height: theme.spacingXXL)
                 }
-                .padding(.horizontal, theme.spacingL)
+                .padding(.horizontal, theme.spacingM)
                 .padding(.top, theme.spacingM)
             }
             .background(theme.background)

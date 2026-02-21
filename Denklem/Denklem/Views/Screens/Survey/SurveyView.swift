@@ -47,7 +47,7 @@ struct SurveyView: View {
                         questionCard
                     }
                 }
-                .padding(.horizontal, theme.spacingL)
+                .padding(.horizontal, theme.spacingM)
                 .padding(.top, theme.spacingS)
                 .padding(.bottom, theme.spacingXL)
             }
