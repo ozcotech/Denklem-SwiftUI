@@ -80,17 +80,16 @@ struct AttorneyFeeView: View {
                     .padding(.bottom, theme.spacingXXL * 1.5)
                 }
                 .scrollDismissesKeyboard(.interactively)
-                // Delay scrollTo to let system keyboard avoidance settle first,
-                // preventing conflict between system scroll and programmatic scroll.
                 .onChange(of: focusedField) { _, newValue in
                     guard newValue != nil else { return }
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-                        withAnimation(.easeInOut(duration: 0.3)) {
-                            proxy.scrollTo("amountInput", anchor: .center)
-                        }
+                    withAnimation(.easeInOut(duration: 0.3)) {
+                        proxy.scrollTo("amountInput", anchor: .center)
                     }
                 }
             }
+        }
+        .onTapGesture {
+            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         }
         .animation(.easeInOut(duration: 0.2), value: viewModel.selectedDisputeType)
         .animation(.easeInOut(duration: 0.2), value: viewModel.selectedAgreementStatus)

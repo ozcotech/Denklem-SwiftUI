@@ -38,7 +38,7 @@ struct CommonSegmentedPicker<Option: Hashable, Label: View>: View {
     init(
         selection: CommonSegmentedSelection<Option>,
         options: [Option],
-        controlSize: ControlSize = .large,
+        controlSize: ControlSize = .regular,
         tint: Color? = nil,
         labelFont: Font = .subheadline.weight(.semibold),
         minimumLabelScaleFactor: CGFloat = 0.75,

@@ -72,6 +72,9 @@ struct ReinstatementSheet: View {
                     inputView
                 }
             }
+            .onTapGesture {
+                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+            }
             .navigationTitle(viewModel.screenTitle)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -126,14 +129,10 @@ struct ReinstatementSheet: View {
                 .padding(.bottom, theme.spacingXXL)
             }
             .scrollDismissesKeyboard(.interactively)
-            // Delay scrollTo to let system keyboard avoidance settle first,
-            // preventing conflict between system scroll and programmatic scroll.
             .onChange(of: focusedField) { _, newValue in
                 guard let field = newValue else { return }
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-                    withAnimation(.easeInOut(duration: 0.25)) {
-                        proxy.scrollTo(field, anchor: .center)
-                    }
+                withAnimation(.easeInOut(duration: 0.25)) {
+                    proxy.scrollTo(field, anchor: .center)
                 }
             }
         }

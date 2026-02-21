@@ -93,22 +93,21 @@ struct MediationFeeView: View {
                     .padding(.bottom, theme.spacingXXL)
                 }
                 .scrollDismissesKeyboard(.interactively)
-                // Delay scrollTo to let system keyboard avoidance settle first,
-                // preventing conflict between system scroll and programmatic scroll.
                 .onChange(of: focusedField) { _, newValue in
                     guard let newValue else { return }
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-                        withAnimation(.easeInOut(duration: 0.3)) {
-                            switch newValue {
-                            case .amount:
-                                proxy.scrollTo("amountInput", anchor: .center)
-                            case .partyCount:
-                                proxy.scrollTo("partyCountInput", anchor: .center)
-                            }
+                    withAnimation(.easeInOut(duration: 0.3)) {
+                        switch newValue {
+                        case .amount:
+                            proxy.scrollTo("amountInput", anchor: .center)
+                        case .partyCount:
+                            proxy.scrollTo("partyCountInput", anchor: .center)
                         }
                     }
                 }
             }
+        }
+        .onTapGesture {
+            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         }
         .animation(.easeInOut(duration: 0.2), value: viewModel.selectedDisputeType != nil)
         .animation(.easeInOut(duration: 0.2), value: viewModel.hasAgreement)
@@ -135,14 +134,14 @@ struct MediationFeeView: View {
                 .fontWeight(.medium)
                 .foregroundStyle(theme.textSecondary)
 
-            Picker("", selection: $viewModel.isMonetary) {
-                Text(LocalizationKeys.CalculationType.monetary.localized)
-                    .tag(true)
-                Text(LocalizationKeys.CalculationType.nonMonetary.localized)
-                    .tag(false)
+            CommonSegmentedPicker(
+                selection: .required($viewModel.isMonetary),
+                options: [true, false]
+            ) { isMonetary in
+                Text(isMonetary
+                     ? LocalizationKeys.CalculationType.monetary.localized
+                     : LocalizationKeys.CalculationType.nonMonetary.localized)
             }
-            .pickerStyle(.segmented)
-            .controlSize(.large)
             .onChange(of: viewModel.isMonetary) { _, _ in
                 viewModel.resetFormForModeChange()
             }
