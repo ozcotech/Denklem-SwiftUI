@@ -96,7 +96,7 @@ struct ReinstatementSheet: View {
     private var inputView: some View {
         ScrollViewReader { proxy in
             ScrollView {
-                VStack(spacing: theme.spacingL) {
+                VStack(spacing: theme.spacingM) {
 
                     // Year Picker Section
                     yearPickerSection
@@ -146,7 +146,7 @@ struct ReinstatementSheet: View {
             availableYears: viewModel.availableYears,
             selectedYear: viewModel.selectedYear,
             legalReferenceText: LocalizationKeys.Reinstatement.tariffSection.localized,
-            showTopPadding: true,
+            showTopPadding: false,
             onYearSelected: { viewModel.selectedYear = $0 }
         )
     }

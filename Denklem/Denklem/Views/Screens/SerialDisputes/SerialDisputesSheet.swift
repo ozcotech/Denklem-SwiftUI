@@ -60,6 +60,9 @@ struct SerialDisputesSheet: View {
                     inputView
                 }
             }
+            .onTapGesture {
+                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+            }
             .navigationTitle(viewModel.screenTitle)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -113,7 +116,7 @@ struct SerialDisputesSheet: View {
             selectedYear: viewModel.selectedYear,
             selectedDisplayText: viewModel.currentYearDisplay,
             legalReferenceText: LocalizationKeys.SerialDisputes.legalArticle.localized,
-            showTopPadding: true,
+            showTopPadding: false,
             onYearSelected: { viewModel.selectedYear = $0 }
         )
     }
