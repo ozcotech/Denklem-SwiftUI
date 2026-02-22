@@ -26,7 +26,7 @@ extension Bundle {
     /// Uses UserDefaults directly to avoid MainActor requirement
     /// Caches result and only recreates when language changes
     static var localizedBundle: Bundle {
-        let languageCode = UserDefaults.standard.string(forKey: AppConstants.UserDefaultsKeys.selectedLanguage) ?? "tr"
+        let languageCode = UserDefaults.standard.string(forKey: AppConstants.UserDefaultsKeys.selectedLanguage) ?? "en"
         
         // Return cached bundle if language hasn't changed
         if let cached = _cachedBundle, _cachedLanguageCode == languageCode {

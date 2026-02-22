@@ -173,7 +173,7 @@ final class LocaleManager: ObservableObject {
             }
         }
         
-        return .turkish
+        return .english
     }
 }
 
