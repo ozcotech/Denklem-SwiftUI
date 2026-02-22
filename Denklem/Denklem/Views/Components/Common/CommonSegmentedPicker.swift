@@ -27,6 +27,7 @@ enum CommonSegmentedSelection<Option: Hashable> {
 /// Shared segmented picker wrapper supporting both required and optional enum-based selection.
 @available(iOS 26.0, *)
 struct CommonSegmentedPicker<Option: Hashable, Label: View>: View {
+    @ObservedObject private var localeManager = LocaleManager.shared
     private let selection: CommonSegmentedSelection<Option>
     private let options: [Option]
     private let controlSize: ControlSize
@@ -78,6 +79,7 @@ struct CommonSegmentedPicker<Option: Hashable, Label: View>: View {
         .pickerStyle(.segmented)
         .controlSize(controlSize)
         .applyTintIfNeeded(tint)
+        .id(localeManager.refreshID)
     }
 }
 

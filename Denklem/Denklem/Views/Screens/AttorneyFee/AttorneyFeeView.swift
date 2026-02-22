@@ -143,7 +143,6 @@ struct AttorneyFeeView: View {
                 .transition(.opacity.combined(with: .scale))
             }
         }
-        .id(localeManager.refreshID)
     }
 
     // MARK: - Agreement Status Section
@@ -172,7 +171,6 @@ struct AttorneyFeeView: View {
                 .transition(.opacity.combined(with: .scale))
             }
         }
-        .id(localeManager.refreshID)
     }
 
     // MARK: - Amount Input Field

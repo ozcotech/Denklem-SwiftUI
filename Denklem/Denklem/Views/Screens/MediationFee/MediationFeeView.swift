@@ -196,7 +196,6 @@ struct MediationFeeView: View {
                     .transition(.opacity)
             }
         }
-        .id(localeManager.refreshID)
     }
 
     // MARK: - Non-Monetary Info Section

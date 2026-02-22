@@ -189,7 +189,6 @@ struct ReinstatementSheet: View {
             }
         }
         .padding(.bottom, theme.spacingM)
-        .id(localeManager.refreshID)
         .onAppear {
             // Auto-select first option if none selected (for better UX)
             if viewModel.selectedAgreementStatus == nil {
