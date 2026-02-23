@@ -68,23 +68,6 @@ struct DisputeCategoryView: View {
                             cardColor: theme.cardSpecial,
                             onCategoryTap: viewModel.selectCategory
                         )
-
-                        Button {
-                            viewModel.selectCategory(.aiChat)
-                        } label: {
-                            VStack(spacing: 4) {
-                                Image(systemName: DisputeCategoryType.aiChat.systemImage)
-                                    .font(.system(size: 40, weight: .semibold))
-                                    .foregroundStyle(DisputeCategoryType.aiChat.iconColor)
-                                Text(DisputeCategoryType.aiChat.displayName)
-                                    .font(theme.footnote)
-                                    .fontWeight(.semibold)
-                                    .foregroundStyle(theme.textPrimary)
-                            }
-                            .frame(maxWidth: .infinity, minHeight: 56)
-                            .contentShape(Rectangle())
-                        }
-                        .buttonStyle(.glass(.clear.tint(theme.surface)))
                     }
                     .padding(.horizontal, theme.spacingM)
                     .frame(minHeight: geometry.size.height)
@@ -115,64 +98,6 @@ struct DisputeCategoryView: View {
         .sheet(isPresented: $viewModel.showReinstatementSheet) {
             ReinstatementSheet(selectedYear: viewModel.selectedYear)
         }
-        .overlay {
-            // Coming Soon Popover
-            if viewModel.showComingSoonPopover {
-                comingSoonOverlay
-            }
-        }
-        .onChange(of: viewModel.showComingSoonPopover) { _, newValue in
-            if newValue {
-                // Auto-dismiss after 2 seconds
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                    withAnimation(.easeOut(duration: 0.2)) {
-                        viewModel.showComingSoonPopover = false
-                    }
-                }
-            }
-        }
-    }
-
-    // MARK: - Coming Soon Overlay
-
-    private var comingSoonOverlay: some View {
-        ZStack {
-            // Tap outside to dismiss
-            theme.textPrimary.opacity(0.4)
-                .ignoresSafeArea()
-                .onTapGesture {
-                    withAnimation(.easeOut(duration: 0.2)) {
-                        viewModel.showComingSoonPopover = false
-                    }
-                }
-
-            // Coming Soon Content
-            VStack(spacing: theme.spacingM) {
-                Image(systemName: "hammer.fill")
-                    .font(.system(size: 40))
-                    .foregroundStyle(theme.primary)
-
-                Text(LocalizationKeys.General.comingSoon.localized)
-                    .font(theme.headline)
-                    .fontWeight(.bold)
-                    .foregroundStyle(theme.textPrimary)
-
-                Text(LocalizationKeys.General.comingSoonMessage.localized)
-                    .font(theme.body)
-                    .fontWeight(.medium)
-                    .foregroundStyle(theme.textSecondary)
-                    .multilineTextAlignment(.center)
-            }
-            .padding(theme.spacingXL)
-            .frame(maxWidth: 300)
-            .background(.clear)
-            .glassEffect(theme.glassClear, in: RoundedRectangle(cornerRadius: 24))
-            .transition(
-                .blurReplace
-                .combined(with: .scale(0.85))
-            )
-        }
-        .animation(.spring(response: 0.4, dampingFraction: 0.75), value: viewModel.showComingSoonPopover)
     }
 }
 

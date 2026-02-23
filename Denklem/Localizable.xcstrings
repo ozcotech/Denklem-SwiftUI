@@ -2259,54 +2259,6 @@
         }
       }
     },
-    "dispute_category.ai_chat" : {
-      "comment" : "AI Chat button title",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Denklem AI"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Denklem AI"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Denklem AI"
-          }
-        }
-      }
-    },
-    "dispute_category.ai_chat.description" : {
-      "comment" : "AI Chat button description",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "AI-powered legal assistant"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "AI-driven juridisk assistent"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Yapay zeka destekli hukuk asistanı"
-          }
-        }
-      }
-    },
     "dispute_category.attorney_fee" : {
       "comment" : "Attorney fee calculation button label",
       "extractionState" : "manual",
@@ -3835,54 +3787,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kapat"
-          }
-        }
-      }
-    },
-    "general.coming_soon" : {
-      "comment" : "Coming soon title for features under development",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Coming Soon"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kommer snart"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Yakında"
-          }
-        }
-      }
-    },
-    "general.coming_soon_message" : {
-      "comment" : "Coming soon message for features under development",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "This feature is still under development.\nIt will be available in April 2026."
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Denna funktion är fortfarande under utveckling.\nDen kommer att vara tillgänglig i april 2026."
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Henüz geliştirme aşamasındadır.\n2026 Nisan ayında aktif hale gelecektir."
           }
         }
       }
@@ -8300,30 +8204,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tarife Yılı"
-          }
-        }
-      }
-    },
-    "screen.dispute_category.coming_soon" : {
-      "comment" : "placeholder text",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dispute Category - Coming Soon"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tvistekategori - Kommer snart"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Uyuşmazlık Kategorisi - Yakında"
           }
         }
       }

@@ -1,73 +1,74 @@
-# AI Chat Feature Implementation Plan - Denklem App
+# Denklem AI - Guided Chat Feature Implementation Plan
 
 ## Context
 
-The user wants to add an AI-powered chat interface to the Denklem legal fee calculator app. Currently, users navigate through multiple screens selecting dispute types, agreement status, and entering amounts to calculate fees. The new chat feature will allow users to type natural language queries like:
+The Denklem app needs a chat-based calculation interface ("Denklem AI"). After evaluating two approaches:
 
-- **Turkish**: "İş uyuşmazlığında 350.000 TL'ye anlaştık, arabuluculuk ücretimiz ne kadar?"
-- **English**: "We agreed on 350,000 TL in an employment dispute, what's the mediation fee?"
+1. **Free-text NLP** (original plan) — User types natural language, system parses with keyword dictionaries
+2. **Guided Form Chat** (current plan) — Bot asks structured questions step-by-step, user responds with buttons or simple text
 
-The AI should parse these queries, extract parameters, and call the **existing calculation functions** (not duplicate logic) to provide conversational responses with full calculation breakdowns.
+**Decision: Guided Form Chat** was chosen because:
+- **Near-zero error rate** — User selects from predefined options, no parsing ambiguity
+- **No Turkish NLP complexity** — Turkish suffix system (anlaştık/anlaşmadık/anlaşamamış...) makes rule-based NLP unreliable
+- **Lower development cost** — No NLP parser, intent recognizer, or keyword dictionaries needed
+- **Better first impression** — "Anlayamadım" errors on first use would drive users away
+- **Expandable** — Free-text support can be layered on top later (Phase 2+)
 
-### Why This Approach?
-
-The app already has robust, tested calculation logic in:
-- `TariffCalculator.calculateFee(input:)` for mediation fees
-- `AttorneyFeeCalculator.calculate(input:)` for attorney fees
-- `TenancyCalculator`, `ReinstatementCalculator`, etc.
-
-The chat feature is **purely a natural language interface** to these existing calculators.
-
----
-
-## Recommended Approach: Hybrid (Offline-First)
-
-### Phase 1: Offline Rule-Based NLP (MVP)
-- **No internet required**, zero ongoing costs
-- Rule-based keyword extraction for Turkish/English
-- Pattern matching for amounts, dispute types, dates
-- Instant responses, complete privacy
-
-### Phase 2: Optional Claude API Enhancement
-- For complex queries beyond rule patterns
-- Fallback to offline when no internet
-- User toggle in Settings
-
-### Justification:
-1. **Privacy**: Legal data is sensitive - offline respects user privacy
-2. **Cost**: No per-query API costs in MVP
-3. **Reliability**: Works without internet (common in Turkish court environments)
-4. **Performance**: Instant responses without network latency
-5. **Gradual enhancement**: Can add AI later without breaking existing functionality
+### Critical Principle
+The chat feature **NEVER** performs calculations. It only:
+1. Collects structured parameters via guided questions
+2. Calls **existing** calculators (`TariffCalculator`, `AttorneyFeeCalculator`)
+3. Displays results in a conversational format
 
 ---
 
-## Architecture Overview
+## Architecture: State Machine Chat
 
-### Data Flow Pipeline
+The chat is a **state machine** — each state represents a question, user input advances to the next state:
 
 ```
-User types natural language
-    ↓
-[ChatNLPParser] - Keyword extraction, tokenization
-    ↓
-[ChatIntentRecognizer] - Classify intent (mediation/attorney/tenancy/etc.)
-    ↓
-[ChatParameterExtractor] - Extract structured parameters
-    ↓
-[ChatCalculationBridge] - Route to EXISTING calculator
-    ↓
-TariffCalculator.calculateFee(input:) ← EXISTING CODE
-    ↓
-[ChatResponseGenerator] - Format conversational response
-    ↓
-ChatView displays result with glass effect UI
+welcome → selectCalculationType → selectDisputeType → selectMonetaryType → selectAgreement → enterAmount/enterPartyCount → calculating → result → askAgain
 ```
 
-**Critical Principle**: The chat feature NEVER performs calculations. It only:
-1. Parses text → structured parameters
-2. Calls existing calculators
-3. Formats responses conversationally
+### Chat Flow Example (Mediation Fee - Agreement)
+
+```
+Bot:  "Merhaba! Hesaplamaya başlayalım."
+Bot:  "Hangi hesaplama türünü yapmak istersiniz?"
+      [Arabuluculuk Ücreti] [Avukatlık Ücreti]
+User: taps "Arabuluculuk Ücreti"
+
+Bot:  "Uyuşmazlık türünüz hangisi?"
+      [İş Hukuku] [Ticari] [Tüketici] [Kira] ...
+User: taps "İş Hukuku"
+
+Bot:  "Konusu para olan mı, para olmayan mı?"
+      [Para Olan] [Para Olmayan]
+User: taps "Para Olan"
+
+Bot:  "Anlaşma sağlandı mı?"
+      [Evet] [Hayır]
+User: taps "Evet"
+
+Bot:  "Anlaşma miktarını giriniz:"
+User: types "250000"
+
+Bot:  "Hesaplanıyor..."
+Bot:  [Result Card] Arabuluculuk Ücreti: X TL
+      (with breakdown details)
+
+Bot:  "Yeni bir hesaplama yapmak ister misiniz?"
+      [Evet] [Hayır]
+```
+
+---
+
+## Navigation
+
+Chat is accessed **only** from DisputeCategoryView (no new TabBar tab):
+- **DisputeCategoryViewModel**: Change `.aiChat` from `showComingSoonPopover = true` to `navigateToGuidedChat = true`
+- **DisputeCategoryView**: Add `.navigationDestination(isPresented:)` pointing to `GuidedChatView`
+- **DisputeCategoryType.aiChat**: Update icon from "lock.fill" to chat icon, color from .red to .cyan
 
 ---
 
@@ -76,533 +77,255 @@ ChatView displays result with glass effect UI
 Following the app's MVVM pattern:
 
 ```
-Denklem/
+Denklem/Denklem/
 ├── Models/
-│   ├── Domain/
-│   │   ├── ChatMessage.swift              ← NEW: Message model (id, role, content, timestamp, result)
-│   │   ├── ChatIntent.swift               ← NEW: Parsed intent enum (calculateMediationFee, etc.)
-│   │   └── ChatResponse.swift             ← NEW: Response model with suggestions
-│   │
-│   ├── Calculation/
-│   │   └── ChatCalculationBridge.swift    ← NEW: Routes intents → existing calculators
-│   │
-│   └── NLP/
-│       ├── ChatNLPParser.swift            ← NEW: Keyword extraction (Turkish/English)
-│       ├── ChatParameterExtractor.swift   ← NEW: Extract amounts, dates, types
-│       ├── ChatIntentRecognizer.swift     ← NEW: Intent classification
-│       └── ChatResponseGenerator.swift    ← NEW: Conversational response formatting
+│   └── Domain/
+│       └── GuidedChatModels.swift          ← NEW: ChatMessage, ChatStep enum, ChatOption
 │
 ├── Views/
 │   ├── Screens/
-│   │   └── Chat/
-│   │       ├── ChatView.swift             ← NEW: Main chat UI (ScrollView + input bar)
-│   │       ├── ChatViewModel.swift        ← NEW: Chat logic (@MainActor, @ObservableObject)
-│   │       ├── ChatMessageRow.swift       ← NEW: Message bubble with glass effect
-│   │       └── ChatInputBar.swift         ← NEW: Text input + send button
+│   │   └── GuidedChat/
+│   │       ├── GuidedChatView.swift        ← NEW: Main chat UI
+│   │       └── GuidedChatViewModel.swift   ← NEW: State machine logic + calculation routing
 │   │
 │   └── Components/
-│       └── Chat/
-│           ├── ChatResultCard.swift       ← NEW: Calculation result card
-│           ├── ChatSuggestionButton.swift ← NEW: Quick action buttons
-│           └── ChatTypingIndicator.swift  ← NEW: Animated "thinking..." indicator
+│       └── GuidedChat/
+│           ├── ChatMessageBubble.swift     ← NEW: Message bubble (bot/user)
+│           ├── ChatOptionButtons.swift     ← NEW: Tappable option buttons
+│           └── ChatResultCard.swift        ← NEW: Calculation result card
+│
+├── Views/Screens/DisputeCategory/
+│   ├── DisputeCategoryView.swift           ← MODIFY: Add navigationDestination for chat
+│   └── DisputeCategoryViewModel.swift      ← MODIFY: Navigate to chat instead of coming soon
 │
 ├── Constants/
-│   └── ChatConstants.swift                ← NEW: Keywords, regex patterns
+│   └── LocalizationKeys.swift              ← MODIFY: Add GuidedChat keys
 │
-├── Localization/
-│   ├── LocalizationKeys.swift             ← MODIFY: Add Chat struct with keys
-│   ├── tr.lproj/Localizable.strings       ← MODIFY: Add Turkish strings
-│   └── en.lproj/Localizable.strings       ← MODIFY: Add English strings
-│
-└── Views/Components/Navigation/
-    └── TabBarView.swift                   ← MODIFY: Add .chat tab
+└── Localization/
+    ├── tr.lproj/Localizable.strings        ← MODIFY: Add Turkish strings
+    ├── en.lproj/Localizable.strings        ← MODIFY: Add English strings
+    └── sv.lproj/Localizable.strings        ← MODIFY: Add Swedish strings
 ```
 
 ---
 
-## Critical Implementation Details
+## Implementation Details
 
-### 1. ChatMessage Model
+### 1. GuidedChatModels.swift — Domain Models
 
 ```swift
-struct ChatMessage: Identifiable, Codable {
+// Chat message model
+struct ChatMessage: Identifiable {
     let id: UUID
-    let role: ChatRole              // .user or .assistant
+    let role: ChatRole
     let content: String
+    let options: [ChatOption]?           // Tappable buttons (nil for user messages)
+    let resultCard: CalculationResult?   // Calculation result (nil for non-result messages)
     let timestamp: Date
-    let calculationResult: Any?     // CalculationResult, AttorneyFeeResult, etc.
-    let intent: ChatIntent?
 
-    enum ChatRole: String, Codable {
-        case user
-        case assistant
-    }
+    enum ChatRole { case bot, user }
+}
+
+// Tappable option button
+struct ChatOption: Identifiable, Hashable {
+    let id: UUID
+    let label: String
+    let value: String  // Internal value for state machine
+}
+
+// State machine steps
+enum ChatStep {
+    case welcome
+    case selectCalculationType       // Mediation / Attorney
+    case selectDisputeType           // 10 dispute types
+    case selectMonetaryType          // Monetary / Non-monetary
+    case selectAgreement             // Agreed / Not agreed
+    case enterAmount                 // Free text input (amount)
+    case enterPartyCount             // Free text input (party count)
+    case calculating
+    case result
+    case askAgain
+    case farewell
 }
 ```
 
-### 2. ChatIntent Enum
+### 2. GuidedChatViewModel.swift — State Machine + Calculator Bridge
 
+Key responsibilities:
+- Manage `currentStep: ChatStep` state
+- Append messages to `messages: [ChatMessage]` array
+- On user selection → advance step, add bot question for next step
+- On amount/partyCount input → validate, then call existing calculator
+- Route to `TariffCalculator.calculateFee(input:)` or `AttorneyFeeCalculator.calculate(input:)`
+- Format result as ChatMessage with resultCard
+
+**Collected parameters during flow:**
 ```swift
-enum ChatIntent {
-    case calculateMediationFee(
-        disputeType: DisputeType?,
-        agreementStatus: AgreementStatus?,
-        amount: Double?,
-        partyCount: Int?
-    )
-    case calculateAttorneyFee(
-        isMonetary: Bool?,
-        hasAgreement: Bool?,
-        amount: Double?,
-        courtType: AttorneyFeeConstants.CourtType?
-    )
-    case calculateTenancy(...)
-    case calculateReinstatement(...)
-    case greeting
-    case unknown
+@Published var selectedCalculationType: CalculationType?   // mediation or attorney
+@Published var selectedDisputeType: DisputeType?
+@Published var isMonetary: Bool = true
+@Published var selectedAgreement: AgreementStatus?
+@Published var amount: Double?
+@Published var partyCount: Int?
+@Published var selectedYear: TariffYear = .year2026
+```
 
-    var confidence: ConfidenceLevel {
-        // .high (all params), .medium (some missing), .low (unclear)
-    }
+**Calculator routing** (reuses existing calculators — zero duplication):
+```swift
+func performCalculation() {
+    // Mediation fee → CalculationInput.create() → TariffCalculator.calculateFee(input:)
+    // Attorney fee → AttorneyFeeInput → AttorneyFeeCalculator.calculate(input:)
 }
 ```
 
-### 3. ChatNLPParser - Keyword Extraction
+### 3. GuidedChatView.swift — Chat UI
 
-**Turkish Keywords Map:**
-```swift
-private static let disputeTypeKeywords: [DisputeType: [String]] = [
-    .workerEmployer: ["iş", "işçi", "işveren", "kıdem", "employment", "worker"],
-    .commercial: ["ticari", "ticaret", "commercial", "business"],
-    .consumer: ["tüketici", "consumer"],
-    .rent: ["kira", "kiracı", "rent", "rental"],
-    // ... all 10 dispute types
-]
+- ScrollView with LazyVStack of ChatMessageBubble views
+- ScrollViewReader to auto-scroll to latest message
+- Text input bar at bottom (only visible when step requires text input: enterAmount, enterPartyCount)
+- Theme + localeManager + glassEffect following app patterns
+- `.scrollDismissesKeyboard(.interactively)`
 
-private static let agreementKeywords: [AgreementStatus: [String]] = [
-    .agreed: ["anlaş", "anlaşma", "uzlaş", "agreed", "settlement"],
-    .notAgreed: ["anlaşmad", "uzlaşmad", "no agreement"]
-]
-```
+### 4. ChatMessageBubble.swift — Message Bubbles
 
-**Amount Extraction:**
-- Regex: `(\d{1,3}(?:[.,]\d{3})*(?:[.,]\d+)?)`
-- Handles: `350,000` / `350.000` / `350000` / `350.000,50`
-- Normalizes Turkish format (dot = thousands, comma = decimal)
+- Bot messages: left-aligned, glass effect
+- User messages: right-aligned, tinted glass
+- Option buttons rendered below bot message when `options` is not nil
+- Result card rendered when `resultCard` is not nil
 
-**Date Extraction:**
-- Regex: `(202[0-9])`
-- Defaults to current year if not found
+### 5. ChatOptionButtons.swift — Tappable Buttons
 
-### 4. ChatCalculationBridge - Router to Existing Calculators
+- Horizontal/vertical layout based on option count (2 options = horizontal, 3+ = vertical list)
+- Glass effect styling
+- Disabled after selection (greyed out, selected one highlighted)
 
-```swift
-struct ChatCalculationBridge {
-    static func calculate(intent: ChatIntent) -> Result<Any, ChatError> {
-        switch intent {
-        case .calculateMediationFee(let disputeType, let agreementStatus, let amount, let partyCount):
-            guard let disputeType, let agreementStatus else {
-                return .failure(.missingParameters(["disputeType", "agreementStatus"]))
-            }
+### 6. ChatResultCard.swift — Result Display
 
-            let calculationType: CalculationType = amount != nil ? .monetary : .nonMonetary
-
-            // Create input using EXISTING CalculationInput model
-            let input = CalculationInput(
-                disputeType: disputeType,
-                calculationType: calculationType,
-                agreementStatus: agreementStatus,
-                partyCount: partyCount ?? 2,
-                tariffYear: .current,
-                disputeAmount: amount
-            )
-
-            // Call EXISTING TariffCalculator
-            let result = TariffCalculator.calculateFee(input: input)
-            return result.isSuccess ? .success(result) : .failure(.calculationFailed(result.errorMessage ?? ""))
-
-        case .calculateAttorneyFee(let isMonetary, let hasAgreement, let amount, let courtType):
-            // Similar routing to AttorneyFeeCalculator.calculate()
-            // ...
-        }
-    }
-}
-```
-
-**Critical**: This bridge NEVER duplicates calculation logic - it only routes to existing calculators.
-
-### 5. ChatResponseGenerator - Conversational Formatting
-
-```swift
-static func generateMediationResponse(_ result: CalculationResult, language: SupportedLanguage) -> ChatResponse {
-    let fee = result.mediationFee
-    let formattedFee = fee.formattedAmount  // Uses existing LocalizationHelper
-
-    let message = language == .turkish
-        ? "\(fee.disputeType.displayName) uyuşmazlığında \(fee.agreementStatus.displayName) durumunda arabuluculuk ücretiniz \(formattedFee)'dir."
-        : "For \(fee.disputeType.displayName) dispute with \(fee.agreementStatus.displayName), your mediation fee is \(formattedFee)."
-
-    return ChatResponse(
-        message: message,
-        calculationResult: result,
-        suggestedActions: [.viewBreakdown, .shareResult]
-    )
-}
-```
-
-### 6. ChatView - iOS 26 Liquid Glass UI
-
-```swift
-@available(iOS 26.0, *)
-struct ChatView: View {
-    @StateObject private var viewModel = ChatViewModel()
-    @ObservedObject private var localeManager = LocaleManager.shared
-    @Environment(\.theme) var theme
-
-    var body: some View {
-        let _ = localeManager.refreshID
-
-        VStack(spacing: 0) {
-            // Messages ScrollView
-            ScrollViewReader { proxy in
-                ScrollView {
-                    LazyVStack(spacing: theme.spacingM) {
-                        ForEach(viewModel.messages) { message in
-                            ChatMessageRow(message: message)
-                                .id(message.id)
-                        }
-
-                        if viewModel.isProcessing {
-                            ChatTypingIndicator()
-                        }
-                    }
-                    .padding(.horizontal, theme.spacingL)
-                }
-                .onChange(of: viewModel.messages.count) {
-                    scrollToBottom(proxy)
-                }
-            }
-
-            // Input Bar
-            ChatInputBar(text: $viewModel.inputText, onSend: viewModel.sendMessage)
-                .padding(theme.spacingL)
-                .glassEffect(in: Rectangle())
-        }
-        .background(theme.background.ignoresSafeArea())
-        .navigationTitle(LocalizationKeys.Chat.title.localized)
-    }
-}
-```
-
-**Message Bubble Pattern:**
-```swift
-Text(message.content)
-    .padding(theme.spacingM)
-    .background(.clear)
-    .glassEffect(
-        message.role == .user ? theme.glassMedium : theme.glassClear,
-        in: RoundedRectangle(cornerRadius: theme.cornerRadiusL)
-    )
-```
-
-### 7. TabBar Integration
-
-**Modify TabBarView.swift:**
-
-```swift
-// Add to TabItem enum (line 12)
-enum TabItem: String, CaseIterable, Identifiable, Hashable {
-    case home
-    case tools
-    case chat        // ← NEW
-    case legislation
-    case settings
-}
-
-// Add title/icon (lines 21-31, 34-45)
-case .chat:
-    return LocalizationKeys.TabBar.chat.localized  // "Sohbet" / "Chat"
-
-case .chat:
-    return "bubble.left.and.text.bubble.right.fill"
-
-// Add Tab in body (after .tools, before .legislation)
-Tab(value: .chat) {
-    NavigationStack {
-        ChatView()
-    }
-} label: {
-    Label(TabItem.chat.title(currentLanguage: localeManager.currentLanguage),
-          systemImage: TabItem.chat.systemImage)
-}
-```
+- Reuses data from `CalculationResult` / `AttorneyFeeResult`
+- Shows fee amount, breakdown, dispute type info
+- Glass effect card matching app style
+- Compact version of existing result sheets
 
 ---
 
-## Implementation Phases
+## Scope
 
-### Phase 1: MVP (Offline Rule-Based) - 2-3 weeks
+### Phase 1 (MVP)
 
-#### Week 1: NLP Foundation
-- [ ] Create `ChatMessage`, `ChatIntent`, `ChatResponse` models
-- [ ] Implement `ChatNLPParser` with Turkish/English keyword dictionaries
-- [ ] Implement `ChatParameterExtractor` (amount, date, type parsing)
-- [ ] Write unit tests for 20+ sample queries
+Support **2 calculation types** in guided chat:
+1. **Mediation Fee** (arabuluculuk ucreti) — monetary + non-monetary, agreement + non-agreement
+2. **Attorney Fee** (avukatlik ucreti) — monetary + non-monetary, agreement types
 
-#### Week 2: Calculation Bridge & Response Generation
-- [ ] Implement `ChatIntentRecognizer` (classify intent from tokens)
-- [ ] Implement `ChatCalculationBridge` routing to existing calculators
-- [ ] Implement `ChatResponseGenerator` for conversational formatting
-- [ ] Test end-to-end: text → parameters → calculation → response
+### Phase 2 (Extended)
+- Add **tenancy**, **reinstatement**, **SMM**, **serial disputes** calculation support
+- Conversation history persistence
+- "Clear Chat" / "New Calculation" actions
 
-#### Week 3: UI Implementation & Integration
-- [ ] Create `ChatView`, `ChatViewModel`, `ChatMessageRow`, `ChatInputBar`
-- [ ] Add `.chat` tab to `TabBarView`
-- [ ] Add localization strings (Turkish/English)
-- [ ] Polish UI with glass effects, animations
-- [ ] Manual testing with 50+ real-world queries
+### Phase 3 (Optional — NLP Keyword Enhancement)
+- Allow users to type freely instead of using buttons
+- Rule-based keyword extraction for Turkish/English (e.g. "iş", "ticari", "anlaştık" → mapped to enums)
+- Pattern matching for amounts (regex), dispute types, agreement status
+- If parsing fails, gracefully fall back to guided questions
 
-**Deliverables:**
-- Working chat feature for **mediation** + **attorney fee** calculations
-- Offline-only, instant responses
-- Turkish + English support
-- Glass effect UI matching app style
-
-### Phase 2: Extended Features - 1-2 weeks
-- [ ] Add **tenancy** + **reinstatement** calculation support
-- [ ] Implement multi-turn conversations (ask follow-up questions for missing params)
-- [ ] Add conversation history persistence (UserDefaults or Core Data)
-- [ ] Add suggested action buttons ("Recalculate", "View Breakdown", "Share")
-- [ ] Add "Clear Chat" / "New Calculation" actions
-
-### Phase 3: Optional Claude API Integration - 1 week
-- [ ] Integrate Claude API with Anthropic SDK
-- [ ] Add Settings toggle: "AI-Powered Chat" (on/off)
-- [ ] Implement fallback to offline when no internet
-- [ ] Add disclaimer: "AI responses may vary"
-- [ ] Token usage tracking and cost monitoring
+### Phase 4 (Optional — Claude API)
+- For complex queries beyond guided/keyword patterns
+- User toggle in Settings
+- Fallback to offline when no internet
 
 ---
 
-## Localization Keys to Add
+## Key Patterns to Follow
 
-Add to `LocalizationKeys.swift`:
+### Calculation Reuse
+- ALWAYS call existing calculators: `TariffCalculator.calculateFee(input:)`
+- NEVER duplicate calculation logic in chat code
+- Use existing input types: `CalculationInput`, `AttorneyFeeInput`
+- Use existing result types: `CalculationResult`, `AttorneyFeeResult`
 
-```swift
-struct Chat {
-    static let title = "chat.title"
-    static let inputPlaceholder = "chat.input_placeholder"
-    static let welcomeMessage = "chat.welcome_message"
-    static let typingIndicator = "chat.typing"
-    static let errorGeneric = "chat.error_generic"
-    static let errorMissingParams = "chat.error_missing_params"
-    static let suggestionRecalculate = "chat.suggestion_recalculate"
-    static let suggestionViewBreakdown = "chat.suggestion_view_breakdown"
-    static let suggestionOpenTools = "chat.suggestion_open_tools"
-    static let clearChat = "chat.clear_chat"
-
-    struct Samples {
-        static let mediationAgreed = "chat.samples.mediation_agreed"
-        static let attorneyFee = "chat.samples.attorney_fee"
-        static let tenancy = "chat.samples.tenancy"
-    }
-}
-
-struct TabBar {
-    // Existing keys...
-    static let chat = "tab_bar.chat"  // ← NEW
-}
-```
-
-**Turkish strings:**
-```
-"chat.title" = "Sohbet";
-"chat.input_placeholder" = "Mesajınızı yazın...";
-"chat.welcome_message" = "Merhaba! 👋\n\nArabuluculuk ve avukatlık ücretleri hakkında sorularınızı sorun.\n\nÖrnek: 'İş uyuşmazlığında 350.000 TL'ye anlaştık, arabuluculuk ücretimiz ne kadar?'";
-"tab_bar.chat" = "Sohbet";
-```
-
-**English strings:**
-```
-"chat.title" = "Chat";
-"chat.input_placeholder" = "Type your message...";
-"chat.welcome_message" = "Hello! 👋\n\nAsk me about mediation and attorney fees.\n\nExample: 'We agreed on 350,000 TL in an employment dispute, what's the mediation fee?'";
-"tab_bar.chat" = "Chat";
-```
-
----
-
-## Critical Patterns to Follow
-
-### 1. Calculation Reuse
-- ✅ **ALWAYS** call existing calculators: `TariffCalculator.calculateFee(input:)`
-- ❌ **NEVER** duplicate calculation logic in chat code
-- ✅ Use existing input types: `CalculationInput`, `AttorneyFeeInput`
-- ✅ Use existing result types: `CalculationResult`, `AttorneyFeeResult`
-
-### 2. Type Safety
-- ✅ Use `DisputeType`, `AgreementStatus`, `CalculationType` enums
-- ❌ Never use raw strings for types
-- ✅ Use `TariffYear.current` for default year
-
-### 3. Localization
-- ✅ Use `LocalizationKeys` struct + `.localized` extension
-- ✅ Use `LocalizationHelper.formatCurrency()` for amounts
-- ✅ Use `LocalizationHelper.formatDate()` for dates
-- ✅ Get language from `UserDefaults` (not `Locale.current`)
-
-### 4. ViewModel Pattern
-- ✅ `@MainActor final class ChatViewModel: ObservableObject`
-- ✅ `@Published` properties for reactive state
-- ✅ Clear separation: VM = logic, View = UI
-
-### 5. Glass Effect Styling
-- ✅ Use `.glassEffect(in:)` for cards and input fields
-- ✅ Use `@Environment(\.theme)` for colors/spacing
-- ✅ Use `.buttonStyle(.glass)` for buttons
-
-### 6. Turkish Character Handling
-- ✅ Normalize text with `lowercased()` before keyword matching
-- ✅ Handle Turkish characters: ı, ş, ğ, ü, ö, ç
-- ✅ Support both Turkish and English keywords
-
----
-
-## Sample Test Cases
-
-| User Query (Turkish) | Expected Parameters | Expected Result |
-|---------------------|-------------------|----------------|
-| "İş uyuşmazlığında 350.000 TL'ye anlaştık, arabuluculuk ücretimiz ne kadar?" | disputeType: .workerEmployer, agreementStatus: .agreed, amount: 350000, calcType: mediation | 21,000 TL |
-| "Ticari davada avukat ücreti?" | disputeType: .commercial, calcType: attorney, MISSING: isMonetary, hasAgreement | Ask follow-up questions |
-| "Kira tahliye 600 bin TL" | calcType: tenancy, evictionAmount: 600000 | Calculate tenancy fee |
-| "İşe iade anlaşması 150000" | calcType: reinstatement, agreementStatus: .agreed, amount: 150000 | Calculate reinstatement fee |
-
-| User Query (English) | Expected Parameters | Expected Result |
-|---------------------|-------------------|----------------|
-| "We agreed on 350,000 TL in an employment dispute, what's the mediation fee?" | disputeType: .workerEmployer, agreementStatus: .agreed, amount: 350000, calcType: mediation | 21,000 TL |
-| "Attorney fee for commercial case?" | disputeType: .commercial, calcType: attorney, MISSING: isMonetary, hasAgreement | Ask follow-up questions |
-
----
-
-## Verification Steps
-
-After implementation, verify:
-
-### Unit Tests
-- [ ] `ChatNLPParser` extracts amounts correctly (Turkish/English formats)
-- [ ] `ChatNLPParser` identifies dispute types from keywords
-- [ ] `ChatNLPParser` identifies agreement status from keywords
-- [ ] `ChatIntentRecognizer` classifies intents correctly
-- [ ] `ChatCalculationBridge` routes to correct calculator
-- [ ] `ChatCalculationBridge` validates required parameters
-- [ ] `ChatResponseGenerator` formats Turkish responses correctly
-- [ ] `ChatResponseGenerator` formats English responses correctly
-
-### Integration Tests
-- [ ] End-to-end: "İş uyuşmazlığında 350.000 TL anlaştık" → correct fee displayed
-- [ ] Multi-turn conversation: missing params triggers follow-up questions
-- [ ] Language switching mid-conversation works
-- [ ] Calculation results match manual calculation tool results
-
-### UI Tests
-- [ ] Messages scroll to bottom on new message
-- [ ] Keyboard doesn't cover input bar
-- [ ] Glass effect renders correctly in light/dark mode
-- [ ] Typing indicator animates smoothly
-- [ ] Suggested action buttons work
-- [ ] Long messages wrap correctly
-- [ ] TabBar chat icon displays correctly
-
-### Manual Testing
-- [ ] Test 50+ real-world queries in Turkish
-- [ ] Test 20+ real-world queries in English
-- [ ] Test typos and misspellings
-- [ ] Test edge cases (very large amounts, unusual dispute types)
-- [ ] Test on different screen sizes (iPhone SE, Pro Max, iPad)
-- [ ] Test accessibility (VoiceOver, Dynamic Type)
+### App Conventions
+- `@available(iOS 26.0, *)` on all views
+- `@MainActor final class GuidedChatViewModel: ObservableObject`
+- `@ObservedObject private var localeManager = LocaleManager.shared` + `let _ = localeManager.refreshID`
+- `@Environment(\.theme) var theme` for styling
+- `.glassEffect()` and `.buttonStyle(.glass)` for Liquid Glass UI
+- `LocalizationKeys` struct for all user-facing strings
+- All user-facing text localized in tr/en/sv
 
 ---
 
 ## Files to Reference During Implementation
 
 ### Calculation Logic
-- `/Models/Calculation/TariffCalculator.swift` - Line 17: `static func calculateFee(input:)` interface
-- `/Models/Calculation/AttorneyFeeCalculator.swift` - Attorney fee calculation
-- `/Models/Calculation/TenancyCalculator.swift` - Tenancy calculation
-- `/Models/Calculation/ReinstatementCalculator.swift` - Reinstatement calculation
+- `/Models/Calculation/TariffCalculator.swift` — `static func calculateFee(input:) -> CalculationResult`
+- `/Models/Calculation/AttorneyFeeCalculator.swift` — `static func calculate(input:) -> AttorneyFeeResult`
 
 ### Existing Models
-- `/Models/Domain/CalculationResult.swift` - Input/Result structures to reuse
-- `/Models/Domain/DisputeType.swift` - Dispute type enum with displayName
-- `/Constants/TariffConstants.swift` - AgreementStatus, CalculationType enums
-- `/Models/Domain/TariffYear.swift` - TariffYear enum with .current
+- `/Models/Domain/CalculationResult.swift` — Input/Result structures to reuse
+- `/Models/Domain/DisputeType.swift` — Dispute type enum with displayName
+- `/Constants/TariffConstants.swift` — AgreementStatus, CalculationType enums
+- `/Models/Domain/TariffYear.swift` — TariffYear enum
 
 ### UI Patterns
-- `/Views/Screens/MediationFee/MediationFeeView.swift` - Reference for glass effect UI
-- `/Views/Screens/MediationFee/MediationFeeResultSheet.swift` - Result card display pattern
-- `/Views/Components/Common/CalculateButton.swift` - Button styling reference
+- `/Views/Screens/MediationFee/MediationFeeView.swift` — Glass effect UI reference
+- `/Views/Screens/MediationFee/MediationFeeResultSheet.swift` — Result card display pattern
+- `/Views/Screens/Survey/SurveyView.swift` — Card-by-card question flow reference
 
 ### Navigation
-- `/Views/Components/Navigation/TabBarView.swift` - TabBar to modify (add .chat tab)
+- `/Views/Screens/DisputeCategory/DisputeCategoryView.swift` — Navigation source
+- `/Views/Screens/DisputeCategory/DisputeCategoryViewModel.swift` — .aiChat case to modify
 
 ### Localization
-- `/Localization/LocalizationHelper.swift` - Formatting utilities (formatCurrency, formatDate)
-- `/Localization/LocalizationKeys.swift` - Type-safe localization keys structure
+- `/Localization/LocalizationHelper.swift` — Formatting utilities (formatCurrency, formatDate)
+- `/Localization/LocalizationKeys.swift` — Type-safe localization keys structure
+
+---
+
+## Implementation Order
+
+1. **GuidedChatModels.swift** — ChatMessage, ChatStep, ChatOption
+2. **GuidedChatViewModel.swift** — State machine + calculator routing
+3. **ChatMessageBubble.swift** — Bot/user message bubbles
+4. **ChatOptionButtons.swift** — Tappable option buttons
+5. **ChatResultCard.swift** — Calculation result card
+6. **GuidedChatView.swift** — Main chat screen (assembles components)
+7. **DisputeCategoryView/ViewModel** — Navigate to chat instead of coming soon
+8. **Localization** — Add all guided chat strings (tr/en/sv)
+
+---
+
+## Verification
+
+- Build succeeds with no warnings
+- DisputeCategory'deki Denklem AI butonu chat ekranina navigasyon yapar (coming soon yok)
+- Complete mediation fee flow: welcome → calculation type → dispute type → monetary → agreement → amount → result
+- Complete attorney fee flow: welcome → calculation type → agreement → amount → result
+- Result values match manual calculation tool exactly (zero duplication)
+- Language switching works (all chat messages update)
+- Light/dark mode renders correctly
+- Keyboard handling works for amount/party count input
+- "Calculate again" flow restarts from selectCalculationType step
 
 ---
 
 ## Success Criteria
 
-The AI chat feature is complete when:
+The guided chat feature is complete when:
 
 1. **Functional**
-   - User can type natural language query in Turkish or English
-   - System correctly extracts parameters 80%+ of the time
+   - User can complete a calculation through guided questions
+   - All mediation + attorney fee scenarios produce correct results
    - Calculation results match manual tool exactly (100% accuracy)
-   - Multi-turn conversation works for missing parameters
+   - "Calculate again" flow works without issues
 
 2. **UX**
-   - Messages display in under 500ms (offline mode)
-   - UI matches app's glass effect style
+   - Messages display instantly (no network dependency)
+   - UI matches app's Liquid Glass style
    - Scrolling, keyboard handling work smoothly
    - Works in light and dark mode
+   - All text localized in Turkish, English, and Swedish
 
-3. **Quality**
-   - 50+ unit tests pass
-   - All integration tests pass
-   - No crashes or memory leaks
-   - Localizes correctly in Turkish/English
-
-4. **Architecture**
+3. **Architecture**
    - Zero duplication of calculation logic
    - Follows MVVM pattern consistently
    - Code is maintainable and testable
-   - Future API integration is straightforward
-
----
-
-## Future Enhancements (Phase 3+)
-
-- **Voice Input**: Integrate Speech Recognition for hands-free queries
-- **Multi-turn Context**: Remember conversation context across multiple calculations
-- **Learning**: Track common queries to improve keyword dictionary
-- **Export**: Share chat transcript as PDF or text
-- **Templates**: Quick-fill buttons for common scenarios
-- **Calculator Comparison**: "Show me attorney fee vs mediation fee for this case"
-- **Historical Queries**: Search past conversations
-
----
-
-## Conclusion
-
-This plan provides a complete blueprint for implementing an AI chat feature that:
-
-- **Leverages existing code** (no calculation duplication)
-- **Works offline** (privacy, cost, reliability)
-- **Follows app patterns** (MVVM, theme, localization)
-- **Delivers incrementally** (MVP → Extended → Optional API)
-- **Maintains quality** (tested, type-safe, maintainable)
-
-The offline rule-based approach is sufficient for 80%+ of queries given the structured nature of legal fee calculations. The optional Claude API integration (Phase 3) adds flexibility for complex queries without compromising the core offline experience.
-
-**Estimated effort**: 2-3 weeks for MVP, 4-5 weeks for full Phase 2 implementation.
+   - Future free-text/API enhancements are straightforward to add

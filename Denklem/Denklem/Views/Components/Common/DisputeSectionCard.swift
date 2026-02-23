@@ -18,7 +18,7 @@ struct DisputeSectionCard: View {
     let onCategoryTap: (DisputeCategoryType) -> Void
 
     /// Full-width category types
-    private static let fullWidthTypes: Set<DisputeCategoryType> = [.aiChat, .mediationFee]
+    private static let fullWidthTypes: Set<DisputeCategoryType> = [.mediationFee]
 
     /// Categories that go in the 2-column grid (excludes full-width items)
     private var gridCategories: [DisputeCategoryType] {

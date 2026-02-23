@@ -34,8 +34,6 @@ struct LocalizationKeys {
         static let warning = "general.warning"
         static let info = "general.info"
         static let success = "general.success"
-        static let comingSoon = "general.coming_soon"
-        static let comingSoonMessage = "general.coming_soon_message"
         static let disputeSubject = "general.dispute_subject"
         static let recalculate = "general.recalculate"
     }
@@ -103,9 +101,6 @@ struct LocalizationKeys {
         static let serialDisputes = "dispute_category.serial_disputes"
         static let serialDisputesDescription = "dispute_category.serial_disputes.description"
 
-        // AI Chat
-        static let aiChat = "dispute_category.ai_chat"
-        static let aiChatDescription = "dispute_category.ai_chat.description"
     }
     
     // MARK: - Agreement Status
@@ -334,7 +329,6 @@ struct LocalizationKeys {
     struct ScreenTitle {
         static let home = "screen.title.home"
         static let disputeCategory = "screen.title.dispute_category"
-        static let disputeCategoryComingSoon = "screen.dispute_category.coming_soon"
         static let subjectSelection = "screen.title.subject_selection"
         static let agreementStatus = "screen.title.agreement_status"
         static let disputeType = "screen.title.dispute_type"
