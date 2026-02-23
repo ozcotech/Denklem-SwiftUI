@@ -35,6 +35,7 @@ struct RectangleButton: View {
                     .foregroundStyle(textColor)
                     .multilineTextAlignment(.leading)
                     .lineLimit(3)
+                    .minimumScaleFactor(0.85) // Allow text to shrink slightly to fit within the button without truncation
             }
             .frame(maxWidth: .infinity, minHeight: 72, alignment: .leading)
         }

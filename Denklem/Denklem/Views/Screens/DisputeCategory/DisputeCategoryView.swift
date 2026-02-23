@@ -61,7 +61,7 @@ struct DisputeCategoryView: View {
                             .contentShape(Rectangle())
                         }
                         .buttonStyle(.glass(.clear.tint(theme.surface)))
-                        .buttonBorderShape(.roundedRectangle(radius: theme.cornerRadiusXL))
+                        .buttonBorderShape(.roundedRectangle(radius: theme.cornerRadiusXXL))
 
                         DisputeSectionCard(
                             title: viewModel.specialCalculationsTitle,

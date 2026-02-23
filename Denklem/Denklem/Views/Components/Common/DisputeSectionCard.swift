@@ -46,7 +46,7 @@ struct DisputeSectionCard: View {
                         text: category.displayName,
                         textColor: theme.textPrimary,
                         font: theme.footnote,
-                        cornerRadius: theme.cornerRadiusXL,
+                        cornerRadius: theme.cornerRadiusXXL,
                         action: { onCategoryTap(category) }
                     )
                 }
@@ -69,15 +69,15 @@ struct DisputeSectionCard: View {
                     .contentShape(Rectangle())
                 }
                 .buttonStyle(.glass(.clear.tint(theme.surface)))
-                .buttonBorderShape(.roundedRectangle(radius: theme.cornerRadiusXL))
+                .buttonBorderShape(.roundedRectangle(radius: theme.cornerRadiusXXL))
             }
         }
-        .padding(.horizontal, theme.spacingXS)
+        .padding(.horizontal, theme.spacingS) // Consistent horizontal padding for both grid and full-width items
         .padding(.vertical, theme.spacingS)
         .background(
-            RoundedRectangle(cornerRadius: theme.cornerRadiusL)
+            RoundedRectangle(cornerRadius: theme.cornerRadiusXXL)
                 .fill(cardColor)
         )
-        .glassEffect(in: RoundedRectangle(cornerRadius: theme.cornerRadiusL))
+        .glassEffect(in: RoundedRectangle(cornerRadius: theme.cornerRadiusXXL))
     }
 }
