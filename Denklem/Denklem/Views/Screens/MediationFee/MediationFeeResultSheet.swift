@@ -17,9 +17,11 @@ struct MediationFeeResultSheet: View {
     let isMonetary: Bool
 
     @Environment(\.dismiss) private var dismiss
+    @AppStorage("mediationResultSheetSeen") private var hasSeenBefore = false
     @State private var isExpanded = false
     @State private var revealContent = false
     @State private var showShareSheet = false
+    @State private var glowOpacity: Double = 0
 
     private var smmLegalPersonResultForFee: SMMPersonResult {
         let input = SMMCalculationInput(amount: result.amount, calculationType: .vatIncludedWithholdingIncluded)
@@ -103,6 +105,30 @@ struct MediationFeeResultSheet: View {
         .presentationBackgroundInteraction(.enabled)
         .presentationDetents([.large])
         .presentationDragIndicator(.visible)
+        // Discoverability: on first use, auto-expand detail cards so the user learns the tap-to-expand mechanic.
+        // On subsequent uses, play a one-shot cloud glow animation on the card border as a gentle "tappable" hint.
+        .onAppear {
+            if !hasSeenBefore {
+                // First time: auto-expand so user discovers the mechanic
+                withAnimation(.smooth(duration: 0.3)) {
+                    isExpanded = true
+                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    revealContent = true
+                }
+                hasSeenBefore = true
+            } else {
+                // Subsequent uses: subtle cloud glow hint on the border
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    withAnimation(.easeIn(duration: 1.2)) {
+                        glowOpacity = 0.7
+                    }
+                    withAnimation(.easeOut(duration: 1.2).delay(1.2)) {
+                        glowOpacity = 0
+                    }
+                }
+            }
+        }
     }
 
     // MARK: - Share Text
@@ -219,6 +245,13 @@ struct MediationFeeResultSheet: View {
         .overlay {
             RoundedRectangle(cornerRadius: theme.cornerRadiusXL)
                 .stroke(theme.primary.opacity(0.2), lineWidth: 2)
+        }
+        // Cloud glow layer: a blurred border stroke whose opacity is animated from 0 → 0.7 → 0,
+        // creating a soft, cloud-like pulse that hints the card is tappable without adding any icon.
+        .overlay {
+            RoundedRectangle(cornerRadius: theme.cornerRadiusXL)
+                .stroke(theme.primary.opacity(glowOpacity), lineWidth: 3)
+                .blur(radius: 8)
         }
     }
 
