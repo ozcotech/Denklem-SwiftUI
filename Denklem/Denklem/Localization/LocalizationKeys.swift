@@ -36,6 +36,7 @@ struct LocalizationKeys {
         static let success = "general.success"
         static let disputeSubject = "general.dispute_subject"
         static let recalculate = "general.recalculate"
+        static let calculatedWithDenklem = "general.calculated_with_denklem"
     }
     
     // MARK: - Dispute Types

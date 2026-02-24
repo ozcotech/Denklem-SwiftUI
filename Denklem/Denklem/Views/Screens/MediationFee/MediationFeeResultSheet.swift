@@ -17,6 +17,9 @@ struct MediationFeeResultSheet: View {
     let isMonetary: Bool
 
     @Environment(\.dismiss) private var dismiss
+    @State private var isExpanded = false
+    @State private var revealContent = false
+    @State private var showShareSheet = false
 
     private var smmLegalPersonResultForFee: SMMPersonResult {
         let input = SMMCalculationInput(amount: result.amount, calculationType: .vatIncludedWithholdingIncluded)
@@ -30,19 +33,41 @@ struct MediationFeeResultSheet: View {
 
                     // Main Fee Card
                     mainFeeCard
+                        .onTapGesture {
+                            if isExpanded {
+                                revealContent = false
+                                withAnimation(.smooth(duration: 0.3)) {
+                                    isExpanded = false
+                                }
+                            } else {
+                                // card container opening speed is 0.3s, content fade-in starts after 0.1s to create a slight overlap effect
+                                withAnimation(.smooth(duration: 0.3)) {
+                                    isExpanded = true
+                                }
+                                // reveal trigger delay speed is 0.1s to allow the card expansion animation to start before content begins fading in
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                    revealContent = true
+                                }
+                            }
+                        }
 
-                    // Calculation Info Card
-                    calculationInfoCard
+                    if isExpanded {
+                        // Calculation Info Card
+                        calculationInfoCard
+                            .transition(.opacity)
 
-                    // Calculation Method Card (only for agreement cases)
-                    if result.input.agreementStatus == .agreed,
-                       !result.mediationFee.calculationBreakdown.bracketSteps.isEmpty {
-                        calculationMethodCard
-                    }
+                        // Calculation Method Card (only for agreement cases)
+                        if result.input.agreementStatus == .agreed,
+                           !result.mediationFee.calculationBreakdown.bracketSteps.isEmpty {
+                            calculationMethodCard
+                                .transition(.opacity)
+                        }
 
-                    // SMM Result Card (only for non-agreement cases)
-                    if result.input.agreementStatus == .notAgreed {
-                        smmResultCard
+                        // SMM Result Card (only for non-agreement cases)
+                        if result.input.agreementStatus == .notAgreed {
+                            smmResultCard
+                                .transition(.opacity)
+                        }
                     }
                 }
                 .padding(.horizontal, theme.spacingM)
@@ -51,6 +76,15 @@ struct MediationFeeResultSheet: View {
             .navigationTitle("")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        showShareSheet = true
+                    } label: {
+                        Image(systemName: "square.and.arrow.up")
+                            .font(theme.body)
+                            .foregroundStyle(theme.textSecondary)
+                    }
+                }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         dismiss()
@@ -62,10 +96,95 @@ struct MediationFeeResultSheet: View {
                 }
             }
         }
+        .sheet(isPresented: $showShareSheet) {
+            ShareSheet(items: [shareText])
+        }
         .presentationBackground(.clear)
         .presentationBackgroundInteraction(.enabled)
         .presentationDetents([.large])
         .presentationDragIndicator(.visible)
+    }
+
+    // MARK: - Share Text
+
+    private var shareText: String {
+        var lines: [String] = []
+
+        // Mediation Fee
+        lines.append("\(LocalizationKeys.Result.mediationFee.localized):")
+        lines.append(LocalizationHelper.formatCurrency(result.amount))
+        lines.append("")
+
+        // Calculation Info
+        lines.append("\(LocalizationKeys.Result.calculationInfo.localized):")
+
+        if !isMonetary {
+            lines.append("\(LocalizationKeys.Result.disputeSubject.localized): \(LocalizationKeys.Result.disputeSubjectNonMonetary.localized)")
+        } else {
+            let statusText = result.input.agreementStatus == .agreed
+                ? LocalizationKeys.AgreementStatus.agreed.localized
+                : LocalizationKeys.AgreementStatus.notAgreed.localized
+            lines.append("\(LocalizationKeys.Result.agreementStatus.localized): \(statusText)")
+        }
+
+        lines.append("\(LocalizationKeys.Result.disputeType.localized): \(result.disputeType.displayName)")
+        lines.append("\(LocalizationKeys.Result.tariffYear.localized): \(result.input.tariffYear.displayName)")
+
+        if result.input.agreementStatus == .notAgreed {
+            lines.append("\(LocalizationKeys.Result.partyCount.localized): \(result.input.partyCount)")
+        }
+
+        if let amount = result.input.disputeAmount {
+            lines.append("\(LocalizationKeys.Input.agreementAmount.localized): \(LocalizationHelper.formatCurrency(amount))")
+        }
+
+        // Calculation Method (agreement cases)
+        if result.input.agreementStatus == .agreed,
+           !result.mediationFee.calculationBreakdown.bracketSteps.isEmpty {
+            let breakdown = result.mediationFee.calculationBreakdown
+            lines.append("")
+            lines.append("\(LocalizationKeys.Result.calculationMethod.localized):")
+
+            for (index, step) in breakdown.bracketSteps.enumerated() {
+                let tierLabel: String
+                if index == 0 {
+                    tierLabel = "\(LocalizationKeys.Result.firstTier.localized) \(LocalizationHelper.formatCurrency(step.tierAmount))"
+                } else if step.bracketLimit == Double.infinity {
+                    tierLabel = "\(LocalizationHelper.formatCurrency(step.bracketLowerBound)) \(LocalizationKeys.Result.aboveTier.localized)"
+                } else {
+                    tierLabel = "\(LocalizationKeys.Result.nextTier.localized) \(LocalizationHelper.formatCurrency(step.tierAmount))"
+                }
+                lines.append("\(tierLabel) × %\(LocalizationHelper.formatRate(step.rate)) = \(LocalizationHelper.formatCurrency(step.calculatedFee))")
+            }
+
+            if let bracketTotal = breakdown.bracketTotal {
+                lines.append("\(LocalizationKeys.Result.bracketTotal.localized): \(LocalizationHelper.formatCurrency(bracketTotal))")
+            }
+
+            if let minimumFee = breakdown.minimumFeeThreshold {
+                lines.append("\(LocalizationKeys.Result.minimumFee.localized): \(LocalizationHelper.formatCurrency(minimumFee))")
+            }
+
+            lines.append(breakdown.usedMinimumFee
+                         ? LocalizationKeys.Result.minimumFeeApplied.localized
+                         : LocalizationKeys.Result.bracketTotalApplied.localized)
+        }
+
+        // SMM (non-agreement cases)
+        if result.input.agreementStatus == .notAgreed {
+            lines.append("")
+            lines.append("\(LocalizationKeys.Result.calculationResult.localized):")
+            lines.append("\(LocalizationKeys.SMMResult.grossFee.localized): \(smmLegalPersonResultForFee.formattedBrutFee)")
+            lines.append("\(LocalizationKeys.SMMResult.withholding.localized): \(smmLegalPersonResultForFee.formattedStopaj)")
+            lines.append("\(LocalizationKeys.SMMResult.netFee.localized): \(smmLegalPersonResultForFee.formattedNetFee)")
+            lines.append("\(LocalizationKeys.SMMResult.vat.localized): \(smmLegalPersonResultForFee.formattedKdv)")
+            lines.append("\(LocalizationKeys.SMMResult.totalCollected.localized): \(smmLegalPersonResultForFee.formattedTahsilEdilecekTutar)")
+        }
+
+        lines.append("")
+        lines.append(LocalizationKeys.General.calculatedWithDenklem.localized)
+
+        return lines.joined(separator: "\n")
     }
 
     // MARK: - Main Fee Card
@@ -98,69 +217,91 @@ struct MediationFeeResultSheet: View {
     private var calculationInfoCard: some View {
         VStack(spacing: theme.spacingM) {
             // Card Header
-            HStack {
-                Text(LocalizationKeys.Result.calculationInfo.localized)
-                    .font(theme.headline)
-                    .fontWeight(.bold)
-                    .foregroundStyle(theme.textPrimary)
+            revealRow(order: 0) {
+                VStack(spacing: theme.spacingM) {
+                    HStack {
+                        Text(LocalizationKeys.Result.calculationInfo.localized)
+                            .font(theme.headline)
+                            .fontWeight(.bold)
+                            .foregroundStyle(theme.textPrimary)
 
-                Spacer()
+                        Spacer()
+                    }
+
+                    Divider()
+                        .background(theme.border)
+                }
             }
-
-            Divider()
-                .background(theme.border)
 
             // Agreement Status - special text for non-monetary disputes
-            if !isMonetary {
-                detailRow(
-                    label: LocalizationKeys.Result.disputeSubject.localized,
-                    value: LocalizationKeys.Result.disputeSubjectNonMonetary.localized
-                )
-            } else {
-                detailRow(
-                    label: LocalizationKeys.Result.agreementStatus.localized,
-                    value: result.input.agreementStatus == .agreed ? LocalizationKeys.AgreementStatus.agreed.localized : LocalizationKeys.AgreementStatus.notAgreed.localized
-                )
+            revealRow(order: 1) {
+                if !isMonetary {
+                    detailRow(
+                        label: LocalizationKeys.Result.disputeSubject.localized,
+                        value: LocalizationKeys.Result.disputeSubjectNonMonetary.localized
+                    )
+                } else {
+                    detailRow(
+                        label: LocalizationKeys.Result.agreementStatus.localized,
+                        value: result.input.agreementStatus == .agreed ? LocalizationKeys.AgreementStatus.agreed.localized : LocalizationKeys.AgreementStatus.notAgreed.localized
+                    )
+                }
             }
 
-            Divider()
-                .background(theme.outline.opacity(0.2))
+            revealRow(order: 2) {
+                VStack(spacing: theme.spacingM) {
+                    Divider()
+                        .background(theme.outline.opacity(0.2))
 
-            // Dispute Type
-            detailRow(
-                label: LocalizationKeys.Result.disputeType.localized,
-                value: result.disputeType.displayName
-            )
+                    // Dispute Type
+                    detailRow(
+                        label: LocalizationKeys.Result.disputeType.localized,
+                        value: result.disputeType.displayName
+                    )
+                }
+            }
 
-            Divider()
-                .background(theme.outline.opacity(0.2))
+            revealRow(order: 3) {
+                VStack(spacing: theme.spacingM) {
+                    Divider()
+                        .background(theme.outline.opacity(0.2))
 
-            // Tariff Year
-            detailRow(
-                label: LocalizationKeys.Result.tariffYear.localized,
-                value: result.input.tariffYear.displayName
-            )
+                    // Tariff Year
+                    detailRow(
+                        label: LocalizationKeys.Result.tariffYear.localized,
+                        value: result.input.tariffYear.displayName
+                    )
+                }
+            }
 
             // Party Count (only for non-agreement cases)
             if result.input.agreementStatus == .notAgreed {
-                Divider()
-                    .background(theme.outline.opacity(0.2))
+                revealRow(order: 4) {
+                    VStack(spacing: theme.spacingM) {
+                        Divider()
+                            .background(theme.outline.opacity(0.2))
 
-                detailRow(
-                    label: LocalizationKeys.Result.partyCount.localized,
-                    value: "\(result.input.partyCount)"
-                )
+                        detailRow(
+                            label: LocalizationKeys.Result.partyCount.localized,
+                            value: "\(result.input.partyCount)"
+                        )
+                    }
+                }
             }
 
             // Amount (only for agreement cases with amount)
             if let amount = result.input.disputeAmount {
-                Divider()
-                    .background(theme.outline.opacity(0.2))
+                revealRow(order: 4) {
+                    VStack(spacing: theme.spacingM) {
+                        Divider()
+                            .background(theme.outline.opacity(0.2))
 
-                detailRow(
-                    label: LocalizationKeys.Input.agreementAmount.localized,
-                    value: LocalizationHelper.formatCurrency(amount)
-                )
+                        detailRow(
+                            label: LocalizationKeys.Input.agreementAmount.localized,
+                            value: LocalizationHelper.formatCurrency(amount)
+                        )
+                    }
+                }
             }
         }
         .padding(theme.spacingL)
@@ -181,66 +322,82 @@ struct MediationFeeResultSheet: View {
 
         return VStack(spacing: theme.spacingM) {
             // Card Header
-            HStack {
-                Text(LocalizationKeys.Result.calculationMethod.localized)
-                    .font(theme.headline)
-                    .fontWeight(.bold)
-                    .foregroundStyle(theme.textPrimary)
+            revealRow(order: 5) {
+                VStack(spacing: theme.spacingM) {
+                    HStack {
+                        Text(LocalizationKeys.Result.calculationMethod.localized)
+                            .font(theme.headline)
+                            .fontWeight(.bold)
+                            .foregroundStyle(theme.textPrimary)
 
-                Spacer()
+                        Spacer()
+                    }
+
+                    Divider()
+                        .background(theme.border)
+                }
             }
-
-            Divider()
-                .background(theme.border)
 
             // Bracket Steps
             ForEach(Array(breakdown.bracketSteps.enumerated()), id: \.offset) { index, step in
-                if index > 0 {
-                    Divider()
-                        .background(theme.outline.opacity(0.2))
+                revealRow(order: 6 + index) {
+                    VStack(spacing: theme.spacingM) {
+                        if index > 0 {
+                            Divider()
+                                .background(theme.outline.opacity(0.2))
+                        }
+
+                        bracketStepRow(step: step, index: index, isLast: step.bracketLimit == Double.infinity)
+                    }
                 }
-
-                bracketStepRow(step: step, index: index, isLast: step.bracketLimit == Double.infinity)
             }
 
-            Divider()
-                .background(theme.border)
+            revealRow(order: 6 + breakdown.bracketSteps.count) {
+                VStack(spacing: theme.spacingM) {
+                    Divider()
+                        .background(theme.border)
 
-            // Bracket Total
-            if let bracketTotal = breakdown.bracketTotal {
-                detailRow(
-                    label: LocalizationKeys.Result.bracketTotal.localized,
-                    value: LocalizationHelper.formatCurrency(bracketTotal)
-                )
+                    // Bracket Total
+                    if let bracketTotal = breakdown.bracketTotal {
+                        detailRow(
+                            label: LocalizationKeys.Result.bracketTotal.localized,
+                            value: LocalizationHelper.formatCurrency(bracketTotal)
+                        )
+                    }
+
+                    // Minimum Fee
+                    if let minimumFeeThreshold = breakdown.minimumFeeThreshold {
+                        Divider()
+                            .background(theme.outline.opacity(0.2))
+
+                        detailRow(
+                            label: LocalizationKeys.Result.minimumFee.localized,
+                            value: LocalizationHelper.formatCurrency(minimumFeeThreshold)
+                        )
+                    }
+                }
             }
 
-            // Minimum Fee
-            if let minimumFeeThreshold = breakdown.minimumFeeThreshold {
-                Divider()
-                    .background(theme.outline.opacity(0.2))
+            revealRow(order: 7 + breakdown.bracketSteps.count) {
+                VStack(spacing: theme.spacingM) {
+                    Divider()
+                        .background(theme.border)
 
-                detailRow(
-                    label: LocalizationKeys.Result.minimumFee.localized,
-                    value: LocalizationHelper.formatCurrency(minimumFeeThreshold)
-                )
-            }
+                    // Result explanation
+                    HStack(spacing: theme.spacingXS) {
+                        Image(systemName: "info.circle.fill")
+                            .font(theme.footnote)
+                            .foregroundStyle(theme.primary)
 
-            Divider()
-                .background(theme.border)
+                        Text(breakdown.usedMinimumFee
+                             ? LocalizationKeys.Result.minimumFeeApplied.localized
+                             : LocalizationKeys.Result.bracketTotalApplied.localized)
+                            .font(theme.footnote)
+                            .foregroundStyle(theme.textSecondary)
 
-            // Result explanation
-            HStack(spacing: theme.spacingXS) {
-                Image(systemName: "info.circle.fill")
-                    .font(theme.footnote)
-                    .foregroundStyle(theme.primary)
-
-                Text(breakdown.usedMinimumFee
-                     ? LocalizationKeys.Result.minimumFeeApplied.localized
-                     : LocalizationKeys.Result.bracketTotalApplied.localized)
-                    .font(theme.footnote)
-                    .foregroundStyle(theme.textSecondary)
-
-                Spacer()
+                        Spacer()
+                    }
+                }
             }
         }
         .padding(theme.spacingL)
@@ -267,30 +424,17 @@ struct MediationFeeResultSheet: View {
             }
         }()
 
-        return VStack(spacing: theme.spacingXS) {
-            // Tier description
-            HStack {
-                Text(tierLabel)
-                    .font(theme.footnote)
-                    .foregroundStyle(theme.textSecondary)
+        return HStack {
+            Text(tierLabel)
+                .font(theme.footnote)
+                .foregroundStyle(theme.textSecondary)
 
-                Spacer()
+            Spacer()
 
-                Text("× %\(LocalizationHelper.formatRate(step.rate))")
-                    .font(theme.footnote)
-                    .fontWeight(.medium)
-                    .foregroundStyle(theme.textSecondary)
-            }
-
-            // Calculated fee for this tier
-            HStack {
-                Spacer()
-
-                Text(LocalizationHelper.formatCurrency(step.calculatedFee))
-                    .font(theme.body)
-                    .fontWeight(.medium)
-                    .foregroundStyle(theme.textPrimary)
-            }
+            Text("× %\(LocalizationHelper.formatRate(step.rate)) = \(LocalizationHelper.formatCurrency(step.calculatedFee))")
+                .font(theme.footnote)
+                .fontWeight(.medium)
+                .foregroundStyle(theme.textPrimary)
         }
     }
 
@@ -299,55 +443,77 @@ struct MediationFeeResultSheet: View {
     private var smmResultCard: some View {
         VStack(spacing: theme.spacingM) {
             // Card Header
-            HStack {
-                Text(LocalizationKeys.Result.calculationResult.localized)
-                    .font(theme.headline)
-                    .fontWeight(.bold)
-                    .foregroundStyle(theme.textPrimary)
+            revealRow(order: 5) {
+                VStack(spacing: theme.spacingM) {
+                    HStack {
+                        Text(LocalizationKeys.Result.calculationResult.localized)
+                            .font(theme.headline)
+                            .fontWeight(.bold)
+                            .foregroundStyle(theme.textPrimary)
 
-                Spacer()
+                        Spacer()
+                    }
+
+                    Divider()
+                        .background(theme.border)
+                }
             }
 
-            Divider()
-                .background(theme.border)
-
             // SMM breakdown rows
-            detailRow(
-                label: LocalizationKeys.SMMResult.grossFee.localized,
-                value: smmLegalPersonResultForFee.formattedBrutFee
-            )
+            revealRow(order: 6) {
+                detailRow(
+                    label: LocalizationKeys.SMMResult.grossFee.localized,
+                    value: smmLegalPersonResultForFee.formattedBrutFee
+                )
+            }
 
-            Divider()
-                .background(theme.outline.opacity(0.2))
+            revealRow(order: 7) {
+                VStack(spacing: theme.spacingM) {
+                    Divider()
+                        .background(theme.outline.opacity(0.2))
 
-            detailRow(
-                label: LocalizationKeys.SMMResult.withholding.localized,
-                value: smmLegalPersonResultForFee.formattedStopaj
-            )
+                    detailRow(
+                        label: LocalizationKeys.SMMResult.withholding.localized,
+                        value: smmLegalPersonResultForFee.formattedStopaj
+                    )
+                }
+            }
 
-            Divider()
-                .background(theme.outline.opacity(0.2))
+            revealRow(order: 8) {
+                VStack(spacing: theme.spacingM) {
+                    Divider()
+                        .background(theme.outline.opacity(0.2))
 
-            detailRow(
-                label: LocalizationKeys.SMMResult.netFee.localized,
-                value: smmLegalPersonResultForFee.formattedNetFee
-            )
+                    detailRow(
+                        label: LocalizationKeys.SMMResult.netFee.localized,
+                        value: smmLegalPersonResultForFee.formattedNetFee
+                    )
+                }
+            }
 
-            Divider()
-                .background(theme.outline.opacity(0.2))
+            revealRow(order: 9) {
+                VStack(spacing: theme.spacingM) {
+                    Divider()
+                        .background(theme.outline.opacity(0.2))
 
-            detailRow(
-                label: LocalizationKeys.SMMResult.vat.localized,
-                value: smmLegalPersonResultForFee.formattedKdv
-            )
+                    detailRow(
+                        label: LocalizationKeys.SMMResult.vat.localized,
+                        value: smmLegalPersonResultForFee.formattedKdv
+                    )
+                }
+            }
 
-            Divider()
-                .background(theme.border)
+            revealRow(order: 10) {
+                VStack(spacing: theme.spacingM) {
+                    Divider()
+                        .background(theme.border)
 
-            detailRow(
-                label: LocalizationKeys.SMMResult.totalCollected.localized,
-                value: smmLegalPersonResultForFee.formattedTahsilEdilecekTutar
-            )
+                    detailRow(
+                        label: LocalizationKeys.SMMResult.totalCollected.localized,
+                        value: smmLegalPersonResultForFee.formattedTahsilEdilecekTutar
+                    )
+                }
+            }
         }
         .padding(theme.spacingL)
         .background {
@@ -364,5 +530,14 @@ struct MediationFeeResultSheet: View {
 
     private func detailRow(label: String, value: String) -> some View {
         DetailRow(label: label, value: value)
+    }
+
+    // MARK: - Reveal Row Helper
+
+    @ViewBuilder
+    private func revealRow<Content: View>(order: Int, @ViewBuilder content: () -> Content) -> some View {
+        content()
+            .opacity(revealContent ? 1 : 0)
+            .animation(.easeOut(duration: 0.35).delay(Double(order) * 0.07), value: revealContent) // Staggered animation for each row (inter-line delay of 0.07s, fade-in duration of 0.35s)
     }
 }
