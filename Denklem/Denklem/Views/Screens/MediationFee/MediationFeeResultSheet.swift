@@ -215,10 +215,10 @@ struct MediationFeeResultSheet: View {
     // MARK: - Calculation Info Card
 
     private var calculationInfoCard: some View {
-        VStack(spacing: theme.spacingM) {
+        VStack(spacing: theme.spacingS) {
             // Card Header
             revealRow(order: 0) {
-                VStack(spacing: theme.spacingM) {
+                VStack(spacing: theme.spacingS) {
                     HStack {
                         Text(LocalizationKeys.Result.calculationInfo.localized)
                             .font(theme.headline)
@@ -249,7 +249,7 @@ struct MediationFeeResultSheet: View {
             }
 
             revealRow(order: 2) {
-                VStack(spacing: theme.spacingM) {
+                VStack(spacing: theme.spacingS) {
                     Divider()
                         .background(theme.outline.opacity(0.2))
 
@@ -262,7 +262,7 @@ struct MediationFeeResultSheet: View {
             }
 
             revealRow(order: 3) {
-                VStack(spacing: theme.spacingM) {
+                VStack(spacing: theme.spacingS) {
                     Divider()
                         .background(theme.outline.opacity(0.2))
 
@@ -277,7 +277,7 @@ struct MediationFeeResultSheet: View {
             // Party Count (only for non-agreement cases)
             if result.input.agreementStatus == .notAgreed {
                 revealRow(order: 4) {
-                    VStack(spacing: theme.spacingM) {
+                    VStack(spacing: theme.spacingS) {
                         Divider()
                             .background(theme.outline.opacity(0.2))
 
@@ -292,7 +292,7 @@ struct MediationFeeResultSheet: View {
             // Amount (only for agreement cases with amount)
             if let amount = result.input.disputeAmount {
                 revealRow(order: 4) {
-                    VStack(spacing: theme.spacingM) {
+                    VStack(spacing: theme.spacingS) {
                         Divider()
                             .background(theme.outline.opacity(0.2))
 
@@ -320,10 +320,10 @@ struct MediationFeeResultSheet: View {
     private var calculationMethodCard: some View {
         let breakdown = result.mediationFee.calculationBreakdown
 
-        return VStack(spacing: theme.spacingM) {
+        return VStack(spacing: theme.spacingS) {
             // Card Header
             revealRow(order: 5) {
-                VStack(spacing: theme.spacingM) {
+                VStack(spacing: theme.spacingS) {
                     HStack {
                         Text(LocalizationKeys.Result.calculationMethod.localized)
                             .font(theme.headline)
@@ -341,7 +341,7 @@ struct MediationFeeResultSheet: View {
             // Bracket Steps
             ForEach(Array(breakdown.bracketSteps.enumerated()), id: \.offset) { index, step in
                 revealRow(order: 6 + index) {
-                    VStack(spacing: theme.spacingM) {
+                    VStack(spacing: theme.spacingS) {
                         if index > 0 {
                             Divider()
                                 .background(theme.outline.opacity(0.2))
@@ -353,7 +353,7 @@ struct MediationFeeResultSheet: View {
             }
 
             revealRow(order: 6 + breakdown.bracketSteps.count) {
-                VStack(spacing: theme.spacingM) {
+                VStack(spacing: theme.spacingS) {
                     Divider()
                         .background(theme.border)
 
@@ -379,7 +379,7 @@ struct MediationFeeResultSheet: View {
             }
 
             revealRow(order: 7 + breakdown.bracketSteps.count) {
-                VStack(spacing: theme.spacingM) {
+                VStack(spacing: theme.spacingS) {
                     Divider()
                         .background(theme.border)
 
@@ -441,10 +441,10 @@ struct MediationFeeResultSheet: View {
     // MARK: - SMM Result Card
 
     private var smmResultCard: some View {
-        VStack(spacing: theme.spacingM) {
+        VStack(spacing: theme.spacingS) {
             // Card Header
             revealRow(order: 5) {
-                VStack(spacing: theme.spacingM) {
+                VStack(spacing: theme.spacingS) {
                     HStack {
                         Text(LocalizationKeys.Result.calculationResult.localized)
                             .font(theme.headline)
@@ -468,7 +468,7 @@ struct MediationFeeResultSheet: View {
             }
 
             revealRow(order: 7) {
-                VStack(spacing: theme.spacingM) {
+                VStack(spacing: theme.spacingS) {
                     Divider()
                         .background(theme.outline.opacity(0.2))
 
@@ -480,7 +480,7 @@ struct MediationFeeResultSheet: View {
             }
 
             revealRow(order: 8) {
-                VStack(spacing: theme.spacingM) {
+                VStack(spacing: theme.spacingS) {
                     Divider()
                         .background(theme.outline.opacity(0.2))
 
@@ -492,7 +492,7 @@ struct MediationFeeResultSheet: View {
             }
 
             revealRow(order: 9) {
-                VStack(spacing: theme.spacingM) {
+                VStack(spacing: theme.spacingS) {
                     Divider()
                         .background(theme.outline.opacity(0.2))
 
@@ -504,7 +504,7 @@ struct MediationFeeResultSheet: View {
             }
 
             revealRow(order: 10) {
-                VStack(spacing: theme.spacingM) {
+                VStack(spacing: theme.spacingS) {
                     Divider()
                         .background(theme.border)
 
