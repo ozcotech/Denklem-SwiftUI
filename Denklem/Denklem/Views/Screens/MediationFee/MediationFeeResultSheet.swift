@@ -97,7 +97,7 @@ struct MediationFeeResultSheet: View {
             }
         }
         .sheet(isPresented: $showShareSheet) {
-            ShareSheet(items: [shareText])
+            ShareSheet(items: [shareFileURL])
         }
         .presentationBackground(.clear)
         .presentationBackgroundInteraction(.enabled)
@@ -185,6 +185,16 @@ struct MediationFeeResultSheet: View {
         lines.append(LocalizationKeys.General.calculatedWithDenklem.localized)
 
         return lines.joined(separator: "\n")
+    }
+
+    private var shareFileURL: URL {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy_MM_dd"
+        let fileName = "Denklem_\(formatter.string(from: Date()))"
+
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent("\(fileName).txt")
+        try? shareText.write(to: url, atomically: true, encoding: .utf8)
+        return url
     }
 
     // MARK: - Main Fee Card
