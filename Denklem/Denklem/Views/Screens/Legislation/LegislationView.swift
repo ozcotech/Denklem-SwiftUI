@@ -256,13 +256,9 @@ struct DocumentCard: View {
                     .foregroundStyle(theme.textTertiary)
             }
             .padding(theme.spacingM)
-            .background(
-                RoundedRectangle(cornerRadius: theme.cornerRadiusXXL)
-                    .fill(.clear)
-            )
         }
-        .buttonStyle(.plain)
-        .glassEffect(theme.glassClear, in: RoundedRectangle(cornerRadius: theme.cornerRadiusXXL))
+        .buttonStyle(.glass(.clear))
+        .buttonBorderShape(.roundedRectangle(radius: theme.cornerRadiusXXL))
         .contextMenu {
             if document.url != nil {
                 Button {
@@ -474,14 +470,8 @@ struct DocumentDetailSheet: View {
                     )
                     .font(theme.headline)
                     .frame(maxWidth: .infinity, minHeight: theme.buttonHeightLarge)
-                    .contentShape(Rectangle())
                 }
-                .buttonStyle(.plain)
-                .background(
-                    RoundedRectangle(cornerRadius: theme.cornerRadiusXXL)
-                        .fill(.clear)
-                )
-                .glassEffect(theme.glassClear, in: RoundedRectangle(cornerRadius: theme.cornerRadiusXXL))
+                .buttonStyle(.glass(.clear))
             }
         }
     }

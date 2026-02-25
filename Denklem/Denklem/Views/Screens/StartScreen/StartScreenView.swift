@@ -134,13 +134,8 @@ struct StartScreenView: View {
             .frame(maxWidth: .infinity, minHeight: theme.buttonHeightLarge)
             .contentShape(Rectangle())
         }
-        .buttonStyle(.plain)
+        .buttonStyle(.glass(.clear))
         .frame(maxWidth: .infinity)
-        .background {
-            RoundedRectangle(cornerRadius: theme.cornerRadiusXXL)
-                .fill(.clear)
-        }
-        .glassEffect(theme.glassClear, in: RoundedRectangle(cornerRadius: theme.cornerRadiusXXL))
         .onAppear {
             arrowOffset = 4
         }

@@ -72,7 +72,7 @@ struct DisputeSectionCard: View {
                 .buttonBorderShape(.roundedRectangle(radius: theme.cornerRadiusXXL))
             }
         }
-        .padding(.horizontal, theme.spacingS) // Consistent horizontal padding for both grid and full-width items
+        .padding(.horizontal, theme.spacingS)
         .padding(.vertical, theme.spacingS)
         .background(
             RoundedRectangle(cornerRadius: theme.cornerRadiusXXL)

@@ -58,9 +58,10 @@ struct DisputeCategoryView: View {
                                     .foregroundStyle(theme.textPrimary)
                             }
                             .frame(maxWidth: .infinity, minHeight: 56)
+                            .padding(.vertical, theme.spacingS)
                             .contentShape(Rectangle())
                         }
-                        .buttonStyle(.glass(.clear.tint(theme.surface)))
+                        .buttonStyle(.glass(.clear))
                         .buttonBorderShape(.roundedRectangle(radius: theme.cornerRadiusXXL))
 
                         DisputeSectionCard(

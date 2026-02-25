@@ -41,14 +41,8 @@ struct CalculateButton: View {
             .foregroundStyle(theme.textPrimary)
             .frame(maxWidth: .infinity)
             .frame(height: theme.buttonHeight)
-            .contentShape(Rectangle())
         }
-        .buttonStyle(.plain)
-        .background(
-            RoundedRectangle(cornerRadius: theme.cornerRadiusXXL)
-                .fill(.clear)
-        )
-        .glassEffect(theme.glassClear, in: RoundedRectangle(cornerRadius: theme.cornerRadiusXXL))
+        .buttonStyle(.glass(.clear))
         .disabled(!isEnabled || isCalculating)
         .opacity(isEnabled ? 1.0 : 0.5)
     }
