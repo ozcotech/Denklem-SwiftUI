@@ -10,17 +10,14 @@ import SwiftUI
 @available(iOS 26.0, *)
 struct StartScreenView: View {
     // MARK: - Properties
-    
+
     @StateObject private var viewModel = StartScreenViewModel()
     @ObservedObject private var localeManager = LocaleManager.shared
     @Environment(\.theme) var theme
     @Environment(\.colorScheme) var colorScheme
-    
-    // MARK: - Animation Properties
-    
+
     @State private var arrowOffset: CGFloat = 0
-    @State private var hasStartedArrowAnimation = false
-    
+
     // MARK: - Body
     
     var body: some View {
@@ -129,6 +126,10 @@ struct StartScreenView: View {
                     .font(theme.headline)
                     .foregroundColor(.white)
                     .offset(x: arrowOffset)
+                    .animation(
+                        .easeInOut(duration: 0.8).repeatForever(autoreverses: true),
+                        value: arrowOffset
+                    )
             }
             .frame(maxWidth: .infinity, minHeight: theme.buttonHeightLarge)
             .contentShape(Rectangle())
@@ -140,25 +141,11 @@ struct StartScreenView: View {
                 .fill(.clear)
         }
         .glassEffect(theme.glassClear, in: RoundedRectangle(cornerRadius: theme.cornerRadiusXXL))
-        .id(colorScheme) // Force re-render when theme changes
         .onAppear {
-            guard !hasStartedArrowAnimation else { return }
-            hasStartedArrowAnimation = true
-            startButtonAnimations()
-        }
-    }
-    
-    // MARK: - Animation Methods
-    
-    private func startButtonAnimations() {
-        // Arrow bounce animation - subtle right movement
-        withAnimation(
-            .easeInOut(duration: 0.8)
-            .repeatForever(autoreverses: true)
-        ) {
             arrowOffset = 4
         }
     }
+    
 }
 
 // MARK: - Preview
