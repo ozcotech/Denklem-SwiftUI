@@ -258,14 +258,11 @@ struct DocumentCard: View {
             .padding(theme.spacingM)
             .background(
                 RoundedRectangle(cornerRadius: theme.cornerRadiusXXL)
-                    .fill(theme.surfaceElevated)
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: theme.cornerRadiusXXL)
-                    .stroke(theme.border, lineWidth: 0.5)
+                    .fill(.clear)
             )
         }
         .buttonStyle(.plain)
+        .glassEffect(theme.glassClear, in: RoundedRectangle(cornerRadius: theme.cornerRadiusXXL))
         .contextMenu {
             if document.url != nil {
                 Button {
@@ -475,10 +472,16 @@ struct DocumentDetailSheet: View {
                         LocalizationKeys.Legislation.openDocument.localized,
                         systemImage: "safari"
                     )
-                    .frame(maxWidth: .infinity)
-                    .padding()
+                    .font(theme.headline)
+                    .frame(maxWidth: .infinity, minHeight: theme.buttonHeightLarge)
+                    .contentShape(Rectangle())
                 }
-                .buttonStyle(.glass)
+                .buttonStyle(.plain)
+                .background(
+                    RoundedRectangle(cornerRadius: theme.cornerRadiusXXL)
+                        .fill(.clear)
+                )
+                .glassEffect(theme.glassClear, in: RoundedRectangle(cornerRadius: theme.cornerRadiusXXL))
             }
         }
     }
