@@ -229,38 +229,28 @@ struct MediationFeeResultSheet: View {
     // MARK: - Main Fee Card
 
     private var mainFeeCard: some View {
-        VStack(spacing: theme.spacingS) {
-            VStack(spacing: theme.spacingM) {
-                Text(LocalizationKeys.Result.mediationFee.localized)
-                    .font(theme.footnote)
-                    .fontWeight(.medium)
-                    .foregroundStyle(theme.textSecondary)
+        VStack(spacing: theme.spacingM) {
+            Text(LocalizationKeys.Result.mediationFee.localized)
+                .font(theme.footnote)
+                .fontWeight(.medium)
+                .foregroundStyle(theme.textSecondary)
 
-                Text(LocalizationHelper.formatCurrency(result.amount))
-                    .font(.system(size: 40, weight: .bold, design: .rounded))
-                    .foregroundStyle(theme.primary)
-            }
-            .frame(maxWidth: .infinity)
-            .padding(theme.spacingL)
-            .background {
-                RoundedRectangle(cornerRadius: theme.cornerRadiusXL)
-                    .fill(theme.surfaceElevated)
-            }
-            .overlay {
-                RoundedRectangle(cornerRadius: theme.cornerRadiusXL)
-                    .stroke(theme.primary.opacity(0.3), lineWidth: 1.5)
-            }
-            .shadow(color: theme.primary.opacity(0.3), radius: hintShadowRadius)
-            .scaleEffect(hintScale)
-
-            // Pill indicator — mimics iOS sheet drag indicator, hints "tap for more"
-            if !isExpanded {
-                Capsule()
-                    .fill(theme.textSecondary.opacity(0.3))
-                    .frame(width: 36, height: 4)
-                    .transition(.opacity.combined(with: .scale))
-            }
+            Text(LocalizationHelper.formatCurrency(result.amount))
+                .font(.system(size: 40, weight: .bold, design: .rounded))
+                .foregroundStyle(theme.primary)
         }
+        .frame(maxWidth: .infinity)
+        .padding(theme.spacingL)
+        .background {
+            RoundedRectangle(cornerRadius: theme.cornerRadiusXL)
+                .fill(theme.surfaceElevated)
+        }
+        .overlay {
+            RoundedRectangle(cornerRadius: theme.cornerRadiusXL)
+                .stroke(theme.primary.opacity(0.3), lineWidth: 1.5)
+        }
+        .shadow(color: theme.primary.opacity(0.3), radius: hintShadowRadius)
+        .scaleEffect(hintScale)
     }
 
     // MARK: - Calculation Info Card
