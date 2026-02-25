@@ -21,8 +21,6 @@ struct MediationFeeResultSheet: View {
     @State private var isExpanded = false
     @State private var revealContent = false
     @State private var showShareSheet = false
-    @State private var hintScale: CGFloat = 1.0
-    @State private var hintShadowRadius: CGFloat = 0
 
     private var smmLegalPersonResultForFee: SMMPersonResult {
         let input = SMMCalculationInput(amount: result.amount, calculationType: .vatIncludedWithholdingIncluded)
@@ -31,50 +29,52 @@ struct MediationFeeResultSheet: View {
 
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(spacing: theme.spacingL) {
+            GeometryReader { geometry in
+                ScrollView {
+                    VStack(spacing: theme.spacingL) {
 
-                    // Main Fee Card
-                    mainFeeCard
-                        .onTapGesture {
-                            if isExpanded {
-                                revealContent = false
-                                withAnimation(.smooth(duration: 0.3)) {
-                                    isExpanded = false
-                                }
-                            } else {
-                                // card container opening speed is 0.3s, content fade-in starts after 0.1s to create a slight overlap effect
-                                withAnimation(.smooth(duration: 0.3)) {
-                                    isExpanded = true
-                                }
-                                // reveal trigger delay speed is 0.1s to allow the card expansion animation to start before content begins fading in
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                    revealContent = true
-                                }
+                        // Main Fee Card
+                        mainFeeCard
+
+                        if isExpanded {
+                            // Calculation Info Card
+                            calculationInfoCard
+                                .transition(.opacity)
+
+                            // Calculation Method Card (only for agreement cases)
+                            if result.input.agreementStatus == .agreed,
+                               !result.mediationFee.calculationBreakdown.bracketSteps.isEmpty {
+                                calculationMethodCard
+                                    .transition(.opacity)
+                            }
+
+                            // SMM Result Card (only for non-agreement cases)
+                            if result.input.agreementStatus == .notAgreed {
+                                smmResultCard
+                                    .transition(.opacity)
                             }
                         }
-
-                    if isExpanded {
-                        // Calculation Info Card
-                        calculationInfoCard
-                            .transition(.opacity)
-
-                        // Calculation Method Card (only for agreement cases)
-                        if result.input.agreementStatus == .agreed,
-                           !result.mediationFee.calculationBreakdown.bracketSteps.isEmpty {
-                            calculationMethodCard
-                                .transition(.opacity)
-                        }
-
-                        // SMM Result Card (only for non-agreement cases)
-                        if result.input.agreementStatus == .notAgreed {
-                            smmResultCard
-                                .transition(.opacity)
+                    }
+                    .padding(.horizontal, theme.spacingM)
+                    .padding(.bottom, theme.spacingXXL)
+                    .frame(minHeight: geometry.size.height, alignment: .top)
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        if isExpanded {
+                            revealContent = false
+                            withAnimation(.smooth(duration: 0.3)) {
+                                isExpanded = false
+                            }
+                        } else {
+                            withAnimation(.smooth(duration: 0.3)) {
+                                isExpanded = true
+                            }
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                revealContent = true
+                            }
                         }
                     }
                 }
-                .padding(.horizontal, theme.spacingM)
-                .padding(.bottom, theme.spacingXXL)
             }
             .navigationTitle("")
             .navigationBarTitleDisplayMode(.inline)
@@ -107,7 +107,6 @@ struct MediationFeeResultSheet: View {
         .presentationDetents([.large])
         .presentationDragIndicator(.visible)
         // Discoverability: on first use, auto-expand detail cards so the user learns the tap-to-expand mechanic.
-        // On subsequent uses, play a one-shot shadow + scale pulse to hint the card is tappable.
         .onAppear {
             if !hasSeenBefore {
                 // First time: auto-expand so user discovers the mechanic
@@ -118,18 +117,6 @@ struct MediationFeeResultSheet: View {
                     revealContent = true
                 }
                 hasSeenBefore = true
-            } else {
-                // Subsequent uses: shadow + scale pulse hint
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    withAnimation(.easeInOut(duration: 0.8)) {
-                        hintScale = 1.02
-                        hintShadowRadius = 16
-                    }
-                    withAnimation(.easeInOut(duration: 0.8).delay(0.8)) {
-                        hintScale = 1.0
-                        hintShadowRadius = 0
-                    }
-                }
             }
         }
     }
@@ -249,8 +236,6 @@ struct MediationFeeResultSheet: View {
             RoundedRectangle(cornerRadius: theme.cornerRadiusXL)
                 .stroke(theme.primary.opacity(0.3), lineWidth: 1.5)
         }
-        .shadow(color: theme.primary.opacity(0.3), radius: hintShadowRadius)
-        .scaleEffect(hintScale)
     }
 
     // MARK: - Calculation Info Card
