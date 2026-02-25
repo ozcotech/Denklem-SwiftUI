@@ -19,6 +19,7 @@ struct StartScreenView: View {
     // MARK: - Animation Properties
     
     @State private var arrowOffset: CGFloat = 0
+    @State private var hasStartedArrowAnimation = false
     
     // MARK: - Body
     
@@ -129,12 +130,20 @@ struct StartScreenView: View {
                     .foregroundColor(.white)
                     .offset(x: arrowOffset)
             }
-            .frame(maxWidth: .infinity)
-            .frame(height: theme.buttonHeight)
+            .frame(maxWidth: .infinity, minHeight: theme.buttonHeightLarge)
+            .contentShape(Rectangle())
         }
-        .buttonStyle(.glass)
+        .buttonStyle(.plain)
+        .frame(maxWidth: .infinity)
+        .background {
+            RoundedRectangle(cornerRadius: theme.cornerRadiusXXL)
+                .fill(.clear)
+        }
+        .glassEffect(theme.glassClear, in: RoundedRectangle(cornerRadius: theme.cornerRadiusXXL))
         .id(colorScheme) // Force re-render when theme changes
         .onAppear {
+            guard !hasStartedArrowAnimation else { return }
+            hasStartedArrowAnimation = true
             startButtonAnimations()
         }
     }
