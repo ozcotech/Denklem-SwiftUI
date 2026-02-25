@@ -257,7 +257,7 @@ struct DocumentCard: View {
             }
             .padding(theme.spacingM)
         }
-        .buttonStyle(.glass(.clear))
+        .buttonStyle(.glass)
         .buttonBorderShape(.roundedRectangle(radius: theme.cornerRadiusXXL))
         .contextMenu {
             if document.url != nil {
@@ -471,7 +471,7 @@ struct DocumentDetailSheet: View {
                     .font(theme.headline)
                     .frame(maxWidth: .infinity, minHeight: theme.buttonHeightLarge)
                 }
-                .buttonStyle(.glass(.clear))
+                .buttonStyle(.glass)
             }
         }
     }
