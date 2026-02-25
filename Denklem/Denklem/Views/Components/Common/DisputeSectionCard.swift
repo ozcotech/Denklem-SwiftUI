@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-/// Reusable section card that renders a title and 2-column category grid.
+/// Reusable section that renders a 2-column category grid with full-width items.
 @available(iOS 26.0, *)
 struct DisputeSectionCard: View {
     @Environment(\.theme) private var theme
@@ -68,16 +68,9 @@ struct DisputeSectionCard: View {
                     .frame(maxWidth: .infinity, minHeight: 56)
                     .contentShape(Rectangle())
                 }
-                .buttonStyle(.glass(.clear.tint(theme.surface)))
+                .buttonStyle(.glass(.clear))
                 .buttonBorderShape(.roundedRectangle(radius: theme.cornerRadiusXXL))
             }
         }
-        .padding(.horizontal, theme.spacingS)
-        .padding(.vertical, theme.spacingS)
-        .background(
-            RoundedRectangle(cornerRadius: theme.cornerRadiusXXL)
-                .fill(cardColor)
-        )
-        .glassEffect(in: RoundedRectangle(cornerRadius: theme.cornerRadiusXXL))
     }
 }

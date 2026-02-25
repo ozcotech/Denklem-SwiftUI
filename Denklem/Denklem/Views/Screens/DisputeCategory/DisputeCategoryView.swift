@@ -37,45 +37,40 @@ struct DisputeCategoryView: View {
         // Observe language changes to trigger view refresh
         let _ = localeManager.refreshID
 
-        ZStack {
-            // Background
-            theme.background
-                .ignoresSafeArea()
-
-            GeometryReader { geometry in
-                ScrollView {
-                    VStack(spacing: theme.spacingM) {
-                        Button {
-                            viewModel.selectCategory(.mediationFee)
-                        } label: {
-                            VStack(spacing: 4) {
-                                Image(systemName: DisputeCategoryType.mediationFee.systemImage)
-                                    .font(.system(size: 40, weight: .semibold))
-                                    .foregroundStyle(DisputeCategoryType.mediationFee.iconColor)
-                                Text(DisputeCategoryType.mediationFee.displayName)
-                                    .font(theme.footnote)
-                                    .fontWeight(.semibold)
-                                    .foregroundStyle(theme.textPrimary)
-                            }
-                            .frame(maxWidth: .infinity, minHeight: 56)
-                            .padding(.vertical, theme.spacingS)
-                            .contentShape(Rectangle())
+        GeometryReader { geometry in
+            ScrollView {
+                VStack(spacing: theme.spacingM) {
+                    Button {
+                        viewModel.selectCategory(.mediationFee)
+                    } label: {
+                        VStack(spacing: 4) {
+                            Image(systemName: DisputeCategoryType.mediationFee.systemImage)
+                                .font(.system(size: 40, weight: .semibold))
+                                .foregroundStyle(DisputeCategoryType.mediationFee.iconColor)
+                            Text(DisputeCategoryType.mediationFee.displayName)
+                                .font(theme.footnote)
+                                .fontWeight(.semibold)
+                                .foregroundStyle(theme.textPrimary)
                         }
-                        .buttonStyle(.glass(.clear))
-                        .buttonBorderShape(.roundedRectangle(radius: theme.cornerRadiusXXL))
-
-                        DisputeSectionCard(
-                            title: viewModel.specialCalculationsTitle,
-                            categories: viewModel.specialCalculations,
-                            cardColor: theme.cardSpecial,
-                            onCategoryTap: viewModel.selectCategory
-                        )
+                        .frame(maxWidth: .infinity, minHeight: 56)
+                        .padding(.vertical, theme.spacingS)
+                        .contentShape(Rectangle())
                     }
-                    .padding(.horizontal, theme.spacingM)
-                    .frame(minHeight: geometry.size.height)
+                    .buttonStyle(.glass(.clear))
+                    .buttonBorderShape(.roundedRectangle(radius: theme.cornerRadiusXXL))
+
+                    DisputeSectionCard(
+                        title: viewModel.specialCalculationsTitle,
+                        categories: viewModel.specialCalculations,
+                        cardColor: theme.cardSpecial,
+                        onCategoryTap: viewModel.selectCategory
+                    )
                 }
+                .padding(.horizontal, theme.spacingM)
+                .frame(minHeight: geometry.size.height)
             }
         }
+        .background(theme.background)
         // Navigation bar title for Tools screen ("Hesaplama Araçları" / "Calculation Tools")
         .navigationTitle(LocalizationKeys.Tools.title.localized)
         .navigationBarTitleDisplayMode(.inline)
