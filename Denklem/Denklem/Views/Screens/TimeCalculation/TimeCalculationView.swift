@@ -143,27 +143,15 @@ struct TimeCalculationView: View {
         GeometryReader { geometry in
             HStack {
                 Spacer()
-                Button {
+                CalculateButton(
+                    buttonText: LocalizationKeys.General.calculate.localized,
+                    isCalculating: viewModel.isLoading,
+                    isEnabled: !viewModel.isLoading
+                ) {
                     viewModel.calculate()
-                } label: {
-                    HStack(spacing: theme.spacingM) {
-                        Text(LocalizationKeys.General.calculate.localized)
-                            .font(theme.headline)
-                            .fontWeight(.semibold)
-
-                        Image(systemName: "arrow.right.circle.fill")
-                            .font(theme.title3)
-                    }
-                    .foregroundStyle(theme.textPrimary)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: theme.buttonHeight)
                 }
-                .buttonStyle(.glass)
-                .tint(theme.primary)
                 .frame(width: geometry.size.width * 0.9) // 90% width
                 .glassEffectID("calculate", in: glassNamespace)
-                .disabled(viewModel.isLoading)
-                .opacity(viewModel.isLoading ? 0.6 : 1.0)
                 Spacer()
             }
         }

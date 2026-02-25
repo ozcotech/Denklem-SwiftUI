@@ -31,8 +31,14 @@ struct RecalculateButton: View {
             .foregroundStyle(theme.textPrimary)
             .frame(maxWidth: .infinity)
             .frame(height: theme.buttonHeight)
+            .contentShape(Rectangle())
         }
-        .buttonStyle(.glass)
+        .buttonStyle(.plain)
+        .background(
+            RoundedRectangle(cornerRadius: theme.cornerRadiusXXL)
+                .fill(.clear)
+        )
+        .glassEffect(theme.glassClear, in: RoundedRectangle(cornerRadius: theme.cornerRadiusXXL))
         .padding(.top, theme.spacingM)
     }
 }
