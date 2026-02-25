@@ -21,7 +21,8 @@ struct MediationFeeResultSheet: View {
     @State private var isExpanded = false
     @State private var revealContent = false
     @State private var showShareSheet = false
-    @State private var glowOpacity: Double = 0
+    @State private var hintScale: CGFloat = 1.0
+    @State private var hintShadowRadius: CGFloat = 0
 
     private var smmLegalPersonResultForFee: SMMPersonResult {
         let input = SMMCalculationInput(amount: result.amount, calculationType: .vatIncludedWithholdingIncluded)
@@ -106,7 +107,7 @@ struct MediationFeeResultSheet: View {
         .presentationDetents([.large])
         .presentationDragIndicator(.visible)
         // Discoverability: on first use, auto-expand detail cards so the user learns the tap-to-expand mechanic.
-        // On subsequent uses, play a one-shot cloud glow animation on the card border as a gentle "tappable" hint.
+        // On subsequent uses, play a one-shot shadow + scale pulse to hint the card is tappable.
         .onAppear {
             if !hasSeenBefore {
                 // First time: auto-expand so user discovers the mechanic
@@ -118,13 +119,15 @@ struct MediationFeeResultSheet: View {
                 }
                 hasSeenBefore = true
             } else {
-                // Subsequent uses: subtle cloud glow hint on the border
+                // Subsequent uses: shadow + scale pulse hint
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    withAnimation(.easeIn(duration: 1.2)) {
-                        glowOpacity = 0.7
+                    withAnimation(.easeInOut(duration: 0.8)) {
+                        hintScale = 1.02
+                        hintShadowRadius = 16
                     }
-                    withAnimation(.easeOut(duration: 1.2).delay(1.2)) {
-                        glowOpacity = 0
+                    withAnimation(.easeInOut(duration: 0.8).delay(0.8)) {
+                        hintScale = 1.0
+                        hintShadowRadius = 0
                     }
                 }
             }
@@ -226,32 +229,37 @@ struct MediationFeeResultSheet: View {
     // MARK: - Main Fee Card
 
     private var mainFeeCard: some View {
-        VStack(spacing: theme.spacingM) {
-            Text(LocalizationKeys.Result.mediationFee.localized)
-                .font(theme.footnote)
-                .fontWeight(.medium)
-                .foregroundStyle(theme.textSecondary)
+        VStack(spacing: theme.spacingS) {
+            VStack(spacing: theme.spacingM) {
+                Text(LocalizationKeys.Result.mediationFee.localized)
+                    .font(theme.footnote)
+                    .fontWeight(.medium)
+                    .foregroundStyle(theme.textSecondary)
 
-            Text(LocalizationHelper.formatCurrency(result.amount))
-                .font(.system(size: 40, weight: .bold, design: .rounded))
-                .foregroundStyle(theme.primary)
-        }
-        .frame(maxWidth: .infinity)
-        .padding(theme.spacingL)
-        .background {
-            RoundedRectangle(cornerRadius: theme.cornerRadiusXL)
-                .fill(theme.surfaceElevated)
-        }
-        .overlay {
-            RoundedRectangle(cornerRadius: theme.cornerRadiusXL)
-                .stroke(theme.primary.opacity(0.2), lineWidth: 2)
-        }
-        // Cloud glow layer: a blurred border stroke whose opacity is animated from 0 → 0.7 → 0,
-        // creating a soft, cloud-like pulse that hints the card is tappable without adding any icon.
-        .overlay {
-            RoundedRectangle(cornerRadius: theme.cornerRadiusXL)
-                .stroke(theme.primary.opacity(glowOpacity), lineWidth: 3)
-                .blur(radius: 8)
+                Text(LocalizationHelper.formatCurrency(result.amount))
+                    .font(.system(size: 40, weight: .bold, design: .rounded))
+                    .foregroundStyle(theme.primary)
+            }
+            .frame(maxWidth: .infinity)
+            .padding(theme.spacingL)
+            .background {
+                RoundedRectangle(cornerRadius: theme.cornerRadiusXL)
+                    .fill(theme.surfaceElevated)
+            }
+            .overlay {
+                RoundedRectangle(cornerRadius: theme.cornerRadiusXL)
+                    .stroke(theme.primary.opacity(0.3), lineWidth: 1.5)
+            }
+            .shadow(color: theme.primary.opacity(0.3), radius: hintShadowRadius)
+            .scaleEffect(hintScale)
+
+            // Pill indicator — mimics iOS sheet drag indicator, hints "tap for more"
+            if !isExpanded {
+                Capsule()
+                    .fill(theme.textSecondary.opacity(0.3))
+                    .frame(width: 36, height: 4)
+                    .transition(.opacity.combined(with: .scale))
+            }
         }
     }
 
