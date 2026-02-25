@@ -39,7 +39,7 @@ struct RectangleButton: View {
             }
             .frame(maxWidth: .infinity, minHeight: 72, alignment: .leading)
         }
-        .buttonStyle(.glass(.clear))
+        .buttonStyle(.glass)
         .buttonBorderShape(.roundedRectangle(radius: cornerRadius))
     }
 }

@@ -42,7 +42,7 @@ struct CalculateButton: View {
             .frame(maxWidth: .infinity)
             .frame(height: theme.buttonHeight)
         }
-        .buttonStyle(.glass(.clear))
+        .buttonStyle(.glass)
         .disabled(!isEnabled || isCalculating)
         .opacity(isEnabled ? 1.0 : 0.5)
     }

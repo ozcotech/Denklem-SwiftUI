@@ -68,7 +68,7 @@ struct DisputeSectionCard: View {
                     .frame(maxWidth: .infinity, minHeight: 56)
                     .contentShape(Rectangle())
                 }
-                .buttonStyle(.glass(.clear))
+                .buttonStyle(.glass)
                 .buttonBorderShape(.roundedRectangle(radius: theme.cornerRadiusXXL))
             }
         }

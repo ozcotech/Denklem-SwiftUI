@@ -56,7 +56,7 @@ struct DisputeCategoryView: View {
                         .padding(.vertical, theme.spacingS)
                         .contentShape(Rectangle())
                     }
-                    .buttonStyle(.glass(.clear))
+                    .buttonStyle(.glass)
                     .buttonBorderShape(.roundedRectangle(radius: theme.cornerRadiusXXL))
 
                     DisputeSectionCard(

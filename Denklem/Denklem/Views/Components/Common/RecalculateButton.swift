@@ -32,7 +32,7 @@ struct RecalculateButton: View {
             .frame(maxWidth: .infinity)
             .frame(height: theme.buttonHeight)
         }
-        .buttonStyle(.glass(.clear))
+        .buttonStyle(.glass)
         .padding(.top, theme.spacingM)
     }
 }
