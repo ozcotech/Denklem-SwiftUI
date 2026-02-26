@@ -228,14 +228,8 @@ struct MediationFeeResultSheet: View {
         }
         .frame(maxWidth: .infinity)
         .padding(theme.spacingL)
-        .background {
-            RoundedRectangle(cornerRadius: theme.cornerRadiusXL)
-                .fill(theme.surfaceElevated)
-        }
-        .overlay {
-            RoundedRectangle(cornerRadius: theme.cornerRadiusXL)
-                .stroke(theme.primary.opacity(0.3), lineWidth: 1.5)
-        }
+        .glassEffect(.regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusXL))
+        .shadow(color: theme.primary.opacity(0.25), radius: 6)
     }
 
     // MARK: - Calculation Info Card
@@ -331,14 +325,7 @@ struct MediationFeeResultSheet: View {
             }
         }
         .padding(theme.spacingL)
-        .background {
-            RoundedRectangle(cornerRadius: theme.cornerRadiusL)
-                .fill(theme.surface)
-        }
-        .overlay {
-            RoundedRectangle(cornerRadius: theme.cornerRadiusL)
-                .stroke(theme.border, lineWidth: theme.borderWidth)
-        }
+        .glassEffect(.regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusL))
     }
 
     // MARK: - Calculation Method Card
@@ -427,14 +414,7 @@ struct MediationFeeResultSheet: View {
             }
         }
         .padding(theme.spacingL)
-        .background {
-            RoundedRectangle(cornerRadius: theme.cornerRadiusL)
-                .fill(theme.surface)
-        }
-        .overlay {
-            RoundedRectangle(cornerRadius: theme.cornerRadiusL)
-                .stroke(theme.border, lineWidth: theme.borderWidth)
-        }
+        .glassEffect(.regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusL))
     }
 
     // MARK: - Bracket Step Row
@@ -542,14 +522,7 @@ struct MediationFeeResultSheet: View {
             }
         }
         .padding(theme.spacingL)
-        .background {
-            RoundedRectangle(cornerRadius: theme.cornerRadiusL)
-                .fill(theme.surface)
-        }
-        .overlay {
-            RoundedRectangle(cornerRadius: theme.cornerRadiusL)
-                .stroke(theme.border, lineWidth: theme.borderWidth)
-        }
+        .glassEffect(.regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusL))
     }
 
     // MARK: - Detail Row

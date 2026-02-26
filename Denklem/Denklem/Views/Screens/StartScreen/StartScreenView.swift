@@ -67,19 +67,25 @@ struct StartScreenView: View {
         }
         .navigationTitle("")
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                if !viewModel.isSurveyCompleted {
-                    Button {
-                        viewModel.navigateToSurvey = true
-                    } label: {
-                        Image(systemName: "list.bullet")
-                            .font(.title3)
-                            .symbolRenderingMode(.hierarchical)
-                           .foregroundStyle(.white)
-                    }
-                    .buttonStyle(.plain)
+        .toolbar(.hidden, for: .navigationBar)
+        // Survey button: Not a toolbar item — toolbar applies opaque glass in light theme.
+        // Placed as overlay with .glass(.clear) + .buttonBorderShape(.circle) for a
+        // theme-independent transparent circular button (like iOS lock screen buttons).
+        .overlay(alignment: .topTrailing) {
+            if !viewModel.isSurveyCompleted {
+                Button {
+                    viewModel.navigateToSurvey = true
+                } label: {
+                    Image(systemName: "list.bullet")
+                        .font(.title3)
+                        .symbolRenderingMode(.hierarchical)
+                        .foregroundStyle(.white)
+                        .frame(width: 30, height: 30)
                 }
+                .buttonStyle(.glass(.clear))
+                .buttonBorderShape(.circle)
+                .padding(.trailing, theme.spacingM)
+                .padding(.top, theme.spacingXS)
             }
         }
         .navigationDestination(isPresented: $viewModel.navigateToDisputeType) {

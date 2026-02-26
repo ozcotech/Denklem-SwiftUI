@@ -452,10 +452,7 @@ struct DocumentDetailSheet: View {
             )
         }
         .padding(theme.spacingM)
-        .background(
-            RoundedRectangle(cornerRadius: theme.cornerRadiusM)
-                .fill(theme.surface)
-        )
+        .glassEffect(theme.glassClear, in: RoundedRectangle(cornerRadius: theme.cornerRadiusM))
     }
 
     private var actionButtons: some View {

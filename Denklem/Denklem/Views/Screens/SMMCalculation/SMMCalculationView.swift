@@ -328,16 +328,9 @@ struct SMMResultSheet: View {
             
         }
         .padding(theme.spacingL)
-        .background {
-            RoundedRectangle(cornerRadius: theme.cornerRadiusL)
-                .fill(theme.surface)
-        }
-        .overlay {
-            RoundedRectangle(cornerRadius: theme.cornerRadiusL)
-                .stroke(theme.border, lineWidth: theme.borderWidth)
-        }
+        .glassEffect(.regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusL))
     }
-    
+
     // MARK: - Result Row
     
     private func resultRow(label: String, value: String, isHighlighted: Bool) -> some View {

@@ -280,14 +280,7 @@ struct DisputeTypeResultCard: View {
         }
         .padding(theme.spacingM)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(
-            RoundedRectangle(cornerRadius: theme.cornerRadiusL)
-                .fill(theme.surface)
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: theme.cornerRadiusL)
-                .stroke(theme.outline, lineWidth: theme.borderWidth)
-        )
+        .glassEffect(.regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusL))
         .glassEffectID(result.id.uuidString, in: namespace)
     }
 }

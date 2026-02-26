@@ -155,7 +155,7 @@ struct AboutView: View {
     // MARK: - App Header Section
 
     private var appHeaderSection: some View {
-        VStack(spacing: theme.spacingM) {
+        VStack(spacing: theme.spacingXS) {
             // App Name
             Text(viewModel.appName)
                 .font(theme.largeTitle)
@@ -172,15 +172,8 @@ struct AboutView: View {
             Text("v\(viewModel.appVersion)")
                 .font(theme.caption)
                 .fontWeight(.medium)
-                .padding(.horizontal, 12)
-                .padding(.vertical, 6)
-                .background(
-                    Capsule()
-                        .fill(.clear)
-                )
                 .foregroundStyle(theme.primary)
         }
-        .padding(.vertical, theme.spacingS)
     }
 
     // MARK: - Copyright Footer
@@ -196,7 +189,7 @@ struct AboutView: View {
                 .foregroundStyle(theme.textTertiary)
         }
         .multilineTextAlignment(.center)
-        .padding(.top, theme.spacingL)
+        .padding(.top, theme.spacingS)
     }
 
     // MARK: - Settings Section
@@ -214,19 +207,12 @@ struct AboutView: View {
                 languageToggleRow
 
                 Divider()
-                    .padding(.leading, 50)
+                    .padding(.horizontal, theme.spacingM)
 
                 // Theme Picker Row
                 themePickerRow
             }
-            .background(
-                RoundedRectangle(cornerRadius: theme.cornerRadiusM)
-                    .fill(.clear)
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: theme.cornerRadiusM)
-                    .stroke(theme.border, lineWidth: 0.5)
-            )
+            .glassEffect(.regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusM))
         }
     }
 
@@ -326,18 +312,11 @@ struct AboutSectionView: View {
 
                     if index < section.items.count - 1 {
                         Divider()
-                            .padding(.leading, 50)
+                            .padding(.horizontal, theme.spacingM)
                     }
                 }
             }
-            .background(
-                RoundedRectangle(cornerRadius: theme.cornerRadiusM)
-                    .fill(.clear)
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: theme.cornerRadiusM)
-                    .stroke(theme.border, lineWidth: 0.5)
-            )
+            .glassEffect(.regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusM))
         }
     }
 }
@@ -460,7 +439,7 @@ struct DisclaimerPopoverContent: View {
         .padding(theme.spacingL)
         .background(.clear)
         // Use theme glass; system popover removed so this is now the only "background"
-        .glassEffect(theme.glassClear, in: RoundedRectangle(cornerRadius: 28))
+        .glassEffect(.regular, in: RoundedRectangle(cornerRadius: 28))
     }
 }
 
@@ -493,7 +472,7 @@ struct SupportedLanguagesPopoverContent: View {
         }
         .padding(theme.spacingL)
         .background(.clear)
-        .glassEffect(theme.glassClear, in: RoundedRectangle(cornerRadius: 24))
+        .glassEffect(.regular, in: RoundedRectangle(cornerRadius: 24))
     }
 }
 

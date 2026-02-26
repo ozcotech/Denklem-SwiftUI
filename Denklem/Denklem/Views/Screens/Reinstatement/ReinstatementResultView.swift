@@ -83,14 +83,7 @@ struct ReinstatementResultView: View {
         }
         .frame(maxWidth: .infinity)
         .padding(theme.spacingM)
-        .background {
-            RoundedRectangle(cornerRadius: theme.cornerRadiusL)
-                .fill(theme.surfaceElevated)
-        }
-        .overlay {
-            RoundedRectangle(cornerRadius: theme.cornerRadiusL)
-                .stroke(theme.primary.opacity(0.2), lineWidth: 2)
-        }
+        .glassEffect(.regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusL))
     }
 
     // MARK: - Agreement Details Card
@@ -179,14 +172,7 @@ struct ReinstatementResultView: View {
             )
         }
         .padding(theme.spacingL)
-        .background {
-            RoundedRectangle(cornerRadius: theme.cornerRadiusL)
-                .fill(theme.surface)
-        }
-        .overlay {
-            RoundedRectangle(cornerRadius: theme.cornerRadiusL)
-                .stroke(theme.border, lineWidth: theme.borderWidth)
-        }
+        .glassEffect(.regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusL))
     }
 
     // MARK: - No Agreement Details Card
@@ -237,14 +223,7 @@ struct ReinstatementResultView: View {
             )
         }
         .padding(theme.spacingL)
-        .background {
-            RoundedRectangle(cornerRadius: theme.cornerRadiusL)
-                .fill(theme.surface)
-        }
-        .overlay {
-            RoundedRectangle(cornerRadius: theme.cornerRadiusL)
-                .stroke(theme.border, lineWidth: theme.borderWidth)
-        }
+        .glassEffect(.regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusL))
     }
 
     // MARK: - Warning Card
@@ -301,10 +280,7 @@ struct ReinstatementResultView: View {
         }
         .frame(maxWidth: .infinity)
         .padding(theme.spacingM)
-        .background {
-            RoundedRectangle(cornerRadius: theme.cornerRadiusM)
-                .fill(theme.surfaceElevated.opacity(0.5))
-        }
+        .glassEffect(.regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusM))
     }
 
     // MARK: - Recalculate Button
