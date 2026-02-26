@@ -121,6 +121,7 @@ struct StartScreenView: View {
 
     private var primaryActionButton: some View {
         Button {
+            UIImpactFeedbackGenerator(style: .light).impactOccurred()
             viewModel.proceedToDisputeType()
         } label: {
             HStack(spacing: theme.spacingM) {
