@@ -95,7 +95,8 @@ enum DisputeCategoryType: String, CaseIterable, Identifiable {
         }
     }
 
-    /// Icon color
+    /// Icon color (used by MediationFeeView segmented picker text color;
+    /// DisputeCategoryView buttons all use theme.primary instead)
     var iconColor: Color {
         switch self {
         case .monetary:

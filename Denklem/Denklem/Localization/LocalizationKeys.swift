@@ -82,6 +82,7 @@ struct LocalizationKeys {
         static let nonMonetary = "dispute_category.non_monetary"
         static let nonMonetaryDescription = "dispute_category.non_monetary.description"
         static let mediationFee = "dispute_category.mediation_fee"
+        static let mediationFeeSubtitle = "dispute_category.mediation_fee.subtitle"
         static let mediationFeeDescription = "dispute_category.mediation_fee.description"
         
         // Other Calculations

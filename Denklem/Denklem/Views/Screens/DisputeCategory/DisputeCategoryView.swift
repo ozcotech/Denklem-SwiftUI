@@ -41,23 +41,29 @@ struct DisputeCategoryView: View {
             ScrollView {
                 VStack(spacing: theme.spacingM) {
                     Button {
+                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
                         viewModel.selectCategory(.mediationFee)
                     } label: {
                         VStack(spacing: 4) {
                             Image(systemName: DisputeCategoryType.mediationFee.systemImage)
                                 .font(.system(size: 40, weight: .semibold))
-                                .foregroundStyle(DisputeCategoryType.mediationFee.iconColor)
+                                .foregroundStyle(theme.primary)
                             Text(DisputeCategoryType.mediationFee.displayName)
                                 .font(theme.footnote)
                                 .fontWeight(.semibold)
                                 .foregroundStyle(theme.textPrimary)
+                            Text(LocalizationKeys.DisputeCategory.mediationFeeSubtitle.localized)
+                                .font(theme.caption2)
+                                .foregroundStyle(theme.textSecondary)
                         }
-                        .frame(maxWidth: .infinity, minHeight: 56)
-                        .padding(.vertical, theme.spacingS)
+                        .frame(maxWidth: .infinity, minHeight: 76)
+                        .padding(.vertical, 14)
                         .contentShape(Rectangle())
                     }
                     .buttonStyle(.glass)
                     .buttonBorderShape(.roundedRectangle(radius: theme.cornerRadiusXXL))
+                    .shadow(color: theme.primary.opacity(0.25), radius: 6)
+                    .padding(.bottom, theme.spacingL)
 
                     DisputeSectionCard(
                         title: viewModel.specialCalculationsTitle,

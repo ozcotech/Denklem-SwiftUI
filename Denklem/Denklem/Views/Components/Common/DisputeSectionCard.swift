@@ -42,7 +42,7 @@ struct DisputeSectionCard: View {
                 ForEach(gridCategories) { category in
                     RectangleButton(
                         systemImage: category.systemImage,
-                        iconColor: category.iconColor,
+                        iconColor: theme.primary,
                         text: category.displayName,
                         textColor: theme.textPrimary,
                         font: theme.footnote,
