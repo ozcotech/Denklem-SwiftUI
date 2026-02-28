@@ -12,6 +12,7 @@ import SwiftUI
 @available(iOS 26.0, *)
 struct RectangleButton: View {
     @Environment(\.theme) var theme
+    @Environment(\.isAnimatedBackground) private var isAnimatedBackground
 
     let systemImage: String
     let iconColor: Color
@@ -39,7 +40,8 @@ struct RectangleButton: View {
             }
             .frame(maxWidth: .infinity, minHeight: 72, alignment: .leading)
         }
-        .buttonStyle(.glass)
+        // Liquid Glass button style (clear when animated background is on)
+        .buttonStyle(.glass(isAnimatedBackground ? .clear : .regular))
         .buttonBorderShape(.roundedRectangle(radius: cornerRadius))
     }
 }

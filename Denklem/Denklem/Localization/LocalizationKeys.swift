@@ -659,6 +659,7 @@ struct LocalizationKeys {
         static let light = "settings.light"
         static let dark = "settings.dark"
         static let system = "settings.system"
+        static let animation = "settings.animation"
     }
 
     // MARK: - Survey

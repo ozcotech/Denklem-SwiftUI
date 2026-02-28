@@ -39,6 +39,9 @@ struct AboutView: View {
     @State private var showingDisclaimerPopover: Bool = false
     @State private var showingSupportedLanguagesPopover: Bool = false
 
+    @AppStorage(AppConstants.UserDefaultsKeys.animatedBackground)
+    private var isAnimatedBackground: Bool = false
+
     // MARK: - Body
 
     var body: some View {
@@ -211,9 +214,37 @@ struct AboutView: View {
 
                 // Theme Picker Row
                 themePickerRow
+
+                Divider()
+                    .padding(.horizontal, theme.spacingM)
+
+                // Animation Toggle Row
+                animationToggleRow
             }
             .glassEffect(.regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusM))
         }
+    }
+
+    // MARK: - Animation Toggle Row
+
+    private var animationToggleRow: some View {
+        HStack(spacing: theme.spacingM) {
+            Image(systemName: "cloud.sun")
+                .font(theme.body)
+                .foregroundStyle(theme.primary)
+                .frame(width: 30)
+
+            Text(LocalizationKeys.Settings.animation.localized)
+                .font(theme.body)
+                .foregroundStyle(theme.textPrimary)
+
+            Spacer()
+
+            Toggle("", isOn: $isAnimatedBackground)
+                .labelsHidden()
+        }
+        .padding(.horizontal, theme.spacingM)
+        .padding(.vertical, theme.spacingM)
     }
 
     // MARK: - Language Picker Row

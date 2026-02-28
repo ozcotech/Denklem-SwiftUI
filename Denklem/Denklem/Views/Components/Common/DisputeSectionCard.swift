@@ -11,6 +11,7 @@ import SwiftUI
 @available(iOS 26.0, *)
 struct DisputeSectionCard: View {
     @Environment(\.theme) private var theme
+    @Environment(\.isAnimatedBackground) private var isAnimatedBackground
 
     let title: String
     let categories: [DisputeCategoryType]
@@ -68,7 +69,8 @@ struct DisputeSectionCard: View {
                     .frame(maxWidth: .infinity, minHeight: 56)
                     .contentShape(Rectangle())
                 }
-                .buttonStyle(.glass)
+                // Liquid Glass button style (clear when animated background is on)
+                .buttonStyle(.glass(isAnimatedBackground ? .clear : .regular))
                 .buttonBorderShape(.roundedRectangle(radius: theme.cornerRadiusXXL))
             }
         }

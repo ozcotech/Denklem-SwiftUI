@@ -89,6 +89,7 @@ struct AppConstants {
         static let calculationHistory = "calculationHistory"
         static let userPreferences = "userPreferences"
         static let surveyCompleted = "surveyCompleted"
+        static let animatedBackground = "animatedBackground"
     }
 
     // MARK: - Calculation Limits

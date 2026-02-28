@@ -28,6 +28,24 @@ extension EnvironmentValues {
     }
 }
 
+// MARK: - Animated Background Environment Key
+
+/// Environment key for animated background state
+/// Allows views to check if animated sky background is enabled
+/// Usage: @Environment(\.isAnimatedBackground) var isAnimatedBackground
+@available(iOS 26.0, *)
+private struct AnimatedBackgroundKey: EnvironmentKey {
+    static let defaultValue: Bool = false
+}
+
+@available(iOS 26.0, *)
+extension EnvironmentValues {
+    var isAnimatedBackground: Bool {
+        get { self[AnimatedBackgroundKey.self] }
+        set { self[AnimatedBackgroundKey.self] = newValue }
+    }
+}
+
 // MARK: - View Extension for Theme Injection
 
 @available(iOS 26.0, *)

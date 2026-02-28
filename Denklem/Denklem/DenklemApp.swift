@@ -38,6 +38,10 @@ struct DenklemApp: App {
     
     /// System color scheme to detect appearance changes
     @Environment(\.colorScheme) private var systemColorScheme
+
+    /// Animated background toggle state
+    @AppStorage(AppConstants.UserDefaultsKeys.animatedBackground)
+    private var isAnimatedBackground: Bool = false
     
     // MARK: - Body
     
@@ -47,6 +51,7 @@ struct DenklemApp: App {
                 .injectTheme(themeManager.currentTheme)
                 .injectLocaleManager(localeManager)
                 .environment(\.locale, localeManager.currentLocale)
+                .environment(\.isAnimatedBackground, isAnimatedBackground)
                 .preferredColorScheme(themeManager.colorScheme)
                 .onChange(of: systemColorScheme) { _, newColorScheme in
                     themeManager.applySystemTheme(newColorScheme)

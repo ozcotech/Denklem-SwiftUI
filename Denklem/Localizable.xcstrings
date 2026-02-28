@@ -9054,6 +9054,30 @@
         }
       }
     },
+    "settings.animation" : {
+      "comment" : "settings screen - animated background toggle",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Animation"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Animation"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Animasyon"
+          }
+        }
+      }
+    },
     "settings.title" : {
       "comment" : "settings section title",
       "extractionState" : "manual",

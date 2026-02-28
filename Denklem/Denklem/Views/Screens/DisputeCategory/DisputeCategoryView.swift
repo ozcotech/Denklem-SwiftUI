@@ -20,6 +20,7 @@ struct DisputeCategoryView: View {
     @ObservedObject private var localeManager = LocaleManager.shared
     @Environment(\.theme) var theme
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.isAnimatedBackground) private var isAnimatedBackground
     
     // MARK: - Namespace for Morphing Transitions
     
@@ -60,7 +61,8 @@ struct DisputeCategoryView: View {
                         .padding(.vertical, 14)
                         .contentShape(Rectangle())
                     }
-                    .buttonStyle(.glass)
+                    // Liquid Glass button style (clear when animated background is on)
+                    .buttonStyle(.glass(isAnimatedBackground ? .clear : .regular))
                     .buttonBorderShape(.roundedRectangle(radius: theme.cornerRadiusXXL))
                     .shadow(color: theme.primary.opacity(0.25), radius: 6)
                     .padding(.bottom, theme.spacingL)
@@ -76,7 +78,13 @@ struct DisputeCategoryView: View {
                 .frame(minHeight: geometry.size.height)
             }
         }
-        .background(theme.background)
+        .background {
+            if isAnimatedBackground {
+                AnimatedSkyBackground()
+            } else {
+                theme.background.ignoresSafeArea()
+            }
+        }
         // Navigation bar title for Tools screen ("Hesaplama Araçları" / "Calculation Tools")
         .navigationTitle(LocalizationKeys.Tools.title.localized)
         .navigationBarTitleDisplayMode(.inline)
