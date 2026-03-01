@@ -53,12 +53,11 @@ struct StartScreenView: View {
                     .resizable()
                     .scaledToFill()
 
-                // Gradient Overlay for readability
+                // Gradient Overlay for readability (light: subtle, dark: stronger)
                 LinearGradient(
-                    colors: [
-                        Color.black.opacity(0.4),
-                        Color.black.opacity(0.6)
-                    ],
+                    colors: colorScheme == .dark
+                        ? [Color.black.opacity(0.4), Color.black.opacity(0.6)]
+                        : [Color.black.opacity(0.05), Color.black.opacity(0.15)],
                     startPoint: .top,
                     endPoint: .bottom
                 )
