@@ -18,6 +18,7 @@ struct LegislationView: View {
     @StateObject private var viewModel = LegislationViewModel()
     @ObservedObject private var localeManager = LocaleManager.shared
     @Environment(\.theme) var theme
+    @Environment(\.isAnimatedBackground) private var isAnimatedBackground
     
     // MARK: - Body
     
@@ -40,7 +41,13 @@ struct LegislationView: View {
             .padding(.top, theme.spacingM)
             .padding(.bottom, theme.spacingXXL)
         }
-        .background(theme.background)
+        .background {
+            if isAnimatedBackground {
+                AnimatedSkyBackground()
+            } else {
+                theme.background.ignoresSafeArea()
+            }
+        }
         .navigationTitle(LocalizationKeys.Legislation.title.localized)
         .navigationBarTitleDisplayMode(.large)
         .searchable(
@@ -107,7 +114,9 @@ struct LegislationView: View {
                 }
             }
             .padding(.horizontal, theme.spacingXS)
+            .padding(.vertical, theme.spacingS)
         }
+        .scrollClipDisabled()
     }
     
     // MARK: - Documents Section
@@ -136,7 +145,8 @@ struct FilterChip: View {
     let action: () -> Void
     
     @Environment(\.theme) var theme
-    
+    @Environment(\.isAnimatedBackground) private var isAnimatedBackground
+
     var body: some View {
         Button {
             action()
@@ -148,22 +158,15 @@ struct FilterChip: View {
                 }
 
                 Text(title)
-                    .font(theme.subheadline)
-                    .fontWeight(isSelected ? .semibold : .regular)
+                    .font(theme.caption)
+                    .fontWeight(isSelected ? .medium : .regular)
             }
-            .padding(.horizontal, theme.spacingM)
+            .padding(.horizontal, theme.spacingXS)
             .padding(.vertical, theme.spacingS)
-            .background(
-                Capsule()
-                    .fill(isSelected ? theme.primary.opacity(0.15) : theme.surface)
-            )
-            .overlay(
-                Capsule()
-                    .stroke(isSelected ? theme.primary : theme.border, lineWidth: 1)
-            )
             .foregroundStyle(isSelected ? theme.primary : theme.textSecondary)
         }
-        .buttonStyle(.plain)
+        // Liquid Glass button style (clear when animated background is on)
+        .buttonStyle(.glass(isAnimatedBackground ? .clear : .regular))
     }
 }
 
@@ -199,9 +202,10 @@ struct DocumentCard: View {
     let document: LegislationDocument
     let onTap: () -> Void
     let onOpenInSafari: () -> Void
-    
+
     @Environment(\.theme) var theme
-    
+    @Environment(\.isAnimatedBackground) private var isAnimatedBackground
+
     var body: some View {
         Button {
             onTap()
@@ -257,7 +261,8 @@ struct DocumentCard: View {
             }
             .padding(theme.spacingM)
         }
-        .buttonStyle(.glass)
+        // Liquid Glass button style (clear when animated background is on)
+        .buttonStyle(.glass(isAnimatedBackground ? .clear : .regular))
         .buttonBorderShape(.roundedRectangle(radius: theme.cornerRadiusXXL))
         .contextMenu {
             if document.url != nil {

@@ -76,7 +76,13 @@ struct AboutView: View {
             .padding(.bottom, theme.spacingXXL)
         }
         .coordinateSpace(name: "about.scroll")
-        .background(theme.background)
+        .background {
+            if isAnimatedBackground {
+                AnimatedSkyBackground()
+            } else {
+                theme.background.ignoresSafeArea()
+            }
+        }
         .navigationTitle(LocalizationKeys.Settings.title.localized)
         .navigationBarTitleDisplayMode(.large)
         .onChange(of: localeManager.refreshID) { _, _ in
@@ -221,7 +227,7 @@ struct AboutView: View {
                 // Animation Toggle Row
                 animationToggleRow
             }
-            .glassEffect(.regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusM))
+            .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusM))
         }
     }
 
@@ -323,6 +329,7 @@ struct AboutSectionView: View {
     let onItemTap: (AboutSectionItem) -> Void
 
     @Environment(\.theme) var theme
+    @Environment(\.isAnimatedBackground) private var isAnimatedBackground
 
     var body: some View {
         VStack(alignment: .leading, spacing: theme.spacingS) {
@@ -347,7 +354,7 @@ struct AboutSectionView: View {
                     }
                 }
             }
-            .glassEffect(.regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusM))
+            .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusM))
         }
     }
 }
@@ -444,6 +451,7 @@ struct ShareSheet: UIViewControllerRepresentable {
 struct DisclaimerPopoverContent: View {
 
     @Environment(\.theme) var theme
+    @Environment(\.isAnimatedBackground) private var isAnimatedBackground
 
     var body: some View {
         VStack(alignment: .leading, spacing: theme.spacingM) {
@@ -469,8 +477,7 @@ struct DisclaimerPopoverContent: View {
         }
         .padding(theme.spacingL)
         .background(.clear)
-        // Use theme glass; system popover removed so this is now the only "background"
-        .glassEffect(.regular, in: RoundedRectangle(cornerRadius: 28))
+        .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: 28))
     }
 }
 
@@ -478,6 +485,7 @@ struct DisclaimerPopoverContent: View {
 struct SupportedLanguagesPopoverContent: View {
 
     @Environment(\.theme) var theme
+    @Environment(\.isAnimatedBackground) private var isAnimatedBackground
 
     var body: some View {
         VStack(alignment: .leading, spacing: theme.spacingM) {
@@ -503,7 +511,7 @@ struct SupportedLanguagesPopoverContent: View {
         }
         .padding(theme.spacingL)
         .background(.clear)
-        .glassEffect(.regular, in: RoundedRectangle(cornerRadius: 24))
+        .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: 24))
     }
 }
 
