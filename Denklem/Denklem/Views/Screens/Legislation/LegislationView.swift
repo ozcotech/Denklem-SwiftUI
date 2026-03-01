@@ -41,13 +41,7 @@ struct LegislationView: View {
             .padding(.top, theme.spacingM)
             .padding(.bottom, theme.spacingXXL)
         }
-        .background {
-            if isAnimatedBackground {
-                AnimatedSkyBackground()
-            } else {
-                theme.background.ignoresSafeArea()
-            }
-        }
+        .animatedBackground()
         .navigationTitle(LocalizationKeys.Legislation.title.localized)
         .navigationBarTitleDisplayMode(.large)
         .searchable(

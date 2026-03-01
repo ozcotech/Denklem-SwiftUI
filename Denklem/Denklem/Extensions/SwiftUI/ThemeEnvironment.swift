@@ -46,10 +46,35 @@ extension EnvironmentValues {
     }
 }
 
+// MARK: - Animated Background Modifier
+
+/// Applies conditional animated sky background based on the isAnimatedBackground environment value.
+/// Usage: .animatedBackground()
+@available(iOS 26.0, *)
+private struct AnimatedBackgroundModifier: ViewModifier {
+    @Environment(\.theme) var theme
+    @Environment(\.isAnimatedBackground) var isAnimatedBackground
+
+    func body(content: Content) -> some View {
+        content.background {
+            if isAnimatedBackground {
+                AnimatedSkyBackground()
+            } else {
+                theme.background.ignoresSafeArea()
+            }
+        }
+    }
+}
+
 // MARK: - View Extension for Theme Injection
 
 @available(iOS 26.0, *)
 extension View {
+
+    /// Applies animated sky background or solid theme background based on Settings toggle.
+    func animatedBackground() -> some View {
+        modifier(AnimatedBackgroundModifier())
+    }
     /// Injects theme into the view hierarchy
     /// - Parameter theme: The theme to inject
     /// - Returns: View with theme injected

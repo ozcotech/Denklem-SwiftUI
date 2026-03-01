@@ -76,13 +76,7 @@ struct AboutView: View {
             .padding(.bottom, theme.spacingXXL)
         }
         .coordinateSpace(name: "about.scroll")
-        .background {
-            if isAnimatedBackground {
-                AnimatedSkyBackground()
-            } else {
-                theme.background.ignoresSafeArea()
-            }
-        }
+        .animatedBackground()
         .navigationTitle(LocalizationKeys.Settings.title.localized)
         .navigationBarTitleDisplayMode(.large)
         .onChange(of: localeManager.refreshID) { _, _ in

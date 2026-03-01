@@ -78,13 +78,7 @@ struct DisputeCategoryView: View {
                 .frame(minHeight: geometry.size.height)
             }
         }
-        .background {
-            if isAnimatedBackground {
-                AnimatedSkyBackground()
-            } else {
-                theme.background.ignoresSafeArea()
-            }
-        }
+        .animatedBackground()
         // Navigation bar title for Tools screen ("Hesaplama Araçları" / "Calculation Tools")
         .navigationTitle(LocalizationKeys.Tools.title.localized)
         .navigationBarTitleDisplayMode(.inline)
