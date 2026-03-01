@@ -7,21 +7,21 @@
 
 import SwiftUI
 
-// MARK: - Disclaimer Anchor Preference
+// MARK: - Popover Types & Anchor
 
 @available(iOS 26.0, *)
-private struct DisclaimerAnchorKey: PreferenceKey {
-    static var defaultValue: Anchor<CGRect>? = nil
-    static func reduce(value: inout Anchor<CGRect>?, nextValue: () -> Anchor<CGRect>?) {
-        value = value ?? nextValue()
-    }
+enum AboutPopoverType: Hashable {
+    case disclaimer
+    case supportedLanguages
+    case developer
 }
 
 @available(iOS 26.0, *)
-private struct SupportedLanguagesAnchorKey: PreferenceKey {
-    static var defaultValue: Anchor<CGRect>? = nil
-    static func reduce(value: inout Anchor<CGRect>?, nextValue: () -> Anchor<CGRect>?) {
-        value = value ?? nextValue()
+private struct PopoverAnchorKey: PreferenceKey {
+    static var defaultValue: [AboutPopoverType: Anchor<CGRect>] = [:]
+    static func reduce(value: inout [AboutPopoverType: Anchor<CGRect>],
+                       nextValue: () -> [AboutPopoverType: Anchor<CGRect>]) {
+        value.merge(nextValue(), uniquingKeysWith: { $1 })
     }
 }
 
@@ -36,8 +36,7 @@ struct AboutView: View {
     @ObservedObject private var localeManager = LocaleManager.shared
     @Environment(\.theme) var theme
 
-    @State private var showingDisclaimerPopover: Bool = false
-    @State private var showingSupportedLanguagesPopover: Bool = false
+    @State private var activePopover: AboutPopoverType?
 
     @AppStorage(AppConstants.UserDefaultsKeys.animatedBackground)
     private var isAnimatedBackground: Bool = false
@@ -58,14 +57,7 @@ struct AboutView: View {
                 ForEach(viewModel.sections) { section in
                     AboutSectionView(
                         section: section,
-                        onShowDisclaimer: {
-                            showingSupportedLanguagesPopover = false
-                            showingDisclaimerPopover = true
-                        },
-                        onShowSupportedLanguages: {
-                            showingDisclaimerPopover = false
-                            showingSupportedLanguagesPopover = true
-                        },
+                        onShowPopover: { activePopover = $0 },
                         onItemTap: { item in viewModel.handleAction(for: item) }
                     )
                 }
@@ -82,47 +74,18 @@ struct AboutView: View {
         .onChange(of: localeManager.refreshID) { _, _ in
             viewModel.loadSections()
         }
-        .overlayPreferenceValue(DisclaimerAnchorKey.self) { anchor in
+        .overlayPreferenceValue(PopoverAnchorKey.self) { anchors in
             GeometryReader { proxy in
-                if let anchor, showingDisclaimerPopover {
+                if let active = activePopover, let anchor = anchors[active] {
                     let rect = proxy[anchor]
-                    let maxWidth = max(260, min(420, proxy.size.width - (theme.spacingM * 2)))
-
-                    ZStack {
-                        // Tap outside to dismiss (no dimming, fully clear)
-                        Color.clear
-                            .contentShape(Rectangle())
-                            .onTapGesture { showingDisclaimerPopover = false }
-
-                        // The actual glass popover (NO system popover chrome)
-                        DisclaimerPopoverContent()
-                            .frame(width: maxWidth)
-                            .fixedSize(horizontal: false, vertical: true)
-                            // place above the row; clamp so it stays on-screen
-                            .position(
-                                x: min(max(rect.midX, maxWidth / 2 + theme.spacingM),
-                                       proxy.size.width - maxWidth / 2 - theme.spacingM),
-                                y: max(theme.spacingM + 20, rect.minY - 72)
-                            )
-                            .onTapGesture { /* swallow taps */ }
-                            .transition(.opacity.combined(with: .scale(scale: 0.98, anchor: .bottom)))
-                    }
-                    .animation(.easeInOut(duration: theme.fastAnimationDuration), value: showingDisclaimerPopover)
-                }
-            }
-        }
-        .overlayPreferenceValue(SupportedLanguagesAnchorKey.self) { anchor in
-            GeometryReader { proxy in
-                if let anchor, showingSupportedLanguagesPopover {
-                    let rect = proxy[anchor]
-                    let maxWidth = max(240, min(360, proxy.size.width - (theme.spacingM * 2)))
+                    let maxWidth = popoverMaxWidth(for: active, screenWidth: proxy.size.width)
 
                     ZStack {
                         Color.clear
                             .contentShape(Rectangle())
-                            .onTapGesture { showingSupportedLanguagesPopover = false }
+                            .onTapGesture { activePopover = nil }
 
-                        SupportedLanguagesPopoverContent()
+                        popoverContent(for: active)
                             .frame(width: maxWidth)
                             .fixedSize(horizontal: false, vertical: true)
                             .position(
@@ -133,7 +96,7 @@ struct AboutView: View {
                             .onTapGesture { /* swallow taps */ }
                             .transition(.opacity.combined(with: .scale(scale: 0.98, anchor: .bottom)))
                     }
-                    .animation(.easeInOut(duration: theme.fastAnimationDuration), value: showingSupportedLanguagesPopover)
+                    .animation(.easeInOut(duration: theme.fastAnimationDuration), value: activePopover)
                 }
             }
         }
@@ -193,6 +156,24 @@ struct AboutView: View {
         }
         .multilineTextAlignment(.center)
         .padding(.top, theme.spacingS)
+    }
+
+    // MARK: - Popover Helpers
+
+    private func popoverMaxWidth(for type: AboutPopoverType, screenWidth: CGFloat) -> CGFloat {
+        switch type {
+        case .disclaimer: max(260, min(420, screenWidth - (theme.spacingM * 2)))
+        case .supportedLanguages, .developer: max(240, min(360, screenWidth - (theme.spacingM * 2)))
+        }
+    }
+
+    @ViewBuilder
+    private func popoverContent(for type: AboutPopoverType) -> some View {
+        switch type {
+        case .disclaimer: DisclaimerPopoverContent()
+        case .supportedLanguages: SupportedLanguagesPopoverContent()
+        case .developer: DeveloperPopoverContent()
+        }
     }
 
     // MARK: - Settings Section
@@ -318,8 +299,7 @@ struct AboutView: View {
 struct AboutSectionView: View {
 
     let section: AboutScreenSection
-    let onShowDisclaimer: () -> Void
-    let onShowSupportedLanguages: () -> Void
+    let onShowPopover: (AboutPopoverType) -> Void
     let onItemTap: (AboutSectionItem) -> Void
 
     @Environment(\.theme) var theme
@@ -337,8 +317,7 @@ struct AboutSectionView: View {
                 ForEach(Array(section.items.enumerated()), id: \.element.id) { index, item in
                     AboutItemRow(
                         item: item,
-                        onShowDisclaimer: onShowDisclaimer,
-                        onShowSupportedLanguages: onShowSupportedLanguages,
+                        onShowPopover: onShowPopover,
                         action: { onItemTap(item) }
                     )
 
@@ -359,18 +338,24 @@ struct AboutSectionView: View {
 struct AboutItemRow: View {
 
     let item: AboutSectionItem
-    let onShowDisclaimer: () -> Void
-    let onShowSupportedLanguages: () -> Void
+    let onShowPopover: (AboutPopoverType) -> Void
     let action: () -> Void
 
     @Environment(\.theme) var theme
 
+    private var popoverType: AboutPopoverType? {
+        switch item.action {
+        case .showDisclaimer: .disclaimer
+        case .showSupportedLanguages: .supportedLanguages
+        case .showDeveloper: .developer
+        default: nil
+        }
+    }
+
     var body: some View {
         Button {
-            if item.action == .showDisclaimer {
-                onShowDisclaimer()
-            } else if item.action == .showSupportedLanguages {
-                onShowSupportedLanguages()
+            if let type = popoverType {
+                onShowPopover(type)
             } else {
                 action()
             }
@@ -408,18 +393,8 @@ struct AboutItemRow: View {
         }
         .buttonStyle(.plain)
         .disabled(item.action == nil || item.action == AboutSectionItem.AboutItemAction.none)
-        // Anchor only the disclaimer row so we can position the overlay correctly
-        .anchorPreference(
-            key: DisclaimerAnchorKey.self,
-            value: .bounds
-        ) { anchor in
-            (item.action == .showDisclaimer) ? anchor : nil
-        }
-        .anchorPreference(
-            key: SupportedLanguagesAnchorKey.self,
-            value: .bounds
-        ) { anchor in
-            (item.action == .showSupportedLanguages) ? anchor : nil
+        .anchorPreference(key: PopoverAnchorKey.self, value: .bounds) { anchor in
+            if let type = popoverType { [type: anchor] } else { [:] }
         }
     }
 }
@@ -504,6 +479,24 @@ struct SupportedLanguagesPopoverContent: View {
             }
         }
         .padding(theme.spacingL)
+        .background(.clear)
+        .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: 24))
+    }
+}
+
+// MARK: - Developer Popover Content
+
+@available(iOS 26.0, *)
+struct DeveloperPopoverContent: View {
+
+    @Environment(\.theme) var theme
+    @Environment(\.isAnimatedBackground) private var isAnimatedBackground
+
+    var body: some View {
+        Text(AboutData.developerName)
+            .font(theme.body)
+            .foregroundStyle(theme.textPrimary)
+            .padding(theme.spacingL)
         .background(.clear)
         .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: 24))
     }

@@ -24,6 +24,7 @@ struct AboutSectionItem: Identifiable, Hashable {
         case rateApp
         case showDisclaimer
         case showSupportedLanguages
+        case showDeveloper
         case none
     }
     
@@ -130,6 +131,8 @@ final class AboutViewModel: ObservableObject {
             break
         case .showSupportedLanguages:
             break
+        case .showDeveloper:
+            break
         case .none:
             break
         }
@@ -213,8 +216,8 @@ final class AboutViewModel: ObservableObject {
             items: [
                 AboutSectionItem(
                     title: LocalizationKeys.About.developer.localized,
-                    value: AboutData.developerName,
-                    systemImage: "person.circle"
+                    systemImage: "person.circle",
+                    action: .showDeveloper
                 ),
                 AboutSectionItem(
                     title: LocalizationKeys.Contact.email.localized,
