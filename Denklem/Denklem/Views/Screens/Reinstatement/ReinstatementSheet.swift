@@ -27,6 +27,7 @@ struct ReinstatementSheet: View {
     @StateObject private var viewModel: ReinstatementViewModel
     @ObservedObject private var localeManager = LocaleManager.shared
     @Environment(\.theme) var theme
+    @Environment(\.isAnimatedBackground) private var isAnimatedBackground
     @Environment(\.dismiss) private var dismiss
 
     // MARK: - Focus State
@@ -50,10 +51,6 @@ struct ReinstatementSheet: View {
 
         NavigationStack {
             ZStack {
-                // Background
-                theme.background
-                    .ignoresSafeArea()
-
                 // Content
                 if viewModel.showResult, let result = viewModel.calculationResult {
                     // Result View
@@ -75,6 +72,7 @@ struct ReinstatementSheet: View {
             .onTapGesture {
                 UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
             }
+            .animatedBackground()
             .navigationTitle(viewModel.screenTitle)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -213,7 +211,7 @@ struct ReinstatementSheet: View {
                 .frame(height: theme.buttonHeight)
                 .frame(maxWidth: .infinity)
                 .contentShape(Rectangle())
-                .glassEffect()
+                .glassEffect(isAnimatedBackground ? .clear : .regular)
                 .glassEffectID("compensationInput", in: glassNamespace)
                 .focused($focusedField, equals: .compensation)
                 .id(ReinstatementFocusedField.compensation)
@@ -235,7 +233,7 @@ struct ReinstatementSheet: View {
                 .frame(height: theme.buttonHeight)
                 .frame(maxWidth: .infinity)
                 .contentShape(Rectangle())
-                .glassEffect()
+                .glassEffect(isAnimatedBackground ? .clear : .regular)
                 .glassEffectID("idleWageInput", in: glassNamespace)
                 .focused($focusedField, equals: .idleWage)
                 .id(ReinstatementFocusedField.idleWage)
@@ -257,7 +255,7 @@ struct ReinstatementSheet: View {
                 .frame(height: theme.buttonHeight)
                 .frame(maxWidth: .infinity)
                 .contentShape(Rectangle())
-                .glassEffect()
+                .glassEffect(isAnimatedBackground ? .clear : .regular)
                 .glassEffectID("otherRightsInput", in: glassNamespace)
                 .focused($focusedField, equals: .otherRights)
                 .id(ReinstatementFocusedField.otherRights)
@@ -287,7 +285,7 @@ struct ReinstatementSheet: View {
                 .frame(height: theme.buttonHeight)
                 .frame(maxWidth: .infinity)
                 .contentShape(Rectangle())
-                .glassEffect()
+                .glassEffect(isAnimatedBackground ? .clear : .regular)
                 .glassEffectID("partyCountInput", in: glassNamespace)
                 .focused($focusedField, equals: .partyCount)
                 .id(ReinstatementFocusedField.partyCount)

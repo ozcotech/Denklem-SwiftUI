@@ -20,6 +20,7 @@ struct AttorneyFeeView: View {
     @ObservedObject private var localeManager = LocaleManager.shared
     @Environment(\.theme) var theme
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.isAnimatedBackground) private var isAnimatedBackground
 
     // MARK: - Focus & Scroll
 
@@ -33,10 +34,6 @@ struct AttorneyFeeView: View {
         let _ = localeManager.refreshID
 
         ZStack {
-            // Background
-            theme.background
-                .ignoresSafeArea()
-
             // Content
             ScrollViewReader { proxy in
                 ScrollView {
@@ -95,6 +92,7 @@ struct AttorneyFeeView: View {
         .animation(.easeInOut(duration: 0.2), value: viewModel.selectedAgreementStatus)
         .navigationTitle(viewModel.screenTitle)
         .navigationBarTitleDisplayMode(.inline)
+        .animatedBackground()
         .sheet(isPresented: $viewModel.showResult, onDismiss: {
             focusedField = nil
         }) {
@@ -188,7 +186,7 @@ struct AttorneyFeeView: View {
             .frame(height: theme.buttonHeight)
             .frame(maxWidth: .infinity)
             .contentShape(Rectangle())
-            .glassEffect()
+            .glassEffect(isAnimatedBackground ? .clear : .regular)
             .glassEffectID("amountInput", in: glassNamespace)
             .onChange(of: viewModel.amountText) { _, _ in
                 viewModel.formatAmountInput()
@@ -231,7 +229,7 @@ struct AttorneyFeeView: View {
             .frame(maxWidth: .infinity)
             .frame(height: theme.buttonHeight)
             .contentShape(Rectangle())
-            .glassEffect()
+            .glassEffect(isAnimatedBackground ? .clear : .regular)
         }
     }
 

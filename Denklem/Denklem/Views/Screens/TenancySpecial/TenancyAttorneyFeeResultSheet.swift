@@ -18,6 +18,7 @@ struct TenancyAttorneyFeeResultSheet: View {
     let result: TenancyAttorneyFeeResult
 
     @Environment(\.theme) var theme
+    @Environment(\.isAnimatedBackground) private var isAnimatedBackground
     @Environment(\.dismiss) private var dismiss
     @ObservedObject private var localeManager = LocaleManager.shared
 
@@ -62,6 +63,7 @@ struct TenancyAttorneyFeeResultSheet: View {
                 }
             }
         }
+        .animatedBackground()
         .presentationBackground(.clear)
         .presentationBackgroundInteraction(.enabled)
         .presentationDetents([.large])
@@ -108,7 +110,7 @@ struct TenancyAttorneyFeeResultSheet: View {
         }
         .frame(maxWidth: .infinity)
         .padding(theme.spacingL)
-        .glassEffect(.regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusXL))
+        .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusXL))
     }
 
     // MARK: - Calculation Info Card
@@ -184,7 +186,7 @@ struct TenancyAttorneyFeeResultSheet: View {
             }
         }
         .padding(theme.spacingL)
-        .glassEffect(.regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusL))
+        .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusL))
     }
 
     // MARK: - Court Minimum Warnings Card
@@ -250,7 +252,7 @@ struct TenancyAttorneyFeeResultSheet: View {
         }
         .frame(maxWidth: .infinity)
         .padding(theme.spacingM)
-        .glassEffect(.regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusM))
+        .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusM))
     }
 
     // MARK: - Detail Row

@@ -20,6 +20,7 @@ struct ReinstatementResultView: View {
     let onDismiss: () -> Void
     let onRecalculate: () -> Void
 
+    @Environment(\.isAnimatedBackground) private var isAnimatedBackground
     @ObservedObject private var localeManager = LocaleManager.shared
 
     // MARK: - Body
@@ -83,7 +84,7 @@ struct ReinstatementResultView: View {
         }
         .frame(maxWidth: .infinity)
         .padding(theme.spacingM)
-        .glassEffect(.regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusL))
+        .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusL))
     }
 
     // MARK: - Agreement Details Card
@@ -172,7 +173,7 @@ struct ReinstatementResultView: View {
             )
         }
         .padding(theme.spacingL)
-        .glassEffect(.regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusL))
+        .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusL))
     }
 
     // MARK: - No Agreement Details Card
@@ -223,7 +224,7 @@ struct ReinstatementResultView: View {
             )
         }
         .padding(theme.spacingL)
-        .glassEffect(.regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusL))
+        .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusL))
     }
 
     // MARK: - Warning Card
@@ -280,7 +281,7 @@ struct ReinstatementResultView: View {
         }
         .frame(maxWidth: .infinity)
         .padding(theme.spacingM)
-        .glassEffect(.regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusM))
+        .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusM))
     }
 
     // MARK: - Recalculate Button

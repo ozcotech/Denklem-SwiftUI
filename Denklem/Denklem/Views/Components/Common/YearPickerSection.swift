@@ -13,6 +13,7 @@ import SwiftUI
 @available(iOS 26.0, *)
 struct YearPickerSection: View {
     @Environment(\.theme) var theme
+    @Environment(\.isAnimatedBackground) private var isAnimatedBackground
 
     let availableYears: [TariffYear]
     let selectedYear: TariffYear
@@ -55,10 +56,7 @@ struct YearPickerSection: View {
                 }
                 .padding(.horizontal, theme.spacingS)
                 .padding(.vertical, theme.spacingXS)
-                .background {
-                    Capsule()
-                        .fill(theme.surfaceElevated.opacity(0.6))
-                }
+                .glassEffect(isAnimatedBackground ? .clear : .regular, in: Capsule())
             }
         }
         .frame(maxWidth: .infinity)

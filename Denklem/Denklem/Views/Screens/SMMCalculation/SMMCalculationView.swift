@@ -18,6 +18,7 @@ struct SMMCalculationView: View {
     @StateObject private var viewModel = SMMCalculationViewModel()
     @ObservedObject private var localeManager = LocaleManager.shared
     @Environment(\.theme) var theme
+    @Environment(\.isAnimatedBackground) private var isAnimatedBackground
     @Environment(\.dismiss) private var dismiss
     
     // MARK: - Namespace for Morphing Transitions
@@ -31,10 +32,6 @@ struct SMMCalculationView: View {
         let _ = localeManager.refreshID
         
         ZStack {
-            // Background
-            theme.background
-                .ignoresSafeArea()
-            
             // Main Content
             ScrollView {
                 VStack(spacing: theme.spacingL) {
@@ -62,6 +59,7 @@ struct SMMCalculationView: View {
             // Dismiss keyboard when tapping outside
             hideKeyboard()
         }
+        .animatedBackground()
         .navigationTitle(viewModel.screenTitle)
         .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $viewModel.showResult) {
@@ -116,7 +114,7 @@ struct SMMCalculationView: View {
                 .frame(height: theme.buttonHeight)
                 .frame(maxWidth: .infinity)
                 .contentShape(Rectangle())
-                .glassEffect()
+                .glassEffect(isAnimatedBackground ? .clear : .regular)
                 .glassEffectID("smmAmountInput", in: glassNamespace)
                 .onChange(of: viewModel.amountText) { _, _ in
                     viewModel.formatAmountInput()
@@ -162,7 +160,7 @@ struct SMMCalculationView: View {
                 }
                 .padding(.horizontal, theme.spacingL)
                 .frame(height: theme.buttonHeight)
-                .glassEffect()
+                .glassEffect(isAnimatedBackground ? .clear : .regular)
             }
         }
         .padding(.horizontal, theme.spacingM)
@@ -206,7 +204,8 @@ struct SMMResultSheet: View {
     let glassNamespace: Namespace.ID
 
     @ObservedObject private var localeManager = LocaleManager.shared
-    
+
+    @Environment(\.isAnimatedBackground) private var isAnimatedBackground
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
@@ -231,7 +230,7 @@ struct SMMResultSheet: View {
                 .padding(.horizontal, theme.spacingM)
                 .padding(.top, theme.spacingM)
             }
-            .background(theme.background)
+            .animatedBackground()
             .navigationTitle(LocalizationKeys.SMMResult.title.localized)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -328,7 +327,7 @@ struct SMMResultSheet: View {
             
         }
         .padding(theme.spacingL)
-        .glassEffect(.regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusL))
+        .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusL))
     }
 
     // MARK: - Result Row

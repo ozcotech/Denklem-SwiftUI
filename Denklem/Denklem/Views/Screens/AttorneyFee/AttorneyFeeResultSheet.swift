@@ -18,6 +18,7 @@ struct AttorneyFeeResultSheet: View {
 
     @Environment(\.theme) var theme
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.isAnimatedBackground) private var isAnimatedBackground
     @ObservedObject private var localeManager = LocaleManager.shared
 
     // MARK: - Body
@@ -49,6 +50,7 @@ struct AttorneyFeeResultSheet: View {
             }
             .navigationTitle("")
             .navigationBarTitleDisplayMode(.inline)
+            .animatedBackground()
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
@@ -82,7 +84,7 @@ struct AttorneyFeeResultSheet: View {
         }
         .frame(maxWidth: .infinity)
         .padding(theme.spacingL)
-        .glassEffect(.regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusXL))
+        .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusXL))
     }
 
     // MARK: - Calculation Info Card
@@ -180,7 +182,7 @@ struct AttorneyFeeResultSheet: View {
             }
         }
         .padding(theme.spacingL)
-        .glassEffect(.regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusL))
+        .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusL))
     }
 
     // MARK: - Warnings Card
@@ -246,7 +248,7 @@ struct AttorneyFeeResultSheet: View {
         }
         .frame(maxWidth: .infinity)
         .padding(theme.spacingM)
-        .glassEffect(.regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusM))
+        .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusM))
     }
 
     // MARK: - Detail Row

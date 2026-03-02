@@ -25,6 +25,7 @@ struct TenancySelectionView: View {
     @StateObject private var viewModel: TenancySelectionViewModel
     @ObservedObject private var localeManager = LocaleManager.shared
     @Environment(\.theme) var theme
+    @Environment(\.isAnimatedBackground) private var isAnimatedBackground
     @Environment(\.dismiss) private var dismiss
 
     // MARK: - Focus State
@@ -43,10 +44,6 @@ struct TenancySelectionView: View {
         let _ = localeManager.refreshID
 
         ZStack {
-            // Background
-            theme.background
-                .ignoresSafeArea()
-
             // Content
             ScrollViewReader { proxy in
                 ScrollView {
@@ -95,6 +92,7 @@ struct TenancySelectionView: View {
         .onTapGesture {
             UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         }
+        .animatedBackground()
         .navigationTitle(viewModel.screenTitle)
         .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $viewModel.showAttorneyResultSheet, onDismiss: {
@@ -173,7 +171,7 @@ struct TenancySelectionView: View {
                 .frame(height: theme.buttonHeight)
                 .frame(maxWidth: .infinity)
                 .contentShape(Rectangle())
-                .glassEffect()
+                .glassEffect(isAnimatedBackground ? .clear : .regular)
                 .focused($focusedField, equals: .evictionAmount)
                 .id(TenancySelectionFocusedField.evictionAmount)
                 .onChange(of: viewModel.evictionAmountText) { _, newValue in
@@ -214,7 +212,7 @@ struct TenancySelectionView: View {
                 .frame(height: theme.buttonHeight)
                 .frame(maxWidth: .infinity)
                 .contentShape(Rectangle())
-                .glassEffect()
+                .glassEffect(isAnimatedBackground ? .clear : .regular)
                 .focused($focusedField, equals: .determinationAmount)
                 .id(TenancySelectionFocusedField.determinationAmount)
                 .onChange(of: viewModel.determinationAmountText) { _, newValue in
@@ -258,7 +256,7 @@ struct TenancySelectionView: View {
             .padding(theme.spacingM)
             .frame(maxWidth: .infinity)
             .contentShape(Rectangle())
-            .glassEffect(in: RoundedRectangle(cornerRadius: theme.cornerRadiusM))
+            .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusM))
         }
         .buttonStyle(.plain)
         .animation(.easeInOut(duration: 0.2), value: isSelected)

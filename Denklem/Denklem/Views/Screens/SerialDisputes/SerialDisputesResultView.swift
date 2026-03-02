@@ -21,6 +21,7 @@ struct SerialDisputesResultView: View {
     let onRecalculate: () -> Void
 
     @ObservedObject private var localeManager = LocaleManager.shared
+    @Environment(\.isAnimatedBackground) private var isAnimatedBackground
 
     // MARK: - Body
 
@@ -69,14 +70,7 @@ struct SerialDisputesResultView: View {
         }
         .frame(maxWidth: .infinity)
         .padding(theme.spacingL)
-        .background {
-            RoundedRectangle(cornerRadius: theme.cornerRadiusXL)
-                .fill(theme.surfaceElevated)
-        }
-        .overlay {
-            RoundedRectangle(cornerRadius: theme.cornerRadiusXL)
-                .stroke(theme.primary.opacity(0.2), lineWidth: 2)
-        }
+        .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusXL))
     }
 
     // MARK: - Details Card
@@ -134,14 +128,7 @@ struct SerialDisputesResultView: View {
             )
         }
         .padding(theme.spacingL)
-        .background {
-            RoundedRectangle(cornerRadius: theme.cornerRadiusL)
-                .fill(theme.surface)
-        }
-        .overlay {
-            RoundedRectangle(cornerRadius: theme.cornerRadiusL)
-                .stroke(theme.border, lineWidth: theme.borderWidth)
-        }
+        .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusL))
     }
 
     // MARK: - Legal Reference Card
@@ -161,10 +148,7 @@ struct SerialDisputesResultView: View {
         }
         .frame(maxWidth: .infinity)
         .padding(theme.spacingM)
-        .background {
-            RoundedRectangle(cornerRadius: theme.cornerRadiusM)
-                .fill(theme.surfaceElevated.opacity(0.5))
-        }
+        .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusM))
     }
 
     // MARK: - Recalculate Button

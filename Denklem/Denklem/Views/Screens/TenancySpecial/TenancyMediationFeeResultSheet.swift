@@ -20,6 +20,7 @@ struct TenancyMediationFeeResultSheet: View {
     let result: TenancyMediationFeeResult
 
     @Environment(\.theme) var theme
+    @Environment(\.isAnimatedBackground) private var isAnimatedBackground
     @Environment(\.dismiss) private var dismiss
     @ObservedObject private var localeManager = LocaleManager.shared
 
@@ -64,6 +65,7 @@ struct TenancyMediationFeeResultSheet: View {
                 }
             }
         }
+        .animatedBackground()
         .presentationBackground(.clear)
         .presentationBackgroundInteraction(.enabled)
         .presentationDetents([.large])
@@ -87,7 +89,7 @@ struct TenancyMediationFeeResultSheet: View {
         }
         .frame(maxWidth: .infinity)
         .padding(theme.spacingL)
-        .glassEffect(.regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusXL))
+        .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusXL))
     }
 
     // MARK: - Fee Breakdown Card
@@ -114,7 +116,7 @@ struct TenancyMediationFeeResultSheet: View {
             }
         }
         .padding(theme.spacingL)
-        .glassEffect(.regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusL))
+        .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusL))
     }
 
     // MARK: - Calculation Info Card
@@ -192,7 +194,7 @@ struct TenancyMediationFeeResultSheet: View {
             }
         }
         .padding(theme.spacingL)
-        .glassEffect(.regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusL))
+        .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusL))
     }
 
     // MARK: - Legal Reference Card
@@ -212,7 +214,7 @@ struct TenancyMediationFeeResultSheet: View {
         }
         .frame(maxWidth: .infinity)
         .padding(theme.spacingM)
-        .glassEffect(.regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusM))
+        .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusM))
     }
 
     // MARK: - Detail Row

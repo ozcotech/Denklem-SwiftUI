@@ -14,6 +14,7 @@ import SwiftUI
 @available(iOS 26.0, *)
 struct CalculateButton: View {
     @Environment(\.theme) var theme
+    @Environment(\.isAnimatedBackground) private var isAnimatedBackground
 
     let buttonText: String
     let isCalculating: Bool
@@ -42,7 +43,7 @@ struct CalculateButton: View {
             .frame(maxWidth: .infinity)
             .frame(height: theme.buttonHeight)
         }
-        .buttonStyle(.glass)
+        .buttonStyle(.glass(isAnimatedBackground ? .clear : .regular))
         .disabled(!isEnabled || isCalculating)
         .opacity(isEnabled ? 1.0 : 0.5)
     }

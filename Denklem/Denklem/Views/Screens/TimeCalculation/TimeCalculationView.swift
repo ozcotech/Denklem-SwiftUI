@@ -19,7 +19,8 @@ struct TimeCalculationView: View {
     @ObservedObject private var localeManager = LocaleManager.shared
     @Environment(\.theme) var theme
     @Environment(\.dismiss) private var dismiss
-    
+    @Environment(\.isAnimatedBackground) private var isAnimatedBackground
+
     // MARK: - State for Date Picker Sheet
     
     @State private var showDatePicker = false
@@ -32,10 +33,6 @@ struct TimeCalculationView: View {
     
     var body: some View {
         ZStack {
-            // Background
-            theme.background
-                .ignoresSafeArea()
-            
             VStack {
                 Spacer()
                     .frame(height: 80)
@@ -53,6 +50,7 @@ struct TimeCalculationView: View {
         }
         .navigationTitle(LocalizationKeys.ScreenTitle.timeCalculation.localized)
         .navigationBarTitleDisplayMode(.inline)
+        .animatedBackground()
         .sheet(isPresented: $viewModel.showResults) {
             ResultsSheet(viewModel: viewModel, glassNamespace: glassNamespace)
         }
@@ -113,7 +111,7 @@ struct TimeCalculationView: View {
                         .padding(theme.spacingM)
                         .frame(height: theme.buttonHeight)
                     }
-                    .buttonStyle(.glass)
+                    .buttonStyle(.glass(isAnimatedBackground ? .clear : .regular))
                     .tint(theme.surface)
                     .frame(width: geometry.size.width * 0.9) // 90% width
                     .glassEffectID("dateSelector", in: glassNamespace)
@@ -169,7 +167,8 @@ struct ResultsSheet: View {
     
     @Environment(\.theme) var theme
     @Environment(\.dismiss) private var dismiss
-    
+    @Environment(\.isAnimatedBackground) private var isAnimatedBackground
+
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -198,6 +197,7 @@ struct ResultsSheet: View {
             }
             .navigationTitle(LocalizationKeys.TimeCalculation.Result.processEndDates.localized)
             .navigationBarTitleDisplayMode(.inline)
+            .animatedBackground()
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
@@ -239,7 +239,7 @@ struct ResultsSheet: View {
                 .foregroundStyle(theme.primary)
         }
         .padding(theme.spacingM)
-        .glassEffect(.regular.interactive()) // Liquid Glass header card
+        .glassEffect(isAnimatedBackground ? .clear.interactive() : .regular.interactive())
     }
 }
 
@@ -251,7 +251,9 @@ struct DisputeTypeResultCard: View {
     let result: DisputeTypeResult
     let theme: ThemeProtocol
     let namespace: Namespace.ID
-    
+
+    @Environment(\.isAnimatedBackground) private var isAnimatedBackground
+
     var body: some View {
         VStack(alignment: .leading, spacing: theme.spacingM) {
             // Dispute Type Title
@@ -280,7 +282,7 @@ struct DisputeTypeResultCard: View {
         }
         .padding(theme.spacingM)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .glassEffect(.regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusL))
+        .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusL))
         .glassEffectID(result.id.uuidString, in: namespace)
     }
 }

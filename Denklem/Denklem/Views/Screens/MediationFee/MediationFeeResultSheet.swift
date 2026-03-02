@@ -17,6 +17,7 @@ struct MediationFeeResultSheet: View {
     let isMonetary: Bool
 
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.isAnimatedBackground) private var isAnimatedBackground
     @AppStorage("mediationResultSheetSeen") private var hasSeenBefore = false
     @State private var isExpanded = false
     @State private var revealContent = false
@@ -78,6 +79,7 @@ struct MediationFeeResultSheet: View {
             }
             .navigationTitle("")
             .navigationBarTitleDisplayMode(.inline)
+            .animatedBackground()
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button {
@@ -222,13 +224,17 @@ struct MediationFeeResultSheet: View {
                 .fontWeight(.medium)
                 .foregroundStyle(theme.textSecondary)
 
-            Text(LocalizationHelper.formatCurrency(result.amount))
-                .font(.system(size: 40, weight: .bold, design: .rounded))
-                .foregroundStyle(theme.primary)
+            LiquidGlassText(
+                LocalizationHelper.formatCurrency(result.amount),
+                glass: .clear.tint(theme.primary),
+                size: 40,
+                weight: .bold,
+                design: .rounded
+            )
         }
         .frame(maxWidth: .infinity)
         .padding(theme.spacingL)
-        .glassEffect(.regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusXL))
+        .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusXL))
         .shadow(color: theme.primary.opacity(0.25), radius: 6)
     }
 
@@ -325,7 +331,7 @@ struct MediationFeeResultSheet: View {
             }
         }
         .padding(theme.spacingL)
-        .glassEffect(.regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusL))
+        .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusL))
     }
 
     // MARK: - Calculation Method Card
@@ -414,7 +420,7 @@ struct MediationFeeResultSheet: View {
             }
         }
         .padding(theme.spacingL)
-        .glassEffect(.regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusL))
+        .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusL))
     }
 
     // MARK: - Bracket Step Row
@@ -522,7 +528,7 @@ struct MediationFeeResultSheet: View {
             }
         }
         .padding(theme.spacingL)
-        .glassEffect(.regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusL))
+        .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusL))
     }
 
     // MARK: - Detail Row

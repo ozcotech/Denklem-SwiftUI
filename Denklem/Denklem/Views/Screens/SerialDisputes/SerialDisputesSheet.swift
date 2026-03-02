@@ -19,6 +19,7 @@ struct SerialDisputesSheet: View {
     @ObservedObject private var localeManager = LocaleManager.shared
     @Environment(\.theme) var theme
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.isAnimatedBackground) private var isAnimatedBackground
 
     // MARK: - Namespace for Morphing Transitions
 
@@ -38,10 +39,6 @@ struct SerialDisputesSheet: View {
 
         NavigationStack {
             ZStack {
-                // Background
-                theme.background
-                    .ignoresSafeArea()
-
                 // Content
                 if viewModel.showResult, let result = viewModel.calculationResult {
                     // Result View
@@ -65,6 +62,7 @@ struct SerialDisputesSheet: View {
             }
             .navigationTitle(viewModel.screenTitle)
             .navigationBarTitleDisplayMode(.inline)
+            .animatedBackground()
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
@@ -160,7 +158,7 @@ struct SerialDisputesSheet: View {
                 }
                 .padding(.horizontal, theme.spacingL)
                 .frame(height: theme.buttonHeight)
-                .glassEffect()
+                .glassEffect(isAnimatedBackground ? .clear : .regular)
             }
         }
     }
@@ -187,7 +185,7 @@ struct SerialDisputesSheet: View {
                 .frame(height: theme.buttonHeight)
                 .frame(maxWidth: .infinity)
                 .contentShape(Rectangle())
-                .glassEffect()
+                .glassEffect(isAnimatedBackground ? .clear : .regular)
                 .glassEffectID("fileCountInput", in: glassNamespace)
                 .onChange(of: viewModel.fileCountText) { _, _ in
                     viewModel.formatFileCountInput()

@@ -13,6 +13,7 @@ import SwiftUI
 @available(iOS 26.0, *)
 struct RecalculateButton: View {
     @Environment(\.theme) var theme
+    @Environment(\.isAnimatedBackground) private var isAnimatedBackground
 
     let action: () -> Void
 
@@ -32,7 +33,7 @@ struct RecalculateButton: View {
             .frame(maxWidth: .infinity)
             .frame(height: theme.buttonHeight)
         }
-        .buttonStyle(.glass)
+        .buttonStyle(.glass(isAnimatedBackground ? .clear : .regular))
         .padding(.top, theme.spacingM)
     }
 }
