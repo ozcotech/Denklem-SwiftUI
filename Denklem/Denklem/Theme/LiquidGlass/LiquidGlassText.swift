@@ -4,6 +4,8 @@
 //
 //  Created by ozkan on 01.03.2026.
 //
+//  NOTE: This file is currently not used in any screen.
+//
 //  A SwiftUI view that renders text with Apple's Liquid Glass effect.
 //  Converts the text into glyph paths via TextPathHelper, then applies
 //  .glassEffect to fill each character shape with glass material —

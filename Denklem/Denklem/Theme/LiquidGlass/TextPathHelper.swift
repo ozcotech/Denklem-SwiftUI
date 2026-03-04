@@ -4,6 +4,8 @@
 //
 //  Created by ozkan on 01.03.2026.
 //
+//  NOTE: This file is currently not used in any screen.
+//
 //  Converts an NSAttributedString into a SwiftUI Path by extracting
 //  glyph outlines via CoreText. Used by LiquidGlassText to apply
 //  .glassEffect to the shape of individual characters.

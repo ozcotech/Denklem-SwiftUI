@@ -218,23 +218,19 @@ struct MediationFeeResultSheet: View {
     // MARK: - Main Fee Card
 
     private var mainFeeCard: some View {
-        VStack(spacing: theme.spacingM) {
+        VStack(spacing: theme.spacingS) {
             Text(LocalizationKeys.Result.mediationFee.localized)
                 .font(theme.footnote)
                 .fontWeight(.medium)
                 .foregroundStyle(theme.textSecondary)
 
-            LiquidGlassText(
-                LocalizationHelper.formatCurrency(result.amount),
-                glass: .clear.tint(theme.primary),
-                size: 40,
-                weight: .bold,
-                design: .rounded
-            )
+            Text(LocalizationHelper.formatCurrency(result.amount))
+                .font(.system(size: 40, weight: .bold, design: .rounded))
+                .foregroundStyle(theme.primary)
         }
         .frame(maxWidth: .infinity)
         .padding(theme.spacingL)
-        .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusXL))
+        .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusL))
         .shadow(color: theme.primary.opacity(0.25), radius: 6)
     }
 
