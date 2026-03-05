@@ -89,6 +89,8 @@ struct MediationFeeResultSheet: View {
                             .font(theme.body)
                             .foregroundStyle(theme.textSecondary)
                     }
+                    .accessibilityLabel(LocalizationKeys.Accessibility.share.localized)
+                    .accessibilityHint(LocalizationKeys.Accessibility.shareHint.localized)
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
@@ -98,6 +100,8 @@ struct MediationFeeResultSheet: View {
                             .font(theme.body)
                             .foregroundStyle(theme.textSecondary)
                     }
+                    .accessibilityLabel(LocalizationKeys.Accessibility.done.localized)
+                    .accessibilityHint(LocalizationKeys.Accessibility.dismissHint.localized)
                 }
             }
         }
@@ -108,6 +112,12 @@ struct MediationFeeResultSheet: View {
         .presentationBackgroundInteraction(.enabled)
         .presentationDetents([.large])
         .presentationDragIndicator(.visible)
+        .onChange(of: isExpanded) { _, expanded in
+            let msg = expanded
+                ? LocalizationKeys.Accessibility.detailsExpanded.localized
+                : LocalizationKeys.Accessibility.detailsCollapsed.localized
+            AccessibilityNotification.Announcement(msg).post()
+        }
         // Discoverability: on first use, auto-expand detail cards so the user learns the tap-to-expand mechanic.
         .onAppear {
             if !hasSeenBefore {
@@ -232,6 +242,10 @@ struct MediationFeeResultSheet: View {
         .padding(theme.spacingL)
         .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusL))
         .shadow(color: theme.primary.opacity(0.25), radius: 6)
+        .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(.isButton)
+        .accessibilityHint(LocalizationKeys.Accessibility.expandCollapseHint.localized)
+        .accessibilityValue(isExpanded ? LocalizationKeys.Accessibility.expanded.localized : LocalizationKeys.Accessibility.collapsed.localized)
     }
 
     // MARK: - Calculation Info Card
@@ -246,6 +260,7 @@ struct MediationFeeResultSheet: View {
                             .font(theme.headline)
                             .fontWeight(.bold)
                             .foregroundStyle(theme.textPrimary)
+                            .accessibilityAddTraits(.isHeader)
 
                         Spacer()
                     }
@@ -344,6 +359,7 @@ struct MediationFeeResultSheet: View {
                             .font(theme.headline)
                             .fontWeight(.bold)
                             .foregroundStyle(theme.textPrimary)
+                            .accessibilityAddTraits(.isHeader)
 
                         Spacer()
                     }
@@ -403,6 +419,7 @@ struct MediationFeeResultSheet: View {
                         Image(systemName: "info.circle.fill")
                             .font(theme.footnote)
                             .foregroundStyle(theme.primary)
+                            .accessibilityHidden(true)
 
                         Text(breakdown.usedMinimumFee
                              ? LocalizationKeys.Result.minimumFeeApplied.localized
@@ -444,6 +461,7 @@ struct MediationFeeResultSheet: View {
                 .fontWeight(.medium)
                 .foregroundStyle(theme.textPrimary)
         }
+        .accessibilityElement(children: .combine)
     }
 
     // MARK: - SMM Result Card
@@ -458,6 +476,7 @@ struct MediationFeeResultSheet: View {
                             .font(theme.headline)
                             .fontWeight(.bold)
                             .foregroundStyle(theme.textPrimary)
+                            .accessibilityAddTraits(.isHeader)
 
                         Spacer()
                     }

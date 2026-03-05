@@ -75,6 +75,7 @@ struct ReinstatementResultView: View {
             HStack(spacing: theme.spacingXS) {
                 Image(systemName: result.agreementStatus == .agreed ? "checkmark.circle.fill" : "xmark.circle.fill")
                     .font(theme.caption)
+                    .accessibilityHidden(true)
 
                 Text(result.agreementStatus.displayName)
                     .font(theme.caption)
@@ -96,11 +97,13 @@ struct ReinstatementResultView: View {
                 Image(systemName: "info.circle.fill")
                     .font(theme.headline)
                     .foregroundStyle(theme.primary)
+                    .accessibilityHidden(true)
 
                 Text(LocalizationKeys.Reinstatement.calculationBreakdown.localized)
                     .font(theme.headline)
                     .fontWeight(.bold)
                     .foregroundStyle(theme.textPrimary)
+                    .accessibilityAddTraits(.isHeader)
 
                 Spacer()
             }
@@ -154,6 +157,7 @@ struct ReinstatementResultView: View {
                         Image(systemName: "info.circle")
                             .font(theme.caption)
                             .foregroundStyle(theme.warning)
+                            .accessibilityHidden(true)
 
                         Text(LocalizationKeys.Reinstatement.minimumFeeApplied.localized)
                             .font(theme.caption)
@@ -185,11 +189,13 @@ struct ReinstatementResultView: View {
                 Image(systemName: "info.circle.fill")
                     .font(theme.headline)
                     .foregroundStyle(theme.primary)
+                    .accessibilityHidden(true)
 
                 Text(LocalizationKeys.Result.calculationInfo.localized)
                     .font(theme.headline)
                     .fontWeight(.bold)
                     .foregroundStyle(theme.textPrimary)
+                    .accessibilityAddTraits(.isHeader)
 
                 Spacer()
             }
@@ -235,6 +241,7 @@ struct ReinstatementResultView: View {
                 Image(systemName: "exclamationmark.triangle.fill")
                     .font(theme.subheadline)
                     .foregroundStyle(theme.warning)
+                    .accessibilityHidden(true)
 
                 Text(LocalizationKeys.General.warning.localized)
                     .font(theme.subheadline)
@@ -272,6 +279,7 @@ struct ReinstatementResultView: View {
                 Image(systemName: "book.closed.fill")
                     .font(theme.footnote)
                     .foregroundStyle(theme.textSecondary)
+                    .accessibilityHidden(true)
 
                 Text(result.fullLegalReference)
                     .font(theme.footnote)
@@ -282,6 +290,7 @@ struct ReinstatementResultView: View {
         .frame(maxWidth: .infinity)
         .padding(theme.spacingM)
         .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusM))
+        .accessibilityElement(children: .combine)
     }
 
     // MARK: - Recalculate Button

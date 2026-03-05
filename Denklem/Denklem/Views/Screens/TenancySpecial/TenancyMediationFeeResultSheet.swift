@@ -62,6 +62,8 @@ struct TenancyMediationFeeResultSheet: View {
                             .font(theme.body)
                             .foregroundStyle(theme.textSecondary)
                     }
+                    .accessibilityLabel(LocalizationKeys.Accessibility.done.localized)
+                    .accessibilityHint(LocalizationKeys.Accessibility.dismissHint.localized)
                 }
             }
         }
@@ -129,6 +131,7 @@ struct TenancyMediationFeeResultSheet: View {
                     .font(theme.headline)
                     .fontWeight(.bold)
                     .foregroundStyle(theme.textPrimary)
+                    .accessibilityAddTraits(.isHeader)
 
                 Spacer()
             }
@@ -184,6 +187,7 @@ struct TenancyMediationFeeResultSheet: View {
                     Image(systemName: "info.circle.fill")
                         .font(theme.footnote)
                         .foregroundStyle(theme.primary)
+                        .accessibilityHidden(true)
 
                     Text(LocalizationKeys.RentSpecial.mediationMinimumApplied.localized)
                         .font(theme.footnote)
@@ -205,6 +209,7 @@ struct TenancyMediationFeeResultSheet: View {
                 Image(systemName: "book.closed.fill")
                     .font(theme.footnote)
                     .foregroundStyle(theme.textSecondary)
+                    .accessibilityHidden(true)
 
                 Text(result.legalReference)
                     .font(theme.footnote)
@@ -215,6 +220,7 @@ struct TenancyMediationFeeResultSheet: View {
         .frame(maxWidth: .infinity)
         .padding(theme.spacingM)
         .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusM))
+        .accessibilityElement(children: .combine)
     }
 
     // MARK: - Detail Row

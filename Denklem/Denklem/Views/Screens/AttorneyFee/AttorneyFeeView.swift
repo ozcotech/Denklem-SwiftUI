@@ -100,6 +100,11 @@ struct AttorneyFeeView: View {
                 AttorneyFeeResultSheet(result: result)
             }
         }
+        .onChange(of: viewModel.errorMessage) { _, newValue in
+            if let msg = newValue {
+                AccessibilityNotification.Announcement(msg).post()
+            }
+        }
         .onDisappear {
             focusedField = nil
         }
@@ -122,7 +127,8 @@ struct AttorneyFeeView: View {
             // Uses CommonSegmentedPicker with optional enum selection.
             CommonSegmentedPicker(
                 selection: .optional($viewModel.selectedDisputeType),
-                options: AttorneyFeeDisputeType.allCases
+                options: AttorneyFeeDisputeType.allCases,
+                accessibilityLabel: LocalizationKeys.ScreenTitle.disputeType.localized
             ) { type in
                 Text(type.displayName)
             }
@@ -150,7 +156,8 @@ struct AttorneyFeeView: View {
             // Uses CommonSegmentedPicker with optional enum selection.
             CommonSegmentedPicker(
                 selection: .optional($viewModel.selectedAgreementStatus),
-                options: AttorneyFeeAgreementStatus.allCases
+                options: AttorneyFeeAgreementStatus.allCases,
+                accessibilityLabel: LocalizationKeys.ScreenTitle.agreementStatus.localized
             ) { status in
                 Text(status.displayName)
             }
@@ -188,6 +195,8 @@ struct AttorneyFeeView: View {
             .contentShape(Rectangle())
             .glassEffect(isAnimatedBackground ? .clear : .regular)
             .glassEffectID("amountInput", in: glassNamespace)
+            .accessibilityLabel(LocalizationKeys.Input.agreementAmount.localized)
+            .accessibilityHint(LocalizationKeys.Accessibility.amountFieldHint.localized)
             .onChange(of: viewModel.amountText) { _, _ in
                 viewModel.formatAmountInput()
             }
@@ -231,6 +240,9 @@ struct AttorneyFeeView: View {
             .contentShape(Rectangle())
             .glassEffect(isAnimatedBackground ? .clear : .regular)
         }
+        .accessibilityLabel(LocalizationKeys.AttorneyFee.courtType.localized)
+        .accessibilityValue(viewModel.selectedCourtType?.displayName ?? LocalizationKeys.AttorneyFee.selectCourt.localized)
+        .accessibilityHint(LocalizationKeys.Accessibility.courtTypeMenuHint.localized)
     }
 
     // MARK: - Calculate Button

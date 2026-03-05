@@ -109,6 +109,11 @@ struct TenancySelectionView: View {
                 TenancyMediationFeeResultSheet(result: result)
             }
         }
+        .onChange(of: viewModel.errorMessage) { _, newValue in
+            if let msg = newValue {
+                AccessibilityNotification.Announcement(msg).post()
+            }
+        }
         .onDisappear {
             focusedField = nil
         }
@@ -133,7 +138,8 @@ struct TenancySelectionView: View {
             options: [
                 TenancyCalculationConstants.TenancyFeeMode.attorneyFee,
                 TenancyCalculationConstants.TenancyFeeMode.mediationFee
-            ]
+            ],
+            accessibilityLabel: LocalizationKeys.RentSpecial.selectionScreenTitle.localized
         ) { mode in
             Text(mode == .attorneyFee
                  ? LocalizationKeys.RentSpecial.pickerAttorneyFee.localized
@@ -172,6 +178,7 @@ struct TenancySelectionView: View {
                 .frame(maxWidth: .infinity)
                 .contentShape(Rectangle())
                 .glassEffect(isAnimatedBackground ? .clear : .regular)
+                .accessibilityLabel(LocalizationKeys.RentSpecial.evictionAmountLabel.localized)
                 .focused($focusedField, equals: .evictionAmount)
                 .id(TenancySelectionFocusedField.evictionAmount)
                 .onChange(of: viewModel.evictionAmountText) { _, newValue in
@@ -213,6 +220,7 @@ struct TenancySelectionView: View {
                 .frame(maxWidth: .infinity)
                 .contentShape(Rectangle())
                 .glassEffect(isAnimatedBackground ? .clear : .regular)
+                .accessibilityLabel(LocalizationKeys.RentSpecial.determinationAmountLabel.localized)
                 .focused($focusedField, equals: .determinationAmount)
                 .id(TenancySelectionFocusedField.determinationAmount)
                 .onChange(of: viewModel.determinationAmountText) { _, newValue in
@@ -238,6 +246,7 @@ struct TenancySelectionView: View {
                 Image(systemName: isSelected ? "checkmark.square.fill" : "square")
                     .font(theme.title3)
                     .foregroundStyle(isSelected ? theme.success : theme.textSecondary)
+                    .accessibilityHidden(true)
 
                 VStack(alignment: .leading, spacing: theme.spacingXS) {
                     Text(type.displayName)
@@ -259,6 +268,10 @@ struct TenancySelectionView: View {
             .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusM))
         }
         .buttonStyle(.plain)
+        .accessibilityLabel(type.displayName)
+        .accessibilityAddTraits(isSelected ? [.isSelected] : [])
+        .accessibilityRemoveTraits(isSelected ? [] : [.isSelected])
+        .accessibilityHint(LocalizationKeys.Accessibility.checkboxHint.localized)
         .animation(.easeInOut(duration: 0.2), value: isSelected)
     }
 

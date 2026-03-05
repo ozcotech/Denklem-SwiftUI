@@ -60,6 +60,8 @@ struct TenancyAttorneyFeeResultSheet: View {
                             .font(theme.body)
                             .foregroundStyle(theme.textSecondary)
                     }
+                    .accessibilityLabel(LocalizationKeys.Accessibility.done.localized)
+                    .accessibilityHint(LocalizationKeys.Accessibility.dismissHint.localized)
                 }
             }
         }
@@ -123,6 +125,7 @@ struct TenancyAttorneyFeeResultSheet: View {
                     .font(theme.headline)
                     .fontWeight(.bold)
                     .foregroundStyle(theme.textPrimary)
+                    .accessibilityAddTraits(.isHeader)
 
                 Spacer()
             }
@@ -176,6 +179,7 @@ struct TenancyAttorneyFeeResultSheet: View {
                     Image(systemName: "info.circle.fill")
                         .font(theme.footnote)
                         .foregroundStyle(theme.primary)
+                        .accessibilityHidden(true)
 
                     Text(LocalizationKeys.RentSpecial.attorneyMinimumApplied.localized)
                         .font(theme.footnote)
@@ -197,6 +201,7 @@ struct TenancyAttorneyFeeResultSheet: View {
                 Image(systemName: "exclamationmark.triangle.fill")
                     .font(theme.headline)
                     .foregroundStyle(theme.warning)
+                    .accessibilityHidden(true)
 
                 Text(LocalizationKeys.RentSpecial.courtMinimumWarningsTitle.localized)
                     .font(theme.headline)
@@ -214,6 +219,7 @@ struct TenancyAttorneyFeeResultSheet: View {
                     Image(systemName: "info.circle")
                         .font(theme.footnote)
                         .foregroundStyle(theme.warning)
+                        .accessibilityHidden(true)
 
                     Text(warning.warningMessage)
                         .font(theme.footnote)
@@ -243,6 +249,7 @@ struct TenancyAttorneyFeeResultSheet: View {
                 Image(systemName: "book.closed.fill")
                     .font(theme.footnote)
                     .foregroundStyle(theme.textSecondary)
+                    .accessibilityHidden(true)
 
                 Text(result.legalReference)
                     .font(theme.footnote)
@@ -253,6 +260,7 @@ struct TenancyAttorneyFeeResultSheet: View {
         .frame(maxWidth: .infinity)
         .padding(theme.spacingM)
         .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusM))
+        .accessibilityElement(children: .combine)
     }
 
     // MARK: - Detail Row

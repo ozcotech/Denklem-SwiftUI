@@ -90,6 +90,7 @@ struct AnimatedSkyBackground: View {
             }
         }
         .ignoresSafeArea()
+        .accessibilityHidden(true)
     }
 
     // MARK: - Sky Gradient

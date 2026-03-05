@@ -55,6 +55,14 @@ struct SurveyView: View {
         .onChange(of: viewModel.currentQuestionIndex) {
             optionHeight = 0
         }
+        .onChange(of: viewModel.isAnswered) { _, answered in
+            if answered {
+                let feedback = viewModel.isCorrectAnswer
+                    ? LocalizationKeys.Accessibility.correctAnswer.localized
+                    : LocalizationKeys.Accessibility.wrongAnswer.localized
+                AccessibilityNotification.Announcement(feedback).post()
+            }
+        }
         .navigationTitle(LocalizationKeys.Survey.screenTitle.localized)
         .navigationBarTitleDisplayMode(.inline)
     }
@@ -159,6 +167,7 @@ struct SurveyView: View {
                     }
                 }
             }
+            .accessibilityElement(children: .combine)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(theme.spacingM)
             .frame(minHeight: equalHeight > 0 ? equalHeight : nil)
@@ -174,6 +183,8 @@ struct SurveyView: View {
             .glassEffect(in: RoundedRectangle(cornerRadius: theme.cornerRadiusM))
         }
         .buttonStyle(.plain)
+        .accessibilityLabel("\(index == 0 ? "a" : "b"): \(title)")
+        .accessibilityHint(viewModel.isAnswered ? "" : LocalizationKeys.Accessibility.surveyOptionHint.localized)
         .disabled(viewModel.isAnswered)
     }
 
@@ -215,6 +226,7 @@ struct SurveyView: View {
                 .foregroundStyle(theme.textSecondary)
                 //.symbolRenderingMode(.multicolor)
                 //.foregroundStyle(.orange, .yellow, .cyan)
+                .accessibilityHidden(true)
 
             // Title
             Text(LocalizationKeys.Survey.thankYouTitle.localized)
@@ -236,6 +248,7 @@ struct SurveyView: View {
             } label: {
                 HStack(spacing: theme.spacingS) {
                     Image(systemName: "envelope.fill")
+                        .accessibilityHidden(true)
                     Text(AppConstants.developerEmail)
                 }
                 .font(theme.callout)

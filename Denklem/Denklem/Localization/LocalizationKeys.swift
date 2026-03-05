@@ -662,6 +662,55 @@ struct LocalizationKeys {
         static let animation = "settings.animation"
     }
 
+    // MARK: - Accessibility (VoiceOver)
+    struct Accessibility {
+        // General
+        static let close = "a11y.general.close"
+        static let share = "a11y.general.share"
+        static let done = "a11y.general.done"
+
+        // Hints
+        static let dismissHint = "a11y.hint.dismiss"
+        static let calculateHint = "a11y.hint.calculate"
+        static let recalculateHint = "a11y.hint.recalculate"
+        static let shareHint = "a11y.hint.share"
+        static let yearPickerHint = "a11y.hint.year_picker"
+        static let disputeTypeMenuHint = "a11y.hint.dispute_type_menu"
+        static let amountFieldHint = "a11y.hint.amount_field"
+        static let partyCountFieldHint = "a11y.hint.party_count_field"
+        static let fileCountFieldHint = "a11y.hint.file_count_field"
+        static let datePickerHint = "a11y.hint.date_picker"
+        static let checkboxHint = "a11y.hint.checkbox"
+        static let expandCollapseHint = "a11y.hint.expand_collapse"
+        static let surveyOptionHint = "a11y.hint.survey_option"
+        static let filterChipHint = "a11y.hint.filter_chip"
+        static let documentCardHint = "a11y.hint.document_card"
+        static let enterButtonHint = "a11y.hint.enter_button"
+        static let surveyButtonHint = "a11y.hint.survey_button"
+        static let mediationFeeButtonHint = "a11y.hint.mediation_fee_button"
+        static let calculationTypeMenuHint = "a11y.hint.calculation_type_menu"
+        static let courtTypeMenuHint = "a11y.hint.court_type_menu"
+
+        // Values / States
+        static let expanded = "a11y.value.expanded"
+        static let collapsed = "a11y.value.collapsed"
+        static let calculatingStatus = "a11y.value.calculating"
+        static let selected = "a11y.value.selected"
+        static let notSelected = "a11y.value.not_selected"
+
+        // Announcements
+        static let detailsExpanded = "a11y.announce.details_expanded"
+        static let detailsCollapsed = "a11y.announce.details_collapsed"
+        static let correctAnswer = "a11y.announce.correct_answer"
+        static let wrongAnswer = "a11y.announce.wrong_answer"
+        static let surveyCompleted = "a11y.announce.survey_completed"
+
+        // Labels
+        static let surveyButton = "a11y.label.survey_button"
+        static let questionCounter = "a11y.label.question_counter"
+        static let errorBanner = "a11y.label.error_banner"
+    }
+
     // MARK: - Survey
     struct Survey {
         static let screenTitle = "survey.screen_title"

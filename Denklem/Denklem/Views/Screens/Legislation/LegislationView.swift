@@ -161,6 +161,8 @@ struct FilterChip: View {
         }
         // Liquid Glass button style (clear when animated background is on)
         .buttonStyle(.glass(isAnimatedBackground ? .clear : .regular))
+        .accessibilityAddTraits(isSelected ? [.isSelected] : [])
+        .accessibilityRemoveTraits(isSelected ? [] : [.isSelected])
     }
 }
 
@@ -215,6 +217,7 @@ struct DocumentCard: View {
                         .font(theme.title2)
                         .foregroundStyle(theme.primary)
                 }
+                .accessibilityHidden(true)
 
                 // Document Info
                 VStack(alignment: .leading, spacing: theme.spacingXS) {
@@ -252,12 +255,14 @@ struct DocumentCard: View {
                 Image(systemName: "chevron.right")
                     .font(theme.caption)
                     .foregroundStyle(theme.textTertiary)
+                    .accessibilityHidden(true)
             }
             .padding(theme.spacingM)
         }
         // Liquid Glass button style (clear when animated background is on)
         .buttonStyle(.glass(isAnimatedBackground ? .clear : .regular))
         .buttonBorderShape(.roundedRectangle(radius: theme.cornerRadiusXXL))
+        .accessibilityHint(LocalizationKeys.Accessibility.documentCardHint.localized)
         .contextMenu {
             if document.url != nil {
                 Button {
@@ -386,6 +391,7 @@ struct DocumentDetailSheet: View {
                                 .font(theme.body)
                                 .foregroundStyle(theme.textSecondary)
                         }
+                        .accessibilityLabel(LocalizationKeys.Accessibility.share.localized)
                     }
                 }
                 ToolbarItem(placement: .topBarTrailing) {
@@ -396,6 +402,8 @@ struct DocumentDetailSheet: View {
                             .font(theme.body)
                             .foregroundStyle(theme.textSecondary)
                     }
+                    .accessibilityLabel(LocalizationKeys.Accessibility.done.localized)
+                    .accessibilityHint(LocalizationKeys.Accessibility.dismissHint.localized)
                 }
             }
             .sheet(isPresented: $showShareSheet) {
@@ -417,6 +425,7 @@ struct DocumentDetailSheet: View {
                     .font(theme.largeTitle)
                     .foregroundStyle(theme.primary)
             }
+            .accessibilityHidden(true)
 
             Text(document.title)
                 .font(theme.title3)
@@ -489,14 +498,15 @@ struct InfoRow: View {
             Text(label)
                 .font(theme.body)
                 .foregroundStyle(theme.textSecondary)
-            
+
             Spacer()
-            
+
             Text(value)
                 .font(theme.body)
                 .fontWeight(.medium)
                 .foregroundStyle(theme.textPrimary)
         }
+        .accessibilityElement(children: .combine)
     }
 }
 

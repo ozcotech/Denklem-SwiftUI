@@ -31,5 +31,6 @@ struct DetailRow: View {
                 .fontWeight(isHighlighted ? .bold : .medium)
                 .foregroundStyle(isHighlighted ? theme.primary : theme.textPrimary)
         }
+        .accessibilityElement(children: .combine)
     }
 }

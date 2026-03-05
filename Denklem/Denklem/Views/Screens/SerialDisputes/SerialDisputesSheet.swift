@@ -72,6 +72,8 @@ struct SerialDisputesSheet: View {
                             .font(theme.body)
                             .foregroundStyle(theme.textSecondary)
                     }
+                    .accessibilityLabel(LocalizationKeys.Accessibility.done.localized)
+                    .accessibilityHint(LocalizationKeys.Accessibility.dismissHint.localized)
                 }
             }
         }
@@ -128,6 +130,7 @@ struct SerialDisputesSheet: View {
                 .font(theme.subheadline)
                 .fontWeight(.medium)
                 .foregroundStyle(theme.textSecondary)
+                .accessibilityAddTraits(.isHeader)
 
             // Dispute Type Dropdown
             Menu {
@@ -160,6 +163,9 @@ struct SerialDisputesSheet: View {
                 .frame(height: theme.buttonHeight)
                 .glassEffect(isAnimatedBackground ? .clear : .regular)
             }
+            .accessibilityLabel(LocalizationKeys.SerialDisputes.disputeTypeLabel.localized)
+            .accessibilityValue(viewModel.selectedDisputeType.displayName)
+            .accessibilityHint(LocalizationKeys.Accessibility.disputeTypeMenuHint.localized)
         }
     }
 
@@ -172,6 +178,7 @@ struct SerialDisputesSheet: View {
                 .font(theme.subheadline)
                 .fontWeight(.medium)
                 .foregroundStyle(theme.textSecondary)
+                .accessibilityAddTraits(.isHeader)
 
             // File Count Input
             TextField(viewModel.fileCountPlaceholder, text: $viewModel.fileCountText)
@@ -187,6 +194,8 @@ struct SerialDisputesSheet: View {
                 .contentShape(Rectangle())
                 .glassEffect(isAnimatedBackground ? .clear : .regular)
                 .glassEffectID("fileCountInput", in: glassNamespace)
+                .accessibilityLabel(LocalizationKeys.SerialDisputes.fileCountLabel.localized)
+                .accessibilityHint(LocalizationKeys.Accessibility.fileCountFieldHint.localized)
                 .onChange(of: viewModel.fileCountText) { _, _ in
                     viewModel.formatFileCountInput()
                 }

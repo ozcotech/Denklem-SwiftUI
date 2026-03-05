@@ -118,6 +118,11 @@ struct MediationFeeView: View {
                 MediationFeeResultSheet(result: result, theme: theme, isMonetary: viewModel.isMonetary)
             }
         }
+        .onChange(of: viewModel.errorMessage) { _, newValue in
+            if let msg = newValue {
+                AccessibilityNotification.Announcement(msg).post()
+            }
+        }
         .onDisappear {
             focusedField = nil
         }
@@ -131,10 +136,12 @@ struct MediationFeeView: View {
                 .font(theme.footnote)
                 .fontWeight(.medium)
                 .foregroundStyle(theme.textSecondary)
+                .accessibilityAddTraits(.isHeader)
 
             CommonSegmentedPicker(
                 selection: .required($viewModel.isMonetary),
-                options: [true, false]
+                options: [true, false],
+                accessibilityLabel: LocalizationKeys.ScreenTitle.subjectSelection.localized
             ) { isMonetary in
                 Text(isMonetary
                      ? LocalizationKeys.CalculationType.monetary.localized
@@ -164,13 +171,15 @@ struct MediationFeeView: View {
                 .font(theme.footnote)
                 .fontWeight(.medium)
                 .foregroundStyle(theme.textSecondary)
+                .accessibilityAddTraits(.isHeader)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             // Uses CommonSegmentedPicker with optional enum selection and dynamic tint.
             CommonSegmentedPicker(
                 selection: .optional($viewModel.selectedAgreement),
                 options: AgreementSelectionType.allCases,
-                tint: viewModel.selectedAgreement == .agreed ? theme.success : theme.error
+                tint: viewModel.selectedAgreement == .agreed ? theme.success : theme.error,
+                accessibilityLabel: LocalizationKeys.ScreenTitle.agreementStatus.localized
             ) { agreement in
                 Text(agreement.displayName)
             }
@@ -215,6 +224,7 @@ struct MediationFeeView: View {
                 .font(theme.footnote)
                 .fontWeight(.medium)
                 .foregroundStyle(theme.textSecondary)
+                .accessibilityAddTraits(.isHeader)
 
         Menu {
             ForEach(viewModel.availableDisputeTypes) { disputeType in
@@ -251,6 +261,9 @@ struct MediationFeeView: View {
             .contentShape(Rectangle())
             .glassEffect(isAnimatedBackground ? .clear : .regular)
         }
+        .accessibilityLabel(LocalizationKeys.ScreenTitle.disputeType.localized)
+        .accessibilityValue(viewModel.selectedDisputeType?.displayName ?? LocalizationKeys.DisputeType.selectPrompt.localized)
+        .accessibilityHint(LocalizationKeys.Accessibility.disputeTypeMenuHint.localized)
         }
     }
 
@@ -271,6 +284,8 @@ struct MediationFeeView: View {
             .contentShape(Rectangle())
             .glassEffect(isAnimatedBackground ? .clear : .regular)
             .glassEffectID("amountInput", in: glassNamespace)
+            .accessibilityLabel(LocalizationKeys.Input.agreementAmount.localized)
+            .accessibilityHint(LocalizationKeys.Accessibility.amountFieldHint.localized)
             .onChange(of: viewModel.amountText) { _, _ in
                 viewModel.formatAmountInput()
             }
@@ -293,6 +308,8 @@ struct MediationFeeView: View {
             .contentShape(Rectangle())
             .glassEffect(isAnimatedBackground ? .clear : .regular)
             .glassEffectID("partyCountInput", in: glassNamespace)
+            .accessibilityLabel(LocalizationKeys.Input.Placeholder.partyCount.localized)
+            .accessibilityHint(LocalizationKeys.Accessibility.partyCountFieldHint.localized)
             .onChange(of: viewModel.partyCountText) { _, _ in
                 viewModel.formatPartyCountInput()
             }

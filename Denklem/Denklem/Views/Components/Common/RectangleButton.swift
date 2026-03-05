@@ -30,6 +30,7 @@ struct RectangleButton: View {
                 Image(systemName: systemImage)
                     .font(.system(size: 32, weight: .semibold))
                     .foregroundStyle(iconColor)
+                    .accessibilityHidden(true)
                 Text(text)
                     .font(font)
                     .fontWeight(.semibold)

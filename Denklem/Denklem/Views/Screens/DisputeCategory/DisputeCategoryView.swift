@@ -49,6 +49,7 @@ struct DisputeCategoryView: View {
                             Image(systemName: DisputeCategoryType.mediationFee.systemImage)
                                 .font(.system(size: 40, weight: .semibold))
                                 .foregroundStyle(theme.primary)
+                                .accessibilityHidden(true)
                             Text(DisputeCategoryType.mediationFee.displayName)
                                 .font(theme.footnote)
                                 .fontWeight(.semibold)
@@ -66,6 +67,7 @@ struct DisputeCategoryView: View {
                     .buttonBorderShape(.roundedRectangle(radius: theme.cornerRadiusXXL))
                     .shadow(color: theme.primary.opacity(0.25), radius: 6)
                     .padding(.bottom, theme.spacingL)
+                    .accessibilityHint(LocalizationKeys.Accessibility.mediationFeeButtonHint.localized)
 
                     DisputeSectionCard(
                         title: viewModel.specialCalculationsTitle,

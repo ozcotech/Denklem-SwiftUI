@@ -101,6 +101,7 @@ private struct LawSectionTitle: View {
             .foregroundStyle(theme.textPrimary)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.bottom, theme.spacingS)
+            .accessibilityAddTraits(.isHeader)
     }
 }
 
@@ -150,19 +151,29 @@ private struct LawArticleRow: View {
                         Image(systemName: "magnifyingglass")
                             .font(theme.caption2)
                             .foregroundStyle(theme.primary)
+                            .accessibilityHidden(true)
                     }
 
                     Image(systemName: "chevron.right")
                         .font(theme.caption2)
                         .foregroundStyle(theme.textTertiary)
                         .rotationEffect(.degrees(isExpanded ? 90 : 0))
+                        .accessibilityHidden(true)
                 }
                 .padding(.horizontal, theme.spacingM)
                 .padding(.vertical, theme.spacingS + 2)
                 .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
+            .accessibilityValue(isExpanded ? LocalizationKeys.Accessibility.expanded.localized : LocalizationKeys.Accessibility.collapsed.localized)
+            .accessibilityHint(LocalizationKeys.Accessibility.expandCollapseHint.localized)
             .background(isMatch && !isExpanded ? theme.primary.opacity(0.06) : Color.clear)
+            .onChange(of: isExpanded) { _, expanded in
+                let msg = expanded
+                    ? LocalizationKeys.Accessibility.detailsExpanded.localized
+                    : LocalizationKeys.Accessibility.detailsCollapsed.localized
+                AccessibilityNotification.Announcement(msg).post()
+            }
 
             // Expanded content
             if isExpanded {

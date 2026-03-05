@@ -38,6 +38,7 @@ struct CapsuleButton: View {
                         Image(systemName: systemImage)
                             .font(.system(size: 36, weight: .semibold))
                             .foregroundStyle(iconColor)
+                            .accessibilityHidden(true)
                         Text(text)
                             .font(font)
                             .fontWeight(.semibold)

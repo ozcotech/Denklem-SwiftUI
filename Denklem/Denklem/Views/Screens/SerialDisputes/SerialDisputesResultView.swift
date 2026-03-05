@@ -82,11 +82,13 @@ struct SerialDisputesResultView: View {
                 Image(systemName: "info.circle.fill")
                     .font(theme.headline)
                     .foregroundStyle(theme.primary)
+                    .accessibilityHidden(true)
 
                 Text(LocalizationKeys.Result.calculationInfo.localized)
                     .font(theme.headline)
                     .fontWeight(.bold)
                     .foregroundStyle(theme.textPrimary)
+                    .accessibilityAddTraits(.isHeader)
 
                 Spacer()
             }
@@ -139,6 +141,7 @@ struct SerialDisputesResultView: View {
                 Image(systemName: "book.closed.fill")
                     .font(theme.footnote)
                     .foregroundStyle(theme.textSecondary)
+                    .accessibilityHidden(true)
 
                 Text(result.legalReference)
                     .font(theme.footnote)
@@ -149,6 +152,7 @@ struct SerialDisputesResultView: View {
         .frame(maxWidth: .infinity)
         .padding(theme.spacingM)
         .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusM))
+        .accessibilityElement(children: .combine)
     }
 
     // MARK: - Recalculate Button

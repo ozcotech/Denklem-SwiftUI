@@ -22,12 +22,14 @@ struct ErrorBannerView: View {
             Image(systemName: "exclamationmark.triangle.fill")
                 .font(theme.caption)
                 .foregroundStyle(theme.error)
+                .accessibilityHidden(true)
 
             Text(message)
                 .font(theme.footnote)
                 .foregroundStyle(theme.textPrimary)
                 .multilineTextAlignment(.leading)
         }
+        .accessibilityElement(children: .combine)
         .padding(theme.spacingM)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background {

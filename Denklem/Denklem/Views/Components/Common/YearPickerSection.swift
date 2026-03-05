@@ -58,6 +58,9 @@ struct YearPickerSection: View {
                 .padding(.vertical, theme.spacingXS)
                 .glassEffect(isAnimatedBackground ? .clear : .regular, in: Capsule())
             }
+            .accessibilityLabel(LocalizationKeys.Result.tariffYear.localized)
+            .accessibilityValue(selectedDisplayText ?? selectedYear.displayName)
+            .accessibilityHint(LocalizationKeys.Accessibility.yearPickerHint.localized)
         }
         .frame(maxWidth: .infinity)
         .padding(.top, showTopPadding ? theme.spacingL : 0)

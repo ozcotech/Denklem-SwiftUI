@@ -97,6 +97,7 @@ struct TimeCalculationView: View {
                             Image(systemName: "calendar")
                                 .font(theme.title3)
                                 .foregroundStyle(theme.primary)
+                                .accessibilityHidden(true)
 
                             Text(formattedDate)
                                 .font(theme.body)
@@ -107,6 +108,7 @@ struct TimeCalculationView: View {
                             Image(systemName: "chevron.right")
                                 .font(theme.caption)
                                 .foregroundStyle(theme.textSecondary)
+                                .accessibilityHidden(true)
                         }
                         .padding(theme.spacingM)
                         .frame(height: theme.buttonHeight)
@@ -115,6 +117,9 @@ struct TimeCalculationView: View {
                     .tint(theme.surface)
                     .frame(width: geometry.size.width * 0.9) // 90% width
                     .glassEffectID("dateSelector", in: glassNamespace)
+                    .accessibilityLabel(LocalizationKeys.Input.assignmentDate.localized)
+                    .accessibilityValue(formattedDate)
+                    .accessibilityHint(LocalizationKeys.Accessibility.datePickerHint.localized)
                     Spacer()
                 }
             }
@@ -226,20 +231,22 @@ struct ResultsSheet: View {
                 Text(LocalizationKeys.Input.assignmentDate.localized)
                     .font(theme.caption)
                     .foregroundStyle(theme.textSecondary)
-                
+
                 Text(LocalizationHelper.formatDate(viewModel.startDate))
                     .font(theme.headline)
                     .foregroundStyle(theme.textPrimary)
             }
-            
+
             Spacer()
 
             Image(systemName: "clock.badge.checkmark.fill")
                 .font(theme.largeTitle)
                 .foregroundStyle(theme.primary)
+                .accessibilityHidden(true)
         }
         .padding(theme.spacingM)
         .glassEffect(isAnimatedBackground ? .clear.interactive() : .regular.interactive())
+        .accessibilityElement(children: .combine)
     }
 }
 
@@ -261,6 +268,7 @@ struct DisputeTypeResultCard: View {
                 .font(theme.headline)
                 .fontWeight(.semibold)
                 .foregroundStyle(theme.textPrimary)
+                .accessibilityAddTraits(.isHeader)
             
             Divider()
             
@@ -303,7 +311,8 @@ struct DeadlineRow: View {
             HStack(spacing: theme.spacingXS) {
                 Image(systemName: "calendar.badge.clock")
                     .foregroundStyle(color)
-                
+                    .accessibilityHidden(true)
+
                 Text(label)
                     .font(theme.subheadline)
                     .fontWeight(.medium)
@@ -326,6 +335,7 @@ struct DeadlineRow: View {
                 )
                 .frame(maxWidth: 180) // Fixed max width for consistent alignment
         }
+        .accessibilityElement(children: .combine)
     }
 }
 

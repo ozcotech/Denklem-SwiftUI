@@ -46,5 +46,7 @@ struct CalculateButton: View {
         .buttonStyle(.glass(isAnimatedBackground ? .clear : .regular))
         .disabled(!isEnabled || isCalculating)
         .opacity(isEnabled ? 1.0 : 0.5)
+        .accessibilityHint(LocalizationKeys.Accessibility.calculateHint.localized)
+        .accessibilityValue(isCalculating ? LocalizationKeys.Accessibility.calculatingStatus.localized : "")
     }
 }

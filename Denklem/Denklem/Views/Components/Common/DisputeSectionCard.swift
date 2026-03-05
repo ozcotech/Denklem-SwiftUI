@@ -61,6 +61,7 @@ struct DisputeSectionCard: View {
                         Image(systemName: category.systemImage)
                             .font(.system(size: 40, weight: .semibold))
                             .foregroundStyle(category.iconColor)
+                            .accessibilityHidden(true)
                         Text(category.displayName)
                             .font(theme.footnote)
                             .fontWeight(.semibold)

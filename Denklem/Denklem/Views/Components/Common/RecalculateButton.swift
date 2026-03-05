@@ -35,5 +35,6 @@ struct RecalculateButton: View {
         }
         .buttonStyle(.glass(isAnimatedBackground ? .clear : .regular))
         .padding(.top, theme.spacingM)
+        .accessibilityHint(LocalizationKeys.Accessibility.recalculateHint.localized)
     }
 }

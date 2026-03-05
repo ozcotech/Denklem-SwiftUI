@@ -185,6 +185,7 @@ struct AboutView: View {
                 .fontWeight(.semibold)
                 .foregroundStyle(theme.textSecondary)
                 .padding(.leading, theme.spacingXS)
+                .accessibilityAddTraits(.isHeader)
 
             VStack(spacing: 0) {
                 // Language Toggle Row
@@ -214,6 +215,7 @@ struct AboutView: View {
                 .font(theme.body)
                 .foregroundStyle(theme.primary)
                 .frame(width: 30)
+                .accessibilityHidden(true)
 
             Text(LocalizationKeys.Settings.animation.localized)
                 .font(theme.body)
@@ -237,6 +239,7 @@ struct AboutView: View {
                     .font(theme.body)
                     .foregroundStyle(theme.primary)
                     .frame(width: 30)
+                    .accessibilityHidden(true)
 
                 Text(LocalizationKeys.Settings.language.localized)
                     .font(theme.body)
@@ -269,6 +272,7 @@ struct AboutView: View {
                     .font(theme.body)
                     .foregroundStyle(theme.primary)
                     .frame(width: 30)
+                    .accessibilityHidden(true)
 
                 Text(LocalizationKeys.Settings.appearance.localized)
                     .font(theme.body)
@@ -312,6 +316,7 @@ struct AboutSectionView: View {
                 .fontWeight(.semibold)
                 .foregroundStyle(theme.textSecondary)
                 .padding(.leading, theme.spacingXS)
+                .accessibilityAddTraits(.isHeader)
 
             VStack(spacing: 0) {
                 ForEach(Array(section.items.enumerated()), id: \.element.id) { index, item in
@@ -366,6 +371,7 @@ struct AboutItemRow: View {
                         .font(theme.body)
                         .foregroundStyle(theme.primary)
                         .frame(width: 30)
+                        .accessibilityHidden(true)
                 }
 
                 Text(item.title)
@@ -385,11 +391,13 @@ struct AboutItemRow: View {
                     Image(systemName: "chevron.right")
                         .font(theme.caption)
                         .foregroundStyle(theme.textTertiary)
+                        .accessibilityHidden(true)
                 }
             }
             .padding(.horizontal, theme.spacingM)
             .padding(.vertical, theme.spacingM)
             .contentShape(Rectangle())
+            .accessibilityElement(children: .combine)
         }
         .buttonStyle(.plain)
         .disabled(item.action == nil || item.action == AboutSectionItem.AboutItemAction.none)

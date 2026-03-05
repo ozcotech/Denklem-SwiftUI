@@ -36,6 +36,8 @@ struct CommonSegmentedPicker<Option: Hashable, Label: View>: View {
     private let minimumLabelScaleFactor: CGFloat
     private let labelBuilder: (Option) -> Label
 
+    private let accessibilityLabel: String
+
     init(
         selection: CommonSegmentedSelection<Option>,
         options: [Option],
@@ -43,6 +45,7 @@ struct CommonSegmentedPicker<Option: Hashable, Label: View>: View {
         tint: Color? = nil,
         labelFont: Font = .subheadline.weight(.semibold),
         minimumLabelScaleFactor: CGFloat = 0.75,
+        accessibilityLabel: String,
         @ViewBuilder label: @escaping (Option) -> Label
     ) {
         self.selection = selection
@@ -51,6 +54,7 @@ struct CommonSegmentedPicker<Option: Hashable, Label: View>: View {
         self.tint = tint
         self.labelFont = labelFont
         self.minimumLabelScaleFactor = minimumLabelScaleFactor
+        self.accessibilityLabel = accessibilityLabel
         self.labelBuilder = label
     }
 
@@ -58,14 +62,14 @@ struct CommonSegmentedPicker<Option: Hashable, Label: View>: View {
         Group {
             switch selection {
             case .required(let binding):
-                Picker("", selection: binding) {
+                Picker(accessibilityLabel, selection: binding) {
                     ForEach(options, id: \.self) { option in
                         labelBuilder(option)
                             .tag(option)
                     }
                 }
             case .optional(let binding):
-                Picker("", selection: binding) {
+                Picker(accessibilityLabel, selection: binding) {
                     ForEach(options, id: \.self) { option in
                         labelBuilder(option)
                             .tag(option as Option?)

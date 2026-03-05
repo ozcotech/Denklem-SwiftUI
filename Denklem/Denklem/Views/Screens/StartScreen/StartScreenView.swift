@@ -52,6 +52,7 @@ struct StartScreenView: View {
                 Image("AppStartBackground")
                     .resizable()
                     .scaledToFill()
+                    .accessibilityHidden(true)
 
                 // Gradient Overlay for readability (light: subtle, dark: stronger)
                 LinearGradient(
@@ -61,6 +62,7 @@ struct StartScreenView: View {
                     startPoint: .top,
                     endPoint: .bottom
                 )
+                .accessibilityHidden(true)
             }
             .ignoresSafeArea()
         }
@@ -85,6 +87,8 @@ struct StartScreenView: View {
                 .buttonBorderShape(.circle)
                 .padding(.trailing, theme.spacingM)
                 .padding(.top, theme.spacingXS)
+                .accessibilityLabel(LocalizationKeys.Accessibility.surveyButton.localized)
+                .accessibilityHint(LocalizationKeys.Accessibility.surveyButtonHint.localized)
             }
         }
         .navigationDestination(isPresented: $viewModel.navigateToDisputeType) {
@@ -105,6 +109,7 @@ struct StartScreenView: View {
                 .font(theme.title2)
                 .foregroundColor(.white)
                 .fontWeight(.bold)
+                .accessibilityAddTraits(.isHeader)
             
             // App Subtitle - LOCALIZED ✅
             Text(LocalizationKeys.AppInfo.tagline.localized)
@@ -132,6 +137,7 @@ struct StartScreenView: View {
                     .font(theme.headline)
                     .foregroundColor(.white)
                     .offset(x: arrowOffset)
+                    .accessibilityHidden(true)
                     .animation(
                         .easeInOut(duration: 0.8).repeatForever(autoreverses: true),
                         value: arrowOffset
@@ -142,6 +148,7 @@ struct StartScreenView: View {
         }
         .buttonStyle(.glass(.clear))
         .frame(maxWidth: .infinity)
+        .accessibilityHint(LocalizationKeys.Accessibility.enterButtonHint.localized)
         .onAppear {
             arrowOffset = 4
         }

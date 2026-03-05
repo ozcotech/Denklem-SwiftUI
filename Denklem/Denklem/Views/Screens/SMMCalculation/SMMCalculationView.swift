@@ -62,6 +62,11 @@ struct SMMCalculationView: View {
         .animatedBackground()
         .navigationTitle(viewModel.screenTitle)
         .navigationBarTitleDisplayMode(.inline)
+        .onChange(of: viewModel.errorMessage) { _, newValue in
+            if let msg = newValue {
+                AccessibilityNotification.Announcement(msg).post()
+            }
+        }
         .sheet(isPresented: $viewModel.showResult) {
             if let result = viewModel.calculationResult {
                 SMMResultSheet(result: result, theme: theme, glassNamespace: glassNamespace)
@@ -116,6 +121,7 @@ struct SMMCalculationView: View {
                 .contentShape(Rectangle())
                 .glassEffect(isAnimatedBackground ? .clear : .regular)
                 .glassEffectID("smmAmountInput", in: glassNamespace)
+                .accessibilityLabel(viewModel.amountLabel)
                 .onChange(of: viewModel.amountText) { _, _ in
                     viewModel.formatAmountInput()
                 }
@@ -157,11 +163,15 @@ struct SMMCalculationView: View {
                     Image(systemName: "chevron.down")
                         .font(theme.caption)
                         .foregroundStyle(theme.textSecondary)
+                        .accessibilityHidden(true)
                 }
                 .padding(.horizontal, theme.spacingL)
                 .frame(height: theme.buttonHeight)
                 .glassEffect(isAnimatedBackground ? .clear : .regular)
             }
+            .accessibilityLabel(viewModel.calculationTypeLabel)
+            .accessibilityValue(viewModel.selectedCalculationType.displayName)
+            .accessibilityHint(LocalizationKeys.Accessibility.calculationTypeMenuHint.localized)
         }
         .padding(.horizontal, theme.spacingM)
     }
@@ -244,6 +254,7 @@ struct SMMResultSheet: View {
                     }
                     .buttonStyle(.plain)
                     .accessibilityLabel(LocalizationKeys.General.done.localized)
+                    .accessibilityHint(LocalizationKeys.Accessibility.dismissHint.localized)
                 }
             }
         }
@@ -284,6 +295,7 @@ struct SMMResultSheet: View {
                     .font(theme.headline)
                     .fontWeight(.bold)
                     .foregroundStyle(theme.textPrimary)
+                    .accessibilityAddTraits(.isHeader)
                 
                 Spacer()
             }
@@ -346,6 +358,7 @@ struct SMMResultSheet: View {
                 .fontWeight(isHighlighted ? .bold : .medium)
                 .foregroundStyle(isHighlighted ? theme.primary : theme.textPrimary)
         }
+        .accessibilityElement(children: .combine)
     }
 }
 

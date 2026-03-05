@@ -84,7 +84,14 @@ struct ReinstatementSheet: View {
                             .font(theme.body)
                             .foregroundStyle(theme.textSecondary)
                     }
+                    .accessibilityLabel(LocalizationKeys.Accessibility.done.localized)
+                    .accessibilityHint(LocalizationKeys.Accessibility.dismissHint.localized)
                 }
+            }
+        }
+        .onChange(of: viewModel.errorMessage) { _, newValue in
+            if let msg = newValue {
+                AccessibilityNotification.Announcement(msg).post()
             }
         }
         .onDisappear {
@@ -155,7 +162,8 @@ struct ReinstatementSheet: View {
             // Uses CommonSegmentedPicker with optional enum selection.
             CommonSegmentedPicker(
                 selection: .optional($viewModel.selectedAgreementStatus),
-                options: [.agreed, .notAgreed]
+                options: [.agreed, .notAgreed],
+                accessibilityLabel: LocalizationKeys.ScreenTitle.agreementStatus.localized
             ) { status in
                 Text(status.displayName)
             }
