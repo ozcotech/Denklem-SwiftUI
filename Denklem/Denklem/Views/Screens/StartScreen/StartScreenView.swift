@@ -16,7 +16,7 @@ struct StartScreenView: View {
     @Environment(\.theme) var theme
     @Environment(\.colorScheme) var colorScheme
 
-    @State private var arrowOffset: CGFloat = 0
+    @State private var isArrowAnimationActive: Bool = false
 
     // MARK: - Body
     
@@ -133,15 +133,17 @@ struct StartScreenView: View {
                     .font(theme.headline)
                     .foregroundColor(.white)
 
-                Image(systemName: "arrow.right")
-                    .font(theme.headline)
-                    .foregroundColor(.white)
-                    .offset(x: arrowOffset)
-                    .accessibilityHidden(true)
-                    .animation(
-                        .easeInOut(duration: 0.8).repeatForever(autoreverses: true),
-                        value: arrowOffset
-                    )
+                ZStack {
+                    Color.clear
+
+                    Image(systemName: "arrow.right")
+                        .font(theme.headline)
+                        .foregroundColor(.white)
+                        .offset(x: isArrowAnimationActive ? 6 : 0)
+                }
+                .frame(width: 28, height: 28)
+                .clipped()
+                .accessibilityHidden(true)
             }
             .frame(maxWidth: .infinity, minHeight: theme.buttonHeightLarge)
             .contentShape(Rectangle())
@@ -149,8 +151,19 @@ struct StartScreenView: View {
         .buttonStyle(.glass(.clear))
         .frame(maxWidth: .infinity)
         .accessibilityHint(LocalizationKeys.Accessibility.enterButtonHint.localized)
-        .onAppear {
-            arrowOffset = 4
+        .task {
+            guard !isArrowAnimationActive else {
+                return
+            }
+
+            await Task.yield()
+
+            withAnimation(.easeInOut(duration: 0.8).repeatForever(autoreverses: true)) {
+                isArrowAnimationActive = true
+            }
+        }
+        .onDisappear {
+            isArrowAnimationActive = false
         }
     }
     
