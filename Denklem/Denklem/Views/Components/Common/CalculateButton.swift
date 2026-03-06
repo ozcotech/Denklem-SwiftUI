@@ -10,7 +10,7 @@ import SwiftUI
 // MARK: - Calculate Button
 /// Shared calculate/submit button used across input screens
 /// Displays button text with a progress indicator or arrow icon
-/// Apply `.glassEffectID()` and additional modifiers at the call site as needed
+/// Apply additional modifiers at the call site as needed
 @available(iOS 26.0, *)
 struct CalculateButton: View {
     @Environment(\.theme) var theme

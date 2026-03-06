@@ -21,10 +21,6 @@ struct SerialDisputesSheet: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.isAnimatedBackground) private var isAnimatedBackground
 
-    // MARK: - Namespace for Morphing Transitions
-
-    @Namespace private var glassNamespace
-
     // MARK: - Initialization
 
     init(selectedYear: TariffYear) {
@@ -193,7 +189,6 @@ struct SerialDisputesSheet: View {
                 .frame(maxWidth: .infinity)
                 .contentShape(Rectangle())
                 .glassEffect(isAnimatedBackground ? .clear : .regular)
-                .glassEffectID("fileCountInput", in: glassNamespace)
                 .accessibilityLabel(LocalizationKeys.SerialDisputes.fileCountLabel.localized)
                 .accessibilityHint(LocalizationKeys.Accessibility.fileCountFieldHint.localized)
                 .onChange(of: viewModel.fileCountText) { _, _ in
@@ -221,7 +216,6 @@ struct SerialDisputesSheet: View {
                 viewModel.calculate()
             }
         }
-        .glassEffectID("calculate", in: glassNamespace)
     }
 }
 

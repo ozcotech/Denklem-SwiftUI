@@ -25,8 +25,6 @@ struct AttorneyFeeView: View {
     // MARK: - Focus & Scroll
 
     @FocusState private var focusedField: AttorneyFeeFocusedField?
-    @Namespace private var glassNamespace
-
     // MARK: - Body
 
     var body: some View {
@@ -194,7 +192,6 @@ struct AttorneyFeeView: View {
             .frame(maxWidth: .infinity)
             .contentShape(Rectangle())
             .glassEffect(isAnimatedBackground ? .clear : .regular)
-            .glassEffectID("amountInput", in: glassNamespace)
             .accessibilityLabel(LocalizationKeys.Input.agreementAmount.localized)
             .accessibilityHint(LocalizationKeys.Accessibility.amountFieldHint.localized)
             .onChange(of: viewModel.amountText) { _, _ in
@@ -256,7 +253,6 @@ struct AttorneyFeeView: View {
             focusedField = nil
             viewModel.calculate()
         }
-        .glassEffectID("calculate", in: glassNamespace)
     }
 }
 

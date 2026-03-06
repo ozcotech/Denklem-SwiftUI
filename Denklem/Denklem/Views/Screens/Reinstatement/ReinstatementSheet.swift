@@ -33,10 +33,6 @@ struct ReinstatementSheet: View {
     // MARK: - Focus State
     @FocusState private var focusedField: ReinstatementFocusedField?
 
-    // MARK: - Namespace for Morphing Transitions
-
-    @Namespace private var glassNamespace
-
     // MARK: - Initialization
 
     init(selectedYear: TariffYear) {
@@ -220,7 +216,6 @@ struct ReinstatementSheet: View {
                 .frame(maxWidth: .infinity)
                 .contentShape(Rectangle())
                 .glassEffect(isAnimatedBackground ? .clear : .regular)
-                .glassEffectID("compensationInput", in: glassNamespace)
                 .focused($focusedField, equals: .compensation)
                 .id(ReinstatementFocusedField.compensation)
                 .onChange(of: viewModel.compensationText) { _, newValue in
@@ -242,7 +237,6 @@ struct ReinstatementSheet: View {
                 .frame(maxWidth: .infinity)
                 .contentShape(Rectangle())
                 .glassEffect(isAnimatedBackground ? .clear : .regular)
-                .glassEffectID("idleWageInput", in: glassNamespace)
                 .focused($focusedField, equals: .idleWage)
                 .id(ReinstatementFocusedField.idleWage)
                 .onChange(of: viewModel.idleWageText) { _, newValue in
@@ -264,7 +258,6 @@ struct ReinstatementSheet: View {
                 .frame(maxWidth: .infinity)
                 .contentShape(Rectangle())
                 .glassEffect(isAnimatedBackground ? .clear : .regular)
-                .glassEffectID("otherRightsInput", in: glassNamespace)
                 .focused($focusedField, equals: .otherRights)
                 .id(ReinstatementFocusedField.otherRights)
                 .onChange(of: viewModel.otherRightsText) { _, newValue in
@@ -294,7 +287,6 @@ struct ReinstatementSheet: View {
                 .frame(maxWidth: .infinity)
                 .contentShape(Rectangle())
                 .glassEffect(isAnimatedBackground ? .clear : .regular)
-                .glassEffectID("partyCountInput", in: glassNamespace)
                 .focused($focusedField, equals: .partyCount)
                 .id(ReinstatementFocusedField.partyCount)
                 .onChange(of: viewModel.partyCountText) { _, _ in
@@ -323,7 +315,6 @@ struct ReinstatementSheet: View {
                 viewModel.calculate()
             }
         }
-        .glassEffectID("calculate", in: glassNamespace)
     }
 }
 

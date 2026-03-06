@@ -17,6 +17,8 @@ struct CapsuleButton: View {
     let font: Font
     let action: () -> Void
 
+    @Environment(\.isAnimatedBackground) private var isAnimatedBackground
+
     var body: some View {
         Button {
             action()
@@ -51,7 +53,7 @@ struct CapsuleButton: View {
                 }
             }
         }
-        .buttonStyle(.glass)
+        .buttonStyle(.glass(isAnimatedBackground ? .clear : .regular))
         //.buttonBorderShape(.capsule)
     }
 }

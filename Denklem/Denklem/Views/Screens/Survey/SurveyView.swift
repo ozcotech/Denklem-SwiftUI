@@ -27,6 +27,7 @@ struct SurveyView: View {
     @ObservedObject private var localeManager = LocaleManager.shared
     @Environment(\.theme) var theme
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.isAnimatedBackground) private var isAnimatedBackground
 
     @State private var optionHeight: CGFloat = 0
 
@@ -114,13 +115,13 @@ struct SurveyView: View {
                         .frame(maxWidth: .infinity)
                         .frame(height: theme.buttonHeight)
                 }
-                .buttonStyle(.glass)
+                .buttonStyle(.glass(isAnimatedBackground ? .clear : .regular))
                 .padding(.top, -theme.spacingS)
                 .transition(.move(edge: .bottom).combined(with: .opacity))
             }
         }
         .padding(theme.spacingL)
-        .glassEffect(in: RoundedRectangle(cornerRadius: theme.cornerRadiusL))
+        .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusL))
         .id(viewModel.currentQuestionIndex)
         .transition(.asymmetric(
             insertion: .move(edge: .trailing).combined(with: .opacity),
@@ -180,7 +181,7 @@ struct SurveyView: View {
                 }
             }
             .contentShape(Rectangle())
-            .glassEffect(in: RoundedRectangle(cornerRadius: theme.cornerRadiusM))
+            .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusM))
         }
         .buttonStyle(.plain)
         .accessibilityLabel("\(index == 0 ? "a" : "b"): \(title)")
@@ -280,10 +281,10 @@ struct SurveyView: View {
                     .frame(maxWidth: .infinity)
                     .frame(height: theme.buttonHeight)
             }
-            .buttonStyle(.glass)
+            .buttonStyle(.glass(isAnimatedBackground ? .clear : .regular))
         }
         .padding(theme.spacingL)
-        .glassEffect(in: RoundedRectangle(cornerRadius: theme.cornerRadiusL))
+        .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusL))
         .transition(.opacity.combined(with: .scale(scale: 0.95)))
     }
 

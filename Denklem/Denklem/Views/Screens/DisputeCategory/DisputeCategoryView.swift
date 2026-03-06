@@ -10,7 +10,7 @@ import SwiftUI
 // MARK: - Dispute Category View
 /// Displays dispute category selection (Monetary, Non-Monetary, Time, SMM)
 /// First screen after year selection in the calculation flow
-/// Uses Apple native Liquid Glass with GlassEffectContainer for optimal performance
+/// Uses Apple native Liquid Glass button styles
 @available(iOS 26.0, *)
 struct DisputeCategoryView: View {
     
@@ -21,10 +21,6 @@ struct DisputeCategoryView: View {
     @Environment(\.theme) var theme
     @Environment(\.dismiss) private var dismiss
     @Environment(\.isAnimatedBackground) private var isAnimatedBackground
-    
-    // MARK: - Namespace for Morphing Transitions
-    
-    @Namespace private var glassNamespace
     
     // MARK: - Initialization
     

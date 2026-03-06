@@ -25,10 +25,6 @@ struct TimeCalculationView: View {
     
     @State private var showDatePicker = false
     
-    // MARK: - Namespace for Morphing Transitions
-    
-    @Namespace private var glassNamespace
-    
     // MARK: - Body
     
     var body: some View {
@@ -52,7 +48,7 @@ struct TimeCalculationView: View {
         .navigationBarTitleDisplayMode(.inline)
         .animatedBackground()
         .sheet(isPresented: $viewModel.showResults) {
-            ResultsSheet(viewModel: viewModel, glassNamespace: glassNamespace)
+            ResultsSheet(viewModel: viewModel)
         }
         .id(localeManager.refreshID) // Observe language changes without re-rendering DatePicker
     }
@@ -116,7 +112,6 @@ struct TimeCalculationView: View {
                     .buttonStyle(.glass(isAnimatedBackground ? .clear : .regular))
                     .tint(theme.surface)
                     .frame(width: geometry.size.width * 0.9) // 90% width
-                    .glassEffectID("dateSelector", in: glassNamespace)
                     .accessibilityLabel(LocalizationKeys.Input.assignmentDate.localized)
                     .accessibilityValue(formattedDate)
                     .accessibilityHint(LocalizationKeys.Accessibility.datePickerHint.localized)
@@ -124,7 +119,7 @@ struct TimeCalculationView: View {
                 }
             }
             .sheet(isPresented: $showDatePicker) {
-                DatePickerSheet(selectedDate: $viewModel.startDate, glassNamespace: glassNamespace)
+                DatePickerSheet(selectedDate: $viewModel.startDate)
             }
         }
         .frame(height: 90) // Fixed height for section
@@ -154,7 +149,6 @@ struct TimeCalculationView: View {
                     viewModel.calculate()
                 }
                 .frame(width: geometry.size.width * 0.9) // 90% width
-                .glassEffectID("calculate", in: glassNamespace)
                 Spacer()
             }
         }
@@ -168,8 +162,7 @@ struct TimeCalculationView: View {
 struct ResultsSheet: View {
     
     @ObservedObject var viewModel: TimeCalculationViewModel
-    let glassNamespace: Namespace.ID
-    
+
     @Environment(\.theme) var theme
     @Environment(\.dismiss) private var dismiss
     @Environment(\.isAnimatedBackground) private var isAnimatedBackground
@@ -187,8 +180,7 @@ struct ResultsSheet: View {
                             ForEach(viewModel.results) { result in
                                 DisputeTypeResultCard(
                                     result: result,
-                                    theme: theme,
-                                    namespace: glassNamespace
+                                    theme: theme
                                 )
                             }
                         }
@@ -257,7 +249,6 @@ struct DisputeTypeResultCard: View {
     
     let result: DisputeTypeResult
     let theme: ThemeProtocol
-    let namespace: Namespace.ID
 
     @Environment(\.isAnimatedBackground) private var isAnimatedBackground
 
@@ -291,7 +282,6 @@ struct DisputeTypeResultCard: View {
         .padding(theme.spacingM)
         .frame(maxWidth: .infinity, alignment: .leading)
         .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusL))
-        .glassEffectID(result.id.uuidString, in: namespace)
     }
 }
 
@@ -345,8 +335,7 @@ struct DeadlineRow: View {
 struct DatePickerSheet: View {
     
     @Binding var selectedDate: Date
-    let glassNamespace: Namespace.ID
-    
+
     @Environment(\.theme) var theme
     @Environment(\.dismiss) private var dismiss
     @ObservedObject private var localeManager = LocaleManager.shared

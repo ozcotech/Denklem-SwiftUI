@@ -21,10 +21,6 @@ struct SMMCalculationView: View {
     @Environment(\.isAnimatedBackground) private var isAnimatedBackground
     @Environment(\.dismiss) private var dismiss
     
-    // MARK: - Namespace for Morphing Transitions
-    
-    @Namespace private var glassNamespace
-    
     // MARK: - Body
     
     var body: some View {
@@ -69,7 +65,7 @@ struct SMMCalculationView: View {
         }
         .sheet(isPresented: $viewModel.showResult) {
             if let result = viewModel.calculationResult {
-                SMMResultSheet(result: result, theme: theme, glassNamespace: glassNamespace)
+                SMMResultSheet(result: result, theme: theme)
             }
         }
     }
@@ -120,7 +116,6 @@ struct SMMCalculationView: View {
                 .frame(maxWidth: .infinity)
                 .contentShape(Rectangle())
                 .glassEffect(isAnimatedBackground ? .clear : .regular)
-                .glassEffectID("smmAmountInput", in: glassNamespace)
                 .accessibilityLabel(viewModel.amountLabel)
                 .onChange(of: viewModel.amountText) { _, _ in
                     viewModel.formatAmountInput()
@@ -193,7 +188,6 @@ struct SMMCalculationView: View {
             hideKeyboard()
             viewModel.calculate()
         }
-        .glassEffectID("calculate", in: glassNamespace)
         .padding(.horizontal, theme.spacingM)
     }
     
@@ -211,7 +205,6 @@ struct SMMResultSheet: View {
     
     let result: SMMCalculationResult
     let theme: ThemeProtocol
-    let glassNamespace: Namespace.ID
 
     @ObservedObject private var localeManager = LocaleManager.shared
 

@@ -25,8 +25,6 @@ struct MediationFeeView: View {
     // MARK: - Focus & Scroll
 
     @FocusState private var focusedField: MediationFeeFocusedField?
-    @Namespace private var glassNamespace
-
     // MARK: - Initialization
 
     init(selectedYear: TariffYear) {
@@ -283,7 +281,6 @@ struct MediationFeeView: View {
             .frame(maxWidth: .infinity)
             .contentShape(Rectangle())
             .glassEffect(isAnimatedBackground ? .clear : .regular)
-            .glassEffectID("amountInput", in: glassNamespace)
             .accessibilityLabel(LocalizationKeys.Input.agreementAmount.localized)
             .accessibilityHint(LocalizationKeys.Accessibility.amountFieldHint.localized)
             .onChange(of: viewModel.amountText) { _, _ in
@@ -307,7 +304,6 @@ struct MediationFeeView: View {
             .frame(maxWidth: .infinity)
             .contentShape(Rectangle())
             .glassEffect(isAnimatedBackground ? .clear : .regular)
-            .glassEffectID("partyCountInput", in: glassNamespace)
             .accessibilityLabel(LocalizationKeys.Input.Placeholder.partyCount.localized)
             .accessibilityHint(LocalizationKeys.Accessibility.partyCountFieldHint.localized)
             .onChange(of: viewModel.partyCountText) { _, _ in
@@ -326,7 +322,6 @@ struct MediationFeeView: View {
             focusedField = nil
             viewModel.calculate()
         }
-        .glassEffectID("calculate", in: glassNamespace)
     }
 }
 

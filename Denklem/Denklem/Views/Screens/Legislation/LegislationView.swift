@@ -311,6 +311,7 @@ struct DocumentDetailSheet: View {
 
     @Environment(\.theme) var theme
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.isAnimatedBackground) private var isAnimatedBackground
     @State private var showShareSheet = false
     @State private var searchText = ""
 
@@ -460,7 +461,7 @@ struct DocumentDetailSheet: View {
             )
         }
         .padding(theme.spacingM)
-        .glassEffect(theme.glassClear, in: RoundedRectangle(cornerRadius: theme.cornerRadiusM))
+        .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusM))
     }
 
     private var actionButtons: some View {
@@ -476,7 +477,7 @@ struct DocumentDetailSheet: View {
                     .font(theme.headline)
                     .frame(maxWidth: .infinity, minHeight: theme.buttonHeightLarge)
                 }
-                .buttonStyle(.glass)
+                .buttonStyle(.glass(isAnimatedBackground ? .clear : .regular))
             }
         }
     }
