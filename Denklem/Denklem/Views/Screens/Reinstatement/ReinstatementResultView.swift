@@ -61,17 +61,11 @@ struct ReinstatementResultView: View {
     // MARK: - Main Fee Card
 
     private var mainFeeCard: some View {
-        VStack(spacing: theme.spacingS) {
-            Text(LocalizationKeys.Reinstatement.totalFee.localized)
-                .font(theme.caption)
-                .fontWeight(.medium)
-                .foregroundStyle(theme.textSecondary)
-
-            Text(result.formattedTotalFee)
-                .font(.system(size: 32, weight: .bold, design: .rounded))
-                .foregroundStyle(theme.primary)
-
-            // Agreement Status Badge
+        FeeResultCard(
+            title: LocalizationKeys.Reinstatement.totalFee.localized,
+            formattedAmount: result.formattedTotalFee,
+            amountFontSize: 32
+        ) {
             HStack(spacing: theme.spacingXS) {
                 Image(systemName: result.agreementStatus == .agreed ? "checkmark.circle.fill" : "xmark.circle.fill")
                     .font(theme.caption)
@@ -83,9 +77,6 @@ struct ReinstatementResultView: View {
             }
             .foregroundStyle(theme.textSecondary)
         }
-        .frame(maxWidth: .infinity)
-        .padding(theme.spacingM)
-        .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusL))
     }
 
     // MARK: - Agreement Details Card
@@ -274,23 +265,7 @@ struct ReinstatementResultView: View {
     // MARK: - Legal Reference Card
 
     private var legalReferenceCard: some View {
-        VStack(spacing: theme.spacingS) {
-            HStack(spacing: theme.spacingXS) {
-                Image(systemName: "book.closed.fill")
-                    .font(theme.footnote)
-                    .foregroundStyle(theme.textSecondary)
-                    .accessibilityHidden(true)
-
-                Text(result.fullLegalReference)
-                    .font(theme.footnote)
-                    .foregroundStyle(theme.textSecondary)
-                    .multilineTextAlignment(.center)
-            }
-        }
-        .frame(maxWidth: .infinity)
-        .padding(theme.spacingM)
-        .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusM))
-        .accessibilityElement(children: .combine)
+        LegalReferenceCard(text: result.fullLegalReference)
     }
 
     // MARK: - Recalculate Button

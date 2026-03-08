@@ -118,17 +118,13 @@ struct MediationFeeResultSheet: View {
                 : LocalizationKeys.Accessibility.detailsCollapsed.localized
             AccessibilityNotification.Announcement(msg).post()
         }
-        // Discoverability: on first use, auto-expand detail cards so the user learns the tap-to-expand mechanic.
+        // Always auto-expand detail cards when sheet appears
         .onAppear {
-            if !hasSeenBefore {
-                // First time: auto-expand so user discovers the mechanic
-                withAnimation(.smooth(duration: 0.3)) {
-                    isExpanded = true
-                }
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    revealContent = true
-                }
-                hasSeenBefore = true
+            // Set expanded immediately (no animation) to avoid glass layout expansion
+            isExpanded = true
+            // Fade in content with staggered animation after sheet settles
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                revealContent = true
             }
         }
     }
@@ -228,20 +224,11 @@ struct MediationFeeResultSheet: View {
     // MARK: - Main Fee Card
 
     private var mainFeeCard: some View {
-        VStack(spacing: theme.spacingS) {
-            Text(LocalizationKeys.Result.mediationFee.localized)
-                .font(theme.footnote)
-                .fontWeight(.medium)
-                .foregroundStyle(theme.textSecondary)
-
-            Text(LocalizationHelper.formatCurrency(result.amount))
-                .font(.system(size: 40, weight: .bold, design: .rounded))
-                .foregroundStyle(theme.primary)
-        }
-        .frame(maxWidth: .infinity)
-        .padding(theme.spacingL)
-        .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusL))
-        .shadow(color: theme.primary.opacity(0.25), radius: 6)
+        FeeResultCard(
+            title: LocalizationKeys.Result.mediationFee.localized,
+            formattedAmount: LocalizationHelper.formatCurrency(result.amount),
+            showShadow: true
+        )
         .accessibilityElement(children: .combine)
         .accessibilityAddTraits(.isButton)
         .accessibilityHint(LocalizationKeys.Accessibility.expandCollapseHint.localized)

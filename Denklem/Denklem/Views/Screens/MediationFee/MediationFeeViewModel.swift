@@ -292,7 +292,6 @@ final class MediationFeeViewModel: ObservableObject {
         if result.isSuccess {
             calculationResult = result
             isCalculating = false
-            showResult = true
         } else {
             errorMessage = result.errorMessage ?? LocalizationKeys.ErrorMessage.calculationFailed.localized
             isCalculating = false

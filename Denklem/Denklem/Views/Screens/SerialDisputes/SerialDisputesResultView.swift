@@ -52,25 +52,15 @@ struct SerialDisputesResultView: View {
     // MARK: - Main Fee Card
 
     private var mainFeeCard: some View {
-        VStack(spacing: theme.spacingM) {
-            Text(LocalizationKeys.Result.mediationFee.localized)
-                .font(theme.footnote)
-                .fontWeight(.medium)
-                .foregroundStyle(theme.textSecondary)
-
-            Text(result.formattedTotalFee)
-                .font(.system(size: 40, weight: .bold, design: .rounded))
-                .foregroundStyle(theme.primary)
-
-            // Dispute Type Badge
+        FeeResultCard(
+            title: LocalizationKeys.Result.mediationFee.localized,
+            formattedAmount: result.formattedTotalFee
+        ) {
             Text(result.disputeType.displayName)
                 .font(theme.caption)
                 .fontWeight(.semibold)
                 .foregroundStyle(theme.textSecondary)
         }
-        .frame(maxWidth: .infinity)
-        .padding(theme.spacingL)
-        .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusXL))
     }
 
     // MARK: - Details Card
@@ -136,23 +126,7 @@ struct SerialDisputesResultView: View {
     // MARK: - Legal Reference Card
 
     private var legalReferenceCard: some View {
-        VStack(spacing: theme.spacingS) {
-            HStack(spacing: theme.spacingXS) {
-                Image(systemName: "book.closed.fill")
-                    .font(theme.footnote)
-                    .foregroundStyle(theme.textSecondary)
-                    .accessibilityHidden(true)
-
-                Text(result.legalReference)
-                    .font(theme.footnote)
-                    .foregroundStyle(theme.textSecondary)
-                    .multilineTextAlignment(.center)
-            }
-        }
-        .frame(maxWidth: .infinity)
-        .padding(theme.spacingM)
-        .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusM))
-        .accessibilityElement(children: .combine)
+        LegalReferenceCard(text: result.legalReference)
     }
 
     // MARK: - Recalculate Button

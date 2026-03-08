@@ -30,6 +30,7 @@ struct DetailRow: View {
                 .font(isHighlighted ? theme.headline : theme.body)
                 .fontWeight(isHighlighted ? .bold : .medium)
                 .foregroundStyle(isHighlighted ? theme.primary : theme.textPrimary)
+                .multilineTextAlignment(.trailing)
         }
         .accessibilityElement(children: .combine)
     }

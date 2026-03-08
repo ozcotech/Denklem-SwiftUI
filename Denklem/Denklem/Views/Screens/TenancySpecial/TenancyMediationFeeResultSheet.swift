@@ -77,21 +77,12 @@ struct TenancyMediationFeeResultSheet: View {
     // MARK: - Main Fee Card
 
     private var mainFeeCard: some View {
-        VStack(spacing: theme.spacingM) {
-            Text(result.hasBothTypes
-                 ? LocalizationKeys.RentSpecial.totalMediationFee.localized
-                 : LocalizationKeys.Result.mediationFee.localized)
-                .font(theme.footnote)
-                .fontWeight(.medium)
-                .foregroundStyle(theme.textSecondary)
-
-            Text(result.formattedTotalFee)
-                .font(.system(size: 40, weight: .bold, design: .rounded))
-                .foregroundStyle(theme.primary)
-        }
-        .frame(maxWidth: .infinity)
-        .padding(theme.spacingL)
-        .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusXL))
+        FeeResultCard(
+            title: result.hasBothTypes
+                ? LocalizationKeys.RentSpecial.totalMediationFee.localized
+                : LocalizationKeys.Result.mediationFee.localized,
+            formattedAmount: result.formattedTotalFee
+        )
     }
 
     // MARK: - Fee Breakdown Card
@@ -204,23 +195,7 @@ struct TenancyMediationFeeResultSheet: View {
     // MARK: - Legal Reference Card
 
     private var legalReferenceCard: some View {
-        VStack(spacing: theme.spacingS) {
-            HStack(spacing: theme.spacingXS) {
-                Image(systemName: "book.closed.fill")
-                    .font(theme.footnote)
-                    .foregroundStyle(theme.textSecondary)
-                    .accessibilityHidden(true)
-
-                Text(result.legalReference)
-                    .font(theme.footnote)
-                    .foregroundStyle(theme.textSecondary)
-                    .multilineTextAlignment(.center)
-            }
-        }
-        .frame(maxWidth: .infinity)
-        .padding(theme.spacingM)
-        .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusM))
-        .accessibilityElement(children: .combine)
+        LegalReferenceCard(text: result.legalReference)
     }
 
     // MARK: - Detail Row

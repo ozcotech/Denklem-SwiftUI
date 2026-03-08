@@ -82,6 +82,14 @@ struct MediationFeeView: View {
 
                         // Calculate Button
                         calculateButton
+
+                        // Fee Result Card (shown after calculation)
+                        if let result = viewModel.calculationResult {
+                            mediationFeeCard(result: result)
+                                .id("feeCard")
+                                .padding(.top, theme.spacingS)
+                                .transition(.opacity)
+                        }
                     }
                     .padding(.horizontal, theme.spacingM)
                     .padding(.top, theme.spacingXS)
@@ -90,6 +98,9 @@ struct MediationFeeView: View {
                 .scrollDismissesKeyboard(.interactively)
                 .onChange(of: focusedField) { _, newValue in
                     guard let newValue else { return }
+                    // Clear previous result when user starts editing
+                    viewModel.calculationResult = nil
+                    glowPhase = false
                     withAnimation(.easeInOut(duration: 0.3)) {
                         switch newValue {
                         case .amount:
@@ -106,6 +117,7 @@ struct MediationFeeView: View {
         }
         .animation(.easeInOut(duration: 0.2), value: viewModel.selectedDisputeType != nil)
         .animation(.easeInOut(duration: 0.2), value: viewModel.hasAgreement)
+        .animation(.easeInOut(duration: 0.3), value: viewModel.calculationResult != nil)
         .navigationTitle(viewModel.screenTitle)
         .navigationBarTitleDisplayMode(.inline)
         .animatedBackground()
@@ -322,6 +334,40 @@ struct MediationFeeView: View {
             focusedField = nil
             viewModel.calculate()
         }
+    }
+
+    // MARK: - Mediation Fee Card
+
+    @State private var glowPhase = false
+
+    private func mediationFeeCard(result: CalculationResult) -> some View {
+        VStack(spacing: theme.spacingXS) {
+            Text(LocalizationKeys.Result.mediationFee.localized)
+                .font(theme.footnote)
+                .fontWeight(.medium)
+                .foregroundStyle(theme.textSecondary)
+
+            Text(LocalizationHelper.formatCurrency(result.amount))
+                .font(.system(size: 40, weight: .bold, design: .rounded))
+                .foregroundStyle(theme.primary)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, theme.spacingM)
+        .padding(.horizontal, theme.spacingL)
+        .contentShape(Capsule())
+        .glassEffect(isAnimatedBackground ? .clear : .regular)
+        .shadow(color: theme.primary.opacity(glowPhase ? 0.4 : 0.1), radius: glowPhase ? 12 : 4)
+        .onAppear {
+            withAnimation(.easeInOut(duration: 1.5).repeatForever(autoreverses: true)) {
+                glowPhase = true
+            }
+        }
+        .onTapGesture {
+            viewModel.showResult = true
+        }
+        .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(.isButton)
+        .accessibilityHint(LocalizationKeys.Accessibility.expandCollapseHint.localized)
     }
 }
 

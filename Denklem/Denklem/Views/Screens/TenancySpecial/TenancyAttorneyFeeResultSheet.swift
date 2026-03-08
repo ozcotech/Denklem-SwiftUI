@@ -100,19 +100,11 @@ struct TenancyAttorneyFeeResultSheet: View {
     }
 
     private func mainFeeCard(title: String, amount: String) -> some View {
-        VStack(spacing: theme.spacingM) {
-            Text(title)
-                .font(theme.footnote)
-                .fontWeight(.medium)
-                .foregroundStyle(theme.textSecondary)
-
-            Text(amount)
-                .font(.system(size: 36, weight: .bold, design: .rounded))
-                .foregroundStyle(theme.primary)
-        }
-        .frame(maxWidth: .infinity)
-        .padding(theme.spacingL)
-        .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusXL))
+        FeeResultCard(
+            title: title,
+            formattedAmount: amount,
+            amountFontSize: 36
+        )
     }
 
     // MARK: - Calculation Info Card
@@ -244,23 +236,7 @@ struct TenancyAttorneyFeeResultSheet: View {
     // MARK: - Legal Reference Card
 
     private var legalReferenceCard: some View {
-        VStack(spacing: theme.spacingS) {
-            HStack(spacing: theme.spacingXS) {
-                Image(systemName: "book.closed.fill")
-                    .font(theme.footnote)
-                    .foregroundStyle(theme.textSecondary)
-                    .accessibilityHidden(true)
-
-                Text(result.legalReference)
-                    .font(theme.footnote)
-                    .foregroundStyle(theme.textSecondary)
-                    .multilineTextAlignment(.center)
-            }
-        }
-        .frame(maxWidth: .infinity)
-        .padding(theme.spacingM)
-        .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusM))
-        .accessibilityElement(children: .combine)
+        LegalReferenceCard(text: result.legalReference)
     }
 
     // MARK: - Detail Row
