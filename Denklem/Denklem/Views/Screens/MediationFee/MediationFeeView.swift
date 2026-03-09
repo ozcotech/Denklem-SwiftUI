@@ -197,15 +197,17 @@ struct MediationFeeView: View {
 
             // Helper text - shows selected status with color
             if let selected = viewModel.selectedAgreement {
-                HStack(spacing: theme.spacingXS) {
-                    Image(systemName: selected.systemImage)
-                        .font(theme.footnote)
-                        .fontWeight(.semibold)
-                    Text(selected.displayName)
-                        .font(theme.subheadline)
-                        .fontWeight(.medium)
+                HStack(spacing: 0) {
+                    agreementHelperLabel(for: selected)
+                        .frame(maxWidth: .infinity)
+                        .opacity(selected == .agreed ? 1 : 0)
+                        .accessibilityHidden(selected != .agreed)
+
+                    agreementHelperLabel(for: selected)
+                        .frame(maxWidth: .infinity)
+                        .opacity(selected == .notAgreed ? 1 : 0)
+                        .accessibilityHidden(selected != .notAgreed)
                 }
-                .foregroundStyle(selected.iconColor)
                 .transition(.opacity.combined(with: .scale))
             } else {
                 Text(LocalizationKeys.AgreementStatus.selectPrompt.localized)
@@ -341,6 +343,18 @@ struct MediationFeeView: View {
 
     @State private var glowPhase = false
     @State private var nudgePhase = false
+
+    private func agreementHelperLabel(for selection: AgreementSelectionType) -> some View {
+        HStack(spacing: theme.spacingXS) {
+            Image(systemName: selection.systemImage)
+                .font(theme.footnote)
+                .fontWeight(.semibold)
+            Text(selection.displayName)
+                .font(theme.subheadline)
+                .fontWeight(.medium)
+        }
+        .foregroundStyle(selection.iconColor)
+    }
 
     private func mediationFeeCard(result: CalculationResult) -> some View {
         HStack {
