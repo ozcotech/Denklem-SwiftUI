@@ -16,8 +16,6 @@ struct StartScreenView: View {
     @Environment(\.theme) var theme
     @Environment(\.colorScheme) var colorScheme
 
-    @State private var isArrowAnimationActive: Bool = false
-
     // MARK: - Body
     
     var body: some View {
@@ -128,43 +126,15 @@ struct StartScreenView: View {
             UIImpactFeedbackGenerator(style: .light).impactOccurred()
             viewModel.proceedToDisputeType()
         } label: {
-            HStack(spacing: theme.spacingM) {
-                Text(LocalizationKeys.Start.enterButton.localized)
-                    .font(theme.headline)
-                    .foregroundColor(.white)
-
-                ZStack {
-                    Color.clear
-
-                    Image(systemName: "arrow.right")
-                        .font(theme.headline)
-                        .foregroundColor(.white)
-                        .offset(x: isArrowAnimationActive ? 6 : 0)
-                }
-                .frame(width: 28, height: 28)
-                .clipped()
-                .accessibilityHidden(true)
-            }
-            .frame(maxWidth: .infinity, minHeight: theme.buttonHeightLarge)
-            .contentShape(Rectangle())
+            Text(LocalizationKeys.Start.enterButton.localized)
+                .font(theme.headline)
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity, minHeight: theme.buttonHeightLarge)
+                .contentShape(Rectangle())
         }
         .buttonStyle(.glass(.clear))
         .frame(maxWidth: .infinity)
         .accessibilityHint(LocalizationKeys.Accessibility.enterButtonHint.localized)
-        .task {
-            guard !isArrowAnimationActive else {
-                return
-            }
-
-            await Task.yield()
-
-            withAnimation(.easeInOut(duration: 0.8).repeatForever(autoreverses: true)) {
-                isArrowAnimationActive = true
-            }
-        }
-        .onDisappear {
-            isArrowAnimationActive = false
-        }
     }
     
 }

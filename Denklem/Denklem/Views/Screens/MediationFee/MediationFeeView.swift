@@ -101,6 +101,7 @@ struct MediationFeeView: View {
                     // Clear previous result when user starts editing
                     viewModel.calculationResult = nil
                     glowPhase = false
+                    nudgePhase = false
                     withAnimation(.easeInOut(duration: 0.3)) {
                         switch newValue {
                         case .amount:
@@ -339,19 +340,32 @@ struct MediationFeeView: View {
     // MARK: - Mediation Fee Card
 
     @State private var glowPhase = false
+    @State private var nudgePhase = false
 
     private func mediationFeeCard(result: CalculationResult) -> some View {
-        VStack(spacing: theme.spacingXS) {
-            Text(LocalizationKeys.Result.mediationFee.localized)
-                .font(theme.footnote)
-                .fontWeight(.medium)
-                .foregroundStyle(theme.textSecondary)
+        HStack {
+            Spacer()
 
-            Text(LocalizationHelper.formatCurrency(result.amount))
-                .font(.system(size: 40, weight: .bold, design: .rounded))
-                .foregroundStyle(theme.primary)
+            VStack(spacing: theme.spacingXS) {
+                Text(LocalizationKeys.Result.mediationFee.localized)
+                    .font(theme.footnote)
+                    .fontWeight(.medium)
+                    .foregroundStyle(theme.textSecondary)
+
+                Text(LocalizationHelper.formatCurrency(result.amount))
+                    .font(.system(size: 40, weight: .bold, design: .rounded))
+                    .foregroundStyle(theme.primary)
+            }
+
+            Spacer()
+
+            Image(systemName: "chevron.right")
+                .font(theme.footnote)
+                .fontWeight(.semibold)
+                .foregroundStyle(theme.textSecondary)
+                .offset(x: nudgePhase ? 3 : 0)
+                .animation(.easeInOut(duration: 0.8).repeatForever(autoreverses: true), value: nudgePhase)
         }
-        .frame(maxWidth: .infinity)
         .padding(.vertical, theme.spacingM)
         .padding(.horizontal, theme.spacingL)
         .contentShape(Capsule())
@@ -361,6 +375,7 @@ struct MediationFeeView: View {
             withAnimation(.easeInOut(duration: 1.5).repeatForever(autoreverses: true)) {
                 glowPhase = true
             }
+            nudgePhase = true
         }
         .onTapGesture {
             viewModel.showResult = true
