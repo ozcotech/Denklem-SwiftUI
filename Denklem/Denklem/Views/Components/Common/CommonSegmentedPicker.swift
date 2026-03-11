@@ -32,8 +32,6 @@ struct CommonSegmentedPicker<Option: Hashable, Label: View>: View {
     private let options: [Option]
     private let controlSize: ControlSize
     private let tint: Color?
-    private let labelFont: Font
-    private let minimumLabelScaleFactor: CGFloat
     private let labelBuilder: (Option) -> Label
 
     private let accessibilityLabel: String
@@ -43,8 +41,6 @@ struct CommonSegmentedPicker<Option: Hashable, Label: View>: View {
         options: [Option],
         controlSize: ControlSize = .regular,
         tint: Color? = nil,
-        labelFont: Font = .subheadline.weight(.semibold),
-        minimumLabelScaleFactor: CGFloat = 0.75,
         accessibilityLabel: String,
         @ViewBuilder label: @escaping (Option) -> Label
     ) {
@@ -52,8 +48,6 @@ struct CommonSegmentedPicker<Option: Hashable, Label: View>: View {
         self.options = options
         self.controlSize = controlSize
         self.tint = tint
-        self.labelFont = labelFont
-        self.minimumLabelScaleFactor = minimumLabelScaleFactor
         self.accessibilityLabel = accessibilityLabel
         self.labelBuilder = label
     }
@@ -77,9 +71,6 @@ struct CommonSegmentedPicker<Option: Hashable, Label: View>: View {
                 }
             }
         }
-        .font(labelFont)
-        .lineLimit(1)
-        .minimumScaleFactor(minimumLabelScaleFactor)
         .pickerStyle(.segmented)
         .controlSize(controlSize)
         .applyTintIfNeeded(tint)

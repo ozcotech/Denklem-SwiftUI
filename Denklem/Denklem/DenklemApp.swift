@@ -14,23 +14,13 @@ struct DenklemApp: App {
     // MARK: - Initialization
 
     init() {
-        // UIKit Appearance: Customize the selected segment tint color
-        // SwiftUI's .pickerStyle(.segmented) lacks native customization options,
-        // so UIKit appearance API is used. This is a global setting affecting all segmented controls.
-        let segmentedControlAppearance = UISegmentedControl.appearance()
-        segmentedControlAppearance.selectedSegmentTintColor = UIColor.white.withAlphaComponent(0.6)
-
-        let normalAttributes: [NSAttributedString.Key: Any] = [
-            .font: UIFont.systemFont(ofSize: 14, weight: .medium)
-        ]
-        let selectedAttributes: [NSAttributedString.Key: Any] = [
-            .font: UIFont.systemFont(ofSize: 14, weight: .semibold)
-        ]
-
-        segmentedControlAppearance.setTitleTextAttributes(normalAttributes, for: .normal)
-        segmentedControlAppearance.setTitleTextAttributes(selectedAttributes, for: .selected)
+        // UIKit Appearance: Segmented control font size
+        // .controlSize(.regular) only affects height, not font — UIKit API required for font
+        let segmented = UISegmentedControl.appearance()
+        segmented.setTitleTextAttributes([.font: UIFont.systemFont(ofSize: 15, weight: .medium)], for: .normal)
+        segmented.setTitleTextAttributes([.font: UIFont.systemFont(ofSize: 15, weight: .semibold)], for: .selected)
     }
-    
+
     // MARK: - State Objects
 
     @StateObject private var themeManager = ThemeManager.shared
