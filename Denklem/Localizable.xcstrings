@@ -2613,7 +2613,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Konusu Para Olan"
+            "value" : "Parasal"
           }
         }
       }
@@ -2661,7 +2661,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Konusu Para Olmayan "
+            "value" : "Parasal Olmayan"
           }
         }
       }
@@ -9361,19 +9361,19 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Subject Selection"
+            "value" : "Subject of the Dispute"
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ämnesval"
+            "value" : "Tvistens föremål"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Konu Seçimi"
+            "value" : "Uyuşmazlık Konusu"
           }
         }
       }
