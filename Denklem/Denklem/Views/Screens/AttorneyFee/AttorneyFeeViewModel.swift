@@ -299,7 +299,6 @@ final class AttorneyFeeViewModel: ObservableObject {
         let result = AttorneyFeeCalculator.calculate(input: input)
         calculationResult = result
         isCalculating = false
-        showResult = true
     }
 
     /// Resets all inputs
@@ -334,7 +333,6 @@ final class AttorneyFeeViewModel: ObservableObject {
             tariffYear: tariffYearInt
         )
         isCalculating = false
-        showResult = true
     }
 }
 

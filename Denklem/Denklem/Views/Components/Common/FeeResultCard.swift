@@ -53,6 +53,7 @@ struct FeeResultCard<Badge: View>: View {
         .padding(theme.spacingL)
         .glassEffect(isAnimatedBackground ? .clear : .regular, in: RoundedRectangle(cornerRadius: theme.cornerRadiusXL))
         .shadow(color: showShadow ? theme.primary.opacity(0.25) : .clear, radius: showShadow ? 6 : 0)
+        .accessibilityElement(children: .combine)
     }
 }
 

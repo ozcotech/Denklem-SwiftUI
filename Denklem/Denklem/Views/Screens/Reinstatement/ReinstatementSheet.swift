@@ -218,6 +218,8 @@ struct ReinstatementSheet: View {
                 .glassEffect(isAnimatedBackground ? .clear : .regular)
                 .focused($focusedField, equals: .compensation)
                 .id(ReinstatementFocusedField.compensation)
+                .accessibilityLabel(viewModel.compensationLabel)
+                .accessibilityHint(LocalizationKeys.Accessibility.amountFieldHint.localized)
                 .onChange(of: viewModel.compensationText) { _, newValue in
                     var value = newValue
                     viewModel.formatAmountInput(&value)
@@ -239,6 +241,8 @@ struct ReinstatementSheet: View {
                 .glassEffect(isAnimatedBackground ? .clear : .regular)
                 .focused($focusedField, equals: .idleWage)
                 .id(ReinstatementFocusedField.idleWage)
+                .accessibilityLabel(viewModel.idleWageLabel)
+                .accessibilityHint(LocalizationKeys.Accessibility.amountFieldHint.localized)
                 .onChange(of: viewModel.idleWageText) { _, newValue in
                     var value = newValue
                     viewModel.formatAmountInput(&value)
@@ -260,6 +264,8 @@ struct ReinstatementSheet: View {
                 .glassEffect(isAnimatedBackground ? .clear : .regular)
                 .focused($focusedField, equals: .otherRights)
                 .id(ReinstatementFocusedField.otherRights)
+                .accessibilityLabel(viewModel.otherRightsLabel)
+                .accessibilityHint(LocalizationKeys.Accessibility.amountFieldHint.localized)
                 .onChange(of: viewModel.otherRightsText) { _, newValue in
                     var value = newValue
                     viewModel.formatAmountInput(&value)
@@ -289,6 +295,8 @@ struct ReinstatementSheet: View {
                 .glassEffect(isAnimatedBackground ? .clear : .regular)
                 .focused($focusedField, equals: .partyCount)
                 .id(ReinstatementFocusedField.partyCount)
+                .accessibilityLabel(viewModel.partyCountLabel)
+                .accessibilityHint(LocalizationKeys.Accessibility.partyCountFieldHint.localized)
                 .onChange(of: viewModel.partyCountText) { _, _ in
                     viewModel.formatPartyCountInput()
                 }

@@ -25,6 +25,7 @@ struct RecalculateButton: View {
                 Image(systemName: "arrow.counterclockwise")
                     .font(theme.body)
                     .fontWeight(.semibold)
+                    .accessibilityHidden(true)
                 Text(LocalizationKeys.General.recalculate.localized)
                     .font(theme.body)
                     .fontWeight(.semibold)
@@ -35,6 +36,7 @@ struct RecalculateButton: View {
         }
         .buttonStyle(.glass(isAnimatedBackground ? .clear : .regular))
         .padding(.top, theme.spacingM)
+        .accessibilityLabel(LocalizationKeys.General.recalculate.localized)
         .accessibilityHint(LocalizationKeys.Accessibility.recalculateHint.localized)
     }
 }

@@ -198,6 +198,7 @@ struct SurveyView: View {
                 Image(systemName: viewModel.isCorrectAnswer ? "checkmark.circle.fill" : "xmark.circle.fill")
                     .foregroundStyle(viewModel.isCorrectAnswer ? .green : .red)
                     .font(theme.title3)
+                    .accessibilityHidden(true)
 
                 Text(viewModel.isCorrectAnswer
                      ? LocalizationKeys.Survey.correctAnswer.localized
