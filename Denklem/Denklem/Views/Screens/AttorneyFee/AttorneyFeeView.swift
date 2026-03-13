@@ -25,6 +25,12 @@ struct AttorneyFeeView: View {
     // MARK: - Focus & Scroll
 
     @FocusState private var focusedField: AttorneyFeeFocusedField?
+
+    // MARK: - Fee Card Animation
+
+    @State private var glowPhase = false
+    @State private var nudgePhase = false
+
     // MARK: - Body
 
     var body: some View {
@@ -35,16 +41,42 @@ struct AttorneyFeeView: View {
             // Content
             ScrollViewReader { proxy in
                 ScrollView {
-                    VStack(spacing: theme.spacingL) {
+                    VStack(spacing: theme.spacingXS) {
 
                         // Year Picker
                         yearPickerSection
 
-                        // Dispute Type Segmented Picker
+                        // Cable: Year → Dispute Type fork
+                        CableConnector(mode: .fork(
+                            leftActive: viewModel.isMonetary,
+                            rightActive: !viewModel.isMonetary,
+                            leftColor: theme.primary,
+                            rightColor: theme.primary,
+                            from: .center
+                        ))
+
+                        // Dispute Type Toggle Buttons
                         disputeTypeSection
 
-                        // Agreement Status Segmented Picker
+                        // Cable: Dispute Type → Agreement
+                        CableConnector(mode: .fork(
+                            leftActive: viewModel.hasAgreement,
+                            rightActive: !viewModel.hasAgreement,
+                            leftColor: theme.success,
+                            rightColor: theme.error,
+                            from: viewModel.isMonetary ? .left : .right,
+                            hideInactive: true
+                        ))
+
+                        // Agreement Status Toggle Buttons
                         agreementStatusSection
+
+                        // Cable: Agreement → next input section (bend to center)
+                        CableConnector(mode: .bend(
+                            active: viewModel.showAmountInput || viewModel.showCourtTypePicker || viewModel.showCalculateOnly,
+                            color: cableColor,
+                            from: viewModel.hasAgreement ? .left : .right
+                        ))
 
                         // Conditional Input Fields
                         if viewModel.showAmountInput {
@@ -64,10 +96,24 @@ struct AttorneyFeeView: View {
                             ErrorBannerView(message: errorMessage)
                         }
 
-                        // Calculate Button
+                        // Cable: → Calculate Button
                         if viewModel.showCalculateButton {
+                            CableConnector(mode: .straight(
+                                active: viewModel.isCalculateButtonEnabled,
+                                color: cableColor
+                            ))
+
                             calculateButton
                                 .transition(.opacity.combined(with: .move(edge: .bottom)))
+                        }
+
+                        // Fee Result Card (shown after calculation)
+                        if let result = viewModel.calculationResult {
+                            CableConnector(mode: .straight(active: true, color: cableColor))
+
+                            attorneyFeeCard(result: result)
+                                .id("feeCard")
+                                .transition(.opacity)
                         }
                     }
                     .padding(.horizontal, theme.spacingM)
@@ -88,6 +134,10 @@ struct AttorneyFeeView: View {
         }
         .animation(.easeInOut(duration: 0.2), value: viewModel.selectedDisputeType)
         .animation(.easeInOut(duration: 0.2), value: viewModel.selectedAgreementStatus)
+        .animation(.easeInOut(duration: 0.2), value: viewModel.showAmountInput)
+        .animation(.easeInOut(duration: 0.2), value: viewModel.showCourtTypePicker)
+        .animation(.easeInOut(duration: 0.3), value: viewModel.showCalculateButton)
+        .animation(.easeInOut(duration: 0.3), value: viewModel.calculationResult != nil)
         .navigationTitle(viewModel.screenTitle)
         .navigationBarTitleDisplayMode(.inline)
         .animatedBackground()
@@ -108,6 +158,16 @@ struct AttorneyFeeView: View {
         }
     }
 
+    // MARK: - Cable Color
+
+    private var cableColor: Color {
+        switch viewModel.selectedAgreementStatus {
+        case .agreed: return theme.success
+        case .notAgreed: return theme.error
+        case nil: return theme.textTertiary
+        }
+    }
+
     // MARK: - Year Picker Section
 
     private var yearPickerSection: some View {
@@ -121,58 +181,44 @@ struct AttorneyFeeView: View {
     // MARK: - Dispute Type Section
 
     private var disputeTypeSection: some View {
-        VStack(spacing: theme.spacingM) {
-            // Uses CommonSegmentedPicker with optional enum selection.
-            CommonSegmentedPicker(
-                selection: .optional($viewModel.selectedDisputeType),
-                options: AttorneyFeeDisputeType.allCases,
-                accessibilityLabel: LocalizationKeys.ScreenTitle.disputeType.localized
-            ) { type in
-                Text(type.displayName)
-            }
+        VStack(alignment: .leading, spacing: theme.spacingXS) {
+            Text(LocalizationKeys.ScreenTitle.subjectSelection.localized)
+                .font(theme.footnote)
+                .fontWeight(.medium)
+                .foregroundStyle(theme.textSecondary)
+                .accessibilityAddTraits(.isHeader)
+                .accessibilityLabel(LocalizationKeys.ScreenTitle.subjectSelection.localized)
 
-            // Selected type indicator
-            if let selected = viewModel.selectedDisputeType {
-                HStack(spacing: theme.spacingXS) {
-                    Image(systemName: selected.systemImage)
-                        .font(theme.footnote)
-                        .fontWeight(.semibold)
-                    Text(selected.displayName)
-                        .font(theme.subheadline)
-                        .fontWeight(.medium)
-                }
-                .foregroundStyle(selected.iconColor)
-                .transition(.opacity.combined(with: .scale))
-            }
+            ToggleButtonPair(
+                leftTitle: LocalizationKeys.CalculationType.monetary.localized,
+                rightTitle: LocalizationKeys.CalculationType.nonMonetary.localized,
+                isLeftSelected: viewModel.isMonetary,
+                onLeftTap: { viewModel.selectedDisputeType = .monetary },
+                onRightTap: { viewModel.selectedDisputeType = .nonMonetary }
+            )
         }
     }
 
     // MARK: - Agreement Status Section
 
     private var agreementStatusSection: some View {
-        VStack(spacing: theme.spacingM) {
-            // Uses CommonSegmentedPicker with optional enum selection.
-            CommonSegmentedPicker(
-                selection: .optional($viewModel.selectedAgreementStatus),
-                options: AttorneyFeeAgreementStatus.allCases,
-                accessibilityLabel: LocalizationKeys.ScreenTitle.agreementStatus.localized
-            ) { status in
-                Text(status.displayName)
-            }
+        VStack(alignment: .leading, spacing: theme.spacingXS) {
+            Text(LocalizationKeys.ScreenTitle.agreementStatus.localized)
+                .font(theme.footnote)
+                .fontWeight(.medium)
+                .foregroundStyle(theme.textSecondary)
+                .accessibilityAddTraits(.isHeader)
+                .accessibilityLabel(LocalizationKeys.ScreenTitle.agreementStatus.localized)
 
-            // Selected status indicator
-            if let selected = viewModel.selectedAgreementStatus {
-                HStack(spacing: theme.spacingXS) {
-                    Image(systemName: selected.systemImage)
-                        .font(theme.footnote)
-                        .fontWeight(.semibold)
-                    Text(selected.displayName)
-                        .font(theme.subheadline)
-                        .fontWeight(.medium)
-                }
-                .foregroundStyle(selected.iconColor)
-                .transition(.opacity.combined(with: .scale))
-            }
+            ToggleButtonPair(
+                leftTitle: AttorneyFeeAgreementStatus.agreed.displayName,
+                rightTitle: AttorneyFeeAgreementStatus.notAgreed.displayName,
+                isLeftSelected: viewModel.hasAgreement,
+                leftColor: theme.success,
+                rightColor: theme.error,
+                onLeftTap: { viewModel.selectedAgreementStatus = .agreed },
+                onRightTap: { viewModel.selectedAgreementStatus = .notAgreed }
+            )
         }
     }
 
@@ -253,6 +299,51 @@ struct AttorneyFeeView: View {
             focusedField = nil
             viewModel.calculate()
         }
+    }
+
+    // MARK: - Fee Result Card
+
+    private func attorneyFeeCard(result: AttorneyFeeResult) -> some View {
+        HStack {
+            Spacer()
+
+            VStack(spacing: theme.spacingXS) {
+                Text(LocalizationKeys.DisputeCategory.attorneyFee.localized)
+                    .font(theme.footnote)
+                    .fontWeight(.medium)
+                    .foregroundStyle(theme.textSecondary)
+
+                Text(LocalizationHelper.formatCurrency(result.fee))
+                    .font(.system(size: 40, weight: .bold, design: .rounded))
+                    .foregroundStyle(theme.primary)
+            }
+
+            Spacer()
+
+            Image(systemName: "chevron.right")
+                .font(theme.footnote)
+                .fontWeight(.semibold)
+                .foregroundStyle(theme.textSecondary)
+                .offset(x: nudgePhase ? 3 : 0)
+                .animation(.easeInOut(duration: 0.8).repeatForever(autoreverses: true), value: nudgePhase)
+        }
+        .padding(.vertical, theme.spacingM)
+        .padding(.horizontal, theme.spacingL)
+        .contentShape(Capsule())
+        .glassEffect(isAnimatedBackground ? .clear : .regular)
+        .shadow(color: theme.primary.opacity(glowPhase ? 0.4 : 0.1), radius: glowPhase ? 12 : 4)
+        .onAppear {
+            withAnimation(.easeInOut(duration: 1.5).repeatForever(autoreverses: true)) {
+                glowPhase = true
+            }
+            nudgePhase = true
+        }
+        .onTapGesture {
+            viewModel.showResult = true
+        }
+        .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(.isButton)
+        .accessibilityHint(LocalizationKeys.Accessibility.expandCollapseHint.localized)
     }
 }
 

@@ -43,19 +43,62 @@ struct MediationFeeView: View {
             // Content
             ScrollViewReader { proxy in
                 ScrollView {
-                    VStack(spacing: theme.spacingS) {
+                    VStack(spacing: theme.spacingXS) {
 
                         // Year Picker
                         yearPickerSection
 
-                        // Monetary / Non-Monetary Segmented Picker
+                        // Cable: Year → Monetary/Non-Monetary fork
+                        CableConnector(mode: .fork(
+                            leftActive: viewModel.isMonetary,
+                            rightActive: !viewModel.isMonetary,
+                            leftColor: theme.primary,
+                            rightColor: theme.primary,
+                            from: .center
+                        ))
+
+                        // Monetary / Non-Monetary Toggle Buttons
                         monetaryPickerSection
 
-                        // Agreement Selector (monetary only)
+                        // Cable: Monetary → Agreement/Non-Agreement OR Non-Monetary → Dispute Type
                         if viewModel.showAgreementSelector {
+                            // Fork from monetary button (left) to agreement/non-agreement buttons
+                            // hideInactive: only show the active branch cable
+                            CableConnector(mode: .fork(
+                                leftActive: viewModel.selectedAgreement == .agreed,
+                                rightActive: viewModel.selectedAgreement == .notAgreed,
+                                leftColor: theme.success,
+                                rightColor: theme.error,
+                                from: .left,
+                                hideInactive: true
+                            ))
+
                             agreementSelectorSection
+
+                            // L-shaped cable from selected agreement button to center (dispute type)
+                            CableConnector(mode: .bend(
+                                active: viewModel.selectedAgreement != nil,
+                                color: cableColor,
+                                from: viewModel.selectedAgreement == .notAgreed ? .right : .left
+                            ))
                         } else {
-                            nonMonetaryInfoSection
+                            // Bend from non-monetary button (right) to center
+                            CableConnector(mode: .bend(
+                                active: true,
+                                color: theme.primary,
+                                from: .right
+                            ))
+
+                            // Hide info text and extra cable once dispute type is selected
+                            if viewModel.selectedDisputeType == nil {
+                                nonMonetaryInfoSection
+                                    .transition(.opacity.combined(with: .move(edge: .top)))
+
+                                CableConnector(mode: .straight(
+                                    active: false,
+                                    color: cableColor
+                                ))
+                            }
                         }
 
                         // Dispute Type Dropdown
@@ -64,12 +107,16 @@ struct MediationFeeView: View {
 
                         // Input Fields (conditional)
                         if viewModel.showAmountInput {
+                            CableConnector(mode: .straight(active: true, color: cableColor))
+
                             amountInputField
                                 .id("amountInput")
                                 .transition(.opacity.combined(with: .move(edge: .top)))
                         }
 
                         if viewModel.showPartyCountInput {
+                            CableConnector(mode: .straight(active: true, color: cableColor))
+
                             partyCountInputField
                                 .id("partyCountInput")
                                 .transition(.opacity.combined(with: .move(edge: .top)))
@@ -80,14 +127,21 @@ struct MediationFeeView: View {
                             ErrorBannerView(message: errorMessage)
                         }
 
+                        // Cable: → Calculate Button
+                        CableConnector(mode: .straight(
+                            active: viewModel.isCalculateButtonEnabled,
+                            color: cableColor
+                        ))
+
                         // Calculate Button
                         calculateButton
 
                         // Fee Result Card (shown after calculation)
                         if let result = viewModel.calculationResult {
+                            CableConnector(mode: .straight(active: true, color: cableColor))
+
                             mediationFeeCard(result: result)
                                 .id("feeCard")
-                                .padding(.top, theme.spacingS)
                                 .transition(.opacity)
                         }
                     }
@@ -116,6 +170,8 @@ struct MediationFeeView: View {
         .onTapGesture {
             UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         }
+        .animation(.easeInOut(duration: 0.2), value: viewModel.isMonetary)
+        .animation(.easeInOut(duration: 0.2), value: viewModel.selectedAgreement)
         .animation(.easeInOut(duration: 0.2), value: viewModel.selectedDisputeType != nil)
         .animation(.easeInOut(duration: 0.2), value: viewModel.hasAgreement)
         .animation(.easeInOut(duration: 0.3), value: viewModel.calculationResult != nil)
@@ -148,16 +204,15 @@ struct MediationFeeView: View {
                 .fontWeight(.medium)
                 .foregroundStyle(theme.textSecondary)
                 .accessibilityAddTraits(.isHeader)
+                .accessibilityLabel(LocalizationKeys.ScreenTitle.subjectSelection.localized)
 
-            CommonSegmentedPicker(
-                selection: .required($viewModel.isMonetary),
-                options: [true, false],
-                accessibilityLabel: LocalizationKeys.ScreenTitle.subjectSelection.localized
-            ) { isMonetary in
-                Text(isMonetary
-                     ? LocalizationKeys.CalculationType.monetary.localized
-                     : LocalizationKeys.CalculationType.nonMonetary.localized)
-            }
+            ToggleButtonPair(
+                leftTitle: LocalizationKeys.CalculationType.monetary.localized,
+                rightTitle: LocalizationKeys.CalculationType.nonMonetary.localized,
+                isLeftSelected: viewModel.isMonetary,
+                onLeftTap: { viewModel.isMonetary = true },
+                onRightTap: { viewModel.isMonetary = false }
+            )
             .onChange(of: viewModel.isMonetary) { _, _ in
                 viewModel.resetFormForModeChange()
             }
@@ -183,38 +238,18 @@ struct MediationFeeView: View {
                 .fontWeight(.medium)
                 .foregroundStyle(theme.textSecondary)
                 .accessibilityAddTraits(.isHeader)
+                .accessibilityLabel(LocalizationKeys.ScreenTitle.agreementStatus.localized)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-            // Uses CommonSegmentedPicker with optional enum selection and dynamic tint.
-            CommonSegmentedPicker(
-                selection: .optional($viewModel.selectedAgreement),
-                options: AgreementSelectionType.allCases,
-                tint: viewModel.selectedAgreement == .agreed ? theme.success : theme.error,
-                accessibilityLabel: LocalizationKeys.ScreenTitle.agreementStatus.localized
-            ) { agreement in
-                Text(agreement.displayName)
-            }
-
-            // Helper text - shows selected status with color
-            if let selected = viewModel.selectedAgreement {
-                HStack(spacing: 0) {
-                    agreementHelperLabel(for: selected)
-                        .frame(maxWidth: .infinity)
-                        .opacity(selected == .agreed ? 1 : 0)
-                        .accessibilityHidden(selected != .agreed)
-
-                    agreementHelperLabel(for: selected)
-                        .frame(maxWidth: .infinity)
-                        .opacity(selected == .notAgreed ? 1 : 0)
-                        .accessibilityHidden(selected != .notAgreed)
-                }
-                .transition(.opacity.combined(with: .scale))
-            } else {
-                Text(LocalizationKeys.AgreementStatus.selectPrompt.localized)
-                    .font(theme.subheadline)
-                    .foregroundStyle(theme.textSecondary)
-                    .transition(.opacity)
-            }
+            ToggleButtonPair(
+                leftTitle: AgreementSelectionType.agreed.displayName,
+                rightTitle: AgreementSelectionType.notAgreed.displayName,
+                isLeftSelected: viewModel.selectedAgreement == .agreed,
+                leftColor: theme.success,
+                rightColor: theme.error,
+                onLeftTap: { viewModel.selectedAgreement = .agreed },
+                onRightTap: { viewModel.selectedAgreement = .notAgreed }
+            )
         }
     }
 
@@ -238,6 +273,7 @@ struct MediationFeeView: View {
                 .fontWeight(.medium)
                 .foregroundStyle(theme.textSecondary)
                 .accessibilityAddTraits(.isHeader)
+                .accessibilityLabel(LocalizationKeys.ScreenTitle.disputeType.localized)
 
         Menu {
             ForEach(viewModel.availableDisputeTypes) { disputeType in
@@ -339,22 +375,21 @@ struct MediationFeeView: View {
         }
     }
 
+    // MARK: - Cable Color
+
+    private var cableColor: Color {
+        guard viewModel.isMonetary else { return theme.primary }
+        switch viewModel.selectedAgreement {
+        case .agreed: return theme.success
+        case .notAgreed: return theme.error
+        case nil: return theme.textTertiary
+        }
+    }
+
     // MARK: - Mediation Fee Card
 
     @State private var glowPhase = false
     @State private var nudgePhase = false
-
-    private func agreementHelperLabel(for selection: AgreementSelectionType) -> some View {
-        HStack(spacing: theme.spacingXS) {
-            Image(systemName: selection.systemImage)
-                .font(theme.footnote)
-                .fontWeight(.semibold)
-            Text(selection.displayName)
-                .font(theme.subheadline)
-                .fontWeight(.medium)
-        }
-        .foregroundStyle(selection.iconColor)
-    }
 
     private func mediationFeeCard(result: CalculationResult) -> some View {
         HStack {

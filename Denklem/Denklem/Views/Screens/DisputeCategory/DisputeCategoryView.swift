@@ -63,6 +63,8 @@ struct DisputeCategoryView: View {
                     .buttonBorderShape(.roundedRectangle(radius: theme.cornerRadiusXXL))
                     .shadow(color: theme.primary.opacity(0.25), radius: 6)
                     .padding(.bottom, theme.spacingL)
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel(DisputeCategoryType.mediationFee.displayName)
                     .accessibilityHint(LocalizationKeys.Accessibility.mediationFeeButtonHint.localized)
 
                     DisputeSectionCard(
