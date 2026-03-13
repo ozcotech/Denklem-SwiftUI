@@ -123,6 +123,10 @@ struct AttorneyFeeView: View {
                 .scrollDismissesKeyboard(.interactively)
                 .onChange(of: focusedField) { _, newValue in
                     guard newValue != nil else { return }
+                    // Clear previous result when user starts editing
+                    viewModel.calculationResult = nil
+                    glowPhase = false
+                    nudgePhase = false
                     withAnimation(.easeInOut(duration: 0.3)) {
                         proxy.scrollTo("amountInput", anchor: .center)
                     }
