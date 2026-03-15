@@ -7,7 +7,8 @@ The name "DENKLEM" reflects the concept of creating equality and balance between
 > 🚀 **First Version Available on the App Store!**
 > Download now: [DENKLEM on App Store](https://apps.apple.com/us/app/denklem/id6746580824)
 
-> 🤖 **Built with AI**
+> [![Built with Claude](https://img.shields.io/badge/Built%20with-Claude%20by%20Anthropic-D97757?style=for-the-badge&logo=anthropic&logoColor=white)](https://claude.ai)
+>
 > This entire project was developed with the support of [Claude](https://claude.ai) by Anthropic — from architecture decisions to code implementation, testing strategies, and accessibility improvements.
 
 ---
