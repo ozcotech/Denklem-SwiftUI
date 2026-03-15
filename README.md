@@ -4,8 +4,11 @@
 
 The name "DENKLEM" reflects the concept of creating equality and balance between parties, which aligns perfectly with the essence of mediation: establishing balance and fair resolution between disputing parties.
 
-> 🚀 **First Version Available on the App Store!**  
+> 🚀 **First Version Available on the App Store!**
 > Download now: [DENKLEM on App Store](https://apps.apple.com/us/app/denklem/id6746580824)
+
+> 🤖 **Built with AI**
+> This entire project was developed with the support of [Claude](https://claude.ai) by Anthropic — from architecture decisions to code implementation, testing strategies, and accessibility improvements.
 
 ---
 
