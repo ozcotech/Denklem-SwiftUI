@@ -24,10 +24,11 @@ The name "DENKLEM" reflects the concept of creating equality and balance between
 - **Offline-First**: Works completely offline
 
 ### 🎨 **Enhanced User Experience**
-- **Bilingual Support**: Turkish and English (instant language switching)
+- **Trilingual Support**: Turkish, English, and Swedish (instant language switching)
 - **Light/Dark Mode**: Automatic theme support
 - **Liquid Glass UI**: Optional modern visual effects
-- **Accessibility**: VoiceOver support coming in future updates
+- **Animated Background**: Optional animated sky background
+- **Accessibility**: Full VoiceOver support
 
 ---
 
@@ -37,13 +38,14 @@ The name "DENKLEM" reflects the concept of creating equality and balance between
 - **2025 & 2026 Official Tariffs**: Based on current Turkish mediation fee tariff
 - **Smart Calculation Engine**: Handles both monetary and non-monetary disputes
 - **Dual Scenario Support**: Different calculations for agreement vs. non-agreement cases
-- **Automatic Tariff Selection**: User selects tariff year at startup (2025 or 2026)
+- **Per-Screen Tariff Selection**: Each calculation screen has its own year picker (2026 selected by default)
 
 ### 📱 **User Experience**
 - **Intuitive Step-by-Step Flow**: Guided process from start to finish
+- **Cable Connector System**: Visual cable guides showing calculation flow paths
 - **Native iOS Navigation**: Swipe gestures and native transitions
-- **Persistent Tab Bar**: Quick access to home, legislation, about, and language selection
-- **Bilingual**: Complete Turkish and English localization
+- **Persistent Tab Bar**: Quick access to home, calculations, legislation, and settings
+- **Trilingual**: Complete Turkish, English, and Swedish localization
 - **Modern Native Design**: Professional and user-friendly interface
 
 ### 🧮 **Additional Calculators**
@@ -73,27 +75,33 @@ The name "DENKLEM" reflects the concept of creating equality and balance between
 ## 📱 User Journey & Screens
 
 ### **1. StartScreen (Welcome Screen)**
-Application entry point and tariff year selection:
-- **2025 Tariff**: 2025 fee calculations
-- **2026 Tariff**: 2026 current fee calculations
-- **Modern Animations**: Logo and entrance animations
+Application entry point:
+- **Mini Quiz**: Quick legal knowledge survey
+- **Entry Button**: Direct navigation to calculations screen
+- **Logo**: App branding
 
-### **2. DisputeCategoryScreen (Dispute Category)**
-Calculation type selection:
-- **Main Categories**:
-  - 💰 **Monetary**: Monetary disputes
-  - 📄 **Non-Monetary**: Non-monetary disputes
+### **2. CalculationsScreen (Calculations)**
+Central hub for all calculation types with categorized buttons:
+- **General Calculation**:
+  - 🧮 **Mediation Fee**: General mediation fee calculation
+- **Special Calculations**:
+  - 🏠 **Tenancy Disputes**: Eviction and rent determination
+  - 👨‍⚖️ **Reinstatement**: Reinstatement dispute cases
+  - 🏢 **Attorney Fee**: Power of attorney fee in mediation
+  - 📋 **Serial Disputes**: Serial dispute cases
 - **Other Calculations**:
-  - ⏰ **Time Calculation**: Mediation process durations
   - 📝 **SMM Calculation**: Freelance receipt calculator
+  - ⏰ **Time Calculation**: Mediation process durations
 
 ### **3. MediationFeeScreen (Unified Calculation)**
-Single-screen mediation fee calculation combining dispute type selection and input:
-- **Year Selection**: Dropdown picker for 2025/2026 tariff
-- **Agreement Status**: Segmented picker (monetary disputes only)
+Single-screen mediation fee calculation with cable connector visual guides:
+- **Year Selection**: Dropdown picker for 2025/2026 tariff (2026 default)
+- **Agreement Status**: Toggle buttons (monetary disputes only)
 - **Dispute Type**: Dropdown menu with 10 dispute types
+- **Cable Connectors**: Visual circuit-board cables guiding users through the calculation flow
 - **Input Fields**: Agreement amount (agreed) or party count (not agreed)
-- **Calculate**: Instant calculation with result sheet
+- **Inline Result Card**: Calculation results displayed directly on screen
+- **Detailed View**: Tap result card to open full result sheet
 
 ### **4. ResultScreen (Result Screen)**
 Comprehensive result display (as Sheet):
@@ -101,18 +109,18 @@ Comprehensive result display (as Sheet):
 - **Tax Information**: Withholding tax calculations when applicable
 - **SMM Details**: Complete SMM breakdown for professional invoicing
 
-### **7. Additional Screens**
+### **5. Additional Screens**
 - **TimeCalculationScreen**: Calculate mediation process durations
 - **SmmCalculationScreen**: Detailed freelance receipt calculations
 - **LegislationScreen**: Access current mediation legislation
-- **AboutScreen**: App information and contact details
+- **SettingsScreen**: Language, theme, animated background, and about information
 
-### **8. Tab Bar Navigation**
+### **6. Tab Bar Navigation**
 Tab bar accessible from any screen:
-- 🏠 **Home**: Return to start screen - Quick access with direct entry button to dispute type screen
-- 🧮 **Calculations**: Access all calculation types (General mediation fees, special calculations, and other calculators)
+- 🏠 **Home**: Return to start screen
+- 🧮 **Calculations**: Access all calculation types (general, special, and other calculators)
 - 📚 **Legislation**: View legal legislation
-- ⚙️ **Settings**: App settings, language selection (Turkish ↔ English), theme preferences (Light/Dark/Liquid Glass), and about information
+- ⚙️ **Settings**: Language selection (Turkish ↔ English ↔ Swedish), theme preferences (Light/Dark), animated background toggle, and about information
 
 ---
 
@@ -125,16 +133,21 @@ Below are screenshots hosted in the separate screenshots repository: [Denklem Sc
 <table>
   <tr>
     <td align="center" width="25%">
-      <img src="https://raw.githubusercontent.com/ozcotech/Denklem-SwiftUI-screenshots/master/mix-theme/home-screen.png" width="200" alt="Start Screen">
+      <img src="https://raw.githubusercontent.com/ozcotech/Denklem-SwiftUI-screenshots/master/mix-theme/start-screen.png" width="200" alt="Start Screen">
       <br><strong>Start Screen</strong>
     </td>
     <td align="center" width="25%">
-      <img src="https://raw.githubusercontent.com/ozcotech/Denklem-SwiftUI-screenshots/master/mix-theme/dispute-category-screen-dark.png" width="200" alt="Dispute Category">
-      <br><strong>Dispute Category</strong>
+      <img src="https://raw.githubusercontent.com/ozcotech/Denklem-SwiftUI-screenshots/master/mix-theme/calculations-screen.png" width="200" alt="Calculations Screen">
+      <br><strong>Calculations Screen</strong>
     </td>
     <td align="center" width="25%">
-      <img src="https://github.com/ozcotech/Denklem-SwiftUI-screenshots/blob/master/mix-theme/dispute_type_screen-light.png" width="200" alt="Dispute Type">
-      <br><strong>Dispute Type</strong>
+      <img src="https://raw.githubusercontent.com/ozcotech/Denklem-SwiftUI-screenshots/master/mix-theme/dispute-type-screen-1.png" width="200" alt="Dispute Type 1">
+      <br><strong>Dispute Type 1</strong>
+    </td>
+    <td align="center" width="25%">
+      <img src="https://raw.githubusercontent.com/ozcotech/Denklem-SwiftUI-screenshots/master/mix-theme/dispute-type-screen-2.png" width="200" alt="Dispute Type 2">
+      <br><strong>Dispute Type 2</strong>
+    </td>
   </tr>
 </table>
 
@@ -142,17 +155,13 @@ Below are screenshots hosted in the separate screenshots repository: [Denklem Sc
 
 <table>
   <tr>
-    <td align="center" width="33%">
-      <img src="https://raw.githubusercontent.com/ozcotech/Denklem-SwiftUI-screenshots/master/mix-theme/inpute-screen-2.png" width="200" alt="Input Screen">
-      <br><strong>Input Screen</strong>
+    <td align="center" width="50%">
+      <img src="https://raw.githubusercontent.com/ozcotech/Denklem-SwiftUI-screenshots/master/mix-theme/result-screen.png" width="200" alt="Result Screen">
+      <br><strong>Result Screen</strong>
     </td>
-    <td align="center" width="33%">
-      <img src="https://raw.githubusercontent.com/ozcotech/Denklem-SwiftUI-screenshots/master/mix-theme/result-screen-1.png" width="200" alt="Result Screen 1">
-      <br><strong>Result Screen 1</strong>
-    </td>
-    <td align="center" width="33%">
-      <img src="https://raw.githubusercontent.com/ozcotech/Denklem-SwiftUI-screenshots/master/mix-theme/result-screen-2.png" width="200" alt="Result Screen 2">
-      <br><strong>Result Screen 2</strong>
+    <td align="center" width="50%">
+      <img src="https://raw.githubusercontent.com/ozcotech/Denklem-SwiftUI-screenshots/master/mix-theme/result-screen-light.png" width="200" alt="Result Screen Light">
+      <br><strong>Result Screen Light</strong>
     </td>
   </tr>
 </table>
@@ -161,21 +170,17 @@ Below are screenshots hosted in the separate screenshots repository: [Denklem Sc
 
 <table>
   <tr>
-    <td align="center" width="25%">
-      <img src="https://raw.githubusercontent.com/ozcotech/Denklem-SwiftUI-screenshots/master/mix-theme/timecalculation-screen-2.png" width="200" alt="Time Calculation 1">
-      <br><strong>Time Calculation 1</strong>
+    <td align="center" width="33%">
+      <img src="https://raw.githubusercontent.com/ozcotech/Denklem-SwiftUI-screenshots/master/mix-theme/attorney-fee-screen.png" width="200" alt="Attorney Fee">
+      <br><strong>Attorney Fee</strong>
     </td>
-    <td align="center" width="25%">
-      <img src="https://raw.githubusercontent.com/ozcotech/Denklem-SwiftUI-screenshots/master/mix-theme/time-calculation-screen-3.png" width="200" alt="Time Calculation 2">
-      <br><strong>Time Calculation 2</strong>
+    <td align="center" width="33%">
+      <img src="https://raw.githubusercontent.com/ozcotech/Denklem-SwiftUI-screenshots/master/mix-theme/legislation-screen.png" width="200" alt="Legislation">
+      <br><strong>Legislation</strong>
     </td>
-    <td align="center" width="25%">
-      <img src="https://raw.githubusercontent.com/ozcotech/Denklem-SwiftUI-screenshots/master/mix-theme/smmcalculation-screen-2.png" width="200" alt="SMM Calculation 1">
-      <br><strong>SMM Calculation 1</strong>
-    </td>
-    <td align="center" width="25%">
-      <img src="https://raw.githubusercontent.com/ozcotech/Denklem-SwiftUI-screenshots/master/mix-theme/smm-calculation-screen-3.png" width="200" alt="SMM Calculation 2">
-      <br><strong>SMM Calculation 2</strong>
+    <td align="center" width="33%">
+      <img src="https://raw.githubusercontent.com/ozcotech/Denklem-SwiftUI-screenshots/master/mix-theme/settings-screen.png" width="200" alt="Settings">
+      <br><strong>Settings</strong>
     </td>
   </tr>
 </table>
@@ -187,24 +192,24 @@ Below are screenshots hosted in the separate screenshots repository: [Denklem Sc
 ## 🎯 How It Works
 
 ### **Monetary Dispute - With Agreement:**
-1. "Monetary" → Select year → "Agreement" → Select dispute type from dropdown
-2. Enter agreement amount
-3. Get calculated mediation fee + bracket breakdown
+1. Calculations → Mediation Fee → Select year → "Monetary" → "Agreement" → Select dispute type
+2. Follow cable connector guides → Enter agreement amount
+3. View inline result card → Tap for detailed breakdown
 
 ### **Monetary Dispute - No Agreement:**
-1. "Monetary" → Select year → "No Agreement" → Select dispute type from dropdown
-2. Enter number of parties
-3. Get fee calculation with SMM breakdown
+1. Calculations → Mediation Fee → Select year → "Monetary" → "No Agreement" → Select dispute type
+2. Follow cable connector guides → Enter number of parties
+3. View inline result card → Tap for detailed breakdown with SMM
 
 ### **Non-Monetary Dispute:**
-1. "Non-Monetary" → Select year → Select dispute type from dropdown
-2. Enter number of parties
-3. Get fee calculation with automatic tax deductions
+1. Calculations → Mediation Fee → Select year → "Non-Monetary" → Select dispute type
+2. Follow cable connector guides → Enter number of parties
+3. View inline result card → Tap for detailed breakdown
 
 ### **Additional Features:**
-- **Tab Bar Navigation**: Always accessible home, legislation, and about sections
+- **Tab Bar Navigation**: Always accessible home, calculations, legislation, and settings
+- **Cable Connector Guides**: Visual flow indicators on calculation screens
 - **Native iOS Controls**: Natural iOS transitions and gestures
-- **Quick Access**: Direct links to time and SMM calculators
 
 ---
 
@@ -235,11 +240,11 @@ Below are screenshots hosted in the separate screenshots repository: [Denklem Sc
 
 ## 📅 Version Information
 
-- **Current Version**: 2.4.3
+- **Current Version**: 2.5.6
 - **Supported Years**: 2025 and 2026 mediation tariffs
-- **Platform**: iOS 26.0+
-- **Languages**: Turkish (TR) and English (EN)
-- **Last Update**: February 2026
+- **Platform**: iOS 26.0+ / iPadOS 26.0+
+- **Languages**: Turkish (TR), English (EN), and Swedish (SV)
+- **Last Update**: March 2026
 - **Based on**: 2025 and 2026 official mediation fee tariffs
 
 ---
@@ -247,9 +252,9 @@ Below are screenshots hosted in the separate screenshots repository: [Denklem Sc
 ## 🧪 Development Setup
 
 ### **Requirements**
-- macOS 14.0+ (Sonoma or later)
-- Xcode 16.0+ (with iOS 26.0 SDK)
-- iOS 26.0+ supported simulator or physical device
+- macOS 26.0+ (a Mac with Apple M1 chip or later)
+- Xcode 26.0+
+- iOS 26.0+ / iPadOS 26.0+
 - Git
 
 ### **Installation Steps**
@@ -300,7 +305,7 @@ Denklem/
 ├── Views/
 │   ├── Screens/                  # Screen views and ViewModels
 │   │   ├── StartScreen/
-│   │   ├── DisputeCategory/
+│   │   ├── Calculations/
 │   │   ├── MediationFee/         # Unified mediation fee calculation
 │   │   ├── AttorneyFee/
 │   │   ├── Reinstatement/
@@ -309,7 +314,7 @@ Denklem/
 │   │   ├── TimeCalculation/
 │   │   ├── SMMCalculation/
 │   │   ├── Survey/
-│   │   ├── About/
+│   │   ├── Settings/
 │   │   └── Legislation/
 │   ├── Components/               # Reusable components
 │   └── Modifiers/                # SwiftUI view modifiers
@@ -380,38 +385,6 @@ LocaleManager.shared.setLanguage(.english)
 
 ---
 
-## 🚀 Upcoming Features
-
-### **Planned Features**
-- 📊 **Comparison Mode**: Side-by-side comparison of different scenarios
-- 📤 **Advanced Export**: PDF reports and email sharing
-- 🔔 **Tariff Notifications**: Push notifications for new tariff updates
-
-### **Technical Improvements**
-- ⚡ **Performance Improvements**: Faster calculations and animations
-- 🧪 **Enhanced Test Coverage**: Target 95%+ test coverage
-- 🌐 **Additional Languages**: More language support beyond English
-
----
-
-## 📖 Documentation
-
-See the `Documentation/` folder for detailed documentation:
-
-- 📋 [PROJECT_OVERVIEW.md](Documentation/PROJECT_OVERVIEW.md) - Project overview
-- 🏗️ [ARCHITECTURE_PLAN.md](Documentation/ARCHITECTURE_PLAN.md) - Architecture details
-- 📁 [FOLDER_STRUCTURE.md](Documentation/FOLDER_STRUCTURE.md) - Folder structure
-- 🔄 [SCREEN_FLOW.md](Documentation/SCREEN_FLOW.md) - Screen flows
-- ✨ [FEATURES_BREAKDOWN.md](Documentation/FEATURES_BREAKDOWN.md) - Feature details
-- 💻 [CODING_STANDARDS.md](Documentation/CODING_STANDARDS.md) - Coding standards
-- 🧑‍⚖️ [ATTORNEY_FEE_CALCULATION_PLAN.md](Documentation/ATTORNEY_FEE_CALCULATION_PLAN.md) - Attorney fee planning
-- 🏠 [TENANCY_CALCULATION_PLAN.md](Documentation/TENANCY_CALCULATION_PLAN.md) - Tenancy fee planning
-- 👨‍⚖️ [REINSTATEMENT_CALCULATION_PLAN.md](Documentation/REINSTATEMENT_CALCULATION_PLAN.md) - Reinstatement planning
-- 📝 [SERIAL_DISPUTES_CALCULATION_PLAN.md](Documentation/SERIAL_DISPUTES_CALCULATION_PLAN.md) - Serial disputes planning
-- 📊 [SURVEY_PLAN.md](Documentation/SURVEY_PLAN.md) - Survey feature planning
-
----
-
 ## 🤝 Contributing
 
 This project is currently managed by a single developer. Please contact for suggestions and feedback.
@@ -442,6 +415,14 @@ This project is licensed under the MIT License.
 ---
 
 ## 🔄 Version History
+
+### v2.5.6 (March 2026) - Toggle Buttons, Cable Connectors & Accessibility
+- 🔘 **Toggle Button Design**: New toggle button pairs for mediation and attorney fee screens (replaces segmented pickers)
+- 🔌 **Cable Connector System**: Visual circuit-board cables showing calculation flow paths
+- 📊 **Inline Results**: Calculation results now displayed directly on screen with tap-to-expand detail view
+- ♿ **VoiceOver Accessibility**: Full VoiceOver support across all screens and shared components
+- 🇸🇪 **Swedish Localization**: Added Swedish language support
+- 📤 **Text Export**: Share calculation results with detailed mediation fee breakdown as text file
 
 ### v2.4.3 (February 2026) - Tenancy & Unified Mediation Fee Screen
 - 🏠 **Tenancy Disputes (Kira Tahliye/Tespit)**: Special calculation module for eviction and rent determination disputes
