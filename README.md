@@ -399,7 +399,6 @@ This project is currently managed by a single developer. Please contact for sugg
 
 **Özkan Cömert**
 
-- 📧 Email: info@denklem.org
 - 🌐 Denklem: [https://denklem.org](https://denklem.org)
 
 ---
