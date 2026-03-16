@@ -331,13 +331,18 @@ Denklem/
 │
 ├── Localization/                 # Multi-language support
 │   ├── LocalizationKeys.swift
-│   ├── LocalizationHelper.swift
-│   └── Localizable.xcstrings
+│   └── LocalizationHelper.swift
+│
+├── Localizable.xcstrings          # String catalog (project root)
 │
 ├── Constants/                    # Constants
 │   ├── AppConstants.swift
-│   ├── TariffConstants.swift
+│   ├── AttorneyFeeConstants.swift
 │   ├── DisputeConstants.swift
+│   ├── ReinstatementConstants.swift
+│   ├── SerialDisputesConstants.swift
+│   ├── TariffConstants.swift
+│   ├── TenancyCalculationConstants.swift
 │   └── ValidationConstants.swift
 │
 ├── Managers/                     # Managers
