@@ -95,6 +95,16 @@ enum DisputeCategoryType: String, CaseIterable, Identifiable {
         }
     }
 
+    /// Capsule button icon (same as grid icon, except Time uses dynamic date)
+    var capsuleSystemImage: String {
+        switch self {
+        case .timeCalculation:
+            return "\(Calendar.current.component(.day, from: Date())).calendar"
+        default:
+            return systemImage
+        }
+    }
+
     /// Icon color (used by MediationFeeView segmented picker text color;
     /// DisputeCategoryView buttons all use theme.primary instead)
     var iconColor: Color {

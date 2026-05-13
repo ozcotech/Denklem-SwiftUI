@@ -21,7 +21,7 @@ struct DisputeCategoryView: View {
     @Environment(\.theme) var theme
     @Environment(\.dismiss) private var dismiss
     @Environment(\.isAnimatedBackground) private var isAnimatedBackground
-    
+
     // MARK: - Initialization
     
     init(selectedYear: TariffYear) {
@@ -62,7 +62,7 @@ struct DisputeCategoryView: View {
                     .buttonStyle(.glass(isAnimatedBackground ? .clear : .regular))
                     .buttonBorderShape(.roundedRectangle(radius: theme.cornerRadiusXXL))
                     .shadow(color: theme.primary.opacity(0.25), radius: 6)
-                    .padding(.bottom, theme.spacingL)
+                    .padding(.bottom, theme.spacingS)
                     .accessibilityElement(children: .combine)
                     .accessibilityLabel(DisputeCategoryType.mediationFee.displayName)
                     .accessibilityHint(LocalizationKeys.Accessibility.mediationFeeButtonHint.localized)
@@ -73,8 +73,11 @@ struct DisputeCategoryView: View {
                         cardColor: theme.cardSpecial,
                         onCategoryTap: viewModel.selectCategory
                     )
+
                 }
                 .padding(.horizontal, theme.spacingM)
+                .padding(.top, -theme.spacingS)
+                .padding(.bottom, theme.spacingXXL)
                 .frame(minHeight: geometry.size.height)
             }
         }
@@ -85,8 +88,8 @@ struct DisputeCategoryView: View {
         .navigationDestination(isPresented: $viewModel.navigateToDisputeType) {
             MediationFeeView(selectedYear: viewModel.selectedYear)
         }
-        .navigationDestination(isPresented: $viewModel.navigateToTimeCalculation) {
-            TimeCalculationView()
+        .sheet(isPresented: $viewModel.navigateToTimeCalculation) {
+            TimeCalculationSheet()
         }
         .navigationDestination(isPresented: $viewModel.navigateToSMMCalculation) {
             SMMCalculationView()

@@ -21,138 +21,40 @@ struct TimeCalculationView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.isAnimatedBackground) private var isAnimatedBackground
 
-    // MARK: - State for Date Picker Sheet
-    
-    @State private var showDatePicker = false
-    
     // MARK: - Body
-    
+
     var body: some View {
-        ZStack {
-            VStack {
-                Spacer()
-                    .frame(height: 80)
-                
-                VStack(spacing: theme.spacingL) {
-                    // Date Input Section - matches Calculate button width
-                    dateInputSection
-                    
-                    // Calculate Button - independent padding (matches StartScreen Enter button)
-                    calculateButton
-                }
-                
-                Spacer()
+        VStack(spacing: theme.spacingL) {
+            // Graphical Date Picker (inline — full calendar visible)
+            DatePicker(
+                "",
+                selection: $viewModel.startDate,
+                displayedComponents: .date
+            )
+            .datePickerStyle(.graphical)
+            .tint(theme.primary)
+            .padding(.horizontal, theme.spacingM)
+
+            // Calculate Button
+            CalculateButton(
+                buttonText: LocalizationKeys.General.calculate.localized,
+                isCalculating: viewModel.isLoading,
+                isEnabled: !viewModel.isLoading
+            ) {
+                viewModel.calculate()
             }
+            .padding(.horizontal, theme.spacingM)
+
+            Spacer()
         }
+        .padding(.top, theme.spacingM)
         .navigationTitle(LocalizationKeys.ScreenTitle.timeCalculation.localized)
         .navigationBarTitleDisplayMode(.inline)
         .animatedBackground()
         .sheet(isPresented: $viewModel.showResults) {
             ResultsSheet(viewModel: viewModel)
         }
-        .id(localeManager.refreshID) // Observe language changes without re-rendering DatePicker
-    }
-    
-    // MARK: - Header Section
-    
-    private var headerSection: some View {
-        VStack(spacing: theme.spacingS) {
-            Image(systemName: "clock.fill")
-                .font(.system(size: 60))
-                .foregroundStyle(theme.primary)
-                .padding(.bottom, theme.spacingS)
-            
-            Text(LocalizationKeys.TimeCalculation.disputeTypes.localized)
-                .font(theme.title2)
-                .fontWeight(.bold)
-                .foregroundStyle(theme.textPrimary)
-                .multilineTextAlignment(.center)
-        }
-        .frame(maxWidth: .infinity)
-        .padding(.vertical, theme.spacingL)
-    }
-    
-    // MARK: - Date Input Section
-    
-    private var dateInputSection: some View {
-        GeometryReader { geometry in
-            VStack(spacing: theme.spacingM) {
-                // Section Title
-                Text(LocalizationKeys.Input.assignmentDate.localized)
-                    .font(theme.headline)
-                    .foregroundStyle(theme.textPrimary)
-                    .frame(maxWidth: .infinity, alignment: .center)
-                
-                // Date Selection Button with Glass Effect
-                HStack {
-                    Spacer()
-                    Button {
-                        showDatePicker = true
-                    } label: {
-                        HStack {
-                            Image(systemName: "calendar")
-                                .font(theme.title3)
-                                .foregroundStyle(theme.primary)
-                                .accessibilityHidden(true)
-
-                            Text(formattedDate)
-                                .font(theme.body)
-                                .foregroundStyle(theme.textPrimary)
-
-                            Spacer()
-
-                            Image(systemName: "chevron.right")
-                                .font(theme.caption)
-                                .foregroundStyle(theme.textSecondary)
-                                .accessibilityHidden(true)
-                        }
-                        .padding(theme.spacingM)
-                        .frame(height: theme.buttonHeight)
-                    }
-                    .buttonStyle(.glass(isAnimatedBackground ? .clear : .regular))
-                    .tint(theme.surface)
-                    .frame(width: geometry.size.width * 0.9) // 90% width
-                    .accessibilityLabel(LocalizationKeys.Input.assignmentDate.localized)
-                    .accessibilityValue(formattedDate)
-                    .accessibilityHint(LocalizationKeys.Accessibility.datePickerHint.localized)
-                    Spacer()
-                }
-            }
-            .sheet(isPresented: $showDatePicker) {
-                DatePickerSheet(selectedDate: $viewModel.startDate)
-            }
-        }
-        .frame(height: 90) // Fixed height for section
-    }
-    
-    // MARK: - Formatted Date String
-    
-    private var formattedDate: String {
-        let formatter = DateFormatter()
-        // TR: dd.MM.yyyy / EN: MM/dd/yyyy
-        formatter.locale = localeManager.currentLocale
-        formatter.dateStyle = .medium
-        return formatter.string(from: viewModel.startDate)
-    }
-    
-    // MARK: - Calculate Button
-    
-    private var calculateButton: some View {
-        GeometryReader { geometry in
-            HStack {
-                Spacer()
-                CalculateButton(
-                    buttonText: LocalizationKeys.General.calculate.localized,
-                    isCalculating: viewModel.isLoading,
-                    isEnabled: !viewModel.isLoading
-                ) {
-                    viewModel.calculate()
-                }
-                .frame(width: geometry.size.width * 0.9) // 90% width
-                Spacer()
-            }
-        }
-        .frame(height: theme.buttonHeight) // Fixed height for button
+        .id(localeManager.refreshID)
     }
 }
 
@@ -329,52 +231,63 @@ struct DeadlineRow: View {
     }
 }
 
-// MARK: - Date Picker Sheet
-/// Sheet displaying graphical date picker for date selection
+// MARK: - Time Calculation Sheet
+/// Sheet with graphical date picker + calculate button (presented from DisputeCategoryView)
 @available(iOS 26.0, *)
-struct DatePickerSheet: View {
-    
-    @Binding var selectedDate: Date
+struct TimeCalculationSheet: View {
 
+    @StateObject private var viewModel = TimeCalculationViewModel()
+    @ObservedObject private var localeManager = LocaleManager.shared
     @Environment(\.theme) var theme
     @Environment(\.dismiss) private var dismiss
-    @ObservedObject private var localeManager = LocaleManager.shared
-    
+
     var body: some View {
         NavigationStack {
             VStack(spacing: theme.spacingL) {
-                // Date Picker
+                // Graphical Date Picker
                 DatePicker(
                     "",
-                    selection: $selectedDate,
+                    selection: $viewModel.startDate,
                     displayedComponents: .date
                 )
                 .datePickerStyle(.graphical)
                 .tint(theme.primary)
-                .padding(theme.spacingM)
-                
+                .padding(.horizontal, theme.spacingM)
+
+                // Calculate Button
+                CalculateButton(
+                    buttonText: LocalizationKeys.General.calculate.localized,
+                    isCalculating: viewModel.isLoading,
+                    isEnabled: !viewModel.isLoading
+                ) {
+                    viewModel.calculate()
+                }
+                .padding(.horizontal, theme.spacingM)
+
                 Spacer()
             }
-            .padding(.horizontal, theme.spacingM)
             .padding(.top, theme.spacingM)
-            .navigationTitle(LocalizationKeys.Input.assignmentDate.localized)
+            .navigationTitle(LocalizationKeys.ScreenTitle.timeCalculation.localized)
             .navigationBarTitleDisplayMode(.inline)
+            .animatedBackground()
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         dismiss()
                     } label: {
-                        Text("✓")
+                        Image(systemName: "xmark")
                             .font(theme.body)
-                            .foregroundStyle(theme.primary)
-                            .frame(width: 30, height: 30)
+                            .foregroundStyle(theme.textSecondary)
                     }
                     .buttonStyle(.plain)
                     .accessibilityLabel(LocalizationKeys.General.done.localized)
                 }
             }
+            .sheet(isPresented: $viewModel.showResults) {
+                ResultsSheet(viewModel: viewModel)
+            }
         }
-        .presentationDetents([.medium])
+        .presentationDetents([.large])
         .presentationDragIndicator(.visible)
         .id(localeManager.refreshID)
     }

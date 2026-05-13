@@ -21,6 +21,9 @@ struct DisputeSectionCard: View {
     /// Full-width category types
     private static let fullWidthTypes: Set<DisputeCategoryType> = [.mediationFee]
 
+    /// Category types duplicated below the grid (extra shortcut row)
+    private static let duplicatedTypes: Set<DisputeCategoryType> = [.smmCalculation, .timeCalculation]
+
     /// Categories that go in the 2-column grid (excludes full-width items)
     private var gridCategories: [DisputeCategoryType] {
         categories.filter { !Self.fullWidthTypes.contains($0) }
@@ -31,8 +34,14 @@ struct DisputeSectionCard: View {
         categories.filter { Self.fullWidthTypes.contains($0) }
     }
 
+    /// Duplicated categories (SMM, Time — repeated below the grid as a shortcut row)
+    private var duplicatedCategories: [DisputeCategoryType] {
+        categories.filter { Self.duplicatedTypes.contains($0) }
+    }
+
     var body: some View {
         VStack(spacing: theme.spacingM) {
+            // 2-column grid — all categories as rectangle buttons
             LazyVGrid(
                 columns: [
                     GridItem(.flexible(), spacing: theme.spacingS),
@@ -50,6 +59,23 @@ struct DisputeSectionCard: View {
                         cornerRadius: theme.cornerRadiusXXL,
                         action: { onCategoryTap(category) }
                     )
+                }
+            }
+
+            // Additional shortcut row (SMM & Time — same rectangle style as the grid)
+            if !duplicatedCategories.isEmpty {
+                HStack(spacing: theme.spacingS) {
+                    ForEach(duplicatedCategories) { category in
+                        RectangleButton(
+                            systemImage: category.capsuleSystemImage,
+                            iconColor: theme.primary,
+                            text: category.displayName,
+                            textColor: theme.textPrimary,
+                            font: theme.footnote,
+                            cornerRadius: theme.cornerRadiusXXL,
+                            action: { onCategoryTap(category) }
+                        )
+                    }
                 }
             }
 

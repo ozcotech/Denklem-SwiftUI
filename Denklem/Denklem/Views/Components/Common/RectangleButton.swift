@@ -39,7 +39,8 @@ struct RectangleButton: View {
                     .lineLimit(3)
                     .minimumScaleFactor(0.85) // Allow text to shrink slightly to fit within the button without truncation
             }
-            .frame(maxWidth: .infinity, minHeight: 72, alignment: .leading)
+            // minHeight controls the vertical spacing between the icon/text and the button edges
+            .frame(maxWidth: .infinity, minHeight: 64, alignment: .leading)
         }
         // Liquid Glass button style (clear when animated background is on)
         .buttonStyle(.glass(isAnimatedBackground ? .clear : .regular))
