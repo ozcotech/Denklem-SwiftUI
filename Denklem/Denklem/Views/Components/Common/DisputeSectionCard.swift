@@ -15,14 +15,15 @@ struct DisputeSectionCard: View {
 
     let title: String
     let categories: [DisputeCategoryType]
+    /// Extra shortcut row rendered below the grid. Independent from `categories` so a grid
+    /// slot can be repurposed (e.g. SMM → Consumer Dispute) without losing direct SMM/Time access.
+    /// Uses `capsuleSystemImage` so Time can show today's dynamic calendar icon.
+    let shortcutCategories: [DisputeCategoryType]
     let cardColor: Color
     let onCategoryTap: (DisputeCategoryType) -> Void
 
     /// Full-width category types
     private static let fullWidthTypes: Set<DisputeCategoryType> = [.mediationFee]
-
-    /// Category types duplicated below the grid (extra shortcut row)
-    private static let duplicatedTypes: Set<DisputeCategoryType> = [.smmCalculation, .timeCalculation]
 
     /// Categories that go in the 2-column grid (excludes full-width items)
     private var gridCategories: [DisputeCategoryType] {
@@ -32,11 +33,6 @@ struct DisputeSectionCard: View {
     /// Full-width categories (AI Chat, Mediation Fee)
     private var fullWidthCategories: [DisputeCategoryType] {
         categories.filter { Self.fullWidthTypes.contains($0) }
-    }
-
-    /// Duplicated categories (SMM, Time — repeated below the grid as a shortcut row)
-    private var duplicatedCategories: [DisputeCategoryType] {
-        categories.filter { Self.duplicatedTypes.contains($0) }
     }
 
     var body: some View {
@@ -59,13 +55,14 @@ struct DisputeSectionCard: View {
                         cornerRadius: theme.cornerRadiusXXL,
                         action: { onCategoryTap(category) }
                     )
+                    .accessibilityHint(accessibilityHint(for: category))
                 }
             }
 
-            // Additional shortcut row (SMM & Time — same rectangle style as the grid)
-            if !duplicatedCategories.isEmpty {
+            // Additional shortcut row — same rectangle style as the grid
+            if !shortcutCategories.isEmpty {
                 HStack(spacing: theme.spacingS) {
-                    ForEach(duplicatedCategories) { category in
+                    ForEach(shortcutCategories) { category in
                         RectangleButton(
                             systemImage: category.capsuleSystemImage,
                             iconColor: theme.primary,
@@ -100,6 +97,17 @@ struct DisputeSectionCard: View {
                 .buttonStyle(.glass(isAnimatedBackground ? .clear : .regular))
                 .buttonBorderShape(.roundedRectangle(radius: theme.cornerRadiusXXL))
             }
+        }
+    }
+
+    /// Returns the VoiceOver hint for a category. Most categories rely on their displayed
+    /// text alone; only "special" buttons whose action isn't obvious from the label get a hint.
+    private func accessibilityHint(for category: DisputeCategoryType) -> String {
+        switch category {
+        case .consumerDispute:
+            return LocalizationKeys.Accessibility.consumerDisputeButtonHint.localized
+        default:
+            return ""
         }
     }
 }

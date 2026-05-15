@@ -499,6 +499,54 @@
         }
       }
     },
+    "a11y.hint.consumer_dispute_button" : {
+      "comment" : "VoiceOver accessibility",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calculates the mediation fee for a consumer dispute, including the Ministry of Justice subsidy."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beräknar medlingsarvodet för en konsumenttvist, inklusive justitiedepartementets bidrag."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tüketici uyuşmazlığında arabuluculuk ücretini Adalet Bakanlığı katkısıyla birlikte hesaplar."
+          }
+        }
+      }
+    },
+    "a11y.hint.consumer_dispute_payer_menu" : {
+      "comment" : "VoiceOver accessibility",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens a menu to choose who covers the mediation fee."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Öppnar en meny för att välja vem som betalar medlingsarvodet."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arabuluculuk ücretini kimin ödeyeceğini seçmek için menüyü açar."
+          }
+        }
+      }
+    },
     "a11y.hint.court_type_menu" : {
       "comment" : "VoiceOver accessibility",
       "extractionState" : "manual",
@@ -2798,6 +2846,390 @@
         }
       }
     },
+    "consumer_dispute.agreement_amount_label" : {
+      "comment" : "Section header above the settlement amount text field on the Consumer Dispute screen",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settlement Amount"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Förlikningsbelopp"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anlaşma Tutarı"
+          }
+        }
+      }
+    },
+    "consumer_dispute.opinion.pdf_missing" : {
+      "comment" : "Message shown in the opinion sheet when the bundled PDF file is not yet present in the app",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The advisory opinion document has not been bundled with this build yet."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yttrandedokumentet har inte paketerats med den här versionen ännu."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Görüş yazısı henüz uygulamaya eklenmemiş."
+          }
+        }
+      }
+    },
+    "consumer_dispute.opinion.title" : {
+      "comment" : "Title of the sheet that displays the Ministry of Justice advisory opinion PDF",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ministry of Justice Advisory Opinion"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Justitiedepartementets rådgivande yttrande"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adalet Bakanlığı Görüş Yazısı"
+          }
+        }
+      }
+    },
+    "consumer_dispute.payer_label" : {
+      "comment" : "Section header above the payment responsibility dropdown on the Consumer Dispute screen",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Who covers the fee?"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vem betalar arvodet?"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ücreti kim öder?"
+          }
+        }
+      }
+    },
+    "consumer_dispute.payer.consumer" : {
+      "comment" : "Payment responsibility option: consumer covers the mediation fee",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Consumer"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Konsument"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tüketici"
+          }
+        }
+      }
+    },
+    "consumer_dispute.payer.equal" : {
+      "comment" : "Payment responsibility option: consumer and seller split equally",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Equal"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lika"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eşit"
+          }
+        }
+      }
+    },
+    "consumer_dispute.payer.seller" : {
+      "comment" : "Payment responsibility option: seller (counterparty) covers the mediation fee",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seller (Counterparty)"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Säljare (Motpart)"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Satıcı (Karşı Taraf)"
+          }
+        }
+      }
+    },
+    "consumer_dispute.result.details_link" : {
+      "comment" : "Tappable text under the disclaimer that opens the advisory opinion PDF",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap for details"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tryck för detaljer"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ayrıntılar için tıklayınız"
+          }
+        }
+      }
+    },
+    "consumer_dispute.result.disclaimer" : {
+      "comment" : "Note shown below the two interpretation cards explaining that the choice between the two outcomes rests with the mediator",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The choice of outcome is at the mediator's discretion."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Valet av utfall ligger inom medlarens skön."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sonuç seçimi arabulucunun takdirindedir."
+          }
+        }
+      }
+    },
+    "consumer_dispute.result.first" : {
+      "comment" : "Title of the first interpretation card (narrow interpretation — mediator receives the full fee)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Outcome 1"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utfall 1"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1. Sonuç"
+          }
+        }
+      }
+    },
+    "consumer_dispute.result.row.government_payment" : {
+      "comment" : "Calculation info row label for the Ministry of Justice subsidy amount",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ministry contribution"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bidrag från departementet"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bakanlık katkısı"
+          }
+        }
+      }
+    },
+    "consumer_dispute.result.row.mediator_full" : {
+      "comment" : "Result row label: full mediation fee received by the mediator (narrow interpretation)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mediation Fee (Full)"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medlingsarvode (Helt)"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arabuluculuk Ücreti (Tam)"
+          }
+        }
+      }
+    },
+    "consumer_dispute.result.row.mediator_partial" : {
+      "comment" : "Result row label: partial mediation fee received by the mediator (broad interpretation)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mediation Fee (Partial)"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medlingsarvode (Delvis)"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arabuluculuk Ücreti (Kısmi)"
+          }
+        }
+      }
+    },
+    "consumer_dispute.result.row.ministry" : {
+      "comment" : "Result row label: amount paid by the Ministry of Justice (T.C. Adalet Bakanlığı)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ministry of Justice"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Justitiedepartementet"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "T.C. Adalet Bakanlığı"
+          }
+        }
+      }
+    },
+    "consumer_dispute.result.second" : {
+      "comment" : "Title of the second interpretation card (broad interpretation — mediator receives a partial fee)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Outcome 2"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utfall 2"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2. Sonuç"
+          }
+        }
+      }
+    },
+    "consumer_dispute.result.single" : {
+      "comment" : "Title used when only a single result card is shown (equal split or seller-pays scenarios)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Outcome"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utfall"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sonuç"
+          }
+        }
+      }
+    },
     "contact.email" : {
       "comment" : "contact & support",
       "extractionState" : "manual",
@@ -3221,6 +3653,102 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tüketici Hukuku"
+          }
+        }
+      }
+    },
+    "dispute_category.consumer_dispute" : {
+      "comment" : "Consumer dispute calculation button label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Consumer\nDispute"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Konsument-\ntvist"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tüketici\nUyuşmazlığı"
+          }
+        }
+      }
+    },
+    "dispute_category.consumer_dispute.description" : {
+      "comment" : "Consumer dispute calculation button description",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calculate mediation fee with Ministry of Justice subsidy"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beräkna medlingsarvode med justitiedepartementets bidrag"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adalet Bakanlığı katkısıyla arabuluculuk ücreti hesapla"
+          }
+        }
+      }
+    },
+    "dispute_category.custom_calculation" : {
+      "comment" : "Placeholder grid button label for an upcoming custom calculation feature",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Custom\nCalculation"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Special-\nberäkning"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Özel\nHesaplama"
+          }
+        }
+      }
+    },
+    "dispute_category.custom_calculation.description" : {
+      "comment" : "Description of the custom calculation placeholder button",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A custom calculation slot reserved for an upcoming feature"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En reserverad plats för en kommande specialberäkning"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yakında eklenecek özel bir hesaplama için ayrılmış alan"
           }
         }
       }
@@ -4705,6 +5233,54 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kapat"
+          }
+        }
+      }
+    },
+    "general.coming_soon.message" : {
+      "comment" : "Body of the generic Coming Soon alert shown when a placeholder feature is tapped",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This feature is under construction."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Den här funktionen är under utveckling."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu özellik yapım aşamasındadır."
+          }
+        }
+      }
+    },
+    "general.coming_soon.title" : {
+      "comment" : "Title of the generic Coming Soon alert shown when a placeholder feature is tapped",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Coming Soon"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kommer snart"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yakında"
           }
         }
       }

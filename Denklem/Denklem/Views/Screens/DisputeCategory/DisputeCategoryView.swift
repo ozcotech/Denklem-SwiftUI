@@ -70,6 +70,7 @@ struct DisputeCategoryView: View {
                     DisputeSectionCard(
                         title: viewModel.specialCalculationsTitle,
                         categories: viewModel.specialCalculations,
+                        shortcutCategories: viewModel.shortcutCalculations,
                         cardColor: theme.cardSpecial,
                         onCategoryTap: viewModel.selectCategory
                     )
@@ -105,6 +106,17 @@ struct DisputeCategoryView: View {
         }
         .sheet(isPresented: $viewModel.showReinstatementSheet) {
             ReinstatementSheet(selectedYear: viewModel.selectedYear)
+        }
+        .navigationDestination(isPresented: $viewModel.navigateToConsumerDispute) {
+            ConsumerDisputeView(selectedYear: viewModel.selectedYear)
+        }
+        .alert(
+            LocalizationKeys.General.comingSoonTitle.localized,
+            isPresented: $viewModel.showComingSoonAlert
+        ) {
+            Button(LocalizationKeys.General.done.localized, role: .cancel) { }
+        } message: {
+            Text(LocalizationKeys.General.comingSoonMessage.localized)
         }
     }
 }

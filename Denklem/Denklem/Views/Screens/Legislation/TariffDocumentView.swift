@@ -63,7 +63,7 @@ struct TariffDocumentView: View {
 
     private var articlesSection: some View {
         VStack(spacing: 0) {
-            SectionTitle(title: NSLocalizedString("legislation.section.articles", value: "Tarife Maddeleri", comment: ""))
+            SectionTitle(title: "legislation.section.articles".localized)
 
             VStack(spacing: 0) {
                 ForEach(Array(content.articles.enumerated()), id: \.offset) { index, article in
@@ -123,19 +123,22 @@ struct TariffDocumentView: View {
             VStack(spacing: 0) {
                 // Header Row
                 HStack {
-                    Text(NSLocalizedString("legislation.tariff.bracket.tier", value: "Dilim", comment: ""))
+                    // Use `.localized` (Bundle.localizedBundle) so LocaleManager's runtime
+                    // language switch is respected — NSLocalizedString() reads Bundle.main and
+                    // ignores it, which is why these headers used to stay English.
+                    Text("legislation.tariff.bracket.tier".localized)
                         .font(theme.caption)
                         .fontWeight(.semibold)
                         .foregroundStyle(theme.textSecondary)
                         .frame(maxWidth: .infinity, alignment: .leading)
 
-                    Text(NSLocalizedString("legislation.tariff.bracket.single", value: "Tek", comment: ""))
+                    Text("legislation.tariff.bracket.single".localized)
                         .font(theme.caption)
                         .fontWeight(.semibold)
                         .foregroundStyle(theme.textSecondary)
                         .frame(width: 50, alignment: .trailing)
 
-                    Text(NSLocalizedString("legislation.tariff.bracket.multiple", value: "Çoklu", comment: ""))
+                    Text("legislation.tariff.bracket.multiple".localized)
                         .font(theme.caption)
                         .fontWeight(.semibold)
                         .foregroundStyle(theme.textSecondary)

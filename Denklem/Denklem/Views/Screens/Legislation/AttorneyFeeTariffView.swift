@@ -66,7 +66,7 @@ struct AttorneyFeeTariffView: View {
     private var articlesSection: some View {
         VStack(spacing: 0) {
             AttorneyFeeDocSectionTitle(
-                title: NSLocalizedString("legislation.section.articles", value: "Tarife Maddeleri", comment: "")
+                title: "legislation.section.articles".localized
             )
 
             VStack(spacing: 0) {

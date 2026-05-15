@@ -20,6 +20,8 @@ enum DisputeCategoryType: String, CaseIterable, Identifiable {
     case rentSpecial       // Tenancy (eviction/determination)
     case reinstatement     // Reinstate Employee (İşe İade)
     case serialDisputes    // Serial disputes (Seri Uyuşmazlıklar)
+    case consumerDispute   // Consumer dispute mediation fee (6502/73A-3)
+    case customCalculation // Reserved placeholder for an upcoming custom calculation
 
     var id: String { rawValue }
 
@@ -44,6 +46,10 @@ enum DisputeCategoryType: String, CaseIterable, Identifiable {
             return LocalizationKeys.DisputeCategory.reinstatement.localized
         case .serialDisputes:
             return LocalizationKeys.DisputeCategory.serialDisputes.localized
+        case .consumerDispute:
+            return LocalizationKeys.DisputeCategory.consumerDispute.localized
+        case .customCalculation:
+            return LocalizationKeys.DisputeCategory.customCalculation.localized
         }
     }
 
@@ -68,6 +74,10 @@ enum DisputeCategoryType: String, CaseIterable, Identifiable {
             return LocalizationKeys.DisputeCategory.reinstatementDescription.localized
         case .serialDisputes:
             return LocalizationKeys.DisputeCategory.serialDisputesDescription.localized
+        case .consumerDispute:
+            return LocalizationKeys.DisputeCategory.consumerDisputeDescription.localized
+        case .customCalculation:
+            return LocalizationKeys.DisputeCategory.customCalculationDescription.localized
         }
     }
 
@@ -92,6 +102,10 @@ enum DisputeCategoryType: String, CaseIterable, Identifiable {
             return "arrow.trianglehead.2.clockwise.rotate.90.circle"
         case .serialDisputes:
             return "rectangle.stack.fill"
+        case .consumerDispute:
+            return "cart.circle.fill"
+        case .customCalculation:
+            return "star.circle"
         }
     }
 
@@ -127,6 +141,10 @@ enum DisputeCategoryType: String, CaseIterable, Identifiable {
             return .yellow
         case .serialDisputes:
             return .pink
+        case .consumerDispute:
+            return .mint
+        case .customCalculation:
+            return .yellow
         }
     }
 }
@@ -140,11 +158,23 @@ final class DisputeCategoryViewModel: ObservableObject {
         // MARK: - Special Calculations Section
         @Published var navigateToAttorneyFee: Bool = false
         @Published var navigateToTenancySpecial: Bool = false
+        @Published var navigateToConsumerDispute: Bool = false
         @Published var showSerialDisputesSheet: Bool = false
         @Published var showReinstatementSheet: Bool = false
+        /// Flips true to surface the "Coming Soon" alert for the .customCalculation placeholder.
+        @Published var showComingSoonAlert: Bool = false
 
+        /// Main 2-column grid. The two right-hand slots are repurposed placeholders:
+        /// `.consumerDispute` replaces the old top SMM button; `.customCalculation` is a
+        /// reserved slot for an upcoming feature and currently only shows a "Coming Soon" alert.
         var specialCalculations: [DisputeCategoryType] {
-            return [.rentSpecial, .attorneyFee, .reinstatement, .serialDisputes, .smmCalculation, .timeCalculation]
+            return [.rentSpecial, .attorneyFee, .reinstatement, .serialDisputes, .consumerDispute, .customCalculation]
+        }
+
+        /// Extra shortcut row rendered below the grid. Kept independent from the grid so we can
+        /// repurpose grid slots (e.g. SMM → Consumer Dispute) without losing direct access to SMM/Time.
+        var shortcutCalculations: [DisputeCategoryType] {
+            return [.smmCalculation, .timeCalculation]
         }
 
         var specialCalculationsTitle: String {
@@ -221,6 +251,10 @@ final class DisputeCategoryViewModel: ObservableObject {
             showReinstatementSheet = true
         case .rentSpecial:
             navigateToTenancySpecial = true
+        case .consumerDispute:
+            navigateToConsumerDispute = true
+        case .customCalculation:
+            showComingSoonAlert = true
         }
     }
     
@@ -239,8 +273,10 @@ final class DisputeCategoryViewModel: ObservableObject {
         navigateToSMMCalculation = false
         navigateToAttorneyFee = false
         navigateToTenancySpecial = false
+        navigateToConsumerDispute = false
         showSerialDisputesSheet = false
         showReinstatementSheet = false
+        showComingSoonAlert = false
         selectedCategory = nil
     }
 }

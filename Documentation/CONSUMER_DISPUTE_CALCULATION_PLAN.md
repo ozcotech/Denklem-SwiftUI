@@ -1,5 +1,7 @@
 # Tüketici Uyuşmazlığı Arabuluculuk Ücreti Hesaplama - Planlama Dokümanı
 
+> **Durum (2026-05-14): Tüm aşamalar tamamlandı.** Bu doküman özelliğin tasarımını ve nihai uygulamayı yansıtır. Uygulama sırasında bazı kararlar değişti — değişiklikler ilgili bölümlerde belirtilmiştir.
+
 ## İçindekiler
 
 1. [Genel Bakış](#genel-bakış)
@@ -216,25 +218,27 @@ Her iki yorumda da devletin ödediği miktar aynıdır.
 
 ```
 DisputeCategoryView
-  ├── 📅 Calendar ikonu (sağ üst köşe, overlay) → TimeCalculationView
   ├── [Arabuluculuk Ücreti] → MediationFeeView (mevcut - toplam ücret)
-  ├── Özel Hesaplamalar kartı (2-column grid, 3 satır = 6 buton)
-  │   ├── Kira (Tahliye/Tespit)      → TenancySelectionView
-  │   ├── Avukatlık Ücreti            → AttorneyFeeView
-  │   ├── İşe İade                    → ReinstatementSheet
-  │   ├── Seri Uyuşmazlıklar         → SerialDisputesSheet
-  │   ├── SMM Hesaplama               → SMMCalculationView (değişmedi)
-  │   └── Tüketici Uyuşmazlığı       → ConsumerDisputeView ← Süre'nin YERİNE
+  ├── Özel Hesaplamalar kartı
+  │   ├── Grid (2-column, 3 satır = 6 buton):
+  │   │   ├── Kira (Tahliye/Tespit)        → TenancySelectionView
+  │   │   ├── Avukatlık Ücreti             → AttorneyFeeView
+  │   │   ├── İşe İade                     → ReinstatementSheet
+  │   │   ├── Seri Uyuşmazlıklar          → SerialDisputesSheet
+  │   │   ├── Tüketici Uyuşmazlığı        → ConsumerDisputeView  ← üst SMM slot'unun yerine
+  │   │   └── Özel Hesaplama (placeholder) → "Yakında" alert       ← üst Süre slot'unun yerine
+  │   └── Shortcut row (HStack, 2 buton — grid altında):
+  │       ├── SMM Hesaplama                → SMMCalculationView (değişmedi)
+  │       └── Süre Hesaplama               → TimeCalculationSheet (dinamik takvim ikonu)
   └──
 ```
 
-> **Değişiklik:** Süre Hesaplama grid'den çıkarıldı, yerine Tüketici Uyuşmazlığı girdi. Grid buton sayısı 6'da kaldı (3 satır × 2 sütun). Süre Hesaplama ekranın sağ üst köşesine calendar ikonu olarak taşındı — StartScreen'deki survey butonu pattern'ı ile:
-> - `.overlay(alignment: .topTrailing)` ile yerleştirilir
-> - `.buttonStyle(.glass(.clear))` + `.buttonBorderShape(.circle)`
-> - Dinamik calendar ikonu (`"\(day).calendar"` — SF Symbols 7.0, iOS 26+), metin yok
-> - Günün tarihini gösterir: 18 Mart → `18.calendar`, 19 Mart → `19.calendar`
-> - `.navigationDestination` ile TimeCalculationView'a yönlendirir
-> - Süre hesaplama küçük/basit bir hesaplama, ayrı grid butonu gerektirmez
+> **Uygulama notu (değişiklik):** Plandaki "Süre Hesaplama overlay calendar ikonu" yaklaşımı uygulanmadı. Yerine:
+> - Süre Hesaplama, grid altındaki **shortcut row**'da kaldı (dinamik takvim ikonuyla — bugünün gününü gösteren `"\(day).calendar"`).
+> - Üst Time slot'u **Özel Hesaplama** placeholder'ı oldu (`star.circle` ikon, dokunulunca "Yakında" alert) — yeni bir özel hesaplama özelliği için yer ayrılmış durumda.
+> - Üst SMM slot'u **Tüketici Uyuşmazlığı** oldu (planın orijinal niyeti).
+> - Alt SMM Hesaplama shortcut'u olduğu gibi kaldı.
+> - Bu sayede DisputeSectionCard'a yeni bir `shortcutCategories` parametresi eklendi; grid ve shortcut artık bağımsız.
 
 ### Ekran Akışı — Tüketici Uyuşmazlığı
 
@@ -262,29 +266,24 @@ ConsumerDisputeResultSheet (.sheet)
   └── Bracket breakdown kartı
 ```
 
-### Ekran Akışı — Süre Hesaplama (Sağ Üst Köşe İkonu)
+### Ekran Layout — Final
 
 ```
 DisputeCategoryView ekranı:
-  ┌──────────────────────────────┐
-  │  Hesaplama Araçları    📅   │  ← calendar ikonu, overlay, sağ üst
-  │                              │     dokunulunca → TimeCalculationView
-  │  [Arabuluculuk Ücreti]       │
-  │                              │
-  │  Özel Hesaplamalar           │
-  │  [Kira]    [Avukatlık]       │
-  │  [İşe İade][Seri Uy.]       │
-  │  [SMM]     [Tüketici]       │  ← Süre'nin yerine Tüketici
-  └──────────────────────────────┘
+  ┌──────────────────────────────────────┐
+  │  Hesaplama Araçları                  │
+  │                                      │
+  │  [Arabuluculuk Ücreti]               │  ← full-width
+  │                                      │
+  │  Özel Hesaplamalar (başlık yok)      │
+  │  [Kira]            [Avukatlık]       │  ← grid
+  │  [İşe İade]        [Seri Uy.]       │
+  │  [Tüketici Uyşmz.] [Özel Hesap.]    │
+  │  [SMM Hesaplama]   [Süre Hesaplama]  │  ← shortcut row
+  └──────────────────────────────────────┘
 ```
 
-> **Pattern:** StartScreen'deki survey butonu ile birebir aynı:
-> - `.overlay(alignment: .topTrailing)` — toolbar değil (toolbar glass efekt sorunu)
-> - `.buttonStyle(.glass(.clear))` + `.buttonBorderShape(.circle)`
-> - İkon: Dinamik `"\(day).calendar"`, `.font(.title3)`, `.symbolRenderingMode(.hierarchical)`
-> - Metin yok, sadece ikon
-> - `.navigationDestination` ile TimeCalculationView'a yönlendirir
-> - Mevcut TimeCalculationView ve TimeCalculationViewModel hiç değişmez
+> **Pattern notu:** Süre Hesaplama, grid altındaki shortcut row'da bağımsız bir `RectangleButton` olarak kaldı. Mevcut `TimeCalculationView` ve `TimeCalculationViewModel` hiç değişmedi. Dinamik takvim ikonu (`capsuleSystemImage` üzerinden) sadece shortcut'taki Süre butonu için kullanılıyor.
 
 ---
 
@@ -327,59 +326,76 @@ DisputeCategoryView ekranı:
 MediationFeeResultSheet ile aynı yapı: NavigationStack + toolbar (paylaş/tamam), expand/collapse, staggered reveal animasyonu.
 
 ```
-┌──────────────────────────────────┐
-│  [↑ Paylaş]            [✓ Tamam] │  ← toolbar (topBarLeading / topBarTrailing)
-│                                   │
-│  ┌───────────────────────────┐   │
-│  │ Toplam Arabuluculuk        │   │
-│  │ Ücreti          9.000 TL   │   │  ← FeeResultCard (tap to expand/collapse)
-│  └───────────────────────────┘   │
-│                                   │
-│  ┌───────────────────────────┐   │  ← calculationInfoCard (glass)
-│  │ Hesaplama Bilgileri        │   │
-│  │ ─────────────────────────  │   │
-│  │ Anlaşma Tutarı:  14.000 TL│   │
-│  │ Tarife Yılı:     2026     │   │
-│  │ Ücret Sorumlusu: Tüketici │   │
-│  │ [isimlendirme]:  2.000 TL │   │  ← devletin karşıladığı (isim beklemede)
-│  └───────────────────────────┘   │
-│                                   │
-│  ┌───────────────────────────┐   │  ← Sonuç 1 kartı (glass)
-│  │ Sonuç 1                    │   │  ← başlık (isimlendirme beklemede)
-│  │ ─────────────────────────  │   │
-│  │ Tüketici öder:    4.500 TL│   │
-│  │ Satıcı öder:      0 TL    │   │
-│  │ Arabulucuya:      6.500 TL│   │
-│  └───────────────────────────┘   │
-│                                   │
-│  ┌───────────────────────────┐   │  ← Sonuç 2 kartı (glass)
-│  │ Sonuç 2                    │   │  ← başlık (isimlendirme beklemede)
-│  │ ─────────────────────────  │   │
-│  │ Tüketici öder:    7.000 TL│   │
-│  │ Satıcı öder:      0 TL    │   │
-│  │ Arabulucuya:      9.000 TL│   │
-│  └───────────────────────────┘   │
-│                                   │
-│  ┌───────────────────────────┐   │  ← bracket breakdown kartı (glass)
-│  │ Hesaplama Yöntemi          │   │     MediationFeeResultSheet'teki
-│  │ ─────────────────────────  │   │     calculationMethodCard ile aynı
-│  │ İlk 600.000: ×%6 = 840 TL │   │
-│  │ ─────────────────────────  │   │
-│  │ Bracket Toplam:    840 TL  │   │
-│  │ Asgari Ücret:    9.000 TL  │   │
-│  │ ─────────────────────────  │   │
-│  │ ℹ Asgari ücret uygulandı   │   │
-│  └───────────────────────────┘   │
-└──────────────────────────────────┘
+┌──────────────────────────────────────────────┐
+│  [↑ Paylaş]                       [✓ Tamam] │  ← toolbar
+│                                              │
+│  ┌────────────────────────────────────┐     │  ← FeeResultCard
+│  │ Arabuluculuk Ücreti                │     │     (tap to expand/collapse)
+│  │              9.000 TL              │     │
+│  └────────────────────────────────────┘     │
+│                                              │
+│  ┌────────────────────────────────────┐     │  ← Hesaplama Bilgileri
+│  │ Hesaplama Bilgileri                │     │
+│  │ ────────────────────────────────── │     │
+│  │ Tarife Yılı:           2026        │     │
+│  │ Anlaşma Tutarı:        14.000 TL   │     │
+│  │ Ücreti kim öder?:      Tüketici    │     │
+│  │ Bakanlık katkısı:      2.000 TL    │     │
+│  └────────────────────────────────────┘     │
+│                                              │
+│  ┌────────────────────────────────────┐     │  ← 1. Sonuç (Yorum B — dar)
+│  │ 1. Sonuç                           │     │     mediator gets FULL fee
+│  │ ────────────────────────────────── │     │
+│  │ Tüketici:                7.000 TL  │     │
+│  │ Satıcı (Karşı Taraf):    0 TL      │     │
+│  │ T.C. Adalet Bakanlığı:   2.000 TL  │     │
+│  │ Arabuluculuk Ücreti (Tam): 9.000 TL│     │  ← highlighted
+│  └────────────────────────────────────┘     │
+│                                              │
+│  ┌────────────────────────────────────┐     │  ← 2. Sonuç (Yorum A — geniş)
+│  │ 2. Sonuç                           │     │     mediator gets PARTIAL fee
+│  │ ────────────────────────────────── │     │
+│  │ Tüketici:                4.500 TL  │     │
+│  │ Satıcı (Karşı Taraf):    0 TL      │     │
+│  │ T.C. Adalet Bakanlığı:   2.000 TL  │     │
+│  │ Arabuluculuk Ücreti (Kısmi):       │     │
+│  │                          6.500 TL  │     │  ← highlighted
+│  └────────────────────────────────────┘     │
+│                                              │
+│  ┌────────────────────────────────────┐     │  ← Bilgilendirme + PDF link
+│  │ ℹ Sonuç kısmı arabulucunun         │     │
+│  │   takdirindedir.                   │     │
+│  │ Ayrıntılar için tıklayınız ↗       │     │  ← .isLink trait, açar:
+│  └────────────────────────────────────┘     │     ConsumerDisputeOpinionSheet
+│                                              │
+│  ┌────────────────────────────────────┐     │  ← Bracket breakdown (varsa)
+│  │ Hesaplama Yöntemi                  │     │
+│  │ ────────────────────────────────── │     │
+│  │ İlk 600.000: ×%6 = 840 TL          │     │
+│  │ ────────────────────────────────── │     │
+│  │ Bracket Toplam:   840 TL           │     │
+│  │ Asgari Ücret:     9.000 TL         │     │
+│  │ ────────────────────────────────── │     │
+│  │ ℹ Asgari ücret uygulandı           │     │
+│  └────────────────────────────────────┘     │
+└──────────────────────────────────────────────┘
 ```
 
 **Yapısal notlar:**
 - `.presentationBackground(.clear)` + `.animatedBackground()` (MediationFeeResultSheet ile aynı)
 - `.presentationDetents([.large])` + `.presentationDragIndicator(.visible)`
-- Tap to expand/collapse (mainFeeCard), staggered revealRow() animasyonu
+- Tap to expand/collapse (mainFeeCard), staggered revealRow() animasyonu (her satır 50ms gecikme)
 - Toolbar: paylaş (topBarLeading) + tamam/dismiss (topBarTrailing)
-- Paylaş butonu txt dosyası oluşturur (shareFileURL pattern)
-- **İsimlendirmeler beklemede:** Sonuç 1/2 başlıkları ve "devletin karşıladığı miktar" ifadesi kullanıcının kararına bağlı
+- Paylaş butonu TXT dosyası oluşturur (shareFileURL pattern, ConsumerDispute özelinde)
+- Disclaimer link `ConsumerDisputeOpinionSheet`'i açar — PDFKit ile bundled PDF görüntülenir, PDF yoksa fallback mesajı
+
+**İsimlendirme kararları (final):**
+- "1. Sonuç" = Yorum B (dar yorum, mediator tam ücret alır). Üstte gösterilir çünkü Adalet Bakanlığı'nın 2024 görüş yazısı bu yorumu destekliyor.
+- "2. Sonuç" = Yorum A (geniş yorum, mediator kısmi ücret alır). Altta gösterilir, bilgi amaçlı.
+- Devlet katkısı satırı: **"T.C. Adalet Bakanlığı"**
+- Bakanlık katkısı (info kartında): **"Bakanlık katkısı"**
+- Arabulucuya geçen miktar: **"Arabuluculuk Ücreti (Tam)"** veya **"Arabuluculuk Ücreti (Kısmi)"** (kart bazlı, highlighted)
+- Disclaimer: **"Sonuç kısmı arabulucunun takdirindedir."** + **"Ayrıntılar için tıklayınız"** linki
 
 ### Ücret Sorumlusu Seçimi — Menu (Dropdown)
 
@@ -398,26 +414,51 @@ Glass efektli buton içinde seçili değer gösterilir, dokunulduğunda menü a�
 
 ```
 Denklem/Views/Screens/ConsumerDispute/
-├── ConsumerDisputeView.swift           // Girdi ekranı
-├── ConsumerDisputeViewModel.swift      // İş mantığı + hesaplama
-└── ConsumerDisputeResultSheet.swift    // Sonuç sheet'i
+├── ConsumerDisputeView.swift              // Girdi ekranı (YearPicker, amount, payer Menu)
+├── ConsumerDisputeViewModel.swift         // İş mantığı + iki yorumun hesabı
+├── ConsumerDisputeResultSheet.swift       // Sonuç sheet'i (1./2. Sonuç + bracket breakdown)
+└── ConsumerDisputeOpinionSheet.swift      // PDFKit görüntüleyici (görüş yazısı)
+
+Denklem/Models/Domain/
+└── ConsumerDisputeResult.swift            // PaymentResponsibility + InterpretationResult + ConsumerDisputeResult
+
+Denklem/Resources/Legal/                   // YENİ klasör (Xcode synchronized — otomatik bundle)
+├── README.md                              // Hangi PDF nereye konacak, nasıl referans alınır
+└── consumer_dispute_opinion.pdf           // Adalet Bakanlığı görüş yazısı (kullanıcı tarafından eklenecek)
 ```
 
-### Değiştirilecek Mevcut Dosyalar
+### Değiştirilen Mevcut Dosyalar
 
 ```
-DisputeCategoryType enum          → .consumerDispute case ekle
-                                    .timeCalculation → specialCalculations'dan çıkar (enum'da kalır)
-DisputeCategoryViewModel.swift    → navigateToConsumerDispute ekle
-                                    specialCalculations array güncelle (timeCalculation → consumerDispute)
-                                    navigateToTimeCalculation korunur (overlay buton için)
-DisputeCategoryView.swift         → Calendar ikonu overlay ekle (StartScreen survey pattern)
-                                    ConsumerDispute .navigationDestination ekle
-LocalizationKeys.swift            → consumer_dispute.* anahtarları ekle
-Localizable.xcstrings             → 3 dil çevirisi (TR, EN, SV)
+DisputeCategoryViewModel.swift    → .consumerDispute + .customCalculation enum case'leri eklendi
+                                    Tüm switch'ler güncellendi (displayName/description/systemImage/iconColor)
+                                    navigateToConsumerDispute + showComingSoonAlert published flag'leri eklendi
+                                    selectCategory + resetNavigation güncellendi
+                                    specialCalculations array: [rentSpecial, attorneyFee, reinstatement,
+                                      serialDisputes, consumerDispute, customCalculation]
+                                    shortcutCalculations: [smmCalculation, timeCalculation] (yeni computed)
+
+DisputeSectionCard.swift          → shortcutCategories parametresi eklendi (grid ve shortcut bağımsız)
+                                    capsule render mantığı kaldırıldı — hepsi RectangleButton
+                                    accessibilityHint(for:) helper'ı (consumerDispute hint'i için)
+
+DisputeCategoryView.swift         → shortcutCategories: viewModel.shortcutCalculations parametresi
+                                    ConsumerDispute .navigationDestination eklendi
+                                    Coming Soon .alert modifier'ı eklendi
+                                    Üst boşluk daraltıldı (padding tweaks)
+
+RectangleButton.swift             → minHeight 72 → 64 (dikey boşluk azaltıldı)
+
+LocalizationKeys.swift            → ConsumerDispute struct (12 key)
+                                    DisputeCategory: consumerDispute*, customCalculation* (4 key)
+                                    Accessibility: consumerDisputeButtonHint, consumerDisputePayerMenuHint
+                                    General: comingSoonTitle, comingSoonMessage
+
+Localizable.xcstrings             → Toplam ~20 yeni key × 3 dil (TR/EN/SV)
+                                    "✓" kaldırıldı (Step 4 öncesi temizliği)
 ```
 
-> **Not:** SMMCalculationView, SMMCalculationViewModel, TimeCalculationView, TimeCalculationViewModel **hiç değişmez**. Süre sadece grid'den çıkıp sağ üst köşeye taşınıyor.
+> **Değişmeyen dosyalar:** `SMMCalculationView`, `SMMCalculationViewModel`, `TimeCalculationView`, `TimeCalculationViewModel`, `TimeCalculationSheet` — bunların hiçbiri dokunulmadı. Süre Hesaplama shortcut row'da olduğu gibi çalışmaya devam ediyor.
 
 ### Model (Yeni veya Mevcut Genişletme)
 
@@ -464,68 +505,87 @@ enum PaymentResponsibility: String, CaseIterable {
 
 ## Uygulama Adımları
 
-### Adım 1: Model Katmanı
-- [ ] `PaymentResponsibility` enum oluştur
-- [ ] `InterpretationResult` struct oluştur
-- [ ] `ConsumerDisputeResult` struct oluştur
+### Adım 1: Model Katmanı — ✅ DONE
+- [x] `PaymentResponsibility` enum oluştur (Identifiable, displayName)
+- [x] `InterpretationResult` struct oluştur (consumerPays, sellerPays, governmentPays, mediatorReceives)
+- [x] `ConsumerDisputeResult` struct oluştur (totalFee, governmentPayment, iki yorum, bracket breakdown)
 
-### Adım 2: ViewModel
-- [ ] `ConsumerDisputeViewModel` oluştur
+### Adım 2: ViewModel — ✅ DONE
+- [x] `ConsumerDisputeViewModel` oluştur
   - Girdiler: tarife yılı, anlaşma tutarı, ücret sorumlusu
-  - Mevcut `TariffProtocol.calculateAgreementFeeWithBreakdown()` kullanarak toplam ücreti hesapla
-  - Devlet payını `tariff.getHourlyRate(for: "consumer") × 2` ile hesapla
-  - Her iki yorumu ayrı ayrı hesapla
-  - Validasyon (tutar > 0)
+  - `selectedYear.getTariffProtocol()` üzerinden tariff erişimi
+  - `tariff.calculateAgreementFeeWithBreakdown(disputeType: "consumer", amount, partyCount: 2)` toplam ücret
+  - `tariff.getHourlyRate(for: "consumer") × 2` Bakanlık katkısı
+  - `computeInterpretationA` (geniş) ve `computeInterpretationB` (dar) — pure fonksiyonlar
+  - `formatAmountInput()` locale-aware live formatlama (TR `,` / EN `.`)
+  - Validasyon: `parsedAmount >= ValidationConstants.Amount.minimum`
 
-### Adım 3: Navigasyon Düzenlemesi
-- [ ] `DisputeCategoryType` güncelle:
-  - `.timeCalculation` grid'den çıkar (enum'da kalır ama specialCalculations'dan çıkar)
-  - `.consumerDispute` ekle (ikon, renk, displayName, description)
-- [ ] `DisputeCategoryViewModel` güncelle:
-  - `navigateToTimeCalculation` korunur (overlay buton kullanacak)
-  - `navigateToConsumerDispute` ekle (@Published var)
-  - `specialCalculations` array: [rentSpecial, attorneyFee, reinstatement, serialDisputes, smmCalculation, consumerDispute]
-- [ ] `DisputeCategoryView` güncelle:
-  - Süre Hesaplama calendar ikonu: `.overlay(alignment: .topTrailing)` ekle
-    - StartScreen survey butonu pattern'ı: `.glass(.clear)` + `.buttonBorderShape(.circle)`
-    - Dinamik `"\(Calendar.current.component(.day, from: Date())).calendar"` ikonu
-    - Dokunulunca `viewModel.navigateToTimeCalculation = true`
-  - `.navigationDestination(isPresented: $viewModel.navigateToConsumerDispute)` ekle → ConsumerDisputeView
-  - Mevcut `.navigationDestination(isPresented: $viewModel.navigateToTimeCalculation)` korunur
-- [ ] Mevcut SMMCalculationView, TimeCalculationView ve ViewModel'leri **hiç değişmez**
+### Adım 3: Navigasyon Düzenlemesi — ✅ DONE (planlanandan farklı)
+- [x] `DisputeCategoryType` güncelle:
+  - `.consumerDispute` case eklendi (cart.circle.fill, .mint, displayName/description)
+  - `.customCalculation` case eklendi (star.circle, .yellow — placeholder)
+  - `.timeCalculation` enum'da kaldı, sadece grid'deki üst slot'tan çıktı
+  - `capsuleSystemImage` computed property (Time için dinamik takvim ikonu) eklendi
+- [x] `DisputeCategoryViewModel` güncelle:
+  - `navigateToConsumerDispute` + `showComingSoonAlert` published flag'leri eklendi
+  - `specialCalculations`: [rentSpecial, attorneyFee, reinstatement, serialDisputes, **consumerDispute**, **customCalculation**]
+  - `shortcutCalculations`: [smmCalculation, timeCalculation] (yeni computed)
+  - `navigateToTimeCalculation` korunur (shortcut row için, eskisi gibi çalışıyor)
+- [x] `DisputeSectionCard` refactor: `shortcutCategories` parametresi eklendi
+- [x] `DisputeCategoryView` güncelle:
+  - `.navigationDestination(isPresented: $viewModel.navigateToConsumerDispute)` → ConsumerDisputeView
+  - `.alert(isPresented: $viewModel.showComingSoonAlert)` (Özel Hesaplama için "Yakında" alert)
+  - Calendar overlay ikonu YAPILMADI (plan değişti — Süre, shortcut row'da kaldı)
+- [x] SMMCalculationView, TimeCalculationView ve ViewModel'leri değişmedi ✓
 
-### Adım 4: Girdi Ekranı
-- [ ] `ConsumerDisputeView` oluştur
-  - YearPicker
-  - Anlaşma tutarı TextField
-  - Ücret sorumlusu seçimi (Menu/dropdown: Tüketici / Eşit Bölüşüm / Satıcı)
-  - CalculateButton
-  - İnline FeeResultCard (toplam ücret özeti)
+### Adım 4: Girdi Ekranı — ✅ DONE
+- [x] `ConsumerDisputeView` oluştur
+  - `YearPickerSection` (paylaşılan bileşen)
+  - Anlaşma tutarı: header + TextField (decimalPad, live format, glass effect)
+  - Ücret sorumlusu: header + `Menu` (3 seçenek, checkmark ile aktif değer)
+  - `ErrorBannerView` validasyon mesajı için
+  - `CalculateButton` (paylaşılan bileşen)
+  - Inline result card (tap → sheet açar, MediationFee pattern)
 
-### Adım 5: Sonuç Sheet'i
-- [ ] `ConsumerDisputeResultSheet` oluştur (MediationFeeResultSheet pattern)
-  - Toplam ücret kartı (FeeResultCard, expand/collapse)
-  - Hesaplama bilgileri kartı
-  - Sonuç 1 kartı (isimlendirme beklemede)
-  - Sonuç 2 kartı (isimlendirme beklemede)
-  - Bracket breakdown kartı
-  - Toolbar: paylaş (sol) + tamam (sağ)
-  - Staggered reveal animasyonu
+### Adım 5: Sonuç Sheet'i — ✅ DONE
+- [x] `ConsumerDisputeResultSheet` oluştur (MediationFeeResultSheet pattern)
+  - Main fee card (FeeResultCard, expand/collapse, glow shadow)
+  - Hesaplama Bilgileri kartı (4 satır: yıl, tutar, payer, Bakanlık katkısı)
+  - **1. Sonuç** kartı = Yorum B (dar, mediator tam ücret) — üstte
+  - **2. Sonuç** kartı = Yorum A (geniş, mediator kısmi ücret) — altta
+  - Disclaimer kartı: "Sonuç kısmı arabulucunun takdirindedir." + "Ayrıntılar için tıklayınız" linki
+  - Bracket breakdown kartı (sadece bracketSteps boş değilse)
+  - Toolbar: paylaş (TXT export) + tamam (dismiss)
+  - Staggered revealRow() animasyonu (50ms gecikme)
+- [x] `ConsumerDisputeOpinionSheet` oluştur — PDFKit görüntüleyici
+  - `Bundle.main.url(forResource:withExtension:)` ile yüklenir
+  - PDF yoksa graceful fallback (doc.questionmark + "henüz eklenmemiş" mesajı)
 
-### Adım 6: Lokalizasyon
-- [ ] `LocalizationKeys.swift`'e consumer_dispute.* anahtarları ekle
-- [ ] `Localizable.xcstrings`'e TR/EN/SV çevirileri ekle
+### Adım 6: Lokalizasyon — ✅ DONE
+- [x] `LocalizationKeys.swift`'e tüm anahtarlar eklendi
+  - `ConsumerDispute` struct: agreementAmountLabel, payerLabel, 3 payer option, 2 result title, 4 row label, 2 disclaimer, opinionSheetTitle, opinionPdfMissing (12 key)
+  - `DisputeCategory`: consumerDispute*, customCalculation* (4 key)
+  - `Accessibility`: consumerDisputeButtonHint, consumerDisputePayerMenuHint (2 key)
+  - `General`: comingSoonTitle, comingSoonMessage (2 key)
+- [x] `Localizable.xcstrings`'e tüm çeviriler eklendi (TR/EN/SV, alfabetik sıraya yerleştirildi)
 
-### Adım 7: Erişilebilirlik
-- [ ] VoiceOver label/hint/value ekle
-- [ ] Mevcut erişilebilirlik kurallarına uy (VOICEOVER_ACCESSIBILITY_PLAN.md)
+### Adım 7: Erişilebilirlik — ✅ DONE
+- [x] Tüm input alanlarına label + hint + value
+- [x] Header text'ler `.accessibilityAddTraits(.isHeader)`
+- [x] Dekoratif ikonlar `.accessibilityHidden(true)` (chevron, info, doc.questionmark)
+- [x] Inline result card + main fee card `.combine` + `.isButton` + expand/collapse hint
+- [x] Disclaimer link `.accessibilityAddTraits(.isLink)`
+- [x] DisputeSectionCard'a per-category hint helper'ı eklendi (Consumer Dispute butonu için hint)
+- [x] Result-loaded announcement (ViewModel'de hesaplama bitince + ResultSheet açılınca)
+- [x] Error onChange announcement, isExpanded onChange announcement
+- [x] PDFKit görüntüleyici kendi a11y'sini hallediyor (text content, page nav otomatik)
 
-### Adım 8: Test ve İnceleme
-- [ ] Örnek senaryolar ile doğrulama (14.000 TL / 500.000 TL / 1.000.000 TL)
-- [ ] 2025 ve 2026 tarife verileri ile test
-- [ ] 3 ücret sorumlusu seçeneği ile test (tüketici / eşit / satıcı)
-- [ ] Edge case: çok küçük tutarlar (asgari ücret devreye girmesi)
-- [ ] Edge case: büyük tutarlar (arabulucu aleyhine fark görünmesi)
+### Adım 8: Test ve İnceleme — ⏳ Kullanıcı tarafından
+- [ ] Cihazda 3 ücret sorumlusu × 2 yıl × 3 farklı tutar senaryosu
+- [ ] PDF dosyasının `Resources/Legal/consumer_dispute_opinion.pdf` konumuna eklenmesi ve linkten açılması
+- [ ] VoiceOver akışı sesli olarak doğrulama
+- [ ] 3 dil arasında geçiş (TR/EN/SV) — UI taraması
+- [ ] Özel Hesaplama → "Yakında" alert çalışması
 
 ---
 
@@ -543,11 +603,19 @@ enum PaymentResponsibility: String, CaseIterable {
 
 6. **Mevcut MediationFee hesaplama mantığı kullanılacak.** Toplam ücret için aynı bracket hesabı + asgari ücret kontrolü. Ek olarak devlet payı ve sonuç hesaplamaları yapılacak.
 
-7. **Süre Hesaplama grid'den çıkar, sağ üst köşeye taşınır.** StartScreen'deki survey butonu pattern'ı ile `.overlay(alignment: .topTrailing)`, dinamik calendar ikonu (`"\(day).calendar"`), `.glass(.clear)` + `.buttonBorderShape(.circle)`. Metin yok, sadece ikon. Süre hesaplama basit bir hesaplama, ayrı grid butonu gerektirmez.
+7. **Süre Hesaplama shortcut row'da kaldı.** Plandaki "overlay calendar icon" yaklaşımı uygulanmadı. Yerine `DisputeSectionCard`'a `shortcutCategories` parametresi eklendi ve grid'in altında SMM + Süre kısayolları olarak kaldılar. Süre butonu hâlâ dinamik takvim ikonu kullanıyor (`"\(day).calendar"`).
 
-8. **Tüketici Uyuşmazlığı, Süre'nin yerine geçer.** Grid'de aynı pozisyona yerleşir. Buton sayısı 6'da kalır (3×2).
+8. **Tüketici Uyuşmazlığı, ÜST SMM slot'unun yerine geçti** (Süre değil). Üst Süre slot'una ise `customCalculation` placeholder'ı yerleştirildi (`star.circle` ikonu, dokunulunca "Yakında" alert). Bu sayede gelecekte başka bir özel hesaplama özelliği için yer ayrılmış oldu. Buton sayısı 6'da kaldı (3×2 grid) + 2 shortcut.
 
-9. **İsimlendirmeler beklemede.** Sonuç 1/2 kart başlıkları ve "devletin karşıladığı miktar" ifadesi henüz kesinleşmedi — kullanıcı karar verecek.
+9. **İsimlendirmeler — FINAL:**
+   - **"1. Sonuç"** = Yorum B (dar/mediator-favourable, mediator tam ücret alır). Üstte gösterilir — Adalet Bakanlığı'nın 2024 görüş yazısı bu yorumu destekliyor.
+   - **"2. Sonuç"** = Yorum A (geniş/consumer-favourable, mediator kısmi ücret alır). Altta gösterilir.
+   - Devlet katkısı satırı: **"T.C. Adalet Bakanlığı"**
+   - Mediator satırı: **"Arabuluculuk Ücreti (Tam)"** / **"Arabuluculuk Ücreti (Kısmi)"**
+   - Info kartında devlet katkısı: **"Bakanlık katkısı"**
+   - Disclaimer: **"Sonuç kısmı arabulucunun takdirindedir."** + **"Ayrıntılar için tıklayınız"** linki (PDFKit ile orijinal görüş yazısını açar)
+
+10. **Görüş yazısı PDF olarak bundle'lanır.** `Denklem/Resources/Legal/consumer_dispute_opinion.pdf` konumuna konur, Xcode synchronized folders otomatik dahil eder. `ConsumerDisputeOpinionSheet` PDFKit ile görüntüler. PDF eksikse "henüz eklenmemiş" mesajı görünür (graceful fallback).
 
 ### Arabulucu Aleyhine Durum (Not)
 
@@ -564,13 +632,16 @@ Bu durum uygulamada bilgilendirme amaçlı gösterilecek — kullanıcı hangi y
 
 | Adım | Durum |
 |---|---|
-| Planlama dokümanı | Tamamlandı |
-| Model katmanı | Beklemede |
-| ViewModel | Beklemede |
-| Navigasyon düzenlemesi (Süre → overlay, Tüketici → grid) | Beklemede |
-| Girdi ekranı | Beklemede |
-| Sonuç sheet'i | Beklemede |
-| Lokalizasyon | Beklemede |
-| Erişilebilirlik | Beklemede |
-| İsimlendirme kararları | Beklemede (kullanıcıdan bekleniyor) |
-| Test | Beklemede |
+| Planlama dokümanı | ✅ Tamamlandı |
+| Model katmanı | ✅ Tamamlandı |
+| ViewModel | ✅ Tamamlandı |
+| Navigasyon düzenlemesi | ✅ Tamamlandı (overlay yerine shortcut row pattern'i kullanıldı) |
+| Girdi ekranı (ConsumerDisputeView) | ✅ Tamamlandı |
+| Sonuç sheet'i (ConsumerDisputeResultSheet) | ✅ Tamamlandı |
+| PDF görüntüleyici (ConsumerDisputeOpinionSheet) | ✅ Tamamlandı |
+| Lokalizasyon (TR/EN/SV) | ✅ Tamamlandı |
+| Erişilebilirlik (VoiceOver audit) | ✅ Tamamlandı |
+| İsimlendirme kararları | ✅ Tamamlandı (1./2. Sonuç, T.C. Adalet Bakanlığı, Tam/Kısmi) |
+| Custom Calculation placeholder (üst Süre slot'u) | ✅ Tamamlandı |
+| Cihaz testi (kullanıcı) | ⏳ Beklemede |
+| PDF dosyasının eklenmesi (kullanıcı) | ⏳ Beklemede |

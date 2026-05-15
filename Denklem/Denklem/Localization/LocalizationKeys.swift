@@ -37,6 +37,9 @@ struct LocalizationKeys {
         static let disputeSubject = "general.dispute_subject"
         static let recalculate = "general.recalculate"
         static let calculatedWithDenklem = "general.calculated_with_denklem"
+        // Generic "Coming Soon" alert (used by placeholder buttons like .customCalculation)
+        static let comingSoonTitle = "general.coming_soon.title"
+        static let comingSoonMessage = "general.coming_soon.message"
     }
     
     // MARK: - Dispute Types
@@ -102,7 +105,42 @@ struct LocalizationKeys {
         static let reinstatementDescription = "dispute_category.reinstatement.description"
         static let serialDisputes = "dispute_category.serial_disputes"
         static let serialDisputesDescription = "dispute_category.serial_disputes.description"
+        static let consumerDispute = "dispute_category.consumer_dispute"
+        static let consumerDisputeDescription = "dispute_category.consumer_dispute.description"
+        static let customCalculation = "dispute_category.custom_calculation"
+        static let customCalculationDescription = "dispute_category.custom_calculation.description"
 
+    }
+
+    // MARK: - Consumer Dispute Screen
+    struct ConsumerDispute {
+        // Section labels (input screen)
+        static let agreementAmountLabel = "consumer_dispute.agreement_amount_label"
+        static let payerLabel = "consumer_dispute.payer_label"
+
+        // Payment responsibility menu options
+        static let payerConsumer = "consumer_dispute.payer.consumer"
+        static let payerEqual = "consumer_dispute.payer.equal"
+        static let payerSeller = "consumer_dispute.payer.seller"
+
+        // Result sheet — interpretation card titles
+        static let resultFirst = "consumer_dispute.result.first"   // "1. Sonuç" (narrow interpretation, mediator gets full)
+        static let resultSecond = "consumer_dispute.result.second" // "2. Sonuç" (broad interpretation, mediator gets partial)
+        static let resultSingle = "consumer_dispute.result.single" // "Sonuç" — used when only one card is shown (equal split / seller pays)
+
+        // Result sheet — row labels
+        static let rowMinistry = "consumer_dispute.result.row.ministry"               // "T.C. Adalet Bakanlığı"
+        static let rowMediatorFull = "consumer_dispute.result.row.mediator_full"      // "Arabuluculuk Ücreti (Tam)"
+        static let rowMediatorPartial = "consumer_dispute.result.row.mediator_partial" // "Arabuluculuk Ücreti (Kısmi)"
+        static let rowGovernmentPayment = "consumer_dispute.result.row.government_payment" // calc info card label
+
+        // Result sheet — disclaimer + link to the official advisory opinion PDF
+        static let resultDisclaimer = "consumer_dispute.result.disclaimer"
+        static let resultDetailsLink = "consumer_dispute.result.details_link"
+
+        // Advisory opinion PDF sheet
+        static let opinionSheetTitle = "consumer_dispute.opinion.title"
+        static let opinionPdfMissing = "consumer_dispute.opinion.pdf_missing" // shown when the bundled PDF is absent
     }
     
     // MARK: - Agreement Status
@@ -688,6 +726,8 @@ struct LocalizationKeys {
         static let enterButtonHint = "a11y.hint.enter_button"
         static let surveyButtonHint = "a11y.hint.survey_button"
         static let mediationFeeButtonHint = "a11y.hint.mediation_fee_button"
+        static let consumerDisputeButtonHint = "a11y.hint.consumer_dispute_button"
+        static let consumerDisputePayerMenuHint = "a11y.hint.consumer_dispute_payer_menu"
         static let calculationTypeMenuHint = "a11y.hint.calculation_type_menu"
         static let courtTypeMenuHint = "a11y.hint.court_type_menu"
 

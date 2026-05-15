@@ -179,7 +179,7 @@ final class LegislationViewModel: ObservableObject {
     func openInSafari(_ document: LegislationDocument) {
         guard let urlString = document.url,
               let url = URL(string: urlString) else {
-            errorMessage = NSLocalizedString(LocalizationKeys.ErrorMessage.fileError, comment: "")
+            errorMessage = LocalizationKeys.ErrorMessage.fileError.localized
             return
         }
         

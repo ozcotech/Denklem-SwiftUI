@@ -61,7 +61,7 @@ struct LawDocumentView: View {
 
     private var articlesSection: some View {
         VStack(spacing: 0) {
-            LawSectionTitle(title: NSLocalizedString("legislation.law.section.articles", value: "Kanun Maddeleri", comment: ""))
+            LawSectionTitle(title: "legislation.law.section.articles".localized)
 
             VStack(spacing: 0) {
                 ForEach(Array(content.articles.enumerated()), id: \.offset) { index, article in
