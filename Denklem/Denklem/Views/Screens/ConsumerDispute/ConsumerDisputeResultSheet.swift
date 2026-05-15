@@ -27,6 +27,10 @@ struct ConsumerDisputeResultSheet: View {
     @State private var revealContent = false
     @State private var showShareSheet = false
     @State private var showOpinionSheet = false
+    /// Drives the orange pulsing shadow on the disclaimer card to draw attention to the
+    /// "Sonuç seçimi arabulucunun takdirindedir." note. Mirrors the inline-result-card glow
+    /// pattern from MediationFeeView, but warning-coloured instead of theme.primary.
+    @State private var disclaimerGlowPhase = false
 
     // MARK: - Body
 
@@ -50,11 +54,16 @@ struct ConsumerDisputeResultSheet: View {
                             // scenarios the result is unambiguous, so a single card suffices.
                             switch result.paymentResponsibility {
                             case .consumer:
+                                // Disclaimer sits right under the info card so the mediator sees
+                                // it before scanning the two outcomes, not after.
+                                disclaimerCard
+                                    .transition(.opacity)
+
                                 interpretationCard(
                                     title: LocalizationKeys.ConsumerDispute.resultFirst.localized,
                                     interpretation: result.interpretationB,
                                     mediatorLabel: LocalizationKeys.ConsumerDispute.rowMediatorFull.localized,
-                                    baseOrder: 5
+                                    baseOrder: 6
                                 )
                                 .transition(.opacity)
 
@@ -62,18 +71,16 @@ struct ConsumerDisputeResultSheet: View {
                                     title: LocalizationKeys.ConsumerDispute.resultSecond.localized,
                                     interpretation: result.interpretationA,
                                     mediatorLabel: LocalizationKeys.ConsumerDispute.rowMediatorPartial.localized,
-                                    baseOrder: 10
+                                    baseOrder: 11
                                 )
                                 .transition(.opacity)
 
-                                disclaimerCard
-                                    .transition(.opacity)
-
                             case .equal:
                                 // Equal split → mediator receives a partial fee under either reading.
-                                // Use Interpretation A's numbers (broad reading) with the "(Kısmi)" label.
+                                // Reuse the "Kısmi Ücret Sonucu" title so the card heading matches
+                                // the mediator-collection scenario across all three payer choices.
                                 interpretationCard(
-                                    title: LocalizationKeys.ConsumerDispute.resultSingle.localized,
+                                    title: LocalizationKeys.ConsumerDispute.resultSecond.localized,
                                     interpretation: result.interpretationA,
                                     mediatorLabel: LocalizationKeys.ConsumerDispute.rowMediatorPartial.localized,
                                     baseOrder: 5
@@ -83,9 +90,9 @@ struct ConsumerDisputeResultSheet: View {
                             case .seller:
                                 // Seller pays everything → consumer obligation = 0 → 73/A-3 doesn't
                                 // trigger → both interpretations produce identical numbers (mediator
-                                // gets the full fee). Show one card labelled "(Tam)".
+                                // gets the full fee). Reuse the "Tam Ücret Sonucu" title.
                                 interpretationCard(
-                                    title: LocalizationKeys.ConsumerDispute.resultSingle.localized,
+                                    title: LocalizationKeys.ConsumerDispute.resultFirst.localized,
                                     interpretation: result.interpretationB,
                                     mediatorLabel: LocalizationKeys.ConsumerDispute.rowMediatorFull.localized,
                                     baseOrder: 5
@@ -328,12 +335,14 @@ struct ConsumerDisputeResultSheet: View {
     // MARK: - Disclaimer + PDF Link
 
     private var disclaimerCard: some View {
-        revealRow(order: 15) {
+        // Order 5 sits between the info card (orders 0–4) and the first outcome card
+        // (order 6+), so the staggered reveal slots it into its new on-screen position.
+        revealRow(order: 5) {
             VStack(spacing: theme.spacingS) {
                 HStack(alignment: .top, spacing: theme.spacingXS) {
                     Image(systemName: "info.circle.fill")
                         .font(theme.footnote)
-                        .foregroundStyle(theme.primary)
+                        .foregroundStyle(Color.orange)
                         .accessibilityHidden(true)
 
                     Text(LocalizationKeys.ConsumerDispute.resultDisclaimer.localized)
@@ -349,10 +358,10 @@ struct ConsumerDisputeResultSheet: View {
                         Text(LocalizationKeys.ConsumerDispute.resultDetailsLink.localized)
                             .font(theme.footnote)
                             .fontWeight(.medium)
-                            .foregroundStyle(theme.primary)
+                            .foregroundStyle(Color.orange)
                         Image(systemName: "arrow.up.right.square")
                             .font(theme.caption)
-                            .foregroundStyle(theme.primary)
+                            .foregroundStyle(Color.orange)
                             .accessibilityHidden(true)
                     }
                 }
@@ -364,6 +373,14 @@ struct ConsumerDisputeResultSheet: View {
             .padding(theme.spacingL)
             .glassEffect(isAnimatedBackground ? .clear : .regular,
                          in: RoundedRectangle(cornerRadius: theme.cornerRadiusL))
+            // Orange pulsing glow — mirrors MediationFeeView's blue inline-result-card pulse.
+            .shadow(color: Color.orange.opacity(disclaimerGlowPhase ? 0.5 : 0.15),
+                    radius: disclaimerGlowPhase ? 12 : 4)
+            .onAppear {
+                withAnimation(.easeInOut(duration: 1.5).repeatForever(autoreverses: true)) {
+                    disclaimerGlowPhase = true
+                }
+            }
         }
     }
 
@@ -504,14 +521,14 @@ struct ConsumerDisputeResultSheet: View {
             lines.append("")
 
         case .equal:
-            lines.append("\(LocalizationKeys.ConsumerDispute.resultSingle.localized):")
+            lines.append("\(LocalizationKeys.ConsumerDispute.resultSecond.localized):")
             appendInterpretation(result.interpretationA,
                                  mediatorLabel: LocalizationKeys.ConsumerDispute.rowMediatorPartial.localized,
                                  to: &lines)
             lines.append("")
 
         case .seller:
-            lines.append("\(LocalizationKeys.ConsumerDispute.resultSingle.localized):")
+            lines.append("\(LocalizationKeys.ConsumerDispute.resultFirst.localized):")
             appendInterpretation(result.interpretationB,
                                  mediatorLabel: LocalizationKeys.ConsumerDispute.rowMediatorFull.localized,
                                  to: &lines)

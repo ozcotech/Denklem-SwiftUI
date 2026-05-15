@@ -1,6 +1,6 @@
 # Tüketici Uyuşmazlığı Arabuluculuk Ücreti Hesaplama - Planlama Dokümanı
 
-> **Durum (2026-05-14): Tüm aşamalar tamamlandı.** Bu doküman özelliğin tasarımını ve nihai uygulamayı yansıtır. Uygulama sırasında bazı kararlar değişti — değişiklikler ilgili bölümlerde belirtilmiştir.
+> **Durum: Tüm aşamalar tamamlandı, cihazda test edildi, PDF bundle'a eklendi.** Bu doküman özelliğin tasarımını ve nihai uygulamayı yansıtır. Uygulama sırasında bazı kararlar değişti — değişiklikler ilgili bölümlerde belirtilmiştir.
 
 ## İçindekiler
 
@@ -343,8 +343,8 @@ MediationFeeResultSheet ile aynı yapı: NavigationStack + toolbar (paylaş/tama
 │  │ Bakanlık katkısı:      2.000 TL    │     │
 │  └────────────────────────────────────┘     │
 │                                              │
-│  ┌────────────────────────────────────┐     │  ← 1. Sonuç (Yorum B — dar)
-│  │ 1. Sonuç                           │     │     mediator gets FULL fee
+│  ┌────────────────────────────────────┐     │  ← Tam Ücret Sonucu (Yorum B — dar)
+│  │ Tam Ücret Sonucu                   │     │     mediator gets FULL fee
 │  │ ────────────────────────────────── │     │
 │  │ Tüketici:                7.000 TL  │     │
 │  │ Satıcı (Karşı Taraf):    0 TL      │     │
@@ -352,8 +352,8 @@ MediationFeeResultSheet ile aynı yapı: NavigationStack + toolbar (paylaş/tama
 │  │ Arabuluculuk Ücreti (Tam): 9.000 TL│     │  ← highlighted
 │  └────────────────────────────────────┘     │
 │                                              │
-│  ┌────────────────────────────────────┐     │  ← 2. Sonuç (Yorum A — geniş)
-│  │ 2. Sonuç                           │     │     mediator gets PARTIAL fee
+│  ┌────────────────────────────────────┐     │  ← Kısmi Ücret Sonucu (Yorum A — geniş)
+│  │ Kısmi Ücret Sonucu                 │     │     mediator gets PARTIAL fee
 │  │ ────────────────────────────────── │     │
 │  │ Tüketici:                4.500 TL  │     │
 │  │ Satıcı (Karşı Taraf):    0 TL      │     │
@@ -390,12 +390,13 @@ MediationFeeResultSheet ile aynı yapı: NavigationStack + toolbar (paylaş/tama
 - Disclaimer link `ConsumerDisputeOpinionSheet`'i açar — PDFKit ile bundled PDF görüntülenir, PDF yoksa fallback mesajı
 
 **İsimlendirme kararları (final):**
-- "1. Sonuç" = Yorum B (dar yorum, mediator tam ücret alır). Üstte gösterilir çünkü Adalet Bakanlığı'nın 2024 görüş yazısı bu yorumu destekliyor.
-- "2. Sonuç" = Yorum A (geniş yorum, mediator kısmi ücret alır). Altta gösterilir, bilgi amaçlı.
+- **"Tam Ücret Sonucu"** = mediator tam ücret alır. Tüketici-öder senaryosunda üstte (dar yorum, Bakanlık 2024 görüş yazısının desteklediği yorum); Satıcı-öder senaryosunda tek kart olarak (her iki yorum da burada aynı sonucu verir).
+- **"Kısmi Ücret Sonucu"** = mediator kısmi ücret alır. Tüketici-öder senaryosunda altta (geniş yorum); Eşit Bölüşüm senaryosunda tek kart olarak.
+- Kart başlığı, **payer seçimine değil arabulucunun tahsil senaryosuna** göre adlandırılır — alttaki "Arabuluculuk Ücreti (Tam)/(Kısmi)" satır etiketiyle birebir tutarlı.
 - Devlet katkısı satırı: **"T.C. Adalet Bakanlığı"**
 - Bakanlık katkısı (info kartında): **"Bakanlık katkısı"**
-- Arabulucuya geçen miktar: **"Arabuluculuk Ücreti (Tam)"** veya **"Arabuluculuk Ücreti (Kısmi)"** (kart bazlı, highlighted)
-- Disclaimer: **"Sonuç kısmı arabulucunun takdirindedir."** + **"Ayrıntılar için tıklayınız"** linki
+- Arabulucuya geçen miktar: **"Arabuluculuk Ücreti (Tam)"** veya **"Arabuluculuk Ücreti (Kısmi)"** (highlighted satır)
+- Disclaimer: **"Sonuç seçimi arabulucunun takdirindedir."** + **"Ayrıntılar için tıklayınız"** linki (yalnızca tüketici-öder senaryosunda gösterilir)
 
 ### Ücret Sorumlusu Seçimi — Menu (Dropdown)
 
@@ -580,12 +581,12 @@ enum PaymentResponsibility: String, CaseIterable {
 - [x] Error onChange announcement, isExpanded onChange announcement
 - [x] PDFKit görüntüleyici kendi a11y'sini hallediyor (text content, page nav otomatik)
 
-### Adım 8: Test ve İnceleme — ⏳ Kullanıcı tarafından
-- [ ] Cihazda 3 ücret sorumlusu × 2 yıl × 3 farklı tutar senaryosu
-- [ ] PDF dosyasının `Resources/Legal/consumer_dispute_opinion.pdf` konumuna eklenmesi ve linkten açılması
-- [ ] VoiceOver akışı sesli olarak doğrulama
-- [ ] 3 dil arasında geçiş (TR/EN/SV) — UI taraması
-- [ ] Özel Hesaplama → "Yakında" alert çalışması
+### Adım 8: Test ve İnceleme — ✅ DONE
+- [x] Cihazda 3 ücret sorumlusu × 2 yıl × 3 farklı tutar senaryosu
+- [x] PDF dosyası `Resources/Legal/consumer_dispute_opinion.pdf` konumuna eklendi ve linkten açılıyor
+- [x] VoiceOver akışı doğrulandı
+- [x] 3 dil arasında geçiş (TR/EN/SV) — UI taraması
+- [x] Özel Hesaplama → "Yakında" alert çalışıyor
 
 ---
 
@@ -643,5 +644,5 @@ Bu durum uygulamada bilgilendirme amaçlı gösterilecek — kullanıcı hangi y
 | Erişilebilirlik (VoiceOver audit) | ✅ Tamamlandı |
 | İsimlendirme kararları | ✅ Tamamlandı (1./2. Sonuç, T.C. Adalet Bakanlığı, Tam/Kısmi) |
 | Custom Calculation placeholder (üst Süre slot'u) | ✅ Tamamlandı |
-| Cihaz testi (kullanıcı) | ⏳ Beklemede |
-| PDF dosyasının eklenmesi (kullanıcı) | ⏳ Beklemede |
+| Cihaz testi | ✅ Tamamlandı |
+| PDF dosyasının eklenmesi | ✅ Tamamlandı |

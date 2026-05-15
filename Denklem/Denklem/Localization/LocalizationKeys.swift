@@ -123,10 +123,10 @@ struct LocalizationKeys {
         static let payerEqual = "consumer_dispute.payer.equal"
         static let payerSeller = "consumer_dispute.payer.seller"
 
-        // Result sheet — interpretation card titles
-        static let resultFirst = "consumer_dispute.result.first"   // "1. Sonuç" (narrow interpretation, mediator gets full)
-        static let resultSecond = "consumer_dispute.result.second" // "2. Sonuç" (broad interpretation, mediator gets partial)
-        static let resultSingle = "consumer_dispute.result.single" // "Sonuç" — used when only one card is shown (equal split / seller pays)
+        // Result sheet — interpretation card titles, semantically named by the mediator's outcome.
+        // Reused across all scenarios: consumer-pays shows both, equal/seller scenarios show one.
+        static let resultFirst = "consumer_dispute.result.first"   // "Tam Ücret Sonucu" — mediator gets the full fee
+        static let resultSecond = "consumer_dispute.result.second" // "Kısmi Ücret Sonucu" — mediator gets a partial fee
 
         // Result sheet — row labels
         static let rowMinistry = "consumer_dispute.result.row.ministry"               // "T.C. Adalet Bakanlığı"

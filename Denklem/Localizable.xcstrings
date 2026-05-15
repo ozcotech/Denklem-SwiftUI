@@ -3063,25 +3063,25 @@
       }
     },
     "consumer_dispute.result.first" : {
-      "comment" : "Title of the first interpretation card (narrow interpretation — mediator receives the full fee)",
+      "comment" : "Title of the result card where the mediator receives the full fee (narrow interpretation; also used for the seller-pays scenario)",
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Outcome 1"
+            "value" : "Full Fee Outcome"
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Utfall 1"
+            "value" : "Helt arvode"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "1. Sonuç"
+            "value" : "Tam Ücret Sonucu"
           }
         }
       }
@@ -3183,49 +3183,25 @@
       }
     },
     "consumer_dispute.result.second" : {
-      "comment" : "Title of the second interpretation card (broad interpretation — mediator receives a partial fee)",
+      "comment" : "Title of the result card where the mediator receives a partial fee (broad interpretation; also used for the equal-split scenario)",
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Outcome 2"
+            "value" : "Partial Fee Outcome"
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Utfall 2"
+            "value" : "Delvis arvode"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "2. Sonuç"
-          }
-        }
-      }
-    },
-    "consumer_dispute.result.single" : {
-      "comment" : "Title used when only a single result card is shown (equal split or seller-pays scenarios)",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Outcome"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Utfall"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sonuç"
+            "value" : "Kısmi Ücret Sonucu"
           }
         }
       }
