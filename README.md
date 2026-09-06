@@ -13,118 +13,113 @@ The name "DENKLEM" reflects the concept of creating equality and balance between
 
 ---
 
-## ✨ Why SwiftUI Version?
+## 🔀 Calculation Flow
 
-### 🎯 **Native Performance**
-- **Faster**: 60% faster calculations compared to the React Native version
-- **Low Memory Usage**: Average memory consumption below 50MB
-- **Smooth Animations**: Consistent 60fps performance
-- **Instant Launch**: App startup time under 2 seconds
+```mermaid
+flowchart LR
+    START["Select Year"] --> M{"Monetary?"}
 
-### 🌟 **Modern iOS Features**
-- **Liquid Glass Design**: Modern glass effects for iOS 26.0+
-- **Native Components**: Fully SwiftUI and native iOS APIs
-- **Future-Ready**: Optimized for iOS 26.0+
-- **Offline-First**: Works completely offline
+    M -->|Yes| AGR{"Agreement?"}
+    M -->|No| NM["NonMonetary"]
 
-### 🎨 **Enhanced User Experience**
-- **Trilingual Support**: Turkish, English, and Swedish (instant language switching)
-- **Light/Dark Mode**: Automatic theme support
-- **Liquid Glass UI**: Optional modern visual effects
-- **Animated Background**: Optional animated sky background
-- **Accessibility**: Full VoiceOver support
+    AGR -->|Yes| PATH_A["Agreement"]
+    AGR -->|No| PATH_B["NoAgreement"]
 
----
+    PATH_A --> DT_A["Dispute Type"]
+    DT_A --> AMT["Enter Amount"]
+    AMT --> CALC_A["Bracket Calc<br/>vs MinFee"]
+    CALC_A --> RES_A["Result +<br/>Breakdown"]
 
-## 🚀 Key Features
+    PATH_B --> DT_B["Dispute Type"]
+    DT_B --> PC_B["Party Count"]
+    PC_B --> CALC_B["FixedFee × Hours"]
+    CALC_B --> RES_B["Result +<br/>SMM"]
 
-### 💰 **Core Functionality - Fee Calculation**
-- **2025 & 2026 Official Tariffs**: Based on current Turkish mediation fee tariff
-- **Smart Calculation Engine**: Handles both monetary and non-monetary disputes
-- **Dual Scenario Support**: Different calculations for agreement vs. non-agreement cases
-- **Per-Screen Tariff Selection**: Each calculation screen has its own year picker (2026 selected by default)
+    NM --> DT_C["Dispute Type"]
+    DT_C --> PC_C["Party Count"]
+    PC_C --> CALC_C["FixedFee × Hours"]
+    CALC_C --> RES_C["Result"]
 
-### 📱 **User Experience**
-- **Intuitive Step-by-Step Flow**: Guided process from start to finish
-- **Cable Connector System**: Visual cable guides showing calculation flow paths
-- **Native iOS Navigation**: Swipe gestures and native transitions
-- **Persistent Tab Bar**: Quick access to home, calculations, legislation, and settings
-- **Trilingual**: Complete Turkish, English, and Swedish localization
-- **Modern Native Design**: Professional and user-friendly interface
+    style START fill:#1a73e8,color:#fff
+    style M fill:#ff6d00,color:#fff
+    style AGR fill:#ff6d00,color:#fff
+    style PATH_A fill:#2e7d32,color:#fff
+    style PATH_B fill:#c62828,color:#fff
+    style NM fill:#1565c0,color:#fff
+    style CALC_A fill:#7b1fa2,color:#fff
+    style CALC_B fill:#7b1fa2,color:#fff
+    style CALC_C fill:#7b1fa2,color:#fff
+    style RES_A fill:#e8710a,color:#fff
+    style RES_B fill:#e8710a,color:#fff
+    style RES_C fill:#e8710a,color:#fff
+```
 
-### 🧮 **Additional Calculators**
-- **Time Calculation**: Calculate mediation process durations
-- **Freelance Receipt (SMM)**: Receipt calculations with tax deductions
-- **Attorney Fee Calculation**: Power of attorney fee calculations in mediation process
-- **Reinstatement Disputes**: Calculations for reinstatement cases
-- **Serial Disputes**: Special calculations for serial dispute cases
-- **Tenancy Disputes**: Special calculations for eviction and rent determination disputes (attorney + mediation fees)
-- **Comprehensive Results**: Detailed explanations with tax implications
-
-### 🔧 **Technical Features**
-- **iOS 26.0+ Minimum**: Optimized for latest iOS features
-- **Native SwiftUI**: Fully developed with Swift and SwiftUI
-- **Offline Capability**: No internet required for calculations
-- **Real-Time Updates**: Instant calculation results
-- **Responsive Design**: Optimized for all iPhone screen sizes
-
-### 🎨 **Design System**
-- **Liquid Glass Theme**: Modern glass effect styles for iOS 26.0+
-- **Theme Support**: Automatic Light and Dark mode switching
-- **Consistent Components**: Standard UI components throughout the app
-- **Customizable Colors**: Theme-based color system
+> 📖 For more details, see the full [Mediation Fee Calculation System documentation](Documentation/MediationFeeCalculationSystem.md).
 
 ---
 
-## 📱 User Journey & Screens
+## 🎯 How It Works
 
-### **1. StartScreen (Welcome Screen)**
-Application entry point:
-- **Mini Quiz**: Quick legal knowledge survey
-- **Entry Button**: Direct navigation to calculations screen
-- **Logo**: App branding
+### **Monetary Dispute - With Agreement:**
+1. Calculations → Mediation Fee → Select year → "Monetary" → "Agreement" → Select dispute type
+2. Follow cable connector guides → Enter agreement amount
+3. View inline result card → Tap for detailed breakdown
 
-### **2. CalculationsScreen (Calculations)**
-Central hub for all calculation types with categorized buttons:
-- **General Calculation**:
-  - 🧮 **Mediation Fee**: General mediation fee calculation
-- **Special Calculations**:
-  - 🏠 **Tenancy Disputes**: Eviction and rent determination
-  - 👨‍⚖️ **Reinstatement**: Reinstatement dispute cases
-  - 🏢 **Attorney Fee**: Power of attorney fee in mediation
-  - 📋 **Serial Disputes**: Serial dispute cases
-- **Other Calculations**:
-  - 📝 **SMM Calculation**: Freelance receipt calculator
-  - ⏰ **Time Calculation**: Mediation process durations
+### **Monetary Dispute - No Agreement:**
+1. Calculations → Mediation Fee → Select year → "Monetary" → "No Agreement" → Select dispute type
+2. Follow cable connector guides → Enter number of parties
+3. View inline result card → Tap for detailed breakdown with SMM
 
-### **3. MediationFeeScreen (Unified Calculation)**
-Single-screen mediation fee calculation with cable connector visual guides:
-- **Year Selection**: Dropdown picker for 2025/2026 tariff (2026 default)
-- **Agreement Status**: Toggle buttons (monetary disputes only)
-- **Dispute Type**: Dropdown menu with 10 dispute types
-- **Cable Connectors**: Visual circuit-board cables guiding users through the calculation flow
-- **Input Fields**: Agreement amount (agreed) or party count (not agreed)
-- **Inline Result Card**: Calculation results displayed directly on screen
-- **Detailed View**: Tap result card to open full result sheet
+### **Non-Monetary Dispute:**
+1. Calculations → Mediation Fee → Select year → "Non-Monetary" → Select dispute type
+2. Follow cable connector guides → Enter number of parties
+3. View inline result card → Tap for detailed breakdown
 
-### **4. ResultScreen (Result Screen)**
-Comprehensive result display (as Sheet):
-- **Main Fee**: Calculated mediation fee
-- **Tax Information**: Withholding tax calculations when applicable
-- **SMM Details**: Complete SMM breakdown for professional invoicing
+### **Additional Features:**
+- **Tab Bar Navigation**: Always accessible home, calculations, legislation, and settings
+- **Cable Connector Guides**: Visual flow indicators on calculation screens
+- **Native iOS Controls**: Natural iOS transitions and gestures
 
-### **5. Additional Screens**
-- **TimeCalculationScreen**: Calculate mediation process durations
-- **SmmCalculationScreen**: Detailed freelance receipt calculations
-- **LegislationScreen**: Access current mediation legislation
-- **SettingsScreen**: Language, theme, animated background, and about information
+---
 
-### **6. Tab Bar Navigation**
-Tab bar accessible from any screen:
-- 🏠 **Home**: Return to start screen
-- 🧮 **Calculations**: Access all calculation types (general, special, and other calculators)
-- 📚 **Legislation**: View legal legislation
-- ⚙️ **Settings**: Language selection (Turkish ↔ English ↔ Swedish), theme preferences (Light/Dark), animated background toggle, and about information
+## 🧪 Development Setup
+
+### **Requirements**
+- macOS 26.0+ (a Mac with Apple M1 chip or later)
+- Xcode 26.0+
+- iOS 26.0+ / iPadOS 26.0+
+- Git
+
+### **Installation Steps**
+
+```bash
+# Clone the repository
+git clone https://github.com/ozcotech/Denklem-SwiftUI.git
+cd Denklem-SwiftUI
+
+# Open with Xcode
+open Denklem.xcodeproj
+
+# Or from Xcode:
+# File → Open → Select Denklem.xcodeproj
+```
+
+### **Running**
+
+1. Open project in Xcode
+2. Select `Denklem` as target
+3. Choose simulator or physical device (iOS 26.0+)
+4. Run with Command + R
+
+### **Build & Test**
+
+```bash
+# Run test suite
+Command + U (in Xcode)
+
+# Or from terminal:
+xcodebuild test -scheme Denklem -destination 'platform=iOS Simulator,name=iPhone 16 Pro'
+```
 
 ---
 
@@ -193,27 +188,118 @@ Below are screenshots hosted in the separate screenshots repository: [Denklem Sc
 
 ---
 
-## 🎯 How It Works
+## 📱 User Journey & Screens
 
-### **Monetary Dispute - With Agreement:**
-1. Calculations → Mediation Fee → Select year → "Monetary" → "Agreement" → Select dispute type
-2. Follow cable connector guides → Enter agreement amount
-3. View inline result card → Tap for detailed breakdown
+### **1. StartScreen (Welcome Screen)**
+Application entry point:
+- **Mini Quiz**: Quick legal knowledge survey
+- **Entry Button**: Direct navigation to calculations screen
+- **Logo**: App branding
 
-### **Monetary Dispute - No Agreement:**
-1. Calculations → Mediation Fee → Select year → "Monetary" → "No Agreement" → Select dispute type
-2. Follow cable connector guides → Enter number of parties
-3. View inline result card → Tap for detailed breakdown with SMM
+### **2. CalculationsScreen (Calculations)**
+Central hub for all calculation types with categorized buttons:
+- **General Calculation**:
+  - 🧮 **Mediation Fee**: General mediation fee calculation
+- **Special Calculations**:
+  - 🏠 **Tenancy Disputes**: Eviction and rent determination
+  - 👨‍⚖️ **Reinstatement**: Reinstatement dispute cases
+  - 🏢 **Attorney Fee**: Power of attorney fee in mediation
+  - 📋 **Serial Disputes**: Serial dispute cases
+- **Other Calculations**:
+  - 📝 **SMM Calculation**: Freelance receipt calculator
+  - ⏰ **Time Calculation**: Mediation process durations
 
-### **Non-Monetary Dispute:**
-1. Calculations → Mediation Fee → Select year → "Non-Monetary" → Select dispute type
-2. Follow cable connector guides → Enter number of parties
-3. View inline result card → Tap for detailed breakdown
+### **3. MediationFeeScreen (Unified Calculation)**
+Single-screen mediation fee calculation with cable connector visual guides:
+- **Year Selection**: Dropdown picker for 2025/2026 tariff (2026 default)
+- **Agreement Status**: Toggle buttons (monetary disputes only)
+- **Dispute Type**: Dropdown menu with 10 dispute types
+- **Cable Connectors**: Visual circuit-board cables guiding users through the calculation flow
+- **Input Fields**: Agreement amount (agreed) or party count (not agreed)
+- **Inline Result Card**: Calculation results displayed directly on screen
+- **Detailed View**: Tap result card to open full result sheet
 
-### **Additional Features:**
-- **Tab Bar Navigation**: Always accessible home, calculations, legislation, and settings
-- **Cable Connector Guides**: Visual flow indicators on calculation screens
-- **Native iOS Controls**: Natural iOS transitions and gestures
+### **4. ResultScreen (Result Screen)**
+Comprehensive result display (as Sheet):
+- **Main Fee**: Calculated mediation fee
+- **Tax Information**: Withholding tax calculations when applicable
+- **SMM Details**: Complete SMM breakdown for professional invoicing
+
+### **5. Additional Screens**
+- **TimeCalculationScreen**: Calculate mediation process durations
+- **SmmCalculationScreen**: Detailed freelance receipt calculations
+- **LegislationScreen**: Access current mediation legislation
+- **SettingsScreen**: Language, theme, animated background, and about information
+
+### **6. Tab Bar Navigation**
+Tab bar accessible from any screen:
+- 🏠 **Home**: Return to start screen
+- 🧮 **Calculations**: Access all calculation types (general, special, and other calculators)
+- 📚 **Legislation**: View legal legislation
+- ⚙️ **Settings**: Language selection (Turkish ↔ English ↔ Swedish), theme preferences (Light/Dark), animated background toggle, and about information
+
+---
+
+## ✨ Why SwiftUI Version?
+
+### 🎯 **Native Performance**
+- **Faster**: 60% faster calculations compared to the React Native version
+- **Low Memory Usage**: Average memory consumption below 50MB
+- **Smooth Animations**: Consistent 60fps performance
+- **Instant Launch**: App startup time under 2 seconds
+
+### 🌟 **Modern iOS Features**
+- **Liquid Glass Design**: Modern glass effects for iOS 26.0+
+- **Native Components**: Fully SwiftUI and native iOS APIs
+- **Future-Ready**: Optimized for iOS 26.0+
+- **Offline-First**: Works completely offline
+
+### 🎨 **Enhanced User Experience**
+- **Trilingual Support**: Turkish, English, and Swedish (instant language switching)
+- **Light/Dark Mode**: Automatic theme support
+- **Liquid Glass UI**: Optional modern visual effects
+- **Animated Background**: Optional animated sky background
+- **Accessibility**: Full VoiceOver support
+
+---
+
+## 🚀 Key Features
+
+### 💰 **Core Functionality - Fee Calculation**
+- **2025 & 2026 Official Tariffs**: Based on current Turkish mediation fee tariff
+- **Smart Calculation Engine**: Handles both monetary and non-monetary disputes
+- **Dual Scenario Support**: Different calculations for agreement vs. non-agreement cases
+- **Per-Screen Tariff Selection**: Each calculation screen has its own year picker (2026 selected by default)
+
+### 📱 **User Experience**
+- **Intuitive Step-by-Step Flow**: Guided process from start to finish
+- **Cable Connector System**: Visual cable guides showing calculation flow paths
+- **Native iOS Navigation**: Swipe gestures and native transitions
+- **Persistent Tab Bar**: Quick access to home, calculations, legislation, and settings
+- **Trilingual**: Complete Turkish, English, and Swedish localization
+- **Modern Native Design**: Professional and user-friendly interface
+
+### 🧮 **Additional Calculators**
+- **Time Calculation**: Calculate mediation process durations
+- **Freelance Receipt (SMM)**: Receipt calculations with tax deductions
+- **Attorney Fee Calculation**: Power of attorney fee calculations in mediation process
+- **Reinstatement Disputes**: Calculations for reinstatement cases
+- **Serial Disputes**: Special calculations for serial dispute cases
+- **Tenancy Disputes**: Special calculations for eviction and rent determination disputes (attorney + mediation fees)
+- **Comprehensive Results**: Detailed explanations with tax implications
+
+### 🔧 **Technical Features**
+- **iOS 26.0+ Minimum**: Optimized for latest iOS features
+- **Native SwiftUI**: Fully developed with Swift and SwiftUI
+- **Offline Capability**: No internet required for calculations
+- **Real-Time Updates**: Instant calculation results
+- **Responsive Design**: Optimized for all iPhone screen sizes
+
+### 🎨 **Design System**
+- **Liquid Glass Theme**: Modern glass effect styles for iOS 26.0+
+- **Theme Support**: Automatic Light and Dark mode switching
+- **Consistent Components**: Standard UI components throughout the app
+- **Customizable Colors**: Theme-based color system
 
 ---
 
@@ -244,53 +330,12 @@ Below are screenshots hosted in the separate screenshots repository: [Denklem Sc
 
 ## 📅 Version Information
 
-- **Current Version**: 2.5.6
+- **Current Version**: 2.6.1
 - **Supported Years**: 2025 and 2026 mediation tariffs
 - **Platform**: iOS 26.0+ / iPadOS 26.0+
 - **Languages**: Turkish (TR), English (EN), and Swedish (SV)
-- **Last Update**: March 2026
+- **Last Update**: September 2026
 - **Based on**: 2025 and 2026 official mediation fee tariffs
-
----
-
-## 🧪 Development Setup
-
-### **Requirements**
-- macOS 26.0+ (a Mac with Apple M1 chip or later)
-- Xcode 26.0+
-- iOS 26.0+ / iPadOS 26.0+
-- Git
-
-### **Installation Steps**
-
-```bash
-# Clone the repository
-git clone https://github.com/ozcotech/Denklem-SwiftUI.git
-cd Denklem-SwiftUI
-
-# Open with Xcode
-open Denklem.xcodeproj
-
-# Or from Xcode:
-# File → Open → Select Denklem.xcodeproj
-```
-
-### **Running**
-
-1. Open project in Xcode
-2. Select `Denklem` as target
-3. Choose simulator or physical device (iOS 26.0+)
-4. Run with Command + R
-
-### **Build & Test**
-
-```bash
-# Run test suite
-Command + U (in Xcode)
-
-# Or from terminal:
-xcodebuild test -scheme Denklem -destination 'platform=iOS Simulator,name=iPhone 16 Pro'
-```
 
 ---
 
@@ -423,6 +468,12 @@ This project is licensed under the MIT License.
 ---
 
 ## 🔄 Version History
+
+### v2.6.1 (September 2026) - Open Source Link
+- 🔗 **Open Source Code Link**: Added open source repository link to the app
+
+### v2.6.0 (May 2026) - Consumer Dispute Calculation
+- 🛒 **Consumer Dispute Special Calculation Method**: Added special calculation method for consumer disputes
 
 ### v2.5.6 (March 2026) - Toggle Buttons, Cable Connectors & Accessibility
 - 🔘 **Toggle Button Design**: New toggle button pairs for mediation and attorney fee screens (replaces segmented pickers)
