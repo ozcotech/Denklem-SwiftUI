@@ -195,6 +195,11 @@ final class AboutViewModel: ObservableObject {
                     systemImage: "info.circle"
                 ),
                 AboutSectionItem(
+                    title: LocalizationKeys.About.sourceCode.localized,
+                    systemImage: "arrow.triangle.branch",
+                    action: .openURL(AboutData.githubURL)
+                ),
+                AboutSectionItem(
                     title: LocalizationKeys.About.supportedYears.localized,
                     value: AboutData.supportedYears.map { String($0) }.joined(separator: ", "),
                     systemImage: "calendar"

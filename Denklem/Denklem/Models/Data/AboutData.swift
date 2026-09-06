@@ -73,6 +73,9 @@ struct AboutData {
     /// Company website from AppConstants
     static let companyWebsite = AppConstants.companyWebsite
     
+    /// GitHub repository URL from AppConstants
+    static let githubURL = AppConstants.githubURL
+    
     /// Localized contact information
     static var localizedContactInfo: String {
         return AppConstants.localizedContactInfo

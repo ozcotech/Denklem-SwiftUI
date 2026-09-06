@@ -43,6 +43,7 @@ struct AppConstants {
     static let developerEmail = "info@denklem.org"
     static let companyName = "OZCO Studio"
     static let companyWebsite = "https://denklem.org"
+    static let githubURL = "https://github.com/ozcotech/Denklem-SwiftUI"
     
     // MARK: - Legal Information
     /// Returns localized tariff name

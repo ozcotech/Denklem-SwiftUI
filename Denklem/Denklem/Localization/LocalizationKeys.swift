@@ -484,6 +484,7 @@ struct LocalizationKeys {
     struct About {
         static let appInfo = "about.app_info"
         static let version = "about.version"
+        static let sourceCode = "about.source_code"
         static let developer = "about.developer"
         static let contact = "about.contact"
         static let company = "about.company"

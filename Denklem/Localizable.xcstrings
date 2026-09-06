@@ -1771,6 +1771,30 @@
         }
       }
     },
+    "about.source_code" : {
+      "comment" : "about screen",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Source Code (GitHub)"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Källkod (GitHub)"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kaynak Kodları (GitHub)"
+          }
+        }
+      }
+    },
     "about.who_we_are" : {
       "comment" : "about screen",
       "extractionState" : "manual",
