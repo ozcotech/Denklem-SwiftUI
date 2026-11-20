@@ -7,6 +7,54 @@
 
 import SwiftUI
 
+// MARK: - Block IDs
+
+/// Search / scroll identifiers for mediation tariff tables
+private enum TariffBlockID {
+    static let firstPartTitle = "mediation-first-title"
+    static func category(_ category: Int) -> String { "mediation-category-\(category)" }
+    static func categoryTitle(_ category: Int) -> String { "mediation-category-\(category)-title" }
+    static func tierLabel(_ category: Int, _ tier: Int) -> String { "mediation-category-\(category)-\(tier)-label" }
+    static func tierAmount(_ category: Int, _ tier: Int) -> String { "mediation-category-\(category)-\(tier)-amount" }
+    static let secondPartTitle = "mediation-second-title"
+    static func bracketDescription(_ bracket: Int) -> String { "mediation-bracket-\(bracket)-desc" }
+    static func bracketSingle(_ bracket: Int) -> String { "mediation-bracket-\(bracket)-single" }
+    static func bracketMultiple(_ bracket: Int) -> String { "mediation-bracket-\(bracket)-multiple" }
+}
+
+// MARK: - Search Blocks
+
+extension TariffDocumentContent {
+
+    /// All searchable text in display order (must mirror `TariffDocumentView`)
+    var searchBlocks: [DocumentSearchBlock] {
+        var blocks: [DocumentSearchBlock] = []
+
+        for (index, article) in articles.enumerated() {
+            blocks += DocumentSearchBlock.article(index: index, title: article.title, paragraphs: article.paragraphs)
+        }
+
+        blocks.append(DocumentSearchBlock(id: TariffBlockID.firstPartTitle, groupID: nil, text: firstPartTitle))
+        for (cIndex, category) in firstPartCategories.enumerated() {
+            let group = TariffBlockID.category(cIndex)
+            blocks.append(DocumentSearchBlock(id: TariffBlockID.categoryTitle(cIndex), groupID: group, text: category.title))
+            for (tIndex, tier) in category.tiers.enumerated() {
+                blocks.append(DocumentSearchBlock(id: TariffBlockID.tierLabel(cIndex, tIndex), groupID: group, text: tier.label))
+                blocks.append(DocumentSearchBlock(id: TariffBlockID.tierAmount(cIndex, tIndex), groupID: group, text: tier.amount))
+            }
+        }
+
+        blocks.append(DocumentSearchBlock(id: TariffBlockID.secondPartTitle, groupID: nil, text: secondPartTitle))
+        for (bIndex, bracket) in secondPartBrackets.enumerated() {
+            blocks.append(DocumentSearchBlock(id: TariffBlockID.bracketDescription(bIndex), groupID: nil, text: bracket.description))
+            blocks.append(DocumentSearchBlock(id: TariffBlockID.bracketSingle(bIndex), groupID: nil, text: bracket.singleRate))
+            blocks.append(DocumentSearchBlock(id: TariffBlockID.bracketMultiple(bIndex), groupID: nil, text: bracket.multipleRate))
+        }
+
+        return blocks
+    }
+}
+
 // MARK: - Tariff Document View
 /// Displays the full tariff document content with native SwiftUI rendering
 /// Shows articles as collapsible sections and fee tables as grids
@@ -16,7 +64,6 @@ struct TariffDocumentView: View {
     // MARK: - Properties
 
     let content: TariffDocumentContent
-    var searchText: String = ""
 
     @Environment(\.theme) var theme
 
@@ -63,11 +110,16 @@ struct TariffDocumentView: View {
 
     private var articlesSection: some View {
         VStack(spacing: 0) {
-            SectionTitle(title: "legislation.section.articles".localized)
+            DocumentSectionTitle(title: "legislation.section.articles".localized)
 
             VStack(spacing: 0) {
                 ForEach(Array(content.articles.enumerated()), id: \.offset) { index, article in
-                    ArticleRow(article: article, searchText: searchText)
+                    DocumentArticleRow(
+                        index: index,
+                        number: String(article.number),
+                        title: article.title,
+                        paragraphs: article.paragraphs
+                    )
 
                     if index < content.articles.count - 1 {
                         Divider()
@@ -90,11 +142,11 @@ struct TariffDocumentView: View {
 
     private var firstPartSection: some View {
         VStack(spacing: 0) {
-            SectionTitle(title: content.firstPartTitle)
+            DocumentSectionTitle(title: content.firstPartTitle, blockID: TariffBlockID.firstPartTitle)
 
             VStack(spacing: 0) {
                 ForEach(Array(content.firstPartCategories.enumerated()), id: \.offset) { index, category in
-                    FirstPartCategoryRow(category: category, searchText: searchText)
+                    FirstPartCategoryRow(category: category, categoryIndex: index)
 
                     if index < content.firstPartCategories.count - 1 {
                         Divider()
@@ -116,9 +168,8 @@ struct TariffDocumentView: View {
     // MARK: - Second Part Section
 
     private var secondPartSection: some View {
-        let query = searchText.lowercased()
-        return VStack(spacing: theme.spacingS) {
-            SectionTitle(title: content.secondPartTitle)
+        VStack(spacing: theme.spacingS) {
+            DocumentSectionTitle(title: content.secondPartTitle, blockID: TariffBlockID.secondPartTitle)
 
             VStack(spacing: 0) {
                 // Header Row
@@ -152,32 +203,26 @@ struct TariffDocumentView: View {
 
                 // Bracket Rows
                 ForEach(Array(content.secondPartBrackets.enumerated()), id: \.offset) { index, bracket in
-                    let isMatch = !query.isEmpty && (
-                        bracket.description.lowercased().contains(query) ||
-                        bracket.singleRate.lowercased().contains(query) ||
-                        bracket.multipleRate.lowercased().contains(query)
-                    )
-
                     HStack {
-                        Text(bracket.description)
+                        HighlightedText(text: bracket.description, blockID: TariffBlockID.bracketDescription(index))
                             .font(theme.caption)
                             .foregroundStyle(theme.textPrimary)
                             .frame(maxWidth: .infinity, alignment: .leading)
 
-                        Text(bracket.singleRate)
+                        HighlightedText(text: bracket.singleRate, blockID: TariffBlockID.bracketSingle(index))
                             .font(theme.caption)
                             .fontWeight(.medium)
                             .foregroundStyle(theme.primary)
                             .frame(width: 50, alignment: .trailing)
 
-                        Text(bracket.multipleRate)
+                        HighlightedText(text: bracket.multipleRate, blockID: TariffBlockID.bracketMultiple(index))
                             .font(theme.caption)
                             .foregroundStyle(theme.textSecondary)
                             .frame(width: 50, alignment: .trailing)
                     }
+                    .textSelection(.enabled)
                     .padding(.horizontal, theme.spacingM)
                     .padding(.vertical, theme.spacingS)
-                    .background(isMatch ? theme.primary.opacity(0.06) : Color.clear)
 
                     if index < content.secondPartBrackets.count - 1 {
                         Divider()
@@ -197,263 +242,70 @@ struct TariffDocumentView: View {
     }
 }
 
-// MARK: - Section Title
-
-@available(iOS 26.0, *)
-private struct SectionTitle: View {
-
-    let title: String
-
-    @Environment(\.theme) var theme
-
-    var body: some View {
-        Text(title)
-            .font(theme.subheadline)
-            .fontWeight(.bold)
-            .foregroundStyle(theme.textPrimary)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.bottom, theme.spacingS)
-            .accessibilityAddTraits(.isHeader)
-    }
-}
-
-// MARK: - Article Row
-
-@available(iOS 26.0, *)
-private struct ArticleRow: View {
-
-    let article: TariffArticle
-    var searchText: String = ""
-
-    @State private var isExpanded = false
-    @Environment(\.theme) var theme
-
-    private var isMatch: Bool {
-        guard !searchText.isEmpty else { return false }
-        let q = searchText.lowercased()
-        return article.title.lowercased().contains(q) ||
-               article.paragraphs.joined(separator: " ").lowercased().contains(q)
-    }
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            // Tap header to expand/collapse
-            Button {
-                withAnimation(.easeInOut(duration: 0.25)) {
-                    isExpanded.toggle()
-                }
-            } label: {
-                HStack {
-                    Text("Madde \(article.number)")
-                        .font(theme.caption)
-                        .fontWeight(.bold)
-                        .foregroundStyle(theme.primary)
-                        .frame(width: 65, alignment: .leading)
-
-                    Text(article.title)
-                        .font(theme.footnote)
-                        .fontWeight(.medium)
-                        .foregroundStyle(theme.textPrimary)
-                        .lineLimit(isExpanded ? nil : 1)
-                        .multilineTextAlignment(.leading)
-
-                    Spacer()
-
-                    if isMatch && !isExpanded {
-                        Image(systemName: "magnifyingglass")
-                            .font(theme.caption2)
-                            .foregroundStyle(theme.primary)
-                            .accessibilityHidden(true)
-                    }
-
-                    Image(systemName: "chevron.right")
-                        .font(theme.caption2)
-                        .foregroundStyle(theme.textTertiary)
-                        .rotationEffect(.degrees(isExpanded ? 90 : 0))
-                        .accessibilityHidden(true)
-                }
-                .padding(.horizontal, theme.spacingM)
-                .padding(.vertical, theme.spacingS + 2)
-                .contentShape(Rectangle())
-            }
-            .buttonStyle(.plain)
-            .accessibilityValue(isExpanded ? LocalizationKeys.Accessibility.expanded.localized : LocalizationKeys.Accessibility.collapsed.localized)
-            .accessibilityHint(LocalizationKeys.Accessibility.expandCollapseHint.localized)
-            .background(isMatch && !isExpanded ? theme.primary.opacity(0.06) : Color.clear)
-            .onChange(of: isExpanded) { _, expanded in
-                let msg = expanded
-                    ? LocalizationKeys.Accessibility.detailsExpanded.localized
-                    : LocalizationKeys.Accessibility.detailsCollapsed.localized
-                AccessibilityNotification.Announcement(msg).post()
-            }
-
-            // Expanded content
-            if isExpanded {
-                VStack(alignment: .leading, spacing: theme.spacingS) {
-                    ForEach(Array(article.paragraphs.enumerated()), id: \.offset) { index, paragraph in
-                        HStack(alignment: .top, spacing: theme.spacingXS) {
-                            Text("(\(index + 1))")
-                                .font(theme.caption)
-                                .fontWeight(.semibold)
-                                .foregroundStyle(theme.primary)
-                                .frame(width: 24, alignment: .leading)
-
-                            Text(paragraph)
-                                .font(theme.caption)
-                                .foregroundStyle(theme.textSecondary)
-                                .fixedSize(horizontal: false, vertical: true)
-                        }
-                        .padding(.vertical, 2)
-                        .padding(.horizontal, theme.spacingXS)
-                        .background(
-                            paragraphMatchesSearch(paragraph) ?
-                                theme.primary.opacity(0.06) : Color.clear
-                        )
-                        .clipShape(RoundedRectangle(cornerRadius: 4))
-                    }
-                }
-                .padding(.horizontal, theme.spacingM)
-                .padding(.bottom, theme.spacingM)
-                .transition(.opacity.combined(with: .move(edge: .top)))
-            }
-        }
-        .onChange(of: searchText) { _, newValue in
-            if !newValue.isEmpty && isMatch {
-                withAnimation(.easeInOut(duration: 0.25)) { isExpanded = true }
-            } else if !newValue.isEmpty && !isMatch {
-                withAnimation(.easeInOut(duration: 0.25)) { isExpanded = false }
-            } else if newValue.isEmpty {
-                withAnimation(.easeInOut(duration: 0.25)) { isExpanded = false }
-            }
-        }
-    }
-
-    private func paragraphMatchesSearch(_ paragraph: String) -> Bool {
-        guard !searchText.isEmpty else { return false }
-        return paragraph.lowercased().contains(searchText.lowercased())
-    }
-}
-
 // MARK: - First Part Category Row
 
 @available(iOS 26.0, *)
 private struct FirstPartCategoryRow: View {
 
     let category: TariffFirstPartCategory
-    var searchText: String = ""
+    let categoryIndex: Int
 
-    @State private var isExpanded = false
+    @Environment(\.documentSearch) private var search
     @Environment(\.theme) var theme
 
-    private var isMatch: Bool {
-        guard !searchText.isEmpty else { return false }
-        let q = searchText.lowercased()
-        return category.title.lowercased().contains(q) ||
-               category.tiers.contains {
-                   $0.label.lowercased().contains(q) || $0.amount.lowercased().contains(q)
-               }
+    private var matchCount: Int {
+        guard search.isSearching else { return 0 }
+        let texts = [category.title] + category.tiers.flatMap { [$0.label, $0.amount] }
+        return DocumentSearch.count(of: search.query, in: texts)
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            // Tap header to expand/collapse
-            Button {
-                withAnimation(.easeInOut(duration: 0.25)) {
-                    isExpanded.toggle()
-                }
-            } label: {
-                HStack {
-                    Text("\(category.number).")
-                        .font(theme.caption)
-                        .fontWeight(.bold)
-                        .foregroundStyle(theme.primary)
-                        .frame(width: 24, alignment: .leading)
+        DocumentCollapsibleRow(groupID: TariffBlockID.category(categoryIndex), matchCount: matchCount) { isExpanded in
+            Text("\(category.number).")
+                .font(theme.caption)
+                .fontWeight(.bold)
+                .foregroundStyle(theme.primary)
+                .frame(width: 24, alignment: .leading)
 
-                    Text(category.title)
-                        .font(theme.footnote)
-                        .fontWeight(.medium)
-                        .foregroundStyle(theme.textPrimary)
-                        .lineLimit(isExpanded ? nil : 1)
-                        .multilineTextAlignment(.leading)
-
-                    Spacer()
-
-                    if isMatch && !isExpanded {
-                        Image(systemName: "magnifyingglass")
+            HighlightedText(text: category.title, blockID: TariffBlockID.categoryTitle(categoryIndex))
+                .font(theme.footnote)
+                .fontWeight(.medium)
+                .foregroundStyle(theme.textPrimary)
+                .lineLimit(isExpanded ? nil : 1)
+                .multilineTextAlignment(.leading)
+        } content: {
+            // Fee tiers
+            VStack(spacing: 0) {
+                ForEach(Array(category.tiers.enumerated()), id: \.offset) { index, tier in
+                    HStack {
+                        Text(tierPrefix(index))
                             .font(theme.caption2)
+                            .fontWeight(.medium)
+                            .foregroundStyle(theme.textTertiary)
+                            .frame(width: 22, alignment: .leading)
+
+                        HighlightedText(text: tier.label, blockID: TariffBlockID.tierLabel(categoryIndex, index))
+                            .font(theme.caption)
+                            .foregroundStyle(theme.textSecondary)
+
+                        Spacer()
+
+                        HighlightedText(text: tier.amount, blockID: TariffBlockID.tierAmount(categoryIndex, index))
+                            .font(theme.caption)
+                            .fontWeight(.semibold)
                             .foregroundStyle(theme.primary)
-                            .accessibilityHidden(true)
                     }
+                    .textSelection(.enabled)
+                    .padding(.horizontal, theme.spacingM)
+                    .padding(.vertical, theme.spacingXS + 2)
 
-                    Image(systemName: "chevron.right")
-                        .font(theme.caption2)
-                        .foregroundStyle(theme.textTertiary)
-                        .rotationEffect(.degrees(isExpanded ? 90 : 0))
-                        .accessibilityHidden(true)
-                }
-                .padding(.horizontal, theme.spacingM)
-                .padding(.vertical, theme.spacingS + 2)
-                .contentShape(Rectangle())
-            }
-            .buttonStyle(.plain)
-            .accessibilityValue(isExpanded ? LocalizationKeys.Accessibility.expanded.localized : LocalizationKeys.Accessibility.collapsed.localized)
-            .accessibilityHint(LocalizationKeys.Accessibility.expandCollapseHint.localized)
-            .background(isMatch && !isExpanded ? theme.primary.opacity(0.06) : Color.clear)
-            .onChange(of: isExpanded) { _, expanded in
-                let msg = expanded
-                    ? LocalizationKeys.Accessibility.detailsExpanded.localized
-                    : LocalizationKeys.Accessibility.detailsCollapsed.localized
-                AccessibilityNotification.Announcement(msg).post()
-            }
-
-            // Expanded: fee tiers
-            if isExpanded {
-                VStack(spacing: 0) {
-                    ForEach(Array(category.tiers.enumerated()), id: \.offset) { index, tier in
-                        let tierMatch = !searchText.isEmpty && (
-                            tier.label.lowercased().contains(searchText.lowercased()) ||
-                            tier.amount.lowercased().contains(searchText.lowercased())
-                        )
-                        HStack {
-                            Text(tierPrefix(index))
-                                .font(theme.caption2)
-                                .fontWeight(.medium)
-                                .foregroundStyle(theme.textTertiary)
-                                .frame(width: 22, alignment: .leading)
-
-                            Text(tier.label)
-                                .font(theme.caption)
-                                .foregroundStyle(theme.textSecondary)
-
-                            Spacer()
-
-                            Text(tier.amount)
-                                .font(theme.caption)
-                                .fontWeight(.semibold)
-                                .foregroundStyle(theme.primary)
-                        }
-                        .padding(.horizontal, theme.spacingM)
-                        .padding(.vertical, theme.spacingXS + 2)
-                        .background(tierMatch ? theme.primary.opacity(0.06) : Color.clear)
-
-                        if index < category.tiers.count - 1 {
-                            Divider()
-                                .padding(.leading, theme.spacingM + 22)
-                        }
+                    if index < category.tiers.count - 1 {
+                        Divider()
+                            .padding(.leading, theme.spacingM + 22)
                     }
                 }
-                .padding(.bottom, theme.spacingS)
-                .transition(.opacity.combined(with: .move(edge: .top)))
             }
-        }
-        .onChange(of: searchText) { _, newValue in
-            if !newValue.isEmpty && isMatch {
-                withAnimation(.easeInOut(duration: 0.25)) { isExpanded = true }
-            } else if !newValue.isEmpty && !isMatch {
-                withAnimation(.easeInOut(duration: 0.25)) { isExpanded = false }
-            } else if newValue.isEmpty {
-                withAnimation(.easeInOut(duration: 0.25)) { isExpanded = false }
-            }
+            .padding(.bottom, theme.spacingS)
         }
     }
 

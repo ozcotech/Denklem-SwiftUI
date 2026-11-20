@@ -314,6 +314,10 @@ struct DocumentDetailSheet: View {
     @Environment(\.isAnimatedBackground) private var isAnimatedBackground
     @State private var showShareSheet = false
     @State private var searchText = ""
+    /// All search hits in display order
+    @State private var matches: [DocumentSearchMatch] = []
+    /// Index of the highlighted / focused hit in `matches`
+    @State private var currentMatchIndex = 0
 
     /// Tariff content for arabuluculuk tariff-type documents
     private var tariffContent: TariffDocumentContent? {
@@ -350,29 +354,72 @@ struct DocumentDetailSheet: View {
         return nil
     }
 
+    /// Searchable text of the in-app content, in display order
+    private var searchBlocks: [DocumentSearchBlock] {
+        if let content = tariffContent {
+            return content.searchBlocks
+        } else if let content = attorneyFeeTariffContent {
+            return content.searchBlocks
+        } else if let content = lawContent {
+            return content.searchBlocks
+        }
+        return []
+    }
+
+    /// The search hit currently focused by the find bar
+    private var activeMatch: DocumentSearchMatch? {
+        matches.indices.contains(currentMatchIndex) ? matches[currentMatchIndex] : nil
+    }
+
+    private var isSearching: Bool {
+        hasInAppContent && DocumentSearch.normalizedQuery(searchText) != nil
+    }
+
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(spacing: theme.spacingL) {
-                    // Document Header
-                    documentHeader
+            ScrollViewReader { proxy in
+                ScrollView {
+                    VStack(spacing: theme.spacingL) {
+                        // Document Header
+                        documentHeader
 
-                    // In-app Content or Document Info
-                    if let content = tariffContent {
-                        TariffDocumentView(content: content, searchText: searchText)
-                    } else if let content = attorneyFeeTariffContent {
-                        AttorneyFeeTariffView(content: content, searchText: searchText)
-                    } else if let content = lawContent {
-                        LawDocumentView(content: content, searchText: searchText)
-                    } else {
-                        documentInfo
+                        // In-app Content or Document Info
+                        if let content = tariffContent {
+                            TariffDocumentView(content: content)
+                        } else if let content = attorneyFeeTariffContent {
+                            AttorneyFeeTariffView(content: content)
+                        } else if let content = lawContent {
+                            LawDocumentView(content: content)
+                        } else {
+                            documentInfo
+                        }
+
+                        // Actions
+                        actionButtons
                     }
-
-                    // Actions
-                    actionButtons
+                    .padding(.horizontal, theme.spacingM)
+                    .padding(.bottom, theme.spacingXXL)
                 }
-                .padding(.horizontal, theme.spacingM)
-                .padding(.bottom, theme.spacingXXL)
+                .environment(\.documentSearch, DocumentSearchContext(query: searchText, activeMatch: activeMatch))
+                .safeAreaInset(edge: .bottom) {
+                    if isSearching {
+                        DocumentSearchNavigator(
+                            currentIndex: currentMatchIndex,
+                            total: matches.count,
+                            onPrevious: { moveMatch(by: -1) },
+                            onNext: { moveMatch(by: 1) }
+                        )
+                        .padding(.bottom, theme.spacingS)
+                        .transition(.opacity)
+                    }
+                }
+                .onChange(of: searchText) { _, query in
+                    matches = DocumentSearch.matches(of: query, in: searchBlocks)
+                    currentMatchIndex = 0
+                }
+                .onChange(of: activeMatch) { _, match in
+                    scroll(to: match, with: proxy)
+                }
             }
             .background(theme.background)
             .navigationTitle(document.type.displayName)
@@ -382,6 +429,10 @@ struct DocumentDetailSheet: View {
                 prompt: Text("legislation.document.search.prompt".localized)
             )
             .searchPresentationToolbarBehavior(.avoidHidingContent)
+            // Keyboard "Search" key jumps to the next result
+            .onSubmit(of: .search) {
+                moveMatch(by: 1)
+            }
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     if hasInAppContent {
@@ -411,6 +462,27 @@ struct DocumentDetailSheet: View {
                 if let text = shareText {
                     ShareSheet(items: [text])
                 }
+            }
+        }
+    }
+
+    // MARK: - Find in Document
+
+    /// Steps to the previous / next match, wrapping around at both ends
+    private func moveMatch(by offset: Int) {
+        guard !matches.isEmpty else { return }
+        currentMatchIndex = (currentMatchIndex + offset + matches.count) % matches.count
+        let position = LocalizationKeys.Accessibility.searchResultPosition.localized(currentMatchIndex + 1, matches.count)
+        AccessibilityNotification.Announcement(position).post()
+    }
+
+    /// Scrolls the active match into view after its row has had a chance to expand
+    private func scroll(to match: DocumentSearchMatch?, with proxy: ScrollViewProxy) {
+        guard let match else { return }
+        Task { @MainActor in
+            try? await Task.sleep(for: .milliseconds(80))
+            withAnimation(.easeInOut(duration: 0.3)) {
+                proxy.scrollTo(match.blockID, anchor: .center)
             }
         }
     }

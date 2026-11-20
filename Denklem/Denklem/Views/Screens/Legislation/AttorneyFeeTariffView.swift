@@ -7,6 +7,56 @@
 
 import SwiftUI
 
+// MARK: - Block IDs
+
+/// Search / scroll identifiers for attorney fee tariff tables
+private enum AttorneyFeeBlockID {
+    static func sectionTitle(_ section: Int) -> String { "fee-\(section)-title" }
+    static func sectionSubtitle(_ section: Int) -> String { "fee-\(section)-subtitle" }
+    static func itemDescription(_ section: Int, _ item: Int) -> String { "fee-\(section)-\(item)-desc" }
+    static func itemAmount(_ section: Int, _ item: Int) -> String { "fee-\(section)-\(item)-amount" }
+    static func footnote(_ section: Int) -> String { "fee-\(section)-footnote" }
+    static let part3Title = "fee-part3-title"
+    static let part3Subtitle = "fee-part3-subtitle"
+    static func bracketDescription(_ bracket: Int) -> String { "fee-part3-\(bracket)-desc" }
+    static func bracketRate(_ bracket: Int) -> String { "fee-part3-\(bracket)-rate" }
+}
+
+// MARK: - Search Blocks
+
+extension AttorneyFeeTariffContent {
+
+    /// All searchable text in display order (must mirror `AttorneyFeeTariffView`)
+    var searchBlocks: [DocumentSearchBlock] {
+        var blocks: [DocumentSearchBlock] = []
+
+        for (index, article) in articles.enumerated() {
+            blocks += DocumentSearchBlock.article(index: index, title: article.title, paragraphs: article.paragraphs)
+        }
+
+        for (sIndex, section) in tableSections.enumerated() {
+            blocks.append(DocumentSearchBlock(id: AttorneyFeeBlockID.sectionTitle(sIndex), groupID: nil, text: section.partTitle))
+            blocks.append(DocumentSearchBlock(id: AttorneyFeeBlockID.sectionSubtitle(sIndex), groupID: nil, text: section.subtitle))
+            for (iIndex, item) in section.items.enumerated() {
+                blocks.append(DocumentSearchBlock(id: AttorneyFeeBlockID.itemDescription(sIndex, iIndex), groupID: nil, text: item.description))
+                blocks.append(DocumentSearchBlock(id: AttorneyFeeBlockID.itemAmount(sIndex, iIndex), groupID: nil, text: item.amount))
+            }
+            if let footnote = section.footnote {
+                blocks.append(DocumentSearchBlock(id: AttorneyFeeBlockID.footnote(sIndex), groupID: nil, text: "* \(footnote)"))
+            }
+        }
+
+        blocks.append(DocumentSearchBlock(id: AttorneyFeeBlockID.part3Title, groupID: nil, text: part3Title))
+        blocks.append(DocumentSearchBlock(id: AttorneyFeeBlockID.part3Subtitle, groupID: nil, text: part3Subtitle))
+        for (bIndex, bracket) in part3Brackets.enumerated() {
+            blocks.append(DocumentSearchBlock(id: AttorneyFeeBlockID.bracketDescription(bIndex), groupID: nil, text: bracket.description))
+            blocks.append(DocumentSearchBlock(id: AttorneyFeeBlockID.bracketRate(bIndex), groupID: nil, text: bracket.rate))
+        }
+
+        return blocks
+    }
+}
+
 // MARK: - Attorney Fee Tariff View
 /// Displays the full attorney fee tariff document content with native SwiftUI rendering
 /// Shows articles as collapsible sections and fee tables as sectioned lists
@@ -16,7 +66,6 @@ struct AttorneyFeeTariffView: View {
     // MARK: - Properties
 
     let content: AttorneyFeeTariffContent
-    var searchText: String = ""
 
     @Environment(\.theme) var theme
 
@@ -31,8 +80,8 @@ struct AttorneyFeeTariffView: View {
             articlesSection
 
             // Table Sections
-            ForEach(Array(content.tableSections.enumerated()), id: \.offset) { _, section in
-                AttorneyFeeTableSectionView(section: section, searchText: searchText)
+            ForEach(Array(content.tableSections.enumerated()), id: \.offset) { index, section in
+                AttorneyFeeTableSectionView(section: section, sectionIndex: index)
             }
 
             // Part 3 Brackets
@@ -65,13 +114,16 @@ struct AttorneyFeeTariffView: View {
 
     private var articlesSection: some View {
         VStack(spacing: 0) {
-            AttorneyFeeDocSectionTitle(
-                title: "legislation.section.articles".localized
-            )
+            DocumentSectionTitle(title: "legislation.section.articles".localized)
 
             VStack(spacing: 0) {
                 ForEach(Array(content.articles.enumerated()), id: \.offset) { index, article in
-                    AttorneyFeeArticleRow(article: article, searchText: searchText)
+                    DocumentArticleRow(
+                        index: index,
+                        number: article.number,
+                        title: article.title,
+                        paragraphs: article.paragraphs
+                    )
 
                     if index < content.articles.count - 1 {
                         Divider()
@@ -93,16 +145,16 @@ struct AttorneyFeeTariffView: View {
     // MARK: - Part 3 Section
 
     private var part3Section: some View {
-        let query = searchText.lowercased()
-        return VStack(spacing: theme.spacingS) {
-            AttorneyFeeDocSectionTitle(title: content.part3Title)
+        VStack(spacing: theme.spacingS) {
+            DocumentSectionTitle(title: content.part3Title, blockID: AttorneyFeeBlockID.part3Title)
 
             // Subtitle
-            Text(content.part3Subtitle)
+            HighlightedText(text: content.part3Subtitle, blockID: AttorneyFeeBlockID.part3Subtitle)
                 .font(theme.caption)
                 .foregroundStyle(theme.textSecondary)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.bottom, theme.spacingXS)
+                .textSelection(.enabled)
 
             VStack(spacing: 0) {
                 // Header Row
@@ -127,26 +179,21 @@ struct AttorneyFeeTariffView: View {
 
                 // Bracket Rows
                 ForEach(Array(content.part3Brackets.enumerated()), id: \.offset) { index, bracket in
-                    let isMatch = !query.isEmpty && (
-                        bracket.description.lowercased().contains(query) ||
-                        bracket.rate.lowercased().contains(query)
-                    )
-
                     HStack {
-                        Text(bracket.description)
+                        HighlightedText(text: bracket.description, blockID: AttorneyFeeBlockID.bracketDescription(index))
                             .font(theme.caption)
                             .foregroundStyle(theme.textPrimary)
                             .frame(maxWidth: .infinity, alignment: .leading)
 
-                        Text(bracket.rate)
+                        HighlightedText(text: bracket.rate, blockID: AttorneyFeeBlockID.bracketRate(index))
                             .font(theme.caption)
                             .fontWeight(.semibold)
                             .foregroundStyle(theme.primary)
                             .frame(width: 50, alignment: .trailing)
                     }
+                    .textSelection(.enabled)
                     .padding(.horizontal, theme.spacingM)
                     .padding(.vertical, theme.spacingS)
-                    .background(isMatch ? theme.primary.opacity(0.06) : Color.clear)
 
                     if index < content.part3Brackets.count - 1 {
                         Divider()
@@ -172,35 +219,26 @@ struct AttorneyFeeTariffView: View {
 private struct AttorneyFeeTableSectionView: View {
 
     let section: AttorneyFeeTableSection
-    var searchText: String = ""
+    let sectionIndex: Int
 
     @Environment(\.theme) var theme
 
-    private var isMatch: Bool {
-        guard !searchText.isEmpty else { return false }
-        let q = searchText.lowercased()
-        return section.subtitle.lowercased().contains(q) ||
-            section.items.contains {
-                $0.description.lowercased().contains(q) ||
-                $0.amount.lowercased().contains(q)
-            }
-    }
-
     var body: some View {
         VStack(spacing: theme.spacingS) {
-            AttorneyFeeDocSectionTitle(title: section.partTitle)
+            DocumentSectionTitle(title: section.partTitle, blockID: AttorneyFeeBlockID.sectionTitle(sectionIndex))
 
             // Section subtitle
-            Text(section.subtitle)
+            HighlightedText(text: section.subtitle, blockID: AttorneyFeeBlockID.sectionSubtitle(sectionIndex))
                 .font(theme.caption)
                 .foregroundStyle(theme.textSecondary)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.bottom, theme.spacingXS)
+                .textSelection(.enabled)
 
             // Fee items
             VStack(spacing: 0) {
                 ForEach(Array(section.items.enumerated()), id: \.offset) { index, item in
-                    AttorneyFeeItemRow(item: item, searchText: searchText)
+                    AttorneyFeeItemRow(item: item, sectionIndex: sectionIndex, itemIndex: index)
 
                     if index < section.items.count - 1 {
                         Divider()
@@ -211,12 +249,13 @@ private struct AttorneyFeeTableSectionView: View {
                 // Footnote
                 if let footnote = section.footnote {
                     Divider()
-                    Text("* \(footnote)")
+                    HighlightedText(text: "* \(footnote)", blockID: AttorneyFeeBlockID.footnote(sectionIndex))
                         .font(theme.caption2)
                         .foregroundStyle(theme.textTertiary)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.horizontal, theme.spacingM)
                         .padding(.vertical, theme.spacingS)
+                        .textSelection(.enabled)
                 }
             }
             .background(
@@ -237,15 +276,10 @@ private struct AttorneyFeeTableSectionView: View {
 private struct AttorneyFeeItemRow: View {
 
     let item: AttorneyFeeItem
-    var searchText: String = ""
+    let sectionIndex: Int
+    let itemIndex: Int
 
     @Environment(\.theme) var theme
-
-    private var isMatch: Bool {
-        guard !searchText.isEmpty else { return false }
-        let q = searchText.lowercased()
-        return item.description.lowercased().contains(q) || item.amount.lowercased().contains(q)
-    }
 
     var body: some View {
         HStack(alignment: .top, spacing: theme.spacingS) {
@@ -263,14 +297,14 @@ private struct AttorneyFeeItemRow: View {
             }
 
             // Description
-            Text(item.description)
+            HighlightedText(text: item.description, blockID: AttorneyFeeBlockID.itemDescription(sectionIndex, itemIndex))
                 .font(theme.caption)
                 .foregroundStyle(item.number.isEmpty ? theme.textTertiary : theme.textPrimary)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .fixedSize(horizontal: false, vertical: true)
 
             // Amount
-            Text(item.amount)
+            HighlightedText(text: item.amount, blockID: AttorneyFeeBlockID.itemAmount(sectionIndex, itemIndex))
                 .font(theme.caption)
                 .fontWeight(.semibold)
                 .foregroundStyle(theme.primary)
@@ -278,138 +312,8 @@ private struct AttorneyFeeItemRow: View {
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(minWidth: 70, alignment: .trailing)
         }
+        .textSelection(.enabled)
         .padding(.horizontal, theme.spacingM)
         .padding(.vertical, theme.spacingS)
-        .background(isMatch ? theme.primary.opacity(0.06) : Color.clear)
-    }
-}
-
-// MARK: - Article Row
-
-@available(iOS 26.0, *)
-private struct AttorneyFeeArticleRow: View {
-
-    let article: LawArticle
-    var searchText: String = ""
-
-    @State private var isExpanded = false
-    @Environment(\.theme) var theme
-
-    private var isMatch: Bool {
-        guard !searchText.isEmpty else { return false }
-        let q = searchText.lowercased()
-        return article.title.lowercased().contains(q) ||
-               article.paragraphs.joined(separator: " ").lowercased().contains(q)
-    }
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            Button {
-                withAnimation(.easeInOut(duration: 0.25)) {
-                    isExpanded.toggle()
-                }
-            } label: {
-                HStack {
-                    Text("Madde \(article.number)")
-                        .font(theme.caption)
-                        .fontWeight(.bold)
-                        .foregroundStyle(theme.primary)
-                        .frame(width: 65, alignment: .leading)
-
-                    Text(article.title)
-                        .font(theme.footnote)
-                        .fontWeight(.medium)
-                        .foregroundStyle(theme.textPrimary)
-                        .lineLimit(isExpanded ? nil : 1)
-                        .multilineTextAlignment(.leading)
-
-                    Spacer()
-
-                    if isMatch && !isExpanded {
-                        Image(systemName: "magnifyingglass")
-                            .font(theme.caption2)
-                            .foregroundStyle(theme.primary)
-                            .accessibilityHidden(true)
-                    }
-
-                    Image(systemName: "chevron.right")
-                        .font(theme.caption2)
-                        .foregroundStyle(theme.textTertiary)
-                        .rotationEffect(.degrees(isExpanded ? 90 : 0))
-                        .accessibilityHidden(true)
-                }
-                .padding(.horizontal, theme.spacingM)
-                .padding(.vertical, theme.spacingS + 2)
-                .contentShape(Rectangle())
-            }
-            .buttonStyle(.plain)
-            .accessibilityValue(isExpanded ? LocalizationKeys.Accessibility.expanded.localized : LocalizationKeys.Accessibility.collapsed.localized)
-            .accessibilityHint(LocalizationKeys.Accessibility.expandCollapseHint.localized)
-            .background(isMatch && !isExpanded ? theme.primary.opacity(0.06) : Color.clear)
-            .onChange(of: isExpanded) { _, expanded in
-                let msg = expanded
-                    ? LocalizationKeys.Accessibility.detailsExpanded.localized
-                    : LocalizationKeys.Accessibility.detailsCollapsed.localized
-                AccessibilityNotification.Announcement(msg).post()
-            }
-
-            if isExpanded {
-                VStack(alignment: .leading, spacing: theme.spacingS) {
-                    ForEach(Array(article.paragraphs.enumerated()), id: \.offset) { index, paragraph in
-                        HStack(alignment: .top, spacing: theme.spacingXS) {
-                            Text("(\(index + 1))")
-                                .font(theme.caption)
-                                .fontWeight(.semibold)
-                                .foregroundStyle(theme.primary)
-                                .frame(width: 24, alignment: .leading)
-
-                            Text(paragraph)
-                                .font(theme.caption)
-                                .foregroundStyle(theme.textSecondary)
-                                .fixedSize(horizontal: false, vertical: true)
-                        }
-                        .padding(.vertical, 2)
-                        .padding(.horizontal, theme.spacingXS)
-                        .background(
-                            paragraph.lowercased().contains(searchText.lowercased()) && !searchText.isEmpty ?
-                                theme.primary.opacity(0.06) : Color.clear
-                        )
-                        .clipShape(RoundedRectangle(cornerRadius: 4))
-                    }
-                }
-                .padding(.horizontal, theme.spacingM)
-                .padding(.bottom, theme.spacingM)
-                .transition(.opacity.combined(with: .move(edge: .top)))
-            }
-        }
-        .onChange(of: searchText) { _, newValue in
-            if !newValue.isEmpty && isMatch {
-                withAnimation(.easeInOut(duration: 0.25)) { isExpanded = true }
-            } else if !newValue.isEmpty && !isMatch {
-                withAnimation(.easeInOut(duration: 0.25)) { isExpanded = false }
-            } else if newValue.isEmpty {
-                withAnimation(.easeInOut(duration: 0.25)) { isExpanded = false }
-            }
-        }
-    }
-}
-
-// MARK: - Section Title
-
-@available(iOS 26.0, *)
-private struct AttorneyFeeDocSectionTitle: View {
-
-    let title: String
-
-    @Environment(\.theme) var theme
-
-    var body: some View {
-        Text(title)
-            .font(theme.subheadline)
-            .fontWeight(.bold)
-            .foregroundStyle(theme.textPrimary)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.bottom, theme.spacingS)
-            .accessibilityAddTraits(.isHeader)
     }
 }

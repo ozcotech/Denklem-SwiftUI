@@ -50,7 +50,9 @@ extension AttorneyFeeTariffContent {
     /// Returns attorney fee tariff content for the given year
     static func content(for year: Int) -> AttorneyFeeTariffContent? {
         switch year {
+        case 2025: return Self.content2025
         case 2026: return Self.content2026
+        case 2027: return Self.content2027
         default: return nil
         }
     }
@@ -339,7 +341,7 @@ extension AttorneyFeeTariffContent {
                     AttorneyFeeItem(number: "5a", description: "Uluslararası yargı yerlerinde takip edilen işlerde – Duruşmasız ise", amount: "110.000,00 TL"),
                     AttorneyFeeItem(number: "5b", description: "Uluslararası yargı yerlerinde takip edilen işlerde – Duruşmalı ise", amount: "200.000,00 TL"),
                     AttorneyFeeItem(number: "5c", description: "Uluslararası yargı yerlerinde – Konusu para olan işlerde", amount: "Tarifenin üçüncü kısmına göre belirlenir"),
-                    AttorneyFeeItem(number: "6", description: "6502 sayılı Kanunun 70. maddesi kapsamında tüketici hakem heyetleri, hal hakem heyetleri nezdindeki hukuki yardımlar (3. kısım esas; hesaplanan ücret maktu ücretin altında ise)", amount: "7.000,00 TL")
+                    AttorneyFeeItem(number: "6", description: "6502 sayılı Kanunun 70. maddesinin birinci fıkrası saklı kalmak kaydıyla il ve ilçe tüketici hakem heyetleri, sebze ve meyve hal hakem heyetleri nezdinde sunulacak hukuki yardımlar (üçüncü kısım esas alınır; hesaplanan ücret maktu ücretin altında ise asıl alacağı geçmemek kaydıyla)", amount: "7.000,00 TL")
                 ],
                 footnote: nil
             ),
@@ -368,8 +370,8 @@ extension AttorneyFeeTariffContent {
                 partTitle: "İKİNCİ KISIM – BİRİNCİ BÖLÜM",
                 subtitle: "Yargı Yerlerinde, İcra ve İflas Dairelerinde Yapılan ve Konusu Para Olsa veya Para ile Değerlendirilebilse Bile Maktu Ücrete Bağlı Hukuki Yardımlara Ödenecek Ücret",
                 items: [
-                    AttorneyFeeItem(number: "1a", description: "İhtiyati haciz, ihtiyati tedbir, delillerin tespiti, icranın geri bırakılması, ödeme ve tevdi yeri belirlenmesi işleri – Duruşmasız ise", amount: "10.000,00 TL"),
-                    AttorneyFeeItem(number: "1b", description: "İhtiyati haciz, ihtiyati tedbir, delillerin tespiti, icranın geri bırakılması, ödeme ve tevdi yeri belirlenmesi işleri – Duruşmalı ise", amount: "12.500,00 TL"),
+                    AttorneyFeeItem(number: "1a", description: "Görülmekte olan bir dava içinde olmamak koşulu ile ihtiyati haciz, ihtiyati tedbir, delillerin tespiti, icranın geri bırakılması, ödeme ve tevdi yeri belirlenmesi işleri için – Duruşmasız ise", amount: "10.000,00 TL"),
+                    AttorneyFeeItem(number: "1b", description: "Aynı işler – Duruşmalı ise", amount: "12.500,00 TL"),
                     AttorneyFeeItem(number: "2", description: "Ortaklığın giderilmesi için satış memurluğunda yapılacak işlerin takibi için", amount: "18.000,00 TL"),
                     AttorneyFeeItem(number: "3", description: "Ortaklığın giderilmesi ve taksim davaları için", amount: "40.000,00 TL"),
                     AttorneyFeeItem(number: "4a", description: "Vergi Mahkemelerinde takip edilen dava ve işler – Duruşmasız ise", amount: "30.000,00 TL"),
@@ -403,7 +405,7 @@ extension AttorneyFeeTariffContent {
                     AttorneyFeeItem(number: "17b", description: "İdare ve Vergi Mahkemelerinde takip edilen davalar – Duruşmalı ise", amount: "40.000,00 TL"),
                     AttorneyFeeItem(number: "18a", description: "Bölge Adliye / İdare Mahkemeleri – İlk derecede görülen davalar için", amount: "35.000,00 TL"),
                     AttorneyFeeItem(number: "18b", description: "Bölge Adliye / İdare Mahkemeleri – İstinaf yolu ile görülen bir duruşması olan işler için", amount: "22.000,00 TL"),
-                    AttorneyFeeItem(number: "18c", description: "Bölge Adliye / İdare Mahkemeleri – İstinaf yolu ile görülen birden fazla duruşması veya keşif gerektiren işler için", amount: "42.000,00 TL"),
+                    AttorneyFeeItem(number: "18c", description: "Bölge Adliye / İdare Mahkemeleri – İstinaf yolu ile görülen birden fazla duruşması veya keşif gibi avukatın da bulunması gereken sair işlemleri olan işler için", amount: "42.000,00 TL"),
                     AttorneyFeeItem(number: "19a", description: "Sayıştay'da görülen hesap yargılamaları – Duruşmasız ise", amount: "34.000,00 TL"),
                     AttorneyFeeItem(number: "19b", description: "Sayıştay'da görülen hesap yargılamaları – Duruşmalı ise", amount: "65.000,00 TL"),
                     AttorneyFeeItem(number: "20", description: "Yargıtay'da ilk derecede görülen davalar için", amount: "65.000,00 TL"),

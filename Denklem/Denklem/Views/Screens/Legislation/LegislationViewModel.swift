@@ -207,6 +207,15 @@ final class LegislationViewModel: ObservableObject {
     /// Creates default legislation documents
     private static func createDefaultDocuments() -> [LegislationDocument] {
         return [
+            // 2027 Avukatlık Asgari Ücret Tarifesi
+            LegislationDocument(
+                title: NSLocalizedString("legislation.attorney_tariff.2027.title", value: "2027 Yılı Avukatlık Asgari Ücret Tarifesi", comment: ""),
+                subtitle: NSLocalizedString("legislation.attorney_tariff.2027.subtitle", value: "Resmî Gazete: 3 Kasım 2026, Sayı: 33419", comment: ""),
+                year: 2027,
+                type: .attorneyTariff,
+                url: "https://www.resmigazete.gov.tr/eskiler/2026/11/20261103-3.htm",
+                isOfficial: true
+            ),
             // 2026 Avukatlık Asgari Ücret Tarifesi
             LegislationDocument(
                 title: NSLocalizedString("legislation.attorney_tariff.2026.title", value: "2026 Yılı Avukatlık Asgari Ücret Tarifesi", comment: ""),
@@ -224,6 +233,15 @@ final class LegislationViewModel: ObservableObject {
                 type: .tariff,
                 url: "https://www.resmigazete.gov.tr/eskiler/2025/12/20251226-3.htm",
                 pdfFileName: "arabuluculuk_tarifesi_2026.pdf",
+                isOfficial: true
+            ),
+            // 2025 Avukatlık Asgari Ücret Tarifesi
+            LegislationDocument(
+                title: NSLocalizedString("legislation.attorney_tariff.2025.title", value: "2025 Yılı Avukatlık Asgari Ücret Tarifesi", comment: ""),
+                subtitle: NSLocalizedString("legislation.attorney_tariff.2025.subtitle", value: "Resmî Gazete: 3 Ekim 2024, Sayı: 32681", comment: ""),
+                year: 2025,
+                type: .attorneyTariff,
+                url: "https://www.resmigazete.gov.tr/eskiler/2024/10/20241003-4-1.htm",
                 isOfficial: true
             ),
             // 2025 Tarifesi

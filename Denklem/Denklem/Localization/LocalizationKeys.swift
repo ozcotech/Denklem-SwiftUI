@@ -543,6 +543,11 @@ struct LocalizationKeys {
         static let typeLaw = "legislation.type.law"
         static let typeCircular = "legislation.type.circular"
         static let typeAttorneyTariff = "legislation.type.attorney_tariff"
+
+        // Document viewer
+        static let copyArticle = "legislation.article.copy"
+        static let articleCopied = "legislation.article.copied"
+        static let searchNoResults = "legislation.document.search.no_results"
     }
     
     // MARK: - Error Messages
@@ -750,6 +755,10 @@ struct LocalizationKeys {
         static let surveyButton = "a11y.label.survey_button"
         static let questionCounter = "a11y.label.question_counter"
         static let errorBanner = "a11y.label.error_banner"
+        static let previousResult = "a11y.label.previous_result"
+        static let nextResult = "a11y.label.next_result"
+        static let searchResultPosition = "a11y.label.search_result_position"
+        static let searchMatchCount = "a11y.label.search_match_count"
     }
 
     // MARK: - Survey

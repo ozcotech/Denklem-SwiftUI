@@ -7,6 +7,18 @@
 
 import SwiftUI
 
+// MARK: - Search Blocks
+
+extension LawDocumentContent {
+
+    /// All searchable text in display order (must mirror `LawDocumentView`)
+    var searchBlocks: [DocumentSearchBlock] {
+        articles.enumerated().flatMap { index, article in
+            DocumentSearchBlock.article(index: index, title: article.title, paragraphs: article.paragraphs)
+        }
+    }
+}
+
 // MARK: - Law Document View
 /// Displays the full law document content with native SwiftUI rendering
 /// Shows articles as collapsible sections
@@ -16,7 +28,6 @@ struct LawDocumentView: View {
     // MARK: - Properties
 
     let content: LawDocumentContent
-    var searchText: String = ""
 
     @Environment(\.theme) var theme
 
@@ -61,11 +72,16 @@ struct LawDocumentView: View {
 
     private var articlesSection: some View {
         VStack(spacing: 0) {
-            LawSectionTitle(title: "legislation.law.section.articles".localized)
+            DocumentSectionTitle(title: "legislation.law.section.articles".localized)
 
             VStack(spacing: 0) {
                 ForEach(Array(content.articles.enumerated()), id: \.offset) { index, article in
-                    LawArticleRow(article: article, searchText: searchText)
+                    DocumentArticleRow(
+                        index: index,
+                        number: article.number,
+                        title: article.title,
+                        paragraphs: article.paragraphs
+                    )
 
                     if index < content.articles.count - 1 {
                         Divider()
@@ -82,142 +98,5 @@ struct LawDocumentView: View {
                     .stroke(theme.border, lineWidth: 0.5)
             )
         }
-    }
-}
-
-// MARK: - Law Section Title
-
-@available(iOS 26.0, *)
-private struct LawSectionTitle: View {
-
-    let title: String
-
-    @Environment(\.theme) var theme
-
-    var body: some View {
-        Text(title)
-            .font(theme.subheadline)
-            .fontWeight(.bold)
-            .foregroundStyle(theme.textPrimary)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.bottom, theme.spacingS)
-            .accessibilityAddTraits(.isHeader)
-    }
-}
-
-// MARK: - Law Article Row
-
-@available(iOS 26.0, *)
-private struct LawArticleRow: View {
-
-    let article: LawArticle
-    var searchText: String = ""
-
-    @State private var isExpanded = false
-    @Environment(\.theme) var theme
-
-    private var isMatch: Bool {
-        guard !searchText.isEmpty else { return false }
-        let q = searchText.lowercased()
-        return article.title.lowercased().contains(q) ||
-               article.paragraphs.joined(separator: " ").lowercased().contains(q)
-    }
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            // Tap header to expand/collapse
-            Button {
-                withAnimation(.easeInOut(duration: 0.25)) {
-                    isExpanded.toggle()
-                }
-            } label: {
-                HStack {
-                    Text("Madde \(article.number)")
-                        .font(theme.caption)
-                        .fontWeight(.bold)
-                        .foregroundStyle(theme.primary)
-                        .frame(minWidth: 65, alignment: .leading)
-
-                    Text(article.title)
-                        .font(theme.footnote)
-                        .fontWeight(.medium)
-                        .foregroundStyle(theme.textPrimary)
-                        .lineLimit(isExpanded ? nil : 1)
-                        .multilineTextAlignment(.leading)
-
-                    Spacer()
-
-                    if isMatch && !isExpanded {
-                        Image(systemName: "magnifyingglass")
-                            .font(theme.caption2)
-                            .foregroundStyle(theme.primary)
-                            .accessibilityHidden(true)
-                    }
-
-                    Image(systemName: "chevron.right")
-                        .font(theme.caption2)
-                        .foregroundStyle(theme.textTertiary)
-                        .rotationEffect(.degrees(isExpanded ? 90 : 0))
-                        .accessibilityHidden(true)
-                }
-                .padding(.horizontal, theme.spacingM)
-                .padding(.vertical, theme.spacingS + 2)
-                .contentShape(Rectangle())
-            }
-            .buttonStyle(.plain)
-            .accessibilityValue(isExpanded ? LocalizationKeys.Accessibility.expanded.localized : LocalizationKeys.Accessibility.collapsed.localized)
-            .accessibilityHint(LocalizationKeys.Accessibility.expandCollapseHint.localized)
-            .background(isMatch && !isExpanded ? theme.primary.opacity(0.06) : Color.clear)
-            .onChange(of: isExpanded) { _, expanded in
-                let msg = expanded
-                    ? LocalizationKeys.Accessibility.detailsExpanded.localized
-                    : LocalizationKeys.Accessibility.detailsCollapsed.localized
-                AccessibilityNotification.Announcement(msg).post()
-            }
-
-            // Expanded content
-            if isExpanded {
-                VStack(alignment: .leading, spacing: theme.spacingS) {
-                    ForEach(Array(article.paragraphs.enumerated()), id: \.offset) { index, paragraph in
-                        HStack(alignment: .top, spacing: theme.spacingXS) {
-                            Text("(\(index + 1))")
-                                .font(theme.caption)
-                                .fontWeight(.semibold)
-                                .foregroundStyle(theme.primary)
-                                .frame(width: 24, alignment: .leading)
-
-                            Text(paragraph)
-                                .font(theme.caption)
-                                .foregroundStyle(theme.textSecondary)
-                                .fixedSize(horizontal: false, vertical: true)
-                        }
-                        .padding(.vertical, 2)
-                        .padding(.horizontal, theme.spacingXS)
-                        .background(
-                            paragraphMatchesSearch(paragraph) ?
-                                theme.primary.opacity(0.06) : Color.clear
-                        )
-                        .clipShape(RoundedRectangle(cornerRadius: 4))
-                    }
-                }
-                .padding(.horizontal, theme.spacingM)
-                .padding(.bottom, theme.spacingM)
-                .transition(.opacity.combined(with: .move(edge: .top)))
-            }
-        }
-        .onChange(of: searchText) { _, newValue in
-            if !newValue.isEmpty && isMatch {
-                withAnimation(.easeInOut(duration: 0.25)) { isExpanded = true }
-            } else if !newValue.isEmpty && !isMatch {
-                withAnimation(.easeInOut(duration: 0.25)) { isExpanded = false }
-            } else if newValue.isEmpty {
-                withAnimation(.easeInOut(duration: 0.25)) { isExpanded = false }
-            }
-        }
-    }
-
-    private func paragraphMatchesSearch(_ paragraph: String) -> Bool {
-        guard !searchText.isEmpty else { return false }
-        return paragraph.lowercased().contains(searchText.lowercased())
     }
 }
