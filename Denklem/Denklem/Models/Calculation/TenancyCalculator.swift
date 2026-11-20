@@ -22,7 +22,8 @@ struct TenancyCalculator {
     /// - Parameter input: TenancyCalculationInput with feeMode = .attorneyFee
     /// - Returns: TenancyAttorneyFeeResult
     static func calculateAttorneyFee(input: TenancyCalculationInput) -> TenancyAttorneyFeeResult {
-        let year = input.tariffYear.rawValue
+        // Attorney fee follows the attorney fee tariff year, not the mediation tariff year
+        let year = input.attorneyTariffYear.rawValue
         let sulhMinimum = TenancyCalculationConstants.TenancyCourtType.civilPeace.minimumFee(for: year)
 
         // Calculate total input amount
@@ -187,8 +188,10 @@ struct TenancyCalculator {
             return AttorneyFeeConstants.MonetaryBrackets2025.brackets
         case 2026:
             return AttorneyFeeConstants.MonetaryBrackets2026.brackets
+        case 2027:
+            return AttorneyFeeConstants.MonetaryBrackets2027.brackets
         default:
-            return AttorneyFeeConstants.MonetaryBrackets2026.brackets
+            return getBrackets(for: AttorneyFeeTariffYear.latest.rawValue)
         }
     }
 }
@@ -198,7 +201,7 @@ extension TenancyCalculator {
 
     /// Quick attorney fee calculation
     static func calculateAttorneyFee(
-        tariffYear: TariffYear,
+        tariffYear: AttorneyFeeTariffYear,
         evictionAmount: Double? = nil,
         determinationAmount: Double? = nil
     ) -> TenancyAttorneyFeeResult {
@@ -211,7 +214,8 @@ extension TenancyCalculator {
             selectedTypes: selectedTypes,
             evictionAmount: evictionAmount,
             determinationAmount: determinationAmount,
-            tariffYear: tariffYear
+            tariffYear: .current,
+            attorneyTariffYear: tariffYear
         )
         return calculateAttorneyFee(input: input)
     }
@@ -295,6 +299,14 @@ extension TenancyCalculator {
         // Test 5: Eviction only, 2025, 1M → 152,000 TL
         let atty5 = calculateAttorneyFee(tariffYear: .year2025, evictionAmount: 1_000_000)
         results.append(("Attorney: Eviction 1M 2025 = 152,000", abs(atty5.fee - 152_000) < 1))
+
+        // Test 5b: Eviction only, 2027, 1M → 800K×16% + 200K×15% = 158,000 TL (Sulh min 40K)
+        let atty5b = calculateAttorneyFee(tariffYear: .year2027, evictionAmount: 1_000_000)
+        results.append(("Attorney: Eviction 1M 2027 = 158,000", abs(atty5b.fee - 158_000) < 1))
+
+        // Test 5c: Eviction only, 2027, 200K → 32,000 < Sulh min → 40,000 TL
+        let atty5c = calculateAttorneyFee(tariffYear: .year2027, evictionAmount: 200_000)
+        results.append(("Attorney: Eviction 200K 2027 = 40,000 (Sulh min)", abs(atty5c.fee - 40_000) < 1))
 
         // Mediation Fee Tests
         // Test 6: Eviction only, 2026, rent=600K → base=300K → 18,000 TL

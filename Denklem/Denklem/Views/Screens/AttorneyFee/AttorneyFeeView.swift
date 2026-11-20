@@ -16,7 +16,7 @@ struct AttorneyFeeView: View {
 
     // MARK: - Properties
 
-    @StateObject private var viewModel = AttorneyFeeViewModel()
+    @StateObject private var viewModel: AttorneyFeeViewModel
     @ObservedObject private var localeManager = LocaleManager.shared
     @Environment(\.theme) var theme
     @Environment(\.dismiss) private var dismiss
@@ -30,6 +30,14 @@ struct AttorneyFeeView: View {
 
     @State private var glowPhase = false
     @State private var nudgePhase = false
+
+    // MARK: - Initialization
+
+    /// - Parameter selectedYear: Defaults to the attorney fee tariff in force today
+    ///   (not the start-screen year — attorney tariffs change in November, mediation tariffs in January)
+    init(selectedYear: AttorneyFeeTariffYear = .current) {
+        _viewModel = StateObject(wrappedValue: AttorneyFeeViewModel(selectedYear: selectedYear))
+    }
 
     // MARK: - Body
 
@@ -125,11 +133,15 @@ struct AttorneyFeeView: View {
                     guard newValue != nil else { return }
                     // Clear previous result when user starts editing
                     viewModel.calculationResult = nil
-                    glowPhase = false
-                    nudgePhase = false
                     withAnimation(.easeInOut(duration: 0.3)) {
                         proxy.scrollTo("amountInput", anchor: .center)
                     }
+                }
+                .onChange(of: viewModel.calculationResult == nil) { _, isCleared in
+                    // Reset card animation so it restarts when a new result appears
+                    guard isCleared else { return }
+                    glowPhase = false
+                    nudgePhase = false
                 }
             }
         }

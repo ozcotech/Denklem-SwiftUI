@@ -722,6 +722,80 @@ Sonuç: 372.500 TL
 
 ---
 
+## 📅 Çok Yıllı Tarife Desteği (2025 / 2026 / 2027)
+
+> Eklenme: 20 Kasım 2026. Doğrulanmış tarife metinleri: `Documentation/20xx_AVUKATLIK_ASGARI_UCRET_TARIFESI.md`
+
+### Adım 1 – 2025 kontrolü (TAMAMLANDI)
+
+**Bulgu:** Hesap motoru (`AttorneyFeeCalculator`, `AttorneyFeeConstants`) 2025 değerlerini zaten doğru kullanıyor.
+Gerçek dosyalar derlenip test edildi (Madde 16/2-a, b, c ve 2. Kısım 2. Bölüm sıra 8, 10, 11, 12):
+
+| Senaryo | 2025 | 2026 |
+|---|---|---|
+| Parasal + anlaşma 45.000 TL | 9.000 | 10.000 (eşik altı) |
+| Parasal + anlaşma 100.000 TL | 20.000 | 20.000 |
+| Parasal + anlaşma 400.000 TL | 80.000 | 80.000 |
+| Parasal + anlaşma 1.000.000 TL | 190.000 | 195.000 |
+| Parasal + anlaşma 5.000.000 TL | 657.500 | 830.000 |
+| Anlaşmama | 7.000 | 8.000 |
+| Sulh / Asliye / Tüketici / FSHM (× 1,25) | 22.500 / 37.500 / 18.750 / 50.000 | 37.500 / 56.250 / 28.125 / 68.750 |
+
+> 50.000 – 400.000 TL arası tutarlarda iki yılın ilk dilimi de %16 olduğu için sonuç **tarife gereği aynıdır** (hata değil).
+
+**Ekran hataları (düzeltildi):**
+1. `DisputeCategoryView` → `AttorneyFeeView()` yılı aktarmıyordu; başlangıçta 2025 seçilse de ekran 2026 ile açılıyordu.
+2. Yıl / konu / anlaşma / mahkeme değişince eski sonuç kartı ekranda kalıyordu → `AttorneyFeeViewModel.invalidateResult()`.
+
+### Adım 2 – 2027 hesaplaması (TAMAMLANDI – 20 Kasım 2026)
+
+Doğrulama (gerçek dosyalar derlenerek): 2027 anlaşma 60.000 → 12.500 · 1.000.000 → 197.500 ·
+5.000.000 → 877.500 · 30.000.000 → 2.135.000 · anlaşmama → 10.000 · Sulh/Asliye/Tüketici/FSHM →
+50.000 / 77.500 / 37.500 / 87.500. Kira: tahliye 1.000.000 → 158.000; 200.000 → 40.000 (Sulh alt sınırı).
+Varsayılan yıl: 3 Kasım 2026 00:00 (İstanbul) itibarıyla 2027.
+
+**Değerler (2027 tarifesi, RG 3 Kasım 2026, yayımı tarihinde yürürlükte):**
+
+| Parametre | 2027 |
+|---|---|
+| Anlaşmama ücreti (1. Kısım 1. Bölüm sıra 6) | 10.000 TL |
+| Madde 16/2-a eşik | 62.500 TL |
+| Eşik altı anlaşma ücreti (10.000 × 1,25) | 12.500 TL |
+| Üçüncü kısım dilimleri | 800k %16 · 800k %15 · 1,6M %14 · 1,6M %13 · 2,4M %11 · 3,2M %8 · 4M %5 · 4,8M %3 · 5,6M %2 · 24,8M üstü %1 |
+| Sulh / Asliye / Tüketici / FSHM | 40.000 / 62.000 / 30.000 / 70.000 |
+| İcra Mah. dava ve duruşmalı işler (kira ekranı) | 23.000 TL |
+
+**Tasarım sorunu:** `TariffYear` (2025, 2026) tüm arabuluculuk ekranlarınca paylaşılıyor. 2027 arabuluculuk
+tarifesi henüz yok; `TariffYear`'a `.year2027` eklemek arabuluculuk ekranlarını bozar.
+
+**Önerilen çözüm:** Avukatlık ücretine ayrı yıl listesi:
+- `AttorneyFeeConstants.availableYears = [2025, 2026, 2027]`, `MonetaryBrackets2027`, `NonMonetaryFee2027`, `CourtType.fee(for: 2027)`
+- `AttorneyFeeTariff2027.swift`, `AttorneyFeeCalculator` switch'lerine 2027
+- Avukatlık ekranının yıl seçicisi kendi listesini kullanır (arabuluculuk ekranları değişmez)
+- `default:` dalları 2026'ya düşmek yerine en güncel yıla düşer
+
+**Kararlar (20 Kasım 2026, kullanıcı onaylı):**
+1. Avukatlık ücreti **ayrı yıl listesi** kullanır; arabuluculuk hesaplamaları (`TariffYear`) etkilenmez.
+2. Varsayılan yıl = **bugün yürürlükte olan avukatlık tarifesi** (başlangıç ekranındaki yıl değil).
+   Avukatlık tarifesi yılı arabuluculuk yılıyla aynı tarihte değişmez
+   (2025: 3 Ekim 2024 · 2026: 4 Kasım 2025 · 2027: 3 Kasım 2026, hepsi yayımı tarihinde yürürlükte).
+3. Kira ekranında avukatlık modu da aynı listeyi ve varsayılanı kullanır; arabuluculuk modu `TariffYear` ile kalır.
+
+**Uygulama:**
+- `Models/Domain/AttorneyFeeTariffYear.swift` (yeni): `year2025/2026/2027`, `effectiveDate` (Europe/Istanbul),
+  `current` (yürürlük tarihine göre), `latest`.
+- `YearPickerSection` generic hale gelir (`YearPickerOption` protokolü: `TariffYear` + `AttorneyFeeTariffYear`).
+- ~~Yıl seçicinin üstünde "Yürürlük Tarihi: …"~~ — kullanıcı isteğiyle kaldırıldı (gereksiz).
+- Tüm yıl seçicilerinde (arabuluculuk dahil) sıralama yeniden eskiye: 2027 · 2026 · 2025.
+- `AttorneyFeeConstants` 2027 değerleri; 2026'ya işaret eden kullanılmayan legacy alanlar kaldırılır;
+  `default:` dalları en güncel yıla düşer.
+- `AttorneyFeeTariff2027.swift`, `AttorneyFeeCalculator` ve `TenancyCalculator` 2027 dalları,
+  `TenancyCourtType.minimumFee(for: 2027)` = 40.000 / 62.000 / 23.000.
+- `TenancyCalculationInput.attorneyTariffYear` (avukatlık modu için ayrı yıl).
+- `DisputeCategoryView` → `AttorneyFeeView()` (başlangıç yılı aktarılmaz, Adım 1'deki aktarım geri alınır).
+
+---
+
 **Doküman Oluşturma Tarihi:** 8 Ocak 2026  
-**Son Güncelleme:** 8 Ocak 2026  
-**Versiyon:** 1.0
+**Son Güncelleme:** 20 Kasım 2026  
+**Versiyon:** 1.1

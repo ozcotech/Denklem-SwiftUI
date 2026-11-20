@@ -18,8 +18,10 @@ struct TenancyCalculationInput: Equatable {
     let evictionAmount: Double?
     /// 1-year rent difference for determination (nil if not selected)
     let determinationAmount: Double?
-    /// Tariff year
+    /// Mediation tariff year (used in mediation fee mode)
     let tariffYear: TariffYear
+    /// Attorney fee tariff year (used in attorney fee mode; changes in November, not January)
+    var attorneyTariffYear: AttorneyFeeTariffYear = .current
 
     // MARK: - Validation
 

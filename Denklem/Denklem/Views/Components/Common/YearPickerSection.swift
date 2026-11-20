@@ -7,20 +7,32 @@
 
 import SwiftUI
 
+// MARK: - Year Picker Option
+/// A year type that can be shown in `YearPickerSection`
+/// (mediation `TariffYear` or `AttorneyFeeTariffYear`)
+protocol YearPickerOption: Hashable, Identifiable {
+    var displayName: String { get }
+    /// Year value, used to list the newest year first
+    var rawValue: Int { get }
+}
+
+extension TariffYear: YearPickerOption {}
+extension AttorneyFeeTariffYear: YearPickerOption {}
+
 // MARK: - Year Picker Section
 /// Shared tariff year picker dropdown used across input/selection screens
 /// Displays an optional legal reference label above a capsule-styled year picker menu
 @available(iOS 26.0, *)
-struct YearPickerSection: View {
+struct YearPickerSection<Year: YearPickerOption>: View {
     @Environment(\.theme) var theme
     @Environment(\.isAnimatedBackground) private var isAnimatedBackground
 
-    let availableYears: [TariffYear]
-    let selectedYear: TariffYear
+    let availableYears: [Year]
+    let selectedYear: Year
     var selectedDisplayText: String? = nil
     var legalReferenceText: String? = nil
     var showTopPadding: Bool = false
-    let onYearSelected: (TariffYear) -> Void
+    let onYearSelected: (Year) -> Void
 
     var body: some View {
         VStack(spacing: theme.spacingS) {
@@ -31,7 +43,8 @@ struct YearPickerSection: View {
             }
 
             Menu {
-                ForEach(availableYears) { year in
+                // Newest year first (e.g. 2027, 2026, 2025)
+                ForEach(availableYears.sorted { $0.rawValue > $1.rawValue }) { year in
                     Button {
                         onYearSelected(year)
                     } label: {

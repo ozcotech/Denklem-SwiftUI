@@ -18,8 +18,12 @@ final class TenancySelectionViewModel: ObservableObject {
 
     // MARK: - Published Properties
 
-    /// Selected tariff year
+    /// Selected mediation tariff year (mediation fee mode)
     @Published var selectedYear: TariffYear
+
+    /// Selected attorney fee tariff year (attorney fee mode).
+    /// Independent of `selectedYear`; defaults to the attorney tariff in force today.
+    @Published var selectedAttorneyYear: AttorneyFeeTariffYear = .current
 
     /// Selected fee mode (segmented picker)
     @Published var selectedFeeMode: TenancyCalculationConstants.TenancyFeeMode = .mediationFee
@@ -53,9 +57,19 @@ final class TenancySelectionViewModel: ObservableObject {
         LocalizationKeys.RentSpecial.selectionScreenTitle.localized
     }
 
-    /// Available tariff years for selection
+    /// Available mediation tariff years for selection
     var availableYears: [TariffYear] {
         TariffYear.allCases
+    }
+
+    /// Available attorney fee tariff years for selection
+    var availableAttorneyYears: [AttorneyFeeTariffYear] {
+        AttorneyFeeTariffYear.allCases
+    }
+
+    /// Whether the attorney fee mode is active
+    var isAttorneyFeeMode: Bool {
+        selectedFeeMode == .attorneyFee
     }
 
     /// Fee modes for segmented picker
@@ -146,7 +160,8 @@ final class TenancySelectionViewModel: ObservableObject {
             selectedTypes: selectedTypes,
             evictionAmount: evictionAmount,
             determinationAmount: determinationAmount,
-            tariffYear: selectedYear
+            tariffYear: selectedYear,
+            attorneyTariffYear: selectedAttorneyYear
         )
 
         // Calculate with validation

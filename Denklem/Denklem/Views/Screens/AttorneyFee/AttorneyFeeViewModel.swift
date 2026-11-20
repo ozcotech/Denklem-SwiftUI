@@ -101,20 +101,32 @@ final class AttorneyFeeViewModel: ObservableObject {
 
     // MARK: - Published Properties
 
-    /// Selected tariff year
-    @Published var selectedYear: TariffYear = .current
+    // Any change to a calculation parameter invalidates the displayed result,
+    // otherwise a result from a previous selection (e.g. 2026) stays on screen
+    // after the user switches to another year (e.g. 2025).
+
+    /// Selected attorney fee tariff year (independent of the mediation tariff year)
+    @Published var selectedYear: AttorneyFeeTariffYear {
+        didSet { if oldValue != selectedYear { invalidateResult() } }
+    }
 
     /// Selected dispute type (Monetary/Non-Monetary)
-    @Published var selectedDisputeType: AttorneyFeeDisputeType? = .monetary
+    @Published var selectedDisputeType: AttorneyFeeDisputeType? = .monetary {
+        didSet { if oldValue != selectedDisputeType { invalidateResult() } }
+    }
 
     /// Selected agreement status (Agreement/No Agreement)
-    @Published var selectedAgreementStatus: AttorneyFeeAgreementStatus? = .agreed
+    @Published var selectedAgreementStatus: AttorneyFeeAgreementStatus? = .agreed {
+        didSet { if oldValue != selectedAgreementStatus { invalidateResult() } }
+    }
 
     /// Amount input (agreement amount or claim amount)
     @Published var amountText: String = ""
 
     /// Selected court type (for non-monetary agreement)
-    @Published var selectedCourtType: AttorneyFeeConstants.CourtType?
+    @Published var selectedCourtType: AttorneyFeeConstants.CourtType? {
+        didSet { if oldValue != selectedCourtType { invalidateResult() } }
+    }
 
     /// Show result sheet
     @Published var showResult: Bool = false
@@ -181,9 +193,9 @@ final class AttorneyFeeViewModel: ObservableObject {
         LocalizationKeys.AttorneyFee.typeScreenTitle.localized
     }
 
-    /// Available tariff years
-    var availableYears: [TariffYear] {
-        TariffYear.allCases
+    /// Available attorney fee tariff years
+    var availableYears: [AttorneyFeeTariffYear] {
+        AttorneyFeeTariffYear.allCases
     }
 
     /// Available court types
@@ -212,7 +224,10 @@ final class AttorneyFeeViewModel: ObservableObject {
 
     // MARK: - Initialization
 
-    init() {}
+    /// - Parameter selectedYear: Defaults to the attorney fee tariff in force today
+    init(selectedYear: AttorneyFeeTariffYear = .current) {
+        self.selectedYear = selectedYear
+    }
 
     // MARK: - Public Methods
 
@@ -311,6 +326,13 @@ final class AttorneyFeeViewModel: ObservableObject {
     }
 
     // MARK: - Private Methods
+
+    /// Hides a result that no longer matches the selected parameters
+    private func invalidateResult() {
+        guard calculationResult != nil else { return }
+        calculationResult = nil
+        showResult = false
+    }
 
     /// Calculates fixed fee for non-monetary no-agreement cases
     private func calculateNoAgreementFixedFee() {

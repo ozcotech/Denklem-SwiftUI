@@ -122,8 +122,15 @@ struct TenancyCalculationConstants {
                 case .firstInstance: return 45_000.0
                 case .enforcement: return 18_000.0
                 }
+            case 2027:
+                switch self {
+                case .civilPeace: return 40_000.0
+                case .firstInstance: return 62_000.0
+                case .enforcement: return 23_000.0
+                }
             default:
-                return minimumFee(for: 2026)
+                // Unknown year: fall back to the most recent attorney fee tariff
+                return minimumFee(for: AttorneyFeeTariffYear.latest.rawValue)
             }
         }
 

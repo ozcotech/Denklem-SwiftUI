@@ -121,12 +121,23 @@ struct TenancySelectionView: View {
 
     // MARK: - Year Picker Section
 
+    /// Attorney fee mode uses the attorney fee tariff years (2025–2027),
+    /// mediation fee mode uses the mediation tariff years
+    @ViewBuilder
     private var yearPickerSection: some View {
-        YearPickerSection(
-            availableYears: viewModel.availableYears,
-            selectedYear: viewModel.selectedYear,
-            onYearSelected: { viewModel.selectedYear = $0 }
-        )
+        if viewModel.isAttorneyFeeMode {
+            YearPickerSection(
+                availableYears: viewModel.availableAttorneyYears,
+                selectedYear: viewModel.selectedAttorneyYear,
+                onYearSelected: { viewModel.selectedAttorneyYear = $0 }
+            )
+        } else {
+            YearPickerSection(
+                availableYears: viewModel.availableYears,
+                selectedYear: viewModel.selectedYear,
+                onYearSelected: { viewModel.selectedYear = $0 }
+            )
+        }
     }
 
     // MARK: - Fee Mode Segmented Picker

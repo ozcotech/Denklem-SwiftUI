@@ -96,6 +96,7 @@ struct DisputeCategoryView: View {
             SMMCalculationView()
         }
         .navigationDestination(isPresented: $viewModel.navigateToAttorneyFee) {
+            // Attorney fee uses its own tariff year (the one in force today), not the mediation year
             AttorneyFeeView()
         }
         .navigationDestination(isPresented: $viewModel.navigateToTenancySpecial) {

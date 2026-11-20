@@ -8,8 +8,8 @@
 import Foundation
 
 /// Calculation engine for attorney fee based on tariff year, dispute type, and agreement status
-/// Supports 2025 and 2026 tariffs
-/// Uses AttorneyFeeConstants, AttorneyFeeTariff2025/2026, and AttorneyFeeResult for all logic and validation
+/// Supports 2025, 2026 and 2027 tariffs (see AttorneyFeeTariffYear)
+/// Uses AttorneyFeeConstants, AttorneyFeeTariff2025/2026/2027, and AttorneyFeeResult for all logic and validation
 struct AttorneyFeeCalculator {
 
 	/// Calculates attorney fee for given input
@@ -57,7 +57,7 @@ struct AttorneyFeeCalculator {
 					)
 				}
 
-				// 1. Lower limit check (below threshold - 50,000 TL for 2026, 43,750 TL for 2025)
+				// 1. Lower limit check (Art. 16/2-a threshold: 43,750 / 50,000 / 62,500 TL for 2025 / 2026 / 2027)
 				if amount < tariff.minimumThreshold {
 					let minFee = tariff.minimumFeeWithMultiplier
 					let isMaxApplied = minFee > amount
@@ -213,9 +213,18 @@ struct AttorneyFeeCalculator {
 				nonMonetaryBaseFee: AttorneyFeeTariff2026.nonMonetaryBaseFee,
 				nonMonetaryAgreementMultiplier: AttorneyFeeTariff2026.nonMonetaryAgreementMultiplier
 			)
+		case 2027:
+			return TariffValues(
+				minimumFee: AttorneyFeeTariff2027.minimumFee,
+				minimumThreshold: AttorneyFeeTariff2027.minimumThreshold,
+				minimumFeeWithMultiplier: AttorneyFeeTariff2027.minimumFeeWithMultiplier,
+				agreementMultiplier: AttorneyFeeTariff2027.agreementMultiplier,
+				nonMonetaryBaseFee: AttorneyFeeTariff2027.nonMonetaryBaseFee,
+				nonMonetaryAgreementMultiplier: AttorneyFeeTariff2027.nonMonetaryAgreementMultiplier
+			)
 		default:
-			// Default to 2026
-			return getTariffValues(for: 2026)
+			// Unknown year: fall back to the most recent tariff
+			return getTariffValues(for: AttorneyFeeTariffYear.latest.rawValue)
 		}
 	}
 
@@ -226,8 +235,10 @@ struct AttorneyFeeCalculator {
 			return AttorneyFeeTariff2025.brackets
 		case 2026:
 			return AttorneyFeeTariff2026.brackets
+		case 2027:
+			return AttorneyFeeTariff2027.brackets
 		default:
-			return AttorneyFeeTariff2026.brackets
+			return getBrackets(for: AttorneyFeeTariffYear.latest.rawValue)
 		}
 	}
 
