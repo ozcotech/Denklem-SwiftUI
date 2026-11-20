@@ -268,7 +268,7 @@ c) Arabuluculuk faaliyetinin anlaşmazlık ile sonuçlanması halinde, avukat, b
 | 5a | Uluslararası yargı yerlerinde takip edilen işlerde – Duruşmasız ise | 110.000,00 TL |
 | 5b | Uluslararası yargı yerlerinde takip edilen işlerde – Duruşmalı ise | 200.000,00 TL |
 | 5c | Uluslararası yargı yerlerinde – Konusu para olan işlerde | Tarifenin üçüncü kısmına göre belirlenir |
-| 6 | 6502 sayılı Kanunun 70. maddesi kapsamında il ve ilçe tüketici hakem heyetleri, sebze ve meyve hal hakem heyetleri nezdinde sunulacak hukuki yardımlar (üçüncü kısım esas alınır; hesaplanan ücret maktu ücretin altında ise) | 7.000,00 TL |
+| 6 | 6502 sayılı Kanunun 70. maddesinin birinci fıkrası saklı kalmak kaydıyla il ve ilçe tüketici hakem heyetleri, sebze ve meyve hal hakem heyetleri nezdinde sunulacak hukuki yardımlar (üçüncü kısım esas alınır; hesaplanan ücret maktu ücretin altında ise asıl alacağı geçmemek kaydıyla) | 7.000,00 TL |
 
 ---
 
@@ -301,7 +301,7 @@ c) Arabuluculuk faaliyetinin anlaşmazlık ile sonuçlanması halinde, avukat, b
 
 | No | İş / Hizmet | Ücret |
 |----|-------------|-------|
-| 1a | İhtiyati haciz, ihtiyati tedbir, delillerin tespiti, icranın geri bırakılması, ödeme ve tevdi yeri belirlenmesi işleri için – Duruşmasız ise | 10.000,00 TL |
+| 1a | Görülmekte olan bir dava içinde olmamak koşulu ile ihtiyati haciz, ihtiyati tedbir, delillerin tespiti, icranın geri bırakılması, ödeme ve tevdi yeri belirlenmesi işleri için – Duruşmasız ise | 10.000,00 TL |
 | 1b | Aynı işler – Duruşmalı ise | 12.500,00 TL |
 | 2 | Ortaklığın giderilmesi için satış memurluğunda yapılacak işlerin takibi için | 18.000,00 TL |
 | 3 | Ortaklığın giderilmesi ve taksim davaları için | 40.000,00 TL |
