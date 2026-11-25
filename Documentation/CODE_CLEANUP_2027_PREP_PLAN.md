@@ -70,16 +70,16 @@ Iterative: delete only declarations with zero references, rebuild, re-run tests,
 | 0 | done (25 Nov 2026) — 17 lock tests + 3 existing tests green; mutation check: 5 deliberate 1-TL errors → 6 failing tests, all caught |
 | 1 | done (25 Nov 2026) — `TariffYear` is the only year list; `TariffConstants.currentYear` follows `TariffYear.current`; 5 duplicated lists + 8 unused year constants removed; start screen no longer reads the saved year (`lastUsedTariffYear`), test added first (red → green); 21 tests green |
 | 2+3 | done (25 Nov 2026, merged) — `TariffYear.getTariffProtocol()` is the only year → tariff mapping (exhaustive switch, no 2025 fallback); `TariffCalculator` uses it; serial fees are `TariffProtocol` requirements in Tariff2025/2026; tenancy minimum = tariff general minimum; completeness test added; 22 tests green. Probe: adding `case year2027` gives exactly 5 compile errors, all in TariffYear.swift |
-| 4 | pending |
+| 4 | done (25 Nov 2026) — 155 unused declarations removed from Constants/Models in 3 passes (19 files, 1,235 lines deleted, 0 added); exact ranges from `swiftc -dump-parse`, locals and `#if DEBUG` untouched; empty sections/blocks tidied; 22 tests green. 2027 probe now: 4 compile errors |
 
 ## Checklist when the 2027 mediation tariff is published
 
 1. `Documentation/2027_ARABULUCULUK_UCRET_TARIFESI.md` from the Official Gazette PDF.
 2. `Models/Data/Tariff2027.swift` (copy of Tariff2026): hourly rates, party tiers, minimum fees (Art. 7/6, 7/7),
    serial fees (Art. 7/4), cumulative brackets. Missing protocol fields do not compile.
-3. `TariffYear`: add `case year2027 = 2027` → fix the 5 compile errors (name, full name, description,
-   finalized, tariff file).
-4. Localization: `tariff_year.2027`, `tariff_year.2027.description` (en/sv/tr).
+3. `TariffYear`: add `case year2027 = 2027` → fix the 4 compile errors (name, description, finalized,
+   tariff file).
+4. Localization: `tariff_year.2027.description` (en/sv/tr).
 5. `CalculationLockTests`: add 2027 tables/boundaries from the official PDF, update `testTariffYears_supportedYears`.
 6. Legislation viewer: `TariffDocumentContent.content2027` + `LegislationViewModel` entry.
 7. Run tests; default year switches to 2027 automatically on 1 Jan 2027.

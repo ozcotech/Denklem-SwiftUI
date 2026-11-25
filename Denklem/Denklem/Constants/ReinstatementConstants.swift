@@ -31,8 +31,6 @@ struct ReinstatementConstants {
         static let defaultPartyCount: Int = 2
         
         // Regex patterns (reuse from ValidationConstants)
-        static let amountPattern = ValidationConstants.Amount.basicNumberPattern
-        static let partyCountPattern = ValidationConstants.PartyCount.pattern
     }
     
     // MARK: - Input Fields
@@ -65,7 +63,6 @@ struct ReinstatementConstants {
         static let noAgreementArticle = LocalizationKeys.Reinstatement.legalNoAgreementArticle
         
         // Additional reference - Labor Law Art. 21/7
-        static let laborLawArticle = LocalizationKeys.Reinstatement.legalLaborLawArticle
         
         // Tariff section - Tariff Second Part
         static let tariffSection = LocalizationKeys.Reinstatement.tariffSection
@@ -80,7 +77,6 @@ struct ReinstatementConstants {
     static let showCalculationBreakdown = true
     static let showTariffReference = true
     static let showLegalReference = true
-    static let showMinimumFeeNote = true
 }
 
 // MARK: - Reinstatement Constants Extension

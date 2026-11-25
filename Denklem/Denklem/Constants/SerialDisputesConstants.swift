@@ -58,8 +58,6 @@ struct SerialDisputesConstants {
     struct Validation {
         static let minimumFileCount: Int = 1
         static let maximumFileCount: Int = 1000
-        static let defaultFileCount: Int = 10
-        static let fileCountPattern = "^[0-9]{1,4}$"
     }
 
     // MARK: - Currency Settings

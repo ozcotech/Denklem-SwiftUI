@@ -371,45 +371,6 @@ struct TariffFactory: TariffFactoryProtocol {
     static func isYearSupported(_ year: Int) -> Bool {
         return TariffConstants.availableYears.contains(year)
     }
-    
-    // MARK: - Convenience Methods
-    
-    /// Returns all available tariff instances
-    /// - Returns: Array of all available TariffProtocol instances
-    static func getAllTariffs() -> [TariffProtocol] {
-        return getAvailableYears().compactMap { createTariff(for: $0) }
-    }
-    
-    /// Creates tariff with validation
-    /// - Parameter year: Year to create tariff for
-    /// - Returns: Result containing tariff or error
-    static func createTariffWithValidation(for year: Int) -> Result<TariffProtocol, TariffFactoryError> {
-        guard isYearSupported(year) else {
-            return .failure(.unsupportedYear(year))
-        }
-        
-        guard let tariff = createTariff(for: year) else {
-            return .failure(.creationFailed(year))
-        }
-        
-        return .success(tariff)
-    }
-}
-
-// MARK: - Tariff Factory Error
-/// Errors that can occur during tariff creation
-enum TariffFactoryError: Error, LocalizedError {
-    case unsupportedYear(Int)
-    case creationFailed(Int)
-    
-    var errorDescription: String? {
-        switch self {
-        case .unsupportedYear(let year):
-            return NSLocalizedString(LocalizationKeys.ErrorMessage.unsupportedYear, comment: "Unsupported year error") + ": \(year)"
-        case .creationFailed(let year):
-            return NSLocalizedString(LocalizationKeys.ErrorMessage.tariffCreationFailed, comment: "Tariff creation failed") + ": \(year)"
-        }
-    }
 }
 
 // MARK: - Default TariffValidationProtocol Implementation

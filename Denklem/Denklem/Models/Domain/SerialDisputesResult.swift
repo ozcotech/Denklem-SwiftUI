@@ -71,11 +71,6 @@ struct SerialDisputesResult: Equatable, Codable {
         return LocalizationHelper.formatCurrency(feePerFile)
     }
 
-    /// Calculation breakdown description
-    var breakdownDescription: String {
-        return "\(fileCount) x \(formattedFeePerFile) = \(formattedTotalFee)"
-    }
-
     /// Legal reference text based on current locale
     var legalReference: String {
         let tariffName = LocalizationKeys.SerialDisputes.tariffName.localized

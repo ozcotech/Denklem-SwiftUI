@@ -263,16 +263,6 @@ enum SMMPersonType: String, CaseIterable {
             return LocalizationKeys.SMMResult.legalPerson.localized
         }
     }
-    
-    /// Whether this person type is subject to withholding tax
-    var hasWithholdingTax: Bool {
-        switch self {
-        case .realPerson:
-            return false
-        case .legalPerson:
-            return true
-        }
-    }
 }
 
 // MARK: - SMM Person Result

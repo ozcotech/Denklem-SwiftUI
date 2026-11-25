@@ -242,13 +242,6 @@ enum DisputeType: String, CaseIterable, Identifiable, Hashable {
         return DisputeType(rawValue: rawValue)
     }
     
-    /// Creates DisputeType from DisputeConstants key
-    /// - Parameter key: Key from DisputeConstants.DisputeTypeKeys
-    /// - Returns: DisputeType enum case or nil if invalid
-    static func fromDisputeConstantsKey(_ key: String) -> DisputeType? {
-        return DisputeType(rawValue: key)
-    }
-    
     /// Returns all dispute types ordered by display priority
     /// - Returns: Array of DisputeType cases sorted by priority
     static var orderedForDisplay: [DisputeType] {
@@ -321,14 +314,6 @@ enum DisputeType: String, CaseIterable, Identifiable, Hashable {
 
 extension DisputeType {
     
-    /// Returns formatted hourly rate as currency string
-    /// - Parameter tariffYear: Year to get rate for
-    /// - Returns: Formatted currency string (e.g., "₺1.150,00")
-    func formattedHourlyRate(for tariffYear: TariffYear = .current) -> String {
-        let rate = getHourlyRate(for: tariffYear)
-        return LocalizationHelper.formatCurrency(rate)
-    }
-    
     /// Returns formatted fixed fee as currency string
     /// - Parameters:
     ///   - partyCount: Number of parties
@@ -338,28 +323,6 @@ extension DisputeType {
         let fee = getFixedFee(partyCount: partyCount, for: tariffYear)
         return LocalizationHelper.formatCurrency(fee)
     }
-    
-    /// Returns formatted minimum fee as currency string
-    /// - Parameter tariffYear: Year to get rate for
-    /// - Returns: Formatted currency string
-    func formattedMinimumFee(for tariffYear: TariffYear = .current) -> String {
-        let fee = getMinimumFee(for: tariffYear)
-        return LocalizationHelper.formatCurrency(fee)
-    }
-    
-    /// Returns comprehensive information about this dispute type
-    /// - Parameter tariffYear: Year to get data for
-    /// - Returns: Formatted string with all relevant information
-    func getDetailedInfo(for tariffYear: TariffYear = .current) -> String {
-        return """
-        \(displayName)
-        \(description)
-        
-        Saatlik Ücret: \(formattedHourlyRate(for: tariffYear))
-        Minimum Ücret: \(formattedMinimumFee(for: tariffYear))
-        Kategori: \(category.displayName)
-        """
-    }
 }
 
 // MARK: - Compatibility with String-based APIs
@@ -368,11 +331,6 @@ extension DisputeType {
     
     /// Maps to DisputeConstants key format
     var disputeConstantsKey: String {
-        return rawValue
-    }
-    
-    /// Maps to TariffConstants key format
-    var tariffKey: String {
         return rawValue
     }
     
@@ -389,11 +347,6 @@ extension Collection where Element == DisputeType {
     /// Returns dispute types sorted by display priority
     var sortedByPriority: [DisputeType] {
         return sorted { $0.displayPriority < $1.displayPriority }
-    }
-    
-    /// Returns dispute types grouped by category
-    var groupedByCategory: [DisputeCategory: [DisputeType]] {
-        return Dictionary(grouping: self) { $0.category }
     }
 }
 

@@ -163,7 +163,6 @@ struct TenancyCalculationConstants {
     static let showCalculationBreakdown = true
     static let showTariffReference = true
     static let showLegalReference = true
-    static let showCourtMinimumWarnings = true
 }
 
 // MARK: - Tenancy Calculation Constants Extension

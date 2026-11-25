@@ -18,9 +18,6 @@ final class TimeCalculator: ObservableObject {
     @Published var currentResult: TimeCalculationResult?
     @Published var validationState: ValidationResult = .success
     
-    // MARK: - Private Properties
-    private let validationConstants = ValidationConstants.TimeCalculation.self
-    
     // MARK: - Initialization
     init() {
         // Initialize with current date
@@ -160,15 +157,6 @@ final class TimeCalculator: ObservableObject {
         return true
     }
     
-    /// Gets week count for specific dispute type
-    /// - Parameter disputeType: The dispute type
-    /// - Returns: Number of weeks for the dispute type
-    private func getWeekCountForDisputeType(_ disputeType: DisputeType) -> Int {
-        let disputeKey = mapDisputeTypeToTimeCalculationKey(disputeType)
-        let weeks = TariffConstants.timeCalculationDisputeTypes[disputeKey] ?? [4, 5] // Default fallback
-        return weeks[0] // Return normal deadline weeks
-    }
-    
     /// Gets both normal and extended week counts for specific dispute type
     /// - Parameter disputeType: The dispute type
     /// - Returns: Tuple containing (normal weeks, extended weeks)
@@ -233,55 +221,9 @@ struct TimeCalculationResult {
     
     // MARK: - Computed Properties
     
-    /// Formatted start date string
-    var formattedStartDate: String {
-        return LocalizationHelper.formatDate(startDate)
-    }
-    
-    /// Formatted deadline string
-    var formattedDeadline: String {
-        return LocalizationHelper.formatDate(deadline)
-    }
-    
     /// Formatted extended deadline string
     var formattedExtendedDeadline: String {
         return LocalizationHelper.formatDate(extendedDeadline)
-    }
-    
-    /// Formatted calculation date string
-    var formattedCalculationDate: String {
-        return LocalizationHelper.formatDate(calculationDate)
-    }
-    
-    /// Localized dispute type name
-    var localizedDisputeType: String {
-        return disputeType.displayName
-    }
-    
-    /// Week count description
-    var weekDescription: String {
-        if weekCount == 1 {
-            return LocalizationKeys.TimeCalculation.Result.week.localized
-        } else {
-            return String(format: LocalizationKeys.TimeCalculation.Result.weeks.localized, weekCount)
-        }
-    }
-    
-    /// Days until deadline from current date
-    var daysUntilDeadline: Int {
-        let calendar = Calendar.current
-        let now = Date()
-        return calendar.dateComponents([.day], from: now, to: deadline).day ?? 0
-    }
-    
-    /// Boolean indicating if deadline has passed
-    var isDeadlinePassed: Bool {
-        return Date() > deadline
-    }
-    
-    /// Boolean indicating if extended deadline has passed
-    var isExtendedDeadlinePassed: Bool {
-        return Date() > extendedDeadline
     }
 }
 
@@ -303,49 +245,5 @@ extension TimeCalculationResult: Hashable {
         hasher.combine(deadline)
         hasher.combine(weekCount)
         hasher.combine(isValid)
-    }
-}
-
-// MARK: - TimeCalculationResult + Export
-extension TimeCalculationResult {
-    
-    /// Exports calculation result as formatted text
-    /// - Returns: Formatted string suitable for sharing
-    func exportAsText() -> String {
-        var result = ""
-        result += "\(LocalizationKeys.TimeCalculation.disputeTypes.localized): \(localizedDisputeType)\n"
-        result += "\(LocalizationKeys.Input.startDate.localized): \(formattedStartDate)\n"
-        result += "\(LocalizationKeys.TimeCalculation.disputeTypeDuration.localized): \(weekDescription)\n"
-        result += "\(LocalizationKeys.TimeCalculation.Result.deadline.localized): \(formattedDeadline)\n"
-        result += "\(LocalizationKeys.TimeCalculation.Result.extendedDeadline.localized): \(formattedExtendedDeadline)\n"
-        result += "\(LocalizationKeys.Result.calculationDate.localized): \(formattedCalculationDate)\n"
-        
-        if let error = errorMessage, !error.isEmpty {
-            result += "\(LocalizationKeys.General.error.localized): \(error)\n"
-        }
-        
-        return result
-    }
-    
-    /// Exports calculation result as dictionary for JSON serialization
-    /// - Returns: Dictionary representation
-    func exportAsDictionary() -> [String: Any] {
-        var dict: [String: Any] = [
-            "disputeType": disputeType.rawValue,
-            "startDate": ISO8601DateFormatter().string(from: startDate),
-            "deadline": ISO8601DateFormatter().string(from: deadline),
-            "extendedDeadline": ISO8601DateFormatter().string(from: extendedDeadline),
-            "weekCount": weekCount,
-            "isValid": isValid,
-            "calculationDate": ISO8601DateFormatter().string(from: calculationDate),
-            "daysUntilDeadline": daysUntilDeadline,
-            "isDeadlinePassed": isDeadlinePassed
-        ]
-        
-        if let error = errorMessage {
-            dict["errorMessage"] = error
-        }
-        
-        return dict
     }
 }

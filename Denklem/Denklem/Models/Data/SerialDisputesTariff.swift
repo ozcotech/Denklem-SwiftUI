@@ -47,15 +47,6 @@ struct SerialDisputesTariff {
             return nonCommercialFeePerFile
         }
     }
-
-    /// Calculate total fee for given file count and dispute type
-    func calculateTotalFee(
-        fileCount: Int,
-        disputeType: SerialDisputesConstants.DisputeType
-    ) -> Double {
-        let feePerFile = getFeePerFile(for: disputeType)
-        return Double(fileCount) * feePerFile
-    }
 }
 
 // MARK: - Factory Methods

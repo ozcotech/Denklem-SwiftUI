@@ -17,10 +17,6 @@ struct AppConstants {
         Bundle.main.infoDictionary?["CFBundleName"] as? String ?? "Denklem"
     }
 
-    static var appDisplayName: String {
-        Bundle.main.infoDictionary?["CFBundleDisplayName"] as? String ?? appName
-    }
-
     static var appVersion: String {
         Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0"
     }
@@ -56,23 +52,11 @@ struct AppConstants {
     }
     static let legislationURL = "https://www.adalet.gov.tr"
     
-    // MARK: - Feature Flags
-    static let enableAnalytics = false
-    static let enableCrashReporting = false
-    static let enableBetaFeatures = false
-    
-    // MARK: - Default Values
-    static let defaultLanguage: SupportedLanguage = .turkish
-    static let defaultTheme = "system" // "light", "dark", "system"
-    
     // MARK: - Animation & UI
-    static let defaultAnimationDuration: Double = 0.3
     static let fastAnimationDuration: Double = 0.2
     static let slowAnimationDuration: Double = 0.5
     
     // MARK: - File Management
-    static let documentsDirectory = "Documents"
-    static let cacheDirectory = "Cache"
     static let temporaryDirectory = "tmp"
     
     // MARK: - UserDefaults Keys
@@ -87,20 +71,6 @@ struct AppConstants {
         static let animatedBackground = "animatedBackground"
     }
 
-    // MARK: - Calculation Limits
-    static let maxCalculationAmount: Double = 999_999_999.0  
-    static let minCalculationAmount: Double = 0.01           
-    static let maxPartyCount = 1000                          
-    static let minPartyCount = 2                             
-    
-    // MARK: - Notification Names
-    struct NotificationNames {
-        static let themeChanged = "themeChanged"
-        static let languageChanged = "languageChanged"
-        static let tariffYearChanged = "tariffYearChanged"
-        static let calculationCompleted = "calculationCompleted"
-    }
-    
     // MARK: - Error Codes
     struct ErrorCodes {
         static let invalidInput = 1001
@@ -108,14 +78,6 @@ struct AppConstants {
         static let networkError = 1003
         static let fileError = 1004
         static let validationError = 1005
-    }
-    
-    // MARK: - Accessibility
-    struct Accessibility {
-        static let buttonMinimumHeight: Double = 44.0
-        static let minimumTouchTarget: Double = 44.0
-        static let defaultFontSize: Double = 16.0
-        static let largeFontSize: Double = 20.0
     }
     
     // MARK: - Debug & Development
@@ -134,16 +96,6 @@ struct AppConstants {
 
 // MARK: - App Constants Extension
 extension AppConstants {
-    
-    /// Returns the current app version with build number
-    static var fullVersion: String {
-        "\(appVersion) (\(buildNumber))"
-    }
-
-    /// Returns the app display name with version
-    static var appNameWithVersion: String {
-        "\(appDisplayName) v\(appVersion)"
-    }
     
     /// Returns the copyright string using LocalizationKeys
     static var copyrightText: String {
@@ -179,11 +131,6 @@ extension AppConstants {
         let emailLabel = NSLocalizedString(LocalizationKeys.Contact.email, comment: "")
         let websiteLabel = NSLocalizedString(LocalizationKeys.Contact.website, comment: "")
         return "\(emailLabel): \(developerEmail)\n\(websiteLabel): \(companyWebsite)"
-    }
-    
-    /// Returns the contact information (legacy support)
-    static var contactInfo: String {
-        "İletişim: \(developerEmail)\nWeb: \(companyWebsite)"
     }
 }
 
