@@ -131,20 +131,18 @@ enum TariffYear: Int, CaseIterable, Identifiable, Hashable {
     
     // MARK: - Tariff Data Access
     
-    /// Returns the appropriate tariff protocol implementation for this year
+    /// Returns the appropriate tariff protocol implementation for this year.
+    /// This exhaustive switch is the ONLY year → tariff mapping in the app: adding a new
+    /// TariffYear case without its tariff file is a compile error instead of a silent
+    /// fallback to another year's fees.
     /// - Returns: TariffProtocol implementation for this year
     func getTariffProtocol() -> TariffProtocol {
-        if let tariff = TariffFactory.createTariff(for: self.rawValue) {
-            return tariff
+        switch self {
+        case .year2025:
+            return Tariff2025.create()
+        case .year2026:
+            return Tariff2026.create()
         }
-        
-        // Fallback to default year if creation fails
-        if let defaultTariff = TariffFactory.createTariff(for: TariffYear.default.rawValue) {
-            return defaultTariff
-        }
-        
-        // Final fallback - should not happen in normal operation
-        return Tariff2025.create()
     }
     
     /// Returns hourly rate for specific dispute type

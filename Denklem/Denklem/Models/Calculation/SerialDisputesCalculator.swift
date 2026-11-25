@@ -17,8 +17,19 @@ struct SerialDisputesCalculator {
     /// - Parameter input: SerialDisputesInput containing dispute type, file count, and tariff year
     /// - Returns: SerialDisputesResult with calculated fees
     static func calculate(input: SerialDisputesInput) -> SerialDisputesResult {
-        // Get tariff for the specified year
-        let tariff = SerialDisputesTariff(year: input.tariffYear)
+        // Get tariff for the specified year. The year is checked by SerialDisputesInput.validate()
+        // (calculateWithValidation); an unsupported year here is a programming error, so return
+        // zero fees instead of silently using another year's fees.
+        guard let tariff = SerialDisputesTariff(year: input.tariffYear) else {
+            assertionFailure("Unsupported tariff year \(input.tariffYear); use calculateWithValidation(input:)")
+            return SerialDisputesResult(
+                totalFee: 0,
+                feePerFile: 0,
+                disputeType: input.disputeType,
+                fileCount: input.fileCount,
+                tariffYear: input.tariffYear
+            )
+        }
 
         // Get fee per file based on dispute type
         let feePerFile = tariff.getFeePerFile(for: input.disputeType)

@@ -61,10 +61,15 @@ struct Tariff2026: TariffProtocol {
     // MARK: - Minimum Fees
     
     let minimumFees: [String: Double] = [
-        "general": 9000.0,     
-        "commercial": 13000.0  
+        "general": 9000.0,
+        "commercial": 13000.0
     ]
-    
+
+    // MARK: - Serial Disputes (Art. 7/4)
+
+    let serialCommercialFeePerFile: Double = 7_500.0
+    let serialNonCommercialFeePerFile: Double = 6_000.0
+
     // MARK: - Calculation Brackets
 
 /// Progressive calculation brackets for agreement cases

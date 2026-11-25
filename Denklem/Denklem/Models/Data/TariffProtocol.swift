@@ -72,7 +72,15 @@ protocol TariffProtocol {
     /// - Parameter disputeType: Dispute type key
     /// - Returns: Minimum fee in TL (general or commercial)
     func getMinimumFee(for disputeType: String) -> Double
-    
+
+    // MARK: - Serial Disputes (Art. 7/4)
+
+    /// Fee per file for serial disputes settled with an agreement — commercial disputes (Art. 7/4)
+    var serialCommercialFeePerFile: Double { get }
+
+    /// Fee per file for serial disputes settled with an agreement — all other disputes (Art. 7/4)
+    var serialNonCommercialFeePerFile: Double { get }
+
     // MARK: - Bracket Calculation (Agreement Cases)
     
     /// Calculation brackets for monetary disputes with agreement
@@ -341,14 +349,8 @@ struct TariffFactory: TariffFactoryProtocol {
     /// - Parameter year: Tariff year to create (2025, 2026, etc.)
     /// - Returns: TariffProtocol instance or nil if year not supported
     static func createTariff(for year: Int) -> TariffProtocol? {
-        switch year {
-        case 2025:
-            return Tariff2025()
-        case 2026:
-            return Tariff2026()
-        default:
-            return nil
-        }
+        // The year → tariff mapping lives only in TariffYear.getTariffProtocol() (exhaustive switch)
+        TariffYear(rawValue: year)?.getTariffProtocol()
     }
     
     /// Returns all available tariff years from TariffConstants

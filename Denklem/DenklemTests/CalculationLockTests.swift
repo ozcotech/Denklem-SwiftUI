@@ -197,6 +197,31 @@ final class CalculationLockTests: XCTestCase {
         assertPartOne(TariffYear.year2025.getTariffProtocol(), hourly: hourlyRates2025, tiers: tierFees2025)
     }
 
+    /// Every tariff year must define all dispute types, all four party tiers, both minimum fees,
+    /// the serial dispute fees and well-formed brackets. A missing entry would otherwise fall back
+    /// silently to a hard-coded value in TariffProtocol (e.g. 1.000 / 2.000 / 9.000 / 13.000 TL).
+    func testTariffData_completeForEveryYear() {
+        for year in TariffYear.allCases {
+            let tariff = year.getTariffProtocol()
+            XCTAssertEqual(tariff.year, year.rawValue, "\(year)")
+            for type in DisputeType.allCases {
+                XCTAssertNotNil(tariff.hourlyRates[type.rawValue], "\(year) hourly rate \(type)")
+                XCTAssertEqual(tariff.fixedFees[type.rawValue]?.count, 4, "\(year) party tiers \(type)")
+            }
+            XCTAssertEqual(tariff.partyCountThresholds, [2, 5, 10, Int.max], "\(year) party thresholds")
+            XCTAssertNotNil(tariff.minimumFees["general"], "\(year) general minimum (Art. 7/7)")
+            XCTAssertNotNil(tariff.minimumFees["commercial"], "\(year) commercial minimum (Art. 7/6)")
+            XCTAssertGreaterThan(tariff.serialCommercialFeePerFile, 0, "\(year) serial commercial (Art. 7/4)")
+            XCTAssertGreaterThan(tariff.serialNonCommercialFeePerFile, 0, "\(year) serial other (Art. 7/4)")
+
+            // Brackets use cumulative upper limits: strictly increasing, last one open-ended
+            let limits = tariff.brackets.map(\.limit)
+            XCTAssertEqual(limits.last, .infinity, "\(year) last bracket")
+            XCTAssertEqual(limits, limits.sorted(), "\(year) bracket order")
+            XCTAssertEqual(Set(limits).count, limits.count, "\(year) duplicate bracket limit")
+        }
+    }
+
     private func assertPartOne(
         _ tariff: TariffProtocol,
         hourly: [DisputeType: Double],

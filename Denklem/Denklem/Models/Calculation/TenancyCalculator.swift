@@ -125,8 +125,9 @@ struct TenancyCalculator {
         // Total: sum of individual fees
         let calculatedTotal = (evictionFee ?? 0) + (determinationFee ?? 0)
 
-        // Apply minimum fee per Article 7/7
-        let minimumFee = TenancyCalculationConstants.MediationMinimumFee.minimumFee(for: year)
+        // Apply minimum fee per Article 7/7 — the general minimum of the selected tariff
+        // (rent is not a commercial / partnership dissolution dispute, see getMinimumFee)
+        let minimumFee = tariff.getMinimumFee(for: DisputeConstants.DisputeTypeKeys.rent)
         let isMinimumApplied = calculatedTotal < minimumFee
         let finalTotal = max(calculatedTotal, minimumFee)
 

@@ -83,25 +83,3 @@ struct SerialDisputesResult: Equatable, Codable {
         return "\(tariffYear) \(tariffName) \(article)"
     }
 }
-
-// MARK: - Serial Disputes Result Builder
-extension SerialDisputesResult {
-
-    /// Create a result from input
-    static func from(input: SerialDisputesInput) -> SerialDisputesResult {
-        let tariff = SerialDisputesTariff(year: input.tariffYear)
-        let feePerFile = tariff.getFeePerFile(for: input.disputeType)
-        let totalFee = tariff.calculateTotalFee(
-            fileCount: input.fileCount,
-            disputeType: input.disputeType
-        )
-
-        return SerialDisputesResult(
-            totalFee: totalFee,
-            feePerFile: feePerFile,
-            disputeType: input.disputeType,
-            fileCount: input.fileCount,
-            tariffYear: input.tariffYear
-        )
-    }
-}

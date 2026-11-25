@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - Serial Disputes Tariff
 /// Tariff data for serial disputes calculation (Article 7/4)
-/// Supports both 2025 and 2026 tariff years
+/// Fees come from the yearly tariff files (Tariff2025, Tariff2026, …) via TariffYear
 struct SerialDisputesTariff {
 
     // MARK: - Properties
@@ -19,24 +19,21 @@ struct SerialDisputesTariff {
     let isFinalized: Bool
 
     // MARK: - Initialization
-    init(year: Int) {
-        self.year = year
 
-        switch year {
-        case 2026:
-            self.commercialFeePerFile = SerialDisputesConstants.Fees2026.commercialFeePerFile
-            self.nonCommercialFeePerFile = SerialDisputesConstants.Fees2026.nonCommercialFeePerFile
-            self.isFinalized = true
-        case 2025:
-            self.commercialFeePerFile = SerialDisputesConstants.Fees2025.commercialFeePerFile
-            self.nonCommercialFeePerFile = SerialDisputesConstants.Fees2025.nonCommercialFeePerFile
-            self.isFinalized = true
-        default:
-            // Default to 2026
-            self.commercialFeePerFile = SerialDisputesConstants.Fees2026.commercialFeePerFile
-            self.nonCommercialFeePerFile = SerialDisputesConstants.Fees2026.nonCommercialFeePerFile
-            self.isFinalized = true
-        }
+    /// Reads the Art. 7/4 fees from the tariff of the given year
+    init(tariffYear: TariffYear) {
+        let tariff = tariffYear.getTariffProtocol()
+        self.year = tariffYear.rawValue
+        self.commercialFeePerFile = tariff.serialCommercialFeePerFile
+        self.nonCommercialFeePerFile = tariff.serialNonCommercialFeePerFile
+        self.isFinalized = tariff.isFinalized
+    }
+
+    /// Returns nil for a year without a mediation tariff
+    /// (instead of silently using another year's fees)
+    init?(year: Int) {
+        guard let tariffYear = TariffYear(rawValue: year) else { return nil }
+        self.init(tariffYear: tariffYear)
     }
 
     // MARK: - Fee Retrieval
@@ -64,19 +61,9 @@ struct SerialDisputesTariff {
 // MARK: - Factory Methods
 extension SerialDisputesTariff {
 
-    /// Create tariff for 2026
-    static func tariff2026() -> SerialDisputesTariff {
-        return SerialDisputesTariff(year: 2026)
-    }
-
-    /// Create tariff for 2025
-    static func tariff2025() -> SerialDisputesTariff {
-        return SerialDisputesTariff(year: 2025)
-    }
-
     /// Create tariff for given TariffYear enum
     static func tariff(for tariffYear: TariffYear) -> SerialDisputesTariff {
-        return SerialDisputesTariff(year: tariffYear.rawValue)
+        return SerialDisputesTariff(tariffYear: tariffYear)
     }
 }
 
