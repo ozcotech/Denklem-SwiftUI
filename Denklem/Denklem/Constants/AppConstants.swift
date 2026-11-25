@@ -50,11 +50,6 @@ struct AppConstants {
     static var legislationTitle: String {
         LocalizationKeys.Legislation.tariffName.localized
     }
-    static let availableYears = [2025, 2026]
-    static var currentYear: Int {
-        Calendar.current.component(.year, from: Date())
-    }
-    static let defaultYear = TariffConstants.currentYear
     /// Returns localized ministry source
     static var legislationSource: String {
         LocalizationKeys.Legislation.ministrySource.localized
@@ -85,7 +80,6 @@ struct AppConstants {
         static let selectedLanguage = "selectedLanguage"
         static let selectedTheme = "selectedTheme"
         static let isFirstLaunch = "isFirstLaunch"
-        static let lastUsedTariffYear = "lastUsedTariffYear"
         static let hasSeenOnboarding = "hasSeenOnboarding"
         static let calculationHistory = "calculationHistory"
         static let userPreferences = "userPreferences"

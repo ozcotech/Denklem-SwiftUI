@@ -68,7 +68,8 @@ Iterative: delete only declarations with zero references, rebuild, re-run tests,
 | Step | Status |
 |------|--------|
 | 0 | done (25 Nov 2026) — 17 lock tests + 3 existing tests green; mutation check: 5 deliberate 1-TL errors → 6 failing tests, all caught |
-| 1–4 | pending |
+| 1 | done (25 Nov 2026) — `TariffYear` is the only year list; `TariffConstants.currentYear` follows `TariffYear.current`; 5 duplicated lists + 8 unused year constants removed; start screen no longer reads the saved year (`lastUsedTariffYear`), test added first (red → green); 21 tests green |
+| 2–4 | pending |
 
 ### Issue found and fixed in step 0 (pre-existing since 14 Jan 2026)
 

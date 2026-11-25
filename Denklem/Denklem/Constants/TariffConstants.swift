@@ -11,9 +11,10 @@ import Foundation
 struct TariffConstants {
     
     // MARK: - Tariff Years
-    static let availableYears = [2025, 2026]
-    static let currentYear = 2026
-    static let defaultYear = currentYear
+    // Single source of truth: TariffYear. Adding a TariffYear case updates these values.
+    static var availableYears: [Int] { TariffYear.allCases.map(\.rawValue) }
+    /// Active mediation tariff year (date based, see TariffYear.current)
+    static var currentYear: Int { TariffYear.current.rawValue }
     
     // MARK: - Amount Limits
     static let minimumAmount: Double = 0.01

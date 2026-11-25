@@ -111,8 +111,7 @@ struct ValidationConstants {
     
     // MARK: - Year Validation
     struct Year {
-        static let availableYears = [2025, 2026]
-        static let currentYear = TariffConstants.currentYear
+        // Supported years come from TariffYear (single source of truth)
         
         // Error codes
         static let invalidYearErrorCode = 1007
@@ -183,7 +182,7 @@ extension ValidationConstants {
     
     /// Validates if year is supported
     static func validateYear(_ year: Int) -> ValidationResult {
-        if !Year.availableYears.contains(year) {
+        if TariffYear(rawValue: year) == nil {
             return .failure(
                 code: Amount.validationErrorCode,
                 message: "Unsupported year: \(year)"

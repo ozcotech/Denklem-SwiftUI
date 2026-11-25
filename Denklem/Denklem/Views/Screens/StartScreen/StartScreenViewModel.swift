@@ -17,7 +17,9 @@ final class StartScreenViewModel: ObservableObject {
     
     // MARK: - Published Properties
 
-    /// Currently selected tariff year
+    /// Tariff year for the quick-access mediation screen.
+    /// Always the active tariff year — the start screen has no year picker, so a saved year
+    /// (key "lastUsedTariffYear", app ≤ 2.6.1) would stay stuck after a new tariff year starts.
     @Published var selectedYear: TariffYear = .current
 
     /// Navigation flag for DisputeTypeView (quick access to monetary disputes)
@@ -27,28 +29,17 @@ final class StartScreenViewModel: ObservableObject {
     @Published var navigateToSurvey: Bool = false
     
     // MARK: - Private Properties
-    
-    /// Stores last selected year in UserDefaults
-    @AppStorage(AppConstants.UserDefaultsKeys.lastUsedTariffYear)
-    private var lastUsedYear: Int = TariffYear.current.rawValue
 
     /// Tracks whether the survey has been completed
     @AppStorage(AppConstants.UserDefaultsKeys.surveyCompleted)
     var isSurveyCompleted: Bool = false
-    
-    // MARK: - Initialization
-    
-    init() {
-        loadLastUsedYear()
-    }
-    
+
     // MARK: - Public Methods
-    
+
     /// Selects a tariff year
     /// - Parameter year: TariffYear to select
     func selectYear(_ year: TariffYear) {
         selectedYear = year
-        lastUsedYear = year.rawValue
     }
     
     /// Triggers navigation to DisputeTypeView (quick access to monetary disputes)
@@ -58,25 +49,12 @@ final class StartScreenViewModel: ObservableObject {
             return
         }
 
-        // Save selected year
-        lastUsedYear = selectedYear.rawValue
-
         // Trigger navigation
         navigateToDisputeType = true
     }
     
     // MARK: - Private Methods
-    
-    /// Loads last used year from UserDefaults
-    private func loadLastUsedYear() {
-        if let savedYear = TariffYear(rawValue: lastUsedYear) {
-            selectedYear = savedYear
-        } else {
-            selectedYear = .current
-            lastUsedYear = TariffYear.current.rawValue
-        }
-    }
-    
+
     /// Validates year selection before navigation
     /// - Returns: True if validation passes
     private func validateYearSelection() -> Bool {

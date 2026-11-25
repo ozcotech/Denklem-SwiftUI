@@ -36,7 +36,7 @@ struct SerialDisputesInput: Equatable, Codable {
         }
 
         // Validate tariff year
-        if !SerialDisputesConstants.availableYears.contains(tariffYear) {
+        if TariffYear(rawValue: tariffYear) == nil {
             return .failure(
                 code: ValidationConstants.Year.invalidYearErrorCode,
                 message: LocalizationKeys.Validation.invalidYear.localized

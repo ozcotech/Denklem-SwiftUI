@@ -100,6 +100,6 @@ extension SerialDisputesTariff {
     func validateData() -> Bool {
         return commercialFeePerFile > 0 &&
                nonCommercialFeePerFile > 0 &&
-               SerialDisputesConstants.availableYears.contains(year)
+               TariffYear(rawValue: year) != nil
     }
 }

@@ -165,6 +165,28 @@ final class CalculationLockTests: XCTestCase {
         XCTAssertEqual(TariffConstants.currentYear, TariffYear.current.rawValue)
     }
 
+    /// The start screen "Enter" button must open the mediation screen with the current tariff year,
+    /// even when an older app version saved a year on the device (key "lastUsedTariffYear", ≤ 2.6.1).
+    @MainActor
+    func testStartScreen_opensWithCurrentYear_ignoringSavedYear() throws {
+        guard #available(iOS 26.0, *) else { throw XCTSkip("StartScreenViewModel requires iOS 26") }
+        let key = "lastUsedTariffYear"
+        let defaults = UserDefaults.standard
+        let original = defaults.object(forKey: key)
+        defer {
+            if let original { defaults.set(original, forKey: key) } else { defaults.removeObject(forKey: key) }
+        }
+
+        defaults.set(2025, forKey: key)
+        XCTAssertEqual(startScreenYear(), TariffYear.current)
+    }
+
+    @available(iOS 26.0, *)
+    @MainActor
+    private func startScreenYear() -> TariffYear {
+        StartScreenViewModel().selectedYear
+    }
+
     // MARK: - Tariff Data (Part 1)
 
     func testTariffData2026_hourlyRatesAndPartyTiers() {

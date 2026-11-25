@@ -13,9 +13,7 @@ import Foundation
 struct ReinstatementConstants {
     
     // MARK: - Tariff Year
-    static let availableYears = [2025, 2026]
-    static let currentYear = 2026
-    static let defaultYear = 2026
+    // Supported years come from TariffYear (single source of truth)
     
     // MARK: - Dispute Type
     /// Reinstatement uses worker-employer dispute type for calculations
@@ -109,7 +107,7 @@ extension ReinstatementConstants {
     /// - Parameter year: Year to validate
     /// - Returns: True if year is supported
     static func isValidYear(_ year: Int) -> Bool {
-        return availableYears.contains(year)
+        return TariffYear(rawValue: year) != nil
     }
     
     /// Validates amount for agreement case

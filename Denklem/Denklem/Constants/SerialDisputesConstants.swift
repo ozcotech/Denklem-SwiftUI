@@ -50,9 +50,7 @@ struct SerialDisputesConstants {
     }
 
     // MARK: - Tariff Year
-    static let availableYears = [2025, 2026]
-    static let currentYear = 2026
-    static let defaultYear = 2026
+    // Supported years come from TariffYear (single source of truth)
 
     // MARK: - Fee Values (2026)
     struct Fees2026 {
