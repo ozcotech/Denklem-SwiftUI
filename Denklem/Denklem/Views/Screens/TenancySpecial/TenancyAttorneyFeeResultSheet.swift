@@ -21,6 +21,7 @@ struct TenancyAttorneyFeeResultSheet: View {
     @Environment(\.isAnimatedBackground) private var isAnimatedBackground
     @Environment(\.dismiss) private var dismiss
     @ObservedObject private var localeManager = LocaleManager.shared
+    @State private var showShareSheet = false
 
     // MARK: - Body
 
@@ -52,6 +53,17 @@ struct TenancyAttorneyFeeResultSheet: View {
             .navigationTitle("")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        showShareSheet = true
+                    } label: {
+                        Image(systemName: "square.and.arrow.up")
+                            .font(theme.body)
+                            .foregroundStyle(theme.textSecondary)
+                    }
+                    .accessibilityLabel(LocalizationKeys.Accessibility.share.localized)
+                    .accessibilityHint(LocalizationKeys.Accessibility.shareHint.localized)
+                }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         dismiss()
@@ -65,11 +77,58 @@ struct TenancyAttorneyFeeResultSheet: View {
                 }
             }
         }
+        .sheet(isPresented: $showShareSheet) {
+            ShareSheet(items: [ShareTextFile.url(for: shareText, name: "Denklem_TenancyAttorneyFee")])
+        }
         .animatedBackground()
         .presentationBackground(.clear)
         .presentationBackgroundInteraction(.enabled)
         .presentationDetents([.large])
         .presentationDragIndicator(.visible)
+    }
+
+    // MARK: - Share Text
+
+    /// Plain-text summary for sharing; mirrors the cards on this screen
+    private var shareText: String {
+        var lines: [String] = []
+        let feeTitle = LocalizationKeys.RentSpecial.calculatedAttorneyFee.localized
+
+        if let evictionFee = result.evictionFee {
+            lines.append("\(LocalizationKeys.RentSpecial.eviction.localized) \(feeTitle): \(LocalizationHelper.formatCurrency(evictionFee))")
+        }
+        if let determinationFee = result.determinationFee {
+            lines.append("\(LocalizationKeys.RentSpecial.determination.localized) \(feeTitle): \(LocalizationHelper.formatCurrency(determinationFee))")
+        }
+        if result.evictionFee == nil && result.determinationFee == nil {
+            lines.append("\(feeTitle): \(result.formattedFee)")
+        }
+        lines.append("")
+
+        lines.append("\(LocalizationKeys.Result.calculationInfo.localized):")
+        if let evictionAmount = result.evictionAmount {
+            lines.append("\(LocalizationKeys.RentSpecial.eviction.localized): \(LocalizationHelper.formatCurrency(evictionAmount))")
+        }
+        if let determinationAmount = result.determinationAmount {
+            lines.append("\(LocalizationKeys.RentSpecial.determination.localized): \(LocalizationHelper.formatCurrency(determinationAmount))")
+        }
+        lines.append("\(LocalizationKeys.RentSpecial.inputAmount.localized): \(result.formattedTotalInputAmount)")
+        lines.append("\(LocalizationKeys.Result.tariffYear.localized): \(result.tariffYear)")
+        if result.isMinimumApplied {
+            lines.append(LocalizationKeys.RentSpecial.attorneyMinimumApplied.localized)
+        }
+
+        if !result.courtMinimumWarnings.isEmpty {
+            lines.append("")
+            lines.append("\(LocalizationKeys.RentSpecial.courtMinimumWarningsTitle.localized):")
+            lines.append(contentsOf: result.courtMinimumWarnings.map(\.warningMessage))
+        }
+
+        lines.append("")
+        lines.append(result.legalReference)
+        lines.append("")
+        lines.append(LocalizationKeys.General.calculatedWithDenklem.localized)
+        return lines.joined(separator: "\n")
     }
 
     // MARK: - Main Fee Cards

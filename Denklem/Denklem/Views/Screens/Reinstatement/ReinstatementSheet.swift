@@ -29,6 +29,7 @@ struct ReinstatementSheet: View {
     @Environment(\.theme) var theme
     @Environment(\.isAnimatedBackground) private var isAnimatedBackground
     @Environment(\.dismiss) private var dismiss
+    @State private var showShareSheet = false
 
     // MARK: - Focus State
     @FocusState private var focusedField: ReinstatementFocusedField?
@@ -72,6 +73,20 @@ struct ReinstatementSheet: View {
             .navigationTitle(viewModel.screenTitle)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
+                // Share is offered only while a result is on screen
+                if viewModel.showResult && viewModel.calculationResult != nil {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button {
+                            showShareSheet = true
+                        } label: {
+                            Image(systemName: "square.and.arrow.up")
+                                .font(theme.body)
+                                .foregroundStyle(theme.textSecondary)
+                        }
+                        .accessibilityLabel(LocalizationKeys.Accessibility.share.localized)
+                        .accessibilityHint(LocalizationKeys.Accessibility.shareHint.localized)
+                    }
+                }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         dismiss()
@@ -83,6 +98,11 @@ struct ReinstatementSheet: View {
                     .accessibilityLabel(LocalizationKeys.Accessibility.done.localized)
                     .accessibilityHint(LocalizationKeys.Accessibility.dismissHint.localized)
                 }
+            }
+        }
+        .sheet(isPresented: $showShareSheet) {
+            if let result = viewModel.calculationResult {
+                ShareSheet(items: [ShareTextFile.url(for: result.shareText, name: "Denklem_Reinstatement")])
             }
         }
         .onChange(of: viewModel.errorMessage) { _, newValue in
