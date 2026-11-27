@@ -331,7 +331,7 @@ Tab bar accessible from any screen:
 
 ## 📅 Version Information
 
-- **Current Version**: 2.6.2
+- **Current Version**: 2.6.3
 - **Supported Years**: 2025 and 2026 mediation tariffs; 2025, 2026 and 2027 attorney fee tariffs
 - **Platform**: iOS 26.0+ / iPadOS 26.0+
 - **Languages**: Turkish (TR), English (EN), and Swedish (SV)
@@ -474,7 +474,7 @@ This project is licensed under the MIT License.
 
 ## 🔄 Version History
 
-### v2.6.2 (November 2026) - 2027 Attorney Fee Tariff, Legislation Search & Sharing
+### v2.6.3 (November 2026) - 2027 Attorney Fee Tariff, Legislation Search & Sharing
 - ⚖️ **2027 Minimum Attorney Fee Tariff**: Attorney fee calculation supports the 2025, 2026 and 2027 tariffs; the tariff in force today is selected by default (attorney fee tariffs change in November, independently of the mediation tariff year)
 - 📚 **Legislation Viewer**: 2025 and 2027 attorney fee tariffs added; select and copy any part of an article or copy a whole article; find-in-document with highlighted matches and previous/next navigation (Turkish-aware search: "icra" finds "İcra")
 - 📤 **Share Every Result**: Attorney fee, tenancy, serial dispute and reinstatement results can now be shared as a text file, like mediation fee and consumer dispute results
