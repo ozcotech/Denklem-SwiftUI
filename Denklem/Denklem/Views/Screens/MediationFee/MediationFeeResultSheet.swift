@@ -18,7 +18,6 @@ struct MediationFeeResultSheet: View {
 
     @Environment(\.dismiss) private var dismiss
     @Environment(\.isAnimatedBackground) private var isAnimatedBackground
-    @AppStorage("mediationResultSheetSeen") private var hasSeenBefore = false
     @State private var isExpanded = false
     @State private var revealContent = false
     @State private var showShareSheet = false

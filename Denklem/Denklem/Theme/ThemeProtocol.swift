@@ -152,17 +152,6 @@ protocol ThemeProtocol {
     /// Large button height (56pt) - iOS 26 extra-large control
     var buttonHeightLarge: CGFloat { get }
     
-    // MARK: - Liquid Glass
-    
-    /// Default glass variant for standard controls
-    var glassRegular: Glass { get }
-    
-    /// Prominent glass effect for primary actions
-    var glassProminentEffect: Glass { get } 
-
-    /// Clear glass variant for subtle elements
-    var glassClear: Glass { get }
-    
     // MARK: - Shapes
     
     /// Returns a rounded rectangle with specified corner radius size
@@ -237,12 +226,6 @@ extension ThemeProtocol {
 
     var buttonHeight: CGFloat { 44 }
     var buttonHeightLarge: CGFloat { 56 }
-
-    // MARK: - Liquid Glass
-
-    var glassRegular: Glass { .regular }
-    var glassProminentEffect: Glass { .regular }
-    var glassClear: Glass { .clear }
 
     // MARK: - Shapes
 

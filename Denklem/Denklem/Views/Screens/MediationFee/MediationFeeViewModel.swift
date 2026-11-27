@@ -190,19 +190,6 @@ final class MediationFeeViewModel: ObservableObject {
 
     // MARK: - Public Methods
 
-    /// Selects an agreement status and clears input when switching
-    func selectAgreement(_ agreement: AgreementSelectionType) {
-        let previousAgreement = selectedAgreement
-        selectedAgreement = agreement
-
-        // Clear input fields when switching agreement status
-        if previousAgreement != agreement {
-            amountText = ""
-            partyCountText = ""
-            errorMessage = nil
-        }
-    }
-
     /// Formats currency input as user types with locale-aware thousand separators and decimals
     func formatAmountInput() {
         AmountFormatter.format(&amountText)

@@ -540,4 +540,24 @@ final class CalculationLockTests: XCTestCase {
                            weeks.extended * 7, "\(type) extended deadline")
         }
     }
+
+    // MARK: - Legislation Documents (attorney fee tariffs shown in the app)
+
+    /// Each in-app attorney fee tariff (one file per year) keeps its official structure
+    func testAttorneyTariffDocuments_structure() throws {
+        let expected: [(year: Int, gazette: String, brackets: Int)] = [
+            (2025, "Resmî Gazete: 3 Ekim 2024, Sayı: 32681", 9),
+            (2026, "Resmî Gazete: 4 Kasım 2025, Sayı: 33067", 10),
+            (2027, "Resmî Gazete: 3 Kasım 2026, Sayı: 33419", 10)
+        ]
+        for e in expected {
+            let document = try XCTUnwrap(AttorneyFeeTariffContent.content(for: e.year), "\(e.year)")
+            XCTAssertEqual(document.year, e.year)
+            XCTAssertEqual(document.gazetteInfo, e.gazette, "\(e.year)")
+            XCTAssertEqual(document.articles.count, 24, "\(e.year) articles (Madde 1–24)")
+            XCTAssertEqual(document.tableSections.count, 6, "\(e.year) annex table sections")
+            XCTAssertEqual(document.part3Brackets.count, e.brackets, "\(e.year) third part brackets")
+        }
+        XCTAssertNil(AttorneyFeeTariffContent.content(for: 2024))
+    }
 }

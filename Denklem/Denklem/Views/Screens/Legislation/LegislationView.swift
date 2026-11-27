@@ -166,30 +166,6 @@ struct FilterChip: View {
     }
 }
 
-// MARK: - Year Section Header
-
-@available(iOS 26.0, *)
-struct YearSectionHeader: View {
-    
-    let year: Int
-    
-    @Environment(\.theme) var theme
-    
-    var body: some View {
-        HStack {
-            Text(String(year))
-                .font(theme.headline)
-                .fontWeight(.bold)
-                .foregroundStyle(theme.textPrimary)
-            
-            Spacer()
-        }
-        .padding(.vertical, theme.spacingS)
-        .padding(.horizontal, theme.spacingXS)
-        .background(theme.background)
-    }
-}
-
 // MARK: - Document Card
 
 @available(iOS 26.0, *)

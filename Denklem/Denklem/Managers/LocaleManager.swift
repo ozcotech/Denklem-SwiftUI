@@ -74,11 +74,6 @@ final class LocaleManager: ObservableObject {
         requiresRestart = true
     }
     
-    /// Toggles between available languages
-    func toggleLanguage() {
-        setLanguage(currentLanguage.toggled)
-    }
-    
     /// Returns localized string for the current language
     /// - Parameters:
     ///   - key: Localization key
@@ -93,27 +88,6 @@ final class LocaleManager: ObservableObject {
     /// - Returns: True if the language is currently selected
     func isSelected(_ language: SupportedLanguage) -> Bool {
         return currentLanguage == language
-    }
-    
-    /// Returns the display name for the current language
-    var currentLanguageDisplayName: String {
-        return currentLanguage.displayName
-    }
-    
-    /// Returns the short name for the current language (for toggle button)
-    var currentLanguageShortName: String {
-        return currentLanguage.shortName
-    }
-    
-    /// Returns the opposite language short name (for toggle button label)
-    var toggleTargetShortName: String {
-        return currentLanguage.toggled.shortName
-    }
-    
-    /// Resets language to system default
-    func resetToSystemLanguage() {
-        let systemLanguage = Self.detectSystemLanguage()
-        setLanguage(systemLanguage)
     }
     
     // MARK: - Private Methods

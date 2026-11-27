@@ -139,16 +139,6 @@ final class LegislationViewModel: ObservableObject {
         return result
     }
     
-    /// Groups documents by year for section display
-    var documentsByYear: [Int: [LegislationDocument]] {
-        Dictionary(grouping: filteredDocuments) { $0.year }
-    }
-    
-    /// Sorted years for section headers
-    var sortedYears: [Int] {
-        documentsByYear.keys.sorted(by: >)
-    }
-    
     // MARK: - Initialization
     
     init() {
@@ -184,22 +174,6 @@ final class LegislationViewModel: ObservableObject {
         }
         
         UIApplication.shared.open(url)
-    }
-    
-    /// Clears all filters
-    func clearFilters() {
-        searchText = ""
-        selectedFilter = nil
-    }
-    
-    /// Shares document
-    /// - Parameter document: Document to share
-    func shareDocument(_ document: LegislationDocument) {
-        // Sharing logic would go here
-        // For now, just log
-        #if DEBUG
-        print("Sharing document: \(document.title)")
-        #endif
     }
     
     // MARK: - Private Methods

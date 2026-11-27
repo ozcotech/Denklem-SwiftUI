@@ -25,7 +25,7 @@ a "fill in the numbers, build, test" job. Today that is risky:
   `timeCalculationDisputeTypes` (time calculation weeks). Only unreferenced declarations are removed.
 - Views, localization (`Localizable.xcstrings`, `LocalizationKeys`), attorney fee year logic (`AttorneyFeeTariffYear`).
 - `#if DEBUG` sample/verification helpers stay (they document expected values).
-- The user's uncommitted `MARKETING_VERSION` change in `project.pbxproj` is never committed on this branch.
+- ~~The user's uncommitted `MARKETING_VERSION` change is never committed on this branch~~ — with the user's approval it was committed here (`5e757d4`, 2.6.1 → 2.6.2).
 
 ## Steps (stop for review after each)
 
@@ -53,8 +53,8 @@ Run: `xcodebuild test -scheme Denklem -destination 'platform=iOS Simulator,name=
 
 ### Step 2 – Remove silent fallbacks
 Year-dependent switches move from `Int` to `TariffYear` (exhaustive → compiler lists every place when
-`.year2027` is added). Dictionary look-ups in `TariffProtocol` keep their runtime behaviour but get a
-DEBUG-only assertion when a key is missing.
+`.year2027` is added). Dictionary look-ups in `TariffProtocol` keep their runtime behaviour; instead of a
+DEBUG assertion, `testTariffData_completeForEveryYear` fails when a tariff misses a key.
 
 ### Step 3 – Move fees into the tariff files
 - Serial dispute fee per file → `TariffProtocol` requirement, implemented in `Tariff2025` / `Tariff2026`.
@@ -62,6 +62,17 @@ DEBUG-only assertion when a key is missing.
 
 ### Step 4 – Delete unused code in Constants/Models
 Iterative: delete only declarations with zero references, rebuild, re-run tests, repeat.
+
+### Step 5 – Remaining folders + two structural tidy-ups
+Scope: Localization, Managers, Views, Theme, Extensions, Utils (dry run: 93 candidates).
+
+| Part | Work |
+|------|------|
+| A | Delete `Theme/LiquidGlass/LiquidGlassText.swift` + `TextPathHelper.swift` (only reference each other; user decision) and the unused `glassRegular` / `glassClear` / `glassProminentEffect` from `ThemeProtocol` |
+| B | Move `content2026` from `AttorneyFeeTariffContent.swift` to a new `AttorneyFeeTariffContent2026.swift` (identical text, like the 2025/2027 files); add a structure test for the 2025/2026/2027 documents |
+| C | Unused declarations via the same parser-based tool. Never touched: methods iOS calls itself (`makeUIViewController`, `updateUIViewController`, `sizeThatFits`, `animatableData`, …), `override` / `@objc`, locals, `#if DEBUG`, previews |
+
+Views are not covered by unit tests → manual screen checklist after this step.
 
 ## Status
 
@@ -71,6 +82,7 @@ Iterative: delete only declarations with zero references, rebuild, re-run tests,
 | 1 | done (25 Nov 2026) — `TariffYear` is the only year list; `TariffConstants.currentYear` follows `TariffYear.current`; 5 duplicated lists + 8 unused year constants removed; start screen no longer reads the saved year (`lastUsedTariffYear`), test added first (red → green); 21 tests green |
 | 2+3 | done (25 Nov 2026, merged) — `TariffYear.getTariffProtocol()` is the only year → tariff mapping (exhaustive switch, no 2025 fallback); `TariffCalculator` uses it; serial fees are `TariffProtocol` requirements in Tariff2025/2026; tenancy minimum = tariff general minimum; completeness test added; 22 tests green. Probe: adding `case year2027` gives exactly 5 compile errors, all in TariffYear.swift |
 | 4 | done (25 Nov 2026) — 155 unused declarations removed from Constants/Models in 3 passes (19 files, 1,235 lines deleted, 0 added); exact ranges from `swiftc -dump-parse`, locals and `#if DEBUG` untouched; empty sections/blocks tidied; 22 tests green. 2027 probe now: 4 compile errors |
+| 5 | done (27 Nov 2026) — A: LiquidGlassText/TextPathHelper deleted, 3 unused glass properties removed; B: `content2026` moved verbatim to AttorneyFeeTariffContent2026.swift + document structure test; C: 96 unused declarations removed (Localization, Managers, Views; 716 lines). A tool bug (it treated `@Environment … var` lines above a deletion as attributes) was caught by the build, the tool was fixed and part C re-run; Step 4 checked: no `@` lines were deleted there. 23 tests + UI launch test green |
 
 ## Checklist when the 2027 mediation tariff is published
 

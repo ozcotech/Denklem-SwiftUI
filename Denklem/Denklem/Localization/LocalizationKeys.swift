@@ -74,7 +74,6 @@ struct LocalizationKeys {
     
     // MARK: - Dispute Categories (Main Categories)
     struct DisputeCategory {
-        static let mainCategories = "dispute_category.main_categories"
         // Screen
         static let title = "dispute_category.title"
         static let subtitle = "dispute_category.subtitle"
@@ -148,7 +147,6 @@ struct LocalizationKeys {
         static let agreed = "agreement_status.agreed"
         static let notAgreed = "agreement_status.not_agreed"
         static let selectPrompt = "agreement_status.select_prompt"
-        static let tapToSelect = "agreement_status.tap_to_select"
         
         struct Description {
             static let agreed = "agreement_status.agreed.description"
@@ -227,7 +225,6 @@ struct LocalizationKeys {
         static let invalidFileCount = "validation.invalid_file_count"
         static let invalidAgreementAmount = "validation.invalid_agreement_amount"
         static let missingCourtType = "validation.missing_court_type"
-        static let estimatedTariff = "validation.estimated_tariff"
         static let invalidDisputeType = "validation.invalid_dispute_type"
         static let invalidYear = "validation.invalid_year"
     }
@@ -242,16 +239,12 @@ struct LocalizationKeys {
         /// Type-safe alias for unknown error (for compatibility)
         static let unknown = "error.unknown_error"
         static let tryAgain = "error.try_again"
-        static let unsupportedYear = "error.unsupported_year"
-        static let tariffCreationFailed = "error.tariff_creation_failed"
     }
 
     // MARK: - Attorney Fee
     struct AttorneyFee {
         // Screen Titles
         static let typeScreenTitle = "attorney_fee.type_screen_title"
-        static let agreementScreenTitle = "attorney_fee.agreement_screen_title"
-        static let inputScreenTitle = "attorney_fee.input_screen_title"
         static let resultTitle = "attorney_fee.result_title"
 
         // Type Selection
@@ -268,10 +261,6 @@ struct LocalizationKeys {
         static let selectCourt = "attorney_fee.select_court"
 
         // Court Types
-        static let civilPeaceCourt = "attorney_fee.civil_peace_court"
-        static let firstInstanceCourt = "attorney_fee.first_instance_court"
-        static let consumerCourt = "attorney_fee.consumer_court"
-        static let intellectualPropertyCourt = "attorney_fee.intellectual_property_court"
 
         // Result Labels
         static let calculatedFee = "attorney_fee.calculated_fee"
@@ -334,9 +323,7 @@ struct LocalizationKeys {
         
         // Input Labels - Agreement Case
         static let nonReinstatementCompensation = "reinstatement.non_reinstatement_compensation"
-        static let nonReinstatementCompensationHint = "reinstatement.non_reinstatement_compensation_hint"
         static let idlePeriodWage = "reinstatement.idle_period_wage"
-        static let idlePeriodWageHint = "reinstatement.idle_period_wage_hint"
         static let otherRights = "reinstatement.other_rights"
         static let otherRightsTotal = "reinstatement.other_rights_total"
         static let otherRightsHint = "reinstatement.other_rights_hint"
@@ -348,12 +335,10 @@ struct LocalizationKeys {
         static let totalAmount = "reinstatement.total_amount"
         static let calculationBreakdown = "reinstatement.calculation_breakdown"
         static let minimumFeeApplied = "reinstatement.minimum_fee_applied"
-        static let bracketCalculation = "reinstatement.bracket_calculation"
         
         // Legal References (localized)
         static let legalAgreementArticle = "reinstatement.legal_agreement_article"
         static let legalNoAgreementArticle = "reinstatement.legal_no_agreement_article"
-        static let legalLaborLawArticle = "reinstatement.legal_labor_law_article"
         static let tariffSection = "reinstatement.tariff_section"
 
         // Warning Messages
@@ -361,14 +346,11 @@ struct LocalizationKeys {
 
         // Info/Description
         static let description = "reinstatement.description"
-        static let agreementDescription = "reinstatement.agreement_description"
-        static let noAgreementDescription = "reinstatement.no_agreement_description"
     }
 
     // MARK: - Screen Titles
     struct ScreenTitle {
         static let home = "screen.title.home"
-        static let disputeCategory = "screen.title.dispute_category"
         static let subjectSelection = "screen.title.subject_selection"
         static let agreementStatus = "screen.title.agreement_status"
         static let disputeType = "screen.title.dispute_type"
@@ -394,12 +376,6 @@ struct LocalizationKeys {
             static let partyCount = "input.placeholder.party_count"
             static let mediationFee = "input.placeholder.mediation_fee"
         }
-        
-        struct Hint {
-            static let amount = "input.hint.amount"
-            static let partyCount = "input.hint.party_count"
-            static let mediationFee = "input.hint.mediation_fee"
-        }
     }
     
     // MARK: - Result Labels
@@ -413,7 +389,6 @@ struct LocalizationKeys {
         static let partyCount = "result.party_count"
         static let calculationDate = "result.calculation_date"
         static let tariffYear = "result.tariff_year"
-        static let calculationSteps = "result.calculation_steps"
         static let calculationInfo = "result.calculation_info"
         static let calculationResult = "result.calculation_result"
         static let calculationMethod = "result.calculation_method"
@@ -424,7 +399,6 @@ struct LocalizationKeys {
         static let firstTier = "result.first_tier"
         static let nextTier = "result.next_tier"
         static let aboveTier = "result.above_tier"
-        static let resultLabel = "result.result_label"
     }
     
     // MARK: - Time Calculation
@@ -446,18 +420,12 @@ struct LocalizationKeys {
             static let extendedDeadline = "time_calculation.extended_deadline"
             static let processEndDates = "time_calculation.process_end_dates"
         }
-        
-        static let disputeTypeDuration = "time_calculation.dispute_type_duration"
     }
     
     // MARK: - Home Screen
     struct Home {
         static let welcome = "home.welcome"
         static let selectYear = "home.select_year"
-        static let yearWarning = "home.year_warning"
-        static let disputeCategories = "home.dispute_categories"
-        static let monetaryDisputes = "home.monetary_disputes"
-        static let nonMonetaryDisputes = "home.non_monetary_disputes"
         static let otherCalculations = "home.other_calculations"
         static let timeCalculation = "home.time_calculation"
         static let smmCalculation = "home.smm_calculation"
@@ -468,16 +436,10 @@ struct LocalizationKeys {
         static let invalidAgreementAmount = "validation.invalid_agreement_amount"
         static let missingCourtType = "validation.missing_court_type"
         /* Lines 161-173 omitted */
-        static let appTitle = "app.name"
-        static let appSubtitle = "app.tagline"
         static let tariffYearLabel = "start.tariff_year_label"
         static let enterButton = "start.enter_button"
-        static let enterButtonWithYear = "start.enter_button_with_year"
-        static let yearDropdownHint = "start.year_dropdown_hint"
         static let year2025 = "start.year_2025"
         static let year2026 = "start.year_2026"
-        static let selectYearHint = "start.select_year_hint"
-        static let scrollToSelect = "start.scroll_to_select"
     }
     
     // MARK: - About Screen
@@ -488,12 +450,8 @@ struct LocalizationKeys {
         static let developer = "about.developer"
         static let contact = "about.contact"
         static let company = "about.company"
-        static let legalInfo = "about.legal_info"
         static let disclaimer = "about.disclaimer"
         static let copyright = "about.copyright"
-        static let whoWeAre = "about.who_we_are"
-        static let appDescriptionLong = "about.app_description_long"
-        static let smmReceipt = "about.smm_receipt"
         
         // Feature Information
         static let features = "about.features"
@@ -501,20 +459,12 @@ struct LocalizationKeys {
         static let supportedLanguages = "about.supported_languages"
         static let disputeTypes = "about.dispute_types"
         static let languages = "about.languages"
-        static let calculationTypes = "about.calculation_types"
-        static let tariffYears = "about.tariff_years"
         
         // Legal & Data
         static let legal = "about.legal"
         static let dataSource = "about.data_source"
-        static let officialData = "about.official_data"
-        static let finalizedData = "about.finalized_data"
-        static let estimatedData = "about.estimated_data"
         
         // Technical Information
-        static let bundleId = "about.bundle_id"
-        static let minIOSVersion = "about.min_ios_version"
-        static let buildConfig = "about.build_config"
     }
     
     // MARK: - Legislation Screen
@@ -527,7 +477,6 @@ struct LocalizationKeys {
         // Tariff specific
         static let tariffName = "legislation.tariff_name"
         static let ministrySource = "legislation.ministry_source"
-        static let viewDocument = "legislation.view_document"
         static let searchPrompt = "legislation.search.prompt"
         static let filterAll = "legislation.filter.all"
         static let tagOfficial = "legislation.tag.official"
@@ -562,9 +511,6 @@ struct LocalizationKeys {
     
     // MARK: - Success Messages
     struct Success {
-        static let calculationCompleted = "success.calculation_completed"
-        static let dataSaved = "success.data_saved"
-        static let dataExported = "success.data_exported"
         static let shared = "success.shared"
     }
     
@@ -572,7 +518,6 @@ struct LocalizationKeys {
     struct Loading {
         static let calculating = "loading.calculating"
         static let loading = "loading.loading"
-        static let pleaseWait = "loading.please_wait"
     }
     
     // MARK: - Tab Bar
@@ -596,8 +541,6 @@ struct LocalizationKeys {
         static let turkish = "language.turkish"
         static let english = "language.english"
         static let swedish = "language.swedish"
-        static let changeSuccess = "language.change_success"
-        static let restartRequired = "language.restart_required"
     }
     
     // MARK: - Contact & Support
@@ -615,9 +558,6 @@ struct LocalizationKeys {
         static let disclaimerText = "legal.disclaimer_text"
         static let source = "legal.source"
         static let privacyPolicy = "legal.privacy_policy"
-        static let termsOfUse = "legal.terms_of_use"
-        static let dataProtection = "legal.data_protection"
-        static let officialSource = "legal.official_source"
     }
     
     // MARK: - Currency
@@ -644,8 +584,6 @@ struct LocalizationKeys {
     struct RentSpecial {
         // Screen Titles
         static let selectionScreenTitle = "rent_special.selection_screen_title"
-        static let attorneyFeeScreenTitle = "rent_special.attorney_fee_screen_title"
-        static let mediationFeeScreenTitle = "rent_special.mediation_fee_screen_title"
 
         // Fee Mode Options
         static let attorneyFeeOption = "rent_special.attorney_fee_option"
@@ -723,11 +661,9 @@ struct LocalizationKeys {
         static let amountFieldHint = "a11y.hint.amount_field"
         static let partyCountFieldHint = "a11y.hint.party_count_field"
         static let fileCountFieldHint = "a11y.hint.file_count_field"
-        static let datePickerHint = "a11y.hint.date_picker"
         static let checkboxHint = "a11y.hint.checkbox"
         static let expandCollapseHint = "a11y.hint.expand_collapse"
         static let surveyOptionHint = "a11y.hint.survey_option"
-        static let filterChipHint = "a11y.hint.filter_chip"
         static let documentCardHint = "a11y.hint.document_card"
         static let enterButtonHint = "a11y.hint.enter_button"
         static let surveyButtonHint = "a11y.hint.survey_button"
@@ -754,7 +690,6 @@ struct LocalizationKeys {
         // Labels
         static let surveyButton = "a11y.label.survey_button"
         static let questionCounter = "a11y.label.question_counter"
-        static let errorBanner = "a11y.label.error_banner"
         static let previousResult = "a11y.label.previous_result"
         static let nextResult = "a11y.label.next_result"
         static let searchResultPosition = "a11y.label.search_result_position"

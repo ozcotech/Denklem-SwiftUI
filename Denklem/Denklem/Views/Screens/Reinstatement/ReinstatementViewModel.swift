@@ -59,29 +59,14 @@ final class ReinstatementViewModel: ObservableObject {
         LocalizationKeys.General.calculate.localized
     }
 
-    /// Agreement status section title
-    var agreementStatusSectionTitle: String {
-        LocalizationKeys.Reinstatement.selectAgreementStatus.localized
-    }
-
     /// Compensation field label
     var compensationLabel: String {
         LocalizationKeys.Reinstatement.nonReinstatementCompensation.localized
     }
 
-    /// Compensation hint
-    var compensationHint: String {
-        LocalizationKeys.Reinstatement.nonReinstatementCompensationHint.localized
-    }
-
     /// Idle wage field label
     var idleWageLabel: String {
         LocalizationKeys.Reinstatement.idlePeriodWage.localized
-    }
-
-    /// Idle wage hint
-    var idleWageHint: String {
-        LocalizationKeys.Reinstatement.idlePeriodWageHint.localized
     }
 
     /// Other rights field label
