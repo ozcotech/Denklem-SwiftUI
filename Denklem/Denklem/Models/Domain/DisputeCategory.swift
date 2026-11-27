@@ -148,16 +148,6 @@ extension Collection where Element == DisputeCategory {
     var sortedByPriority: [DisputeCategory] {
         return sorted { $0.displayPriority < $1.displayPriority }
     }
-    
-    /// Returns monetary categories only
-    var monetaryOnly: [DisputeCategory] {
-        return filter { $0.isTypicallyMonetary }
-    }
-    
-    /// Returns non-monetary categories only
-    var nonMonetaryOnly: [DisputeCategory] {
-        return filter { !$0.isTypicallyMonetary }
-    }
 }
 
 // MARK: - Debug Support

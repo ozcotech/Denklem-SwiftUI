@@ -64,7 +64,12 @@ struct Tariff2025: TariffProtocol {
         "general": 6000.0,    // General minimum fee for most dispute types
         "commercial": 9000.0  // Higher minimum for commercial disputes
     ]
-    
+
+    // MARK: - Serial Disputes (Art. 7/4)
+
+    let serialCommercialFeePerFile: Double = 5_000.0
+    let serialNonCommercialFeePerFile: Double = 4_000.0
+
     // MARK: - Calculation Brackets (from TariffConstants.Tariff2025)
     
     /// Progressive calculation brackets for agreement cases

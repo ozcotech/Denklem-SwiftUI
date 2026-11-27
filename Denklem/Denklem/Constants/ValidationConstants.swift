@@ -16,12 +16,10 @@ struct ValidationConstants {
         static let minimum: Double = 0.01
         static let maximum: Double = 999_999_999.0
         
-        static let maxDecimalPlaces = 2
         static let allowNegative = false
         static let allowZero = false
         
         // Regex pattern (used by ReinstatementConstants)
-        static let basicNumberPattern = "^[0-9]+([.,][0-9]{1,2})?$"
         
         // Error codes
         static let invalidInputErrorCode = 1001
@@ -89,30 +87,9 @@ struct ValidationConstants {
         static let validationErrorCode = 1005
     }
 
-    // MARK: - Time Calculation Validation
-    struct TimeCalculation {
-        static let validTimeDisputeTypes: [String] = [
-            "labor_law",
-            "commercial_law",
-            "consumer_law",
-            "rental_disputes",
-            "partnership_dissolution",
-            "condominium_law",
-            "neighbor_law",
-            "agricultural_production"
-        ]
-
-        static let minimumWeeks = 1
-        static let maximumWeeks = 52
-        static let defaultWeeks = 4
-
-        static let weekPattern = "^[1-9][0-9]?$"
-    }
-    
     // MARK: - Year Validation
     struct Year {
-        static let availableYears = [2025, 2026]
-        static let currentYear = TariffConstants.currentYear
+        // Supported years come from TariffYear (single source of truth)
         
         // Error codes
         static let invalidYearErrorCode = 1007
@@ -183,7 +160,7 @@ extension ValidationConstants {
     
     /// Validates if year is supported
     static func validateYear(_ year: Int) -> ValidationResult {
-        if !Year.availableYears.contains(year) {
+        if TariffYear(rawValue: year) == nil {
             return .failure(
                 code: Amount.validationErrorCode,
                 message: "Unsupported year: \(year)"
@@ -266,15 +243,6 @@ enum ValidationResult: Error {
             return nil
         case .failure(_, let message):
             return message
-        }
-    }
-    
-    var errorCode: Int? {
-        switch self {
-        case .success:
-            return nil
-        case .failure(let code, _):
-            return code
         }
     }
     

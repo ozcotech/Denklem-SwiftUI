@@ -97,16 +97,6 @@ struct AboutData {
         return "\(disclaimerKey)\n\n\(sourceKey): \(AppConstants.legislationSource) (\(year))"
     }
     
-    /// Privacy policy text key
-    static var privacyPolicyKey: String {
-        LocalizationKeys.Legal.privacyPolicy.localized
-    }
-
-    /// Terms of use text key
-    static var termsOfUseKey: String {
-        LocalizationKeys.Legal.termsOfUse.localized
-    }
-    
     // MARK: - Feature Information
     
     /// Supported tariff years from TariffConstants
@@ -114,57 +104,9 @@ struct AboutData {
         return TariffConstants.availableYears
     }
     
-    /// Current tariff year from TariffConstants
-    static var currentTariffYear: Int {
-        return TariffConstants.currentYear
-    }
-    
-    /// Number of supported dispute types from DisputeConstants
-    static var supportedDisputeTypesCount: Int {
-        return DisputeConstants.DisputeTypeKeys.allKeys.count
-    }
-    
-    /// Supported dispute types list
-    static var supportedDisputeTypes: [String] {
-        return DisputeConstants.DisputeTypeKeys.allKeys
-    }
-    
     /// Supported languages from AppConstants
     static var supportedLanguages: [SupportedLanguage] {
         return SupportedLanguage.allCases
-    }
-    
-    /// Supported language codes
-    static var supportedLanguageCodes: [String] {
-        return supportedLanguages.map { $0.code }
-    }
-    
-    /// Number of supported calculation types
-    static var supportedCalculationTypesCount: Int {
-        return DisputeConstants.CalculationTypeKeys.allKeys.count
-    }
-    
-    /// Feature flags summary
-    static var enabledFeatures: [String] {
-        var features: [String] = []
-        
-        if TariffConstants.smmCalculationEnabled {
-            features.append("SMM Calculation")
-        }
-        
-        if TariffConstants.timeCalculationEnabled {
-            features.append("Time Calculation")
-        }
-        
-        if AppConstants.enableAnalytics {
-            features.append("Analytics")
-        }
-        
-        if AppConstants.enableBetaFeatures {
-            features.append("Beta Features")
-        }
-        
-        return features
     }
     
     // MARK: - Data Sources & References
@@ -182,44 +124,6 @@ struct AboutData {
     /// Legislation title
     static var legislationTitle: String {
         return AppConstants.legislationTitle
-    }
-    
-    /// Data source information for each tariff year
-    static func getDataSource(for year: Int) -> DataSource {
-        switch year {
-        case 2025:
-            return DataSource(
-                year: 2025,
-                isOfficial: true,
-                source: legislationSource,
-                url: legislationURL,
-                lastUpdated: Date(), // Should be actual legislation date
-                isFinalized: true
-            )
-        case 2026:
-            return DataSource(
-                year: 2026,
-                isOfficial: true,
-                source: legislationSource,
-                url: legislationURL,
-                lastUpdated: Date(), // Should be actual legislation date
-                isFinalized: true
-            )
-        default:
-            return DataSource(
-                year: year,
-                isOfficial: false,
-                source: "Unknown",
-                url: "",
-                lastUpdated: Date(),
-                isFinalized: false
-            )
-        }
-    }
-    
-    /// All data sources
-    static var allDataSources: [DataSource] {
-        return supportedYears.map { getDataSource(for: $0) }
     }
     
     // MARK: - App Store Information
@@ -240,16 +144,6 @@ struct AboutData {
     }
     
     // MARK: - Technical Information
-    
-    /// iOS version requirement (from Bundle or default)
-    static var minimumIOSVersion: String {
-        return Bundle.main.object(forInfoDictionaryKey: "MinimumOSVersion") as? String ?? "16.0"
-    }
-    
-    /// Target device families
-    static var supportedDevices: [String] {
-        return ["iPhone", "iPad"] // SwiftUI supports both
-    }
     
     /// Build configuration
     static var buildConfiguration: String {
@@ -304,65 +198,9 @@ struct AboutData {
             )
         ]
     }
-    
-    /// Open source libraries (if any)
-    static var openSourceLibraries: [OpenSourceLibrary] {
-        return [] // Add any third-party libraries here
-    }
-    
-    // MARK: - Localized Sections for About Screen
-    
-    /// About screen sections with localized content
-    static var aboutSections: [AboutSection] {
-        return [
-            AboutSection(
-                title: LocalizationKeys.About.appInfo.localized,
-                items: [
-                    AboutItem(label: LocalizationKeys.About.version.localized, value: fullVersionString),
-                    AboutItem(label: LocalizationKeys.About.developer.localized, value: developerName),
-                    AboutItem(label: LocalizationKeys.About.company.localized, value: companyName)
-                ]
-            ),
-            AboutSection(
-                title: LocalizationKeys.About.features.localized,
-                items: [
-                    AboutItem(label: LocalizationKeys.About.supportedYears.localized, value: supportedYears.map(String.init).joined(separator: ", ")),
-                    AboutItem(label: LocalizationKeys.About.disputeTypes.localized, value: "\(supportedDisputeTypesCount)"),
-                    AboutItem(label: LocalizationKeys.About.languages.localized, value: supportedLanguages.map(\.displayName).joined(separator: ", "))
-                ]
-            ),
-            AboutSection(
-                title: LocalizationKeys.About.legal.localized,
-                items: [
-                    AboutItem(label: LocalizationKeys.About.dataSource.localized, value: legislationSource),
-                    AboutItem(label: LocalizationKeys.About.copyright.localized, value: copyrightText)
-                ]
-            )
-        ]
-    }
 }
 
 // MARK: - Supporting Data Models
-
-/// Data source information for tariff data
-struct DataSource {
-    let year: Int
-    let isOfficial: Bool
-    let source: String
-    let url: String
-    let lastUpdated: Date
-    let isFinalized: Bool
-    
-    var statusText: String {
-        if isOfficial && isFinalized {
-            return LocalizationKeys.About.officialData.localized
-        } else if isFinalized {
-            return LocalizationKeys.About.finalizedData.localized
-        } else {
-            return LocalizationKeys.About.estimatedData.localized
-        }
-    }
-}
 
 /// Credit information for acknowledgments
 struct Credit {
@@ -380,67 +218,8 @@ struct Credit {
     }
 }
 
-/// Open source library information
-struct OpenSourceLibrary {
-    let name: String
-    let version: String
-    let license: String
-    let url: String
-    let description: String
-}
-
-/// About screen section structure
-struct AboutSection {
-    let title: String
-    let items: [AboutItem]
-}
-
-/// About screen item structure
-struct AboutItem {
-    let label: String
-    let value: String
-    let isAction: Bool
-    let action: (() -> Void)?
-    
-    init(label: String, value: String, isAction: Bool = false, action: (() -> Void)? = nil) {
-        self.label = label
-        self.value = value
-        self.isAction = isAction
-        self.action = action
-    }
-}
-
 // MARK: - AboutData Extension for Convenience Methods
 extension AboutData {
-    
-    /// Returns formatted app information string
-    static var formattedAppInfo: String {
-        return """
-        \(localizedAppName)
-        \(localizedAppTagline)
-        \(LocalizationKeys.About.version.localized): \(fullVersionString)
-        \(LocalizationKeys.About.developer.localized): \(developerName)
-        """
-    }
-    
-    /// Returns formatted feature summary
-    static var featureSummary: String {
-        return """
-        • \(supportedYears.count) \(LocalizationKeys.About.tariffYears.localized)
-        • \(supportedDisputeTypesCount) \(LocalizationKeys.About.disputeTypes.localized)
-        • \(supportedLanguages.count) \(LocalizationKeys.About.languages.localized)
-        • \(supportedCalculationTypesCount) \(LocalizationKeys.About.calculationTypes.localized)
-        """
-    }
-    
-    /// Returns formatted technical information
-    static var technicalInfo: String {
-        return """
-        \(LocalizationKeys.About.bundleId.localized): \(bundleIdentifier)
-        \(LocalizationKeys.About.minIOSVersion.localized): \(minimumIOSVersion)
-        \(LocalizationKeys.About.buildConfig.localized): \(buildConfiguration)
-        """
-    }
     
     /// Validates app data integrity
     static func validateData() -> Bool {

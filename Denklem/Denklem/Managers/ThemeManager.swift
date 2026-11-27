@@ -45,16 +45,6 @@ class ThemeManager: ObservableObject {
         followSystemTheme ? nil : (currentThemeType == .light ? .light : .dark)
     }
     
-    /// Check if dark mode is active
-    var isDarkMode: Bool {
-        currentThemeType == .dark
-    }
-    
-    /// Check if following system theme
-    var isFollowingSystem: Bool {
-        followSystemTheme
-    }
-
     /// Current appearance mode (light, dark, or system)
     var currentAppearanceMode: AppearanceMode {
         if followSystemTheme {
@@ -115,12 +105,6 @@ class ThemeManager: ObservableObject {
         followSystemTheme = false
         currentThemeType = themeType
         storedTheme = themeType.rawValue
-    }
-    
-    /// Toggle between light and dark themes (disables follow system)
-    func toggleTheme() {
-        let newTheme: ThemeType = currentThemeType == .light ? .dark : .light
-        setTheme(newTheme)
     }
     
     /// Enable following system theme

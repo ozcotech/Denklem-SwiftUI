@@ -36,11 +36,6 @@ enum TariffYear: Int, CaseIterable, Identifiable, Hashable {
         return TariffYear.allCases.sorted { $0.rawValue < $1.rawValue }
     }
     
-    /// All available years as integers
-    static var availableYearValues: [Int] {
-        return availableYears.map { $0.rawValue }
-    }
-    
     // MARK: - Display Properties
     
     /// Display name for the tariff year
@@ -50,16 +45,6 @@ enum TariffYear: Int, CaseIterable, Identifiable, Hashable {
             return "2025"
         case .year2026:
             return "2026"
-        }
-    }
-    
-    /// Full display name with context
-    var fullDisplayName: String {
-        switch self {
-        case .year2025:
-            return NSLocalizedString("tariff_year.2025", value: "2025 Tarifesi", comment: "2025 Tariff year")
-        case .year2026:
-            return NSLocalizedString("tariff_year.2026", value: "2026 Tarifesi", comment: "2026 Tariff year")
         }
     }
     
@@ -101,50 +86,20 @@ enum TariffYear: Int, CaseIterable, Identifiable, Hashable {
         return self.rawValue > currentYear
     }
     
-    /// Whether this is a past tariff year
-    var isPast: Bool {
-        let currentYear = Calendar.current.component(.year, from: Date())
-        return self.rawValue < currentYear
-    }
-    
-    /// Status icon for UI display
-    var statusIcon: String {
-        if !isFinalized {
-            return "exclamationmark.triangle"
-        } else if isActive {
-            return "checkmark.circle.fill"
-        } else {
-            return "clock"
-        }
-    }
-    
-    /// Status color for UI display
-    var statusColor: String {
-        if !isFinalized {
-            return "orange"
-        } else if isActive {
-            return "green"
-        } else {
-            return "gray"
-        }
-    }
-    
     // MARK: - Tariff Data Access
     
-    /// Returns the appropriate tariff protocol implementation for this year
+    /// Returns the appropriate tariff protocol implementation for this year.
+    /// This exhaustive switch is the ONLY year → tariff mapping in the app: adding a new
+    /// TariffYear case without its tariff file is a compile error instead of a silent
+    /// fallback to another year's fees.
     /// - Returns: TariffProtocol implementation for this year
     func getTariffProtocol() -> TariffProtocol {
-        if let tariff = TariffFactory.createTariff(for: self.rawValue) {
-            return tariff
+        switch self {
+        case .year2025:
+            return Tariff2025.create()
+        case .year2026:
+            return Tariff2026.create()
         }
-        
-        // Fallback to default year if creation fails
-        if let defaultTariff = TariffFactory.createTariff(for: TariffYear.default.rawValue) {
-            return defaultTariff
-        }
-        
-        // Final fallback - should not happen in normal operation
-        return Tariff2025.create()
     }
     
     /// Returns hourly rate for specific dispute type
@@ -262,21 +217,6 @@ enum TariffYear: Int, CaseIterable, Identifiable, Hashable {
         return .success
     }
     
-    /// Validates if this tariff year is available for calculations
-    /// - Returns: Validation result with success or error details
-    func validateAvailability() -> ValidationResult {
-        guard isSupported else {
-            return .failure(
-                code: ValidationConstants.Year.validationErrorCode,
-                message: NSLocalizedString("validation.year_not_supported", 
-                                         value: "Year not supported",
-                                         comment: "validation message")
-            )
-        }
-        
-        return .success
-    }
-    
     // MARK: - Factory Methods
     
     /// Creates TariffYear from integer value
@@ -347,67 +287,6 @@ extension TariffYear {
                                     value: "Geçmiş", 
                                     comment: "Past status")
         }
-    }
-    
-    /// Returns formatted year for display
-    var formattedYear: String {
-        return "\(rawValue)"
-    }
-    
-    /// Returns year with currency symbol
-    var yearWithCurrency: String {
-        return "\(rawValue) (\(TariffConstants.currencySymbol))"
-    }
-}
-
-// MARK: - Collection Extensions
-
-extension Collection where Element == TariffYear {
-    
-    /// Returns years ordered chronologically
-    var chronological: [TariffYear] {
-        return sorted { $0.rawValue < $1.rawValue }
-    }
-    
-    /// Returns years ordered reverse chronologically
-    var reverseChronological: [TariffYear] {
-        return sorted { $0.rawValue > $1.rawValue }
-    }
-    
-    /// Returns only finalized tariff years
-    var finalizedOnly: [TariffYear] {
-        return filter { $0.isFinalized }
-    }
-    
-    /// Returns only estimated tariff years
-    var estimatedOnly: [TariffYear] {
-        return filter { !$0.isFinalized }
-    }
-    
-    /// Returns only supported tariff years
-    var supportedOnly: [TariffYear] {
-        return filter { $0.isSupported }
-    }
-}
-
-// MARK: - Compatibility with Integer APIs
-
-extension TariffYear {
-    
-    /// Converts to TariffConstants year format
-    var toTariffConstantsYear: Int {
-        return rawValue
-    }
-    
-    /// Converts to string for API compatibility
-    var toString: String {
-        return String(rawValue)
-    }
-    
-    /// Creates from TariffConstants available years
-    static func fromTariffConstants(_ year: Int) -> TariffYear? {
-        guard TariffConstants.availableYears.contains(year) else { return nil }
-        return TariffYear(rawValue: year)
     }
 }
 

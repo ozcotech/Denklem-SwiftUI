@@ -49,31 +49,15 @@ struct SerialDisputesConstants {
         }
     }
 
-    // MARK: - Tariff Year
-    static let availableYears = [2025, 2026]
-    static let currentYear = 2026
-    static let defaultYear = 2026
-
-    // MARK: - Fee Values (2026)
-    struct Fees2026 {
-        static let year: Int = 2026
-        static let commercialFeePerFile: Double = 7_500.0
-        static let nonCommercialFeePerFile: Double = 6_000.0
-    }
-
-    // MARK: - Fee Values (2025)
-    struct Fees2025 {
-        static let year: Int = 2025
-        static let commercialFeePerFile: Double = 5_000.0
-        static let nonCommercialFeePerFile: Double = 4_000.0
-    }
+    // MARK: - Tariff Year & Fees
+    // Supported years come from TariffYear (single source of truth).
+    // Fees per file (Art. 7/4) live in the yearly tariff files: serialCommercialFeePerFile /
+    // serialNonCommercialFeePerFile in Tariff2025, Tariff2026, …
 
     // MARK: - Validation
     struct Validation {
         static let minimumFileCount: Int = 1
         static let maximumFileCount: Int = 1000
-        static let defaultFileCount: Int = 10
-        static let fileCountPattern = "^[0-9]{1,4}$"
     }
 
     // MARK: - Currency Settings
@@ -89,40 +73,5 @@ struct SerialDisputesConstants {
     /// Returns localized legal article reference
     static var legalArticle: String {
         LocalizationKeys.SerialDisputes.legalArticle.localized
-    }
-}
-
-// MARK: - Fee Retrieval Extension
-extension SerialDisputesConstants {
-
-    /// Get fee per file for given dispute type and year
-    static func getFeePerFile(for disputeType: DisputeType, year: Int) -> Double {
-        switch year {
-        case 2026:
-            return disputeType == .commercial ?
-                Fees2026.commercialFeePerFile :
-                Fees2026.nonCommercialFeePerFile
-        case 2025:
-            return disputeType == .commercial ?
-                Fees2025.commercialFeePerFile :
-                Fees2025.nonCommercialFeePerFile
-        default:
-            // Default to current year
-            return disputeType == .commercial ?
-                Fees2026.commercialFeePerFile :
-                Fees2026.nonCommercialFeePerFile
-        }
-    }
-
-    /// Get all fees for a given year
-    static func getAllFees(for year: Int) -> (commercial: Double, nonCommercial: Double) {
-        switch year {
-        case 2026:
-            return (Fees2026.commercialFeePerFile, Fees2026.nonCommercialFeePerFile)
-        case 2025:
-            return (Fees2025.commercialFeePerFile, Fees2025.nonCommercialFeePerFile)
-        default:
-            return (Fees2026.commercialFeePerFile, Fees2026.nonCommercialFeePerFile)
-        }
     }
 }

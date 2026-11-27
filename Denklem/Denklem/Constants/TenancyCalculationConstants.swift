@@ -14,9 +14,7 @@ import SwiftUI
 struct TenancyCalculationConstants {
 
     // MARK: - Tariff Year
-    static let availableYears = [2025, 2026]
-    static let currentYear = 2026
-    static let defaultYear = 2026
+    // Supported years come from TariffYear (single source of truth)
 
     // MARK: - Tenancy Type
     enum TenancyType: String, CaseIterable, Identifiable {
@@ -147,18 +145,8 @@ struct TenancyCalculationConstants {
     }
 
     // MARK: - Mediation Minimum Fee (Art. 7/7)
-    /// Minimum mediation fee when agreement is reached, regardless of agreement amount
-    /// "Arabuluculuk sürecinin sonunda anlaşma sağlanması halinde, anlaşma bedeline
-    /// bakılmaksızın arabuluculuk ücreti X TL'den az olamaz."
-    struct MediationMinimumFee {
-        static func minimumFee(for year: Int) -> Double {
-            switch year {
-            case 2025: return 6_000.0
-            case 2026: return 9_000.0
-            default: return 9_000.0
-            }
-        }
-    }
+    // The tenancy mediation minimum is the tariff's general minimum fee
+    // (minimumFees["general"] in Tariff2025, Tariff2026, …) — see TenancyCalculator.
 
     // MARK: - Validation
     struct Validation {
@@ -175,7 +163,6 @@ struct TenancyCalculationConstants {
     static let showCalculationBreakdown = true
     static let showTariffReference = true
     static let showLegalReference = true
-    static let showCourtMinimumWarnings = true
 }
 
 // MARK: - Tenancy Calculation Constants Extension
@@ -183,7 +170,7 @@ extension TenancyCalculationConstants {
 
     /// Validates if year is supported
     static func isValidYear(_ year: Int) -> Bool {
-        return availableYears.contains(year)
+        return TariffYear(rawValue: year) != nil
     }
 
     /// Validates amount

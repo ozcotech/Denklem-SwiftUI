@@ -21,18 +21,9 @@ struct TariffCalculator {
             return CalculationResult.failure(input: input, error: validation.errorMessage ?? "Invalid input")
         }
         
-        // Get tariff year
-        let year = input.tariffYear.rawValue
-        let tariff: TariffProtocol
-        switch year {
-        case 2025:
-            tariff = Tariff2025.create()
-        case 2026:
-            tariff = Tariff2026.create()
-        default:
-            return CalculationResult.failure(input: input, error: "Unsupported tariff year: \(year)")
-        }
-        
+        // Get tariff for the selected year (single, exhaustive mapping in TariffYear)
+        let tariff = input.tariffYear.getTariffProtocol()
+
         // CalculationType
         let calculationType = input.calculationType
         let disputeTypeKey = input.disputeType.rawValue

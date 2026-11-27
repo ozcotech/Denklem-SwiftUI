@@ -13,9 +13,7 @@ import Foundation
 struct ReinstatementConstants {
     
     // MARK: - Tariff Year
-    static let availableYears = [2025, 2026]
-    static let currentYear = 2026
-    static let defaultYear = 2026
+    // Supported years come from TariffYear (single source of truth)
     
     // MARK: - Dispute Type
     /// Reinstatement uses worker-employer dispute type for calculations
@@ -33,8 +31,6 @@ struct ReinstatementConstants {
         static let defaultPartyCount: Int = 2
         
         // Regex patterns (reuse from ValidationConstants)
-        static let amountPattern = ValidationConstants.Amount.basicNumberPattern
-        static let partyCountPattern = ValidationConstants.PartyCount.pattern
     }
     
     // MARK: - Input Fields
@@ -67,7 +63,6 @@ struct ReinstatementConstants {
         static let noAgreementArticle = LocalizationKeys.Reinstatement.legalNoAgreementArticle
         
         // Additional reference - Labor Law Art. 21/7
-        static let laborLawArticle = LocalizationKeys.Reinstatement.legalLaborLawArticle
         
         // Tariff section - Tariff Second Part
         static let tariffSection = LocalizationKeys.Reinstatement.tariffSection
@@ -82,7 +77,6 @@ struct ReinstatementConstants {
     static let showCalculationBreakdown = true
     static let showTariffReference = true
     static let showLegalReference = true
-    static let showMinimumFeeNote = true
 }
 
 // MARK: - Reinstatement Constants Extension
@@ -109,7 +103,7 @@ extension ReinstatementConstants {
     /// - Parameter year: Year to validate
     /// - Returns: True if year is supported
     static func isValidYear(_ year: Int) -> Bool {
-        return availableYears.contains(year)
+        return TariffYear(rawValue: year) != nil
     }
     
     /// Validates amount for agreement case

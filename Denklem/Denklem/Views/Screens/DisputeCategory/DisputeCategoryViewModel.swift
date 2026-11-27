@@ -204,11 +204,6 @@ final class DisputeCategoryViewModel: ObservableObject {
         LocalizationKeys.DisputeCategory.title.localized
     }
 
-    /// Screen subtitle
-    var screenSubtitle: String {
-        LocalizationKeys.DisputeCategory.subtitle.localized
-    }
-
     
     // MARK: - Initialization
     
@@ -264,20 +259,6 @@ final class DisputeCategoryViewModel: ObservableObject {
     func category(at index: Int, in section: [DisputeCategoryType]) -> DisputeCategoryType? {
         guard index < section.count else { return nil }
         return section[index]
-    }
-    
-    /// Resets navigation state
-    func resetNavigation() {
-        navigateToDisputeType = false
-        navigateToTimeCalculation = false
-        navigateToSMMCalculation = false
-        navigateToAttorneyFee = false
-        navigateToTenancySpecial = false
-        navigateToConsumerDispute = false
-        showSerialDisputesSheet = false
-        showReinstatementSheet = false
-        showComingSoonAlert = false
-        selectedCategory = nil
     }
 }
 

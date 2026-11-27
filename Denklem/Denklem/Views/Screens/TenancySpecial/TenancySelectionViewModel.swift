@@ -72,11 +72,6 @@ final class TenancySelectionViewModel: ObservableObject {
         selectedFeeMode == .attorneyFee
     }
 
-    /// Fee modes for segmented picker
-    var feeModes: [TenancyCalculationConstants.TenancyFeeMode] {
-        TenancyCalculationConstants.TenancyFeeMode.allCases
-    }
-
     /// Calculate button label
     var calculateButtonText: String {
         LocalizationKeys.General.calculate.localized

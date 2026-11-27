@@ -20,6 +20,7 @@ struct SerialDisputesSheet: View {
     @Environment(\.theme) var theme
     @Environment(\.dismiss) private var dismiss
     @Environment(\.isAnimatedBackground) private var isAnimatedBackground
+    @State private var showShareSheet = false
 
     // MARK: - Initialization
 
@@ -60,6 +61,20 @@ struct SerialDisputesSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .animatedBackground()
             .toolbar {
+                // Share is offered only while a result is on screen
+                if viewModel.showResult && viewModel.calculationResult != nil {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button {
+                            showShareSheet = true
+                        } label: {
+                            Image(systemName: "square.and.arrow.up")
+                                .font(theme.body)
+                                .foregroundStyle(theme.textSecondary)
+                        }
+                        .accessibilityLabel(LocalizationKeys.Accessibility.share.localized)
+                        .accessibilityHint(LocalizationKeys.Accessibility.shareHint.localized)
+                    }
+                }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         dismiss()
@@ -71,6 +86,11 @@ struct SerialDisputesSheet: View {
                     .accessibilityLabel(LocalizationKeys.Accessibility.done.localized)
                     .accessibilityHint(LocalizationKeys.Accessibility.dismissHint.localized)
                 }
+            }
+        }
+        .sheet(isPresented: $showShareSheet) {
+            if let result = viewModel.calculationResult {
+                ShareSheet(items: [ShareTextFile.url(for: result.shareText, name: "Denklem_SerialDisputes")])
             }
         }
     }

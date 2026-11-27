@@ -95,15 +95,6 @@ struct AttorneyFeeConstants {
 	/// (see `AttorneyFeeTariffYear` — the default is the tariff in force today)
 	static var availableYears: [Int] { AttorneyFeeTariffYear.allCases.map(\.rawValue) }
 
-	// MARK: - Fee Types
-	struct FeeType {
-		static let monetaryAgreement = "monetary_agreement" // Monetary + Agreement
-		static let nonMonetaryAgreement = "non_monetary_agreement" // Non-monetary + Agreement
-		static let noAgreement = "no_agreement" // No agreement (all)
-		static let noAgreementWithLawsuit = "no_agreement_with_lawsuit" // No agreement + Lawsuit (not applicable)
-		static let allTypes = [monetaryAgreement, nonMonetaryAgreement, noAgreement, noAgreementWithLawsuit]
-	}
-
 	// MARK: - Calculation Brackets (2027)
 	struct MonetaryBrackets2027 {
 		/// Calculation brackets for monetary disputes (2027 tariff, Third Part)

@@ -13107,7 +13107,7 @@
     },
     "validation.year_not_supported" : {
       "comment" : "validation message",
-      "extractionState" : "extracted_with_value",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

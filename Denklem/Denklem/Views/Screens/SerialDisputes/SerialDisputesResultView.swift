@@ -142,6 +142,32 @@ struct SerialDisputesResultView: View {
     }
 }
 
+// MARK: - Share Text
+
+extension SerialDisputesResult {
+
+    /// Plain-text summary for sharing; mirrors SerialDisputesResultView
+    var shareText: String {
+        var lines: [String] = []
+
+        lines.append("\(LocalizationKeys.Result.mediationFee.localized):")
+        lines.append(formattedTotalFee)
+        lines.append("")
+
+        lines.append("\(LocalizationKeys.Result.calculationInfo.localized):")
+        lines.append("\(LocalizationKeys.SerialDisputes.disputeTypeLabel.localized): \(disputeType.displayName)")
+        lines.append("\(LocalizationKeys.SerialDisputes.fileCountLabel.localized): \(fileCount)")
+        lines.append("\(LocalizationKeys.SerialDisputes.feePerFile.localized): \(formattedFeePerFile)")
+        lines.append("\(LocalizationKeys.SerialDisputes.tariffYearLabel.localized): \(tariffYear)")
+
+        lines.append("")
+        lines.append(legalReference)
+        lines.append("")
+        lines.append(LocalizationKeys.General.calculatedWithDenklem.localized)
+        return lines.joined(separator: "\n")
+    }
+}
+
 // MARK: - Preview
 
 @available(iOS 26.0, *)

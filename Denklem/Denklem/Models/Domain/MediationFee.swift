@@ -7,14 +7,6 @@
 
 import Foundation
 
-// MARK: - Type Aliases for MediationFee
-
-/// Type alias for calculation types from TariffConstants
-typealias MediationFeeCalculationType = CalculationType
-
-/// Type alias for agreement status from TariffConstants  
-typealias MediationFeeAgreementStatus = AgreementStatus
-
 // MARK: - MediationFee Extensions for Type Aliases
 
 extension CalculationType {
@@ -92,36 +84,6 @@ struct MediationFee {
     /// Formatted amount for export/CSV
     var formattedAmountForExport: String {
         return LocalizationHelper.formatCurrencyForExport(amount)
-    }
-    
-    /// Compact formatted amount (no decimals for whole numbers)
-    var formattedAmountCompact: String {
-        return LocalizationHelper.formatCurrencyCompact(amount)
-    }
-    
-    /// Detailed description of the fee calculation
-    var detailedDescription: String {
-        var description = ""
-        
-        // Basic info
-        description += "\(disputeType.displayName) - \(agreementStatus.displayName)\n"
-        description += "\(NSLocalizedString(LocalizationKeys.Result.partyCount, comment: "")): \(partyCount)\n"
-        
-        // Amount if monetary
-        if let disputeAmount = disputeAmount {
-            description += "\(NSLocalizedString(LocalizationKeys.General.calculate, comment: "")): \(LocalizationHelper.formatCurrencyForDisplay(disputeAmount))\n"
-        }
-        
-        // Calculation type
-        description += "\(NSLocalizedString(LocalizationKeys.General.calculate, comment: "")): \(calculationType.displayName)\n"
-        
-        // Tariff year
-        description += "\(NSLocalizedString(LocalizationKeys.General.calculate, comment: "")): \(tariffYear.displayName)\n"
-        
-        // Final fee
-        description += "\(NSLocalizedString(LocalizationKeys.General.calculate, comment: "")): \(formattedAmount)"
-        
-        return description
     }
     
     /// Short summary for quick display

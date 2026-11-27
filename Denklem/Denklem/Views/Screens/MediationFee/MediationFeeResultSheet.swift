@@ -18,7 +18,6 @@ struct MediationFeeResultSheet: View {
 
     @Environment(\.dismiss) private var dismiss
     @Environment(\.isAnimatedBackground) private var isAnimatedBackground
-    @AppStorage("mediationResultSheetSeen") private var hasSeenBefore = false
     @State private var isExpanded = false
     @State private var revealContent = false
     @State private var showShareSheet = false
@@ -212,13 +211,7 @@ struct MediationFeeResultSheet: View {
     }
 
     private var shareFileURL: URL {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy_MM_dd"
-        let fileName = "Denklem_\(formatter.string(from: Date()))"
-
-        let url = FileManager.default.temporaryDirectory.appendingPathComponent("\(fileName).txt")
-        try? shareText.write(to: url, atomically: true, encoding: .utf8)
-        return url
+        ShareTextFile.url(for: shareText, name: "Denklem")
     }
 
     // MARK: - Main Fee Card

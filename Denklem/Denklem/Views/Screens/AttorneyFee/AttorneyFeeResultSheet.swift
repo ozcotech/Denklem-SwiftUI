@@ -20,6 +20,7 @@ struct AttorneyFeeResultSheet: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.isAnimatedBackground) private var isAnimatedBackground
     @ObservedObject private var localeManager = LocaleManager.shared
+    @State private var showShareSheet = false
 
     // MARK: - Body
 
@@ -52,6 +53,17 @@ struct AttorneyFeeResultSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .animatedBackground()
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        showShareSheet = true
+                    } label: {
+                        Image(systemName: "square.and.arrow.up")
+                            .font(theme.body)
+                            .foregroundStyle(theme.textSecondary)
+                    }
+                    .accessibilityLabel(LocalizationKeys.Accessibility.share.localized)
+                    .accessibilityHint(LocalizationKeys.Accessibility.shareHint.localized)
+                }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         dismiss()
@@ -65,10 +77,56 @@ struct AttorneyFeeResultSheet: View {
                 }
             }
         }
+        .sheet(isPresented: $showShareSheet) {
+            ShareSheet(items: [ShareTextFile.url(for: shareText, name: "Denklem_AttorneyFee")])
+        }
         .presentationBackground(.clear)
         .presentationBackgroundInteraction(.enabled)
         .presentationDetents([.large])
         .presentationDragIndicator(.visible)
+    }
+
+    // MARK: - Share Text
+
+    /// Plain-text summary for sharing; mirrors the cards on this screen
+    private var shareText: String {
+        var lines: [String] = []
+
+        lines.append("\(LocalizationKeys.AttorneyFee.calculatedFee.localized):")
+        lines.append(LocalizationHelper.formatCurrency(result.fee))
+        lines.append("")
+
+        lines.append("\(LocalizationKeys.Result.calculationInfo.localized):")
+        let type = calculationTypeDisplayName.replacingOccurrences(of: "\n", with: " – ")
+        lines.append("\(LocalizationKeys.Calculation.typeHeader.localized): \(type)")
+        if let baseAmount = result.breakdown.baseAmount {
+            lines.append("\(baseAmountLabel): \(LocalizationHelper.formatCurrency(baseAmount))")
+        }
+        if let courtType = result.breakdown.courtType {
+            lines.append("\(LocalizationKeys.AttorneyFee.courtType.localized): \(courtType.displayName)")
+        }
+        if let thirdPartFee = result.breakdown.thirdPartFee {
+            lines.append("\(LocalizationKeys.AttorneyFee.thirdPartFee.localized): \(LocalizationHelper.formatCurrency(thirdPartFee))")
+        }
+        if let bonusAmount = result.breakdown.bonusAmount {
+            lines.append("\(LocalizationKeys.AttorneyFee.bonusAmount.localized): \(LocalizationHelper.formatCurrency(bonusAmount))")
+        }
+        lines.append("\(LocalizationKeys.Result.tariffYear.localized): \(result.tariffYear)")
+        if result.breakdown.isMinimumApplied {
+            lines.append(LocalizationKeys.AttorneyFee.minimumFeeApplied.localized)
+        }
+
+        if !result.warnings.isEmpty {
+            lines.append("")
+            lines.append("\(LocalizationKeys.General.warning.localized):")
+            lines.append(contentsOf: result.warnings)
+        }
+
+        lines.append("")
+        lines.append(result.legalReference)
+        lines.append("")
+        lines.append(LocalizationKeys.General.calculatedWithDenklem.localized)
+        return lines.joined(separator: "\n")
     }
 
     // MARK: - Main Fee Card

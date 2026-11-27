@@ -36,7 +36,7 @@ struct SerialDisputesInput: Equatable, Codable {
         }
 
         // Validate tariff year
-        if !SerialDisputesConstants.availableYears.contains(tariffYear) {
+        if TariffYear(rawValue: tariffYear) == nil {
             return .failure(
                 code: ValidationConstants.Year.invalidYearErrorCode,
                 message: LocalizationKeys.Validation.invalidYear.localized
@@ -71,37 +71,10 @@ struct SerialDisputesResult: Equatable, Codable {
         return LocalizationHelper.formatCurrency(feePerFile)
     }
 
-    /// Calculation breakdown description
-    var breakdownDescription: String {
-        return "\(fileCount) x \(formattedFeePerFile) = \(formattedTotalFee)"
-    }
-
     /// Legal reference text based on current locale
     var legalReference: String {
         let tariffName = LocalizationKeys.SerialDisputes.tariffName.localized
         let article = LocalizationKeys.SerialDisputes.legalArticle.localized
         return "\(tariffYear) \(tariffName) \(article)"
-    }
-}
-
-// MARK: - Serial Disputes Result Builder
-extension SerialDisputesResult {
-
-    /// Create a result from input
-    static func from(input: SerialDisputesInput) -> SerialDisputesResult {
-        let tariff = SerialDisputesTariff(year: input.tariffYear)
-        let feePerFile = tariff.getFeePerFile(for: input.disputeType)
-        let totalFee = tariff.calculateTotalFee(
-            fileCount: input.fileCount,
-            disputeType: input.disputeType
-        )
-
-        return SerialDisputesResult(
-            totalFee: totalFee,
-            feePerFile: feePerFile,
-            disputeType: input.disputeType,
-            fileCount: input.fileCount,
-            tariffYear: input.tariffYear
-        )
     }
 }

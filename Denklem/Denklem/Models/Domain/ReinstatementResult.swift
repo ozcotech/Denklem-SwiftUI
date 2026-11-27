@@ -25,19 +25,6 @@ struct ReinstatementInput: Equatable {
     /// Diğer haklar (other rights) - optional for agreement
     let otherRights: Double?
 
-    // MARK: - Computed Properties
-
-    /// Total agreement amount (sum of all three components)
-    /// Only applicable when agreementStatus == .agreed
-    var totalAgreementAmount: Double? {
-        guard agreementStatus == .agreed,
-              let compensation = nonReinstatementCompensation,
-              let wage = idlePeriodWage else {
-            return nil
-        }
-        return compensation + wage + (otherRights ?? 0)
-    }
-
     // MARK: - Validation
 
     /// Validates the input based on agreement status
@@ -213,35 +200,6 @@ struct ReinstatementResult: Equatable {
     /// Combined legal reference with tariff year
     var fullLegalReference: String {
         return "\(tariffYear.rawValue) \(tariffSectionReference) - \(legalReference)"
-    }
-
-    // MARK: - Calculation Description
-
-    /// Description of how the fee was calculated
-    var calculationDescription: String {
-        if agreementStatus == .agreed, let breakdown = breakdown {
-            var description = """
-            \(LocalizationKeys.Reinstatement.nonReinstatementCompensation.localized): \(breakdown.formattedCompensation)
-            \(LocalizationKeys.Reinstatement.idlePeriodWage.localized): \(breakdown.formattedIdleWage)
-            """
-
-            if let otherRightsFormatted = breakdown.formattedOtherRights {
-                description += "\n\(LocalizationKeys.Reinstatement.otherRights.localized): \(otherRightsFormatted)"
-            }
-
-            description += "\n\(LocalizationKeys.Reinstatement.totalAmount.localized): \(breakdown.formattedTotalAmount)"
-
-            if breakdown.isMinimumApplied {
-                description += "\n(\(LocalizationKeys.Reinstatement.minimumFeeApplied.localized))"
-            }
-
-            return description
-        } else if let fixedFee = formattedFixedFee {
-            let multiplierText = "× 2"
-            return "\(fixedFee) \(multiplierText) = \(formattedTotalFee)"
-        }
-
-        return formattedTotalFee
     }
 }
 

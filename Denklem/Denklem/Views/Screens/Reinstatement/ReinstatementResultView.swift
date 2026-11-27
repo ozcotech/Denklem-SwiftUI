@@ -281,6 +281,53 @@ struct ReinstatementResultView: View {
     }
 }
 
+// MARK: - Share Text
+
+extension ReinstatementResult {
+
+    /// Plain-text summary for sharing; mirrors ReinstatementResultView
+    var shareText: String {
+        var lines: [String] = []
+
+        lines.append("\(LocalizationKeys.Reinstatement.totalFee.localized):")
+        lines.append(formattedTotalFee)
+        lines.append(agreementStatus.displayName)
+        lines.append("")
+
+        if agreementStatus == .agreed {
+            lines.append("\(LocalizationKeys.Reinstatement.calculationBreakdown.localized):")
+            if let breakdown {
+                lines.append("\(LocalizationKeys.Reinstatement.nonReinstatementCompensation.localized): \(breakdown.formattedCompensation)")
+                lines.append("\(LocalizationKeys.Reinstatement.idlePeriodWage.localized): \(breakdown.formattedIdleWage)")
+                if let otherRights = breakdown.formattedOtherRights {
+                    lines.append("\(LocalizationKeys.Reinstatement.otherRights.localized): \(otherRights)")
+                }
+                lines.append("\(LocalizationKeys.Reinstatement.totalAmount.localized): \(breakdown.formattedTotalAmount)")
+                if breakdown.isMinimumApplied {
+                    lines.append(LocalizationKeys.Reinstatement.minimumFeeApplied.localized)
+                }
+            }
+            lines.append("\(LocalizationKeys.Result.tariffYear.localized): \(tariffYear.rawValue)")
+        } else {
+            lines.append("\(LocalizationKeys.Result.calculationInfo.localized):")
+            if let fixedFee = formattedFixedFee {
+                lines.append("\(LocalizationKeys.Result.mediationFee.localized) (x2): \(fixedFee)")
+            }
+            lines.append("\(LocalizationKeys.Reinstatement.partyCount.localized): \(partyCount)")
+            lines.append("\(LocalizationKeys.Result.tariffYear.localized): \(tariffYear.rawValue)")
+            lines.append("")
+            lines.append("\(LocalizationKeys.General.warning.localized):")
+            lines.append(LocalizationKeys.Reinstatement.noAgreementWarning.localized)
+        }
+
+        lines.append("")
+        lines.append(fullLegalReference)
+        lines.append("")
+        lines.append(LocalizationKeys.General.calculatedWithDenklem.localized)
+        return lines.joined(separator: "\n")
+    }
+}
+
 // MARK: - Preview
 
 @available(iOS 26.0, *)
