@@ -98,10 +98,10 @@ git clone https://github.com/ozcotech/Denklem-SwiftUI.git
 cd Denklem-SwiftUI
 
 # Open with Xcode
-open Denklem.xcodeproj
+open Denklem/Denklem.xcodeproj
 
 # Or from Xcode:
-# File → Open → Select Denklem.xcodeproj
+# File → Open → Select Denklem/Denklem.xcodeproj
 ```
 
 ### **Running**
@@ -117,8 +117,8 @@ open Denklem.xcodeproj
 # Run test suite
 Command + U (in Xcode)
 
-# Or from terminal:
-xcodebuild test -scheme Denklem -destination 'platform=iOS Simulator,name=iPhone 16 Pro'
+# Or from terminal (iOS 26+ simulator):
+xcodebuild test -scheme Denklem -destination 'platform=iOS Simulator,name=iPhone 17 Pro' -only-testing:DenklemTests
 ```
 
 ---
@@ -211,7 +211,7 @@ Central hub for all calculation types with categorized buttons:
 
 ### **3. MediationFeeScreen (Unified Calculation)**
 Single-screen mediation fee calculation with cable connector visual guides:
-- **Year Selection**: Dropdown picker for 2025/2026 tariff (2026 default)
+- **Year Selection**: Dropdown picker for the 2025/2026 tariffs (the active tariff year is selected by default)
 - **Agreement Status**: Toggle buttons (monetary disputes only)
 - **Dispute Type**: Dropdown menu with 10 dispute types
 - **Cable Connectors**: Visual circuit-board cables guiding users through the calculation flow
@@ -266,10 +266,11 @@ Tab bar accessible from any screen:
 ## 🚀 Key Features
 
 ### 💰 **Core Functionality - Fee Calculation**
-- **2025 & 2026 Official Tariffs**: Based on current Turkish mediation fee tariff
+- **Official Tariffs**: 2025 & 2026 mediation fee tariffs, 2025–2027 minimum attorney fee tariffs
 - **Smart Calculation Engine**: Handles both monetary and non-monetary disputes
 - **Dual Scenario Support**: Different calculations for agreement vs. non-agreement cases
-- **Per-Screen Tariff Selection**: Each calculation screen has its own year picker (2026 selected by default)
+- **Per-Screen Tariff Selection**: Each calculation screen has its own year picker (the tariff in force is selected by default, newest year first)
+- **Tested Calculations**: Unit tests lock every calculation against the official tariff tables
 
 ### 📱 **User Experience**
 - **Intuitive Step-by-Step Flow**: Guided process from start to finish
@@ -282,11 +283,11 @@ Tab bar accessible from any screen:
 ### 🧮 **Additional Calculators**
 - **Time Calculation**: Calculate mediation process durations
 - **Freelance Receipt (SMM)**: Receipt calculations with tax deductions
-- **Attorney Fee Calculation**: Power of attorney fee calculations in mediation process
+- **Attorney Fee Calculation**: Power of attorney fee calculations in mediation process (2025, 2026 and 2027 attorney fee tariffs)
 - **Reinstatement Disputes**: Calculations for reinstatement cases
 - **Serial Disputes**: Special calculations for serial dispute cases
 - **Tenancy Disputes**: Special calculations for eviction and rent determination disputes (attorney + mediation fees)
-- **Comprehensive Results**: Detailed explanations with tax implications
+- **Comprehensive Results**: Detailed explanations with tax implications, shareable as a text file from every result screen
 
 ### 🔧 **Technical Features**
 - **iOS 26.0+ Minimum**: Optimized for latest iOS features
@@ -330,12 +331,12 @@ Tab bar accessible from any screen:
 
 ## 📅 Version Information
 
-- **Current Version**: 2.6.1
-- **Supported Years**: 2025 and 2026 mediation tariffs
+- **Current Version**: 2.6.2
+- **Supported Years**: 2025 and 2026 mediation tariffs; 2025, 2026 and 2027 attorney fee tariffs
 - **Platform**: iOS 26.0+ / iPadOS 26.0+
 - **Languages**: Turkish (TR), English (EN), and Swedish (SV)
-- **Last Update**: September 2026
-- **Based on**: 2025 and 2026 official mediation fee tariffs
+- **Last Update**: November 2026
+- **Based on**: Official mediation fee tariffs (2025, 2026) and minimum attorney fee tariffs (2025, 2026, 2027)
 
 ---
 
@@ -343,19 +344,19 @@ Tab bar accessible from any screen:
 
 ```
 Denklem/
-├── App/
-│   └── DenklemApp.swift          # Application entry point
+├── DenklemApp.swift              # Application entry point
 │
 ├── Models/
-│   ├── Domain/                   # Business logic models
-│   ├── Data/                     # Tariff data structures
+│   ├── Domain/                   # Business logic models (TariffYear, AttorneyFeeTariffYear, results)
+│   ├── Data/                     # Tariff data (Tariff20xx, AttorneyFeeTariff20xx) and in-app legislation texts
 │   └── Calculation/              # Calculation engines
 │
 ├── Views/
 │   ├── Screens/                  # Screen views and ViewModels
 │   │   ├── StartScreen/
-│   │   ├── Calculations/
+│   │   ├── DisputeCategory/      # Calculations hub
 │   │   ├── MediationFee/         # Unified mediation fee calculation
+│   │   ├── ConsumerDispute/
 │   │   ├── AttorneyFee/
 │   │   ├── Reinstatement/
 │   │   ├── SerialDisputes/
@@ -363,16 +364,14 @@ Denklem/
 │   │   ├── TimeCalculation/
 │   │   ├── SMMCalculation/
 │   │   ├── Survey/
-│   │   ├── Settings/
+│   │   ├── About/                # Settings & about
 │   │   └── Legislation/
-│   ├── Components/               # Reusable components
-│   └── Modifiers/                # SwiftUI view modifiers
+│   └── Components/               # Reusable components (Common, Navigation)
 │
 ├── Theme/                        # Theme system
 │   ├── ThemeProtocol.swift
 │   ├── LightTheme.swift
-│   ├── DarkTheme.swift
-│   └── LiquidGlass/              # Liquid Glass styles
+│   └── DarkTheme.swift
 │
 ├── Localization/                 # Multi-language support
 │   ├── LocalizationKeys.swift
@@ -395,12 +394,16 @@ Denklem/
 │   └── LocaleManager.swift
 │
 ├── Extensions/                   # Extensions
-│   ├── Foundation/
-│   ├── SwiftUI/
-│   └── UIKit/
+│   ├── Foundation/               # Bundle localization
+│   └── SwiftUI/                  # Theme environment & view modifiers
 │
-└── Resources/                    # Resources
-    └── Assets.xcassets/
+├── Utils/                        # AmountFormatter, ShareTextFile
+├── Resources/Legal/              # Bundled legal documents
+└── Assets.xcassets/
+
+DenklemTests/                     # Unit tests
+├── CalculationLockTests.swift    # Locks all calculations against the official tariff tables
+└── ShareTextTests.swift          # Shared result texts and file names
 ```
 
 ---
@@ -409,12 +412,14 @@ Denklem/
 
 ### **Liquid Glass Effect (iOS 26.0+)**
 ```swift
-// Using Liquid Glass
-GlassEffectContainer(spacing: theme.spacingM) {
-    // Content
-}
-.liquidGlassEffect()
-.interactive()  // Touch illumination
+// Cards: native Liquid Glass, clear variant over the animated background
+VStack { /* Content */ }
+    .glassEffect(isAnimatedBackground ? .clear : .regular,
+                 in: RoundedRectangle(cornerRadius: theme.cornerRadiusL))
+
+// Buttons
+Button("Calculate") { /* … */ }
+    .buttonStyle(.glass(isAnimatedBackground ? .clear : .regular))
 ```
 
 ### **Theme System**
@@ -468,6 +473,14 @@ This project is licensed under the MIT License.
 ---
 
 ## 🔄 Version History
+
+### v2.6.2 (November 2026) - 2027 Attorney Fee Tariff, Legislation Search & Sharing
+- ⚖️ **2027 Minimum Attorney Fee Tariff**: Attorney fee calculation supports the 2025, 2026 and 2027 tariffs; the tariff in force today is selected by default (attorney fee tariffs change in November, independently of the mediation tariff year)
+- 📚 **Legislation Viewer**: 2025 and 2027 attorney fee tariffs added; select and copy any part of an article or copy a whole article; find-in-document with highlighted matches and previous/next navigation (Turkish-aware search: "icra" finds "İcra")
+- 📤 **Share Every Result**: Attorney fee, tenancy, serial dispute and reinstatement results can now be shared as a text file, like mediation fee and consumer dispute results
+- 📅 **Year Pickers**: Tariff years listed newest first; the start screen always opens with the active tariff year
+- 🧪 **Calculation Tests**: 26 unit tests lock every calculation against the official 2025/2026 tariff tables
+- 🧹 **Code Cleanup**: About 2,000 lines of unused code removed; mediation tariff years come from a single source, ready for the 2027 mediation tariff
 
 ### v2.6.1 (September 2026) - Open Source Link
 - 🔗 **Open Source Code Link**: Added open source repository link to the app
